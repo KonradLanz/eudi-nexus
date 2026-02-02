@@ -1,0 +1,29 @@
+{
+  "name": "etsi-downloader",
+  "version": "1.0.0",
+  "description": "Tools to scrape and download ETSI ESI specifications",
+  "type": "module",
+  "scripts": {
+    "scrape": "node src/work-program-scraper.js",
+    "analyze": "cd scripts && node analyze.js",
+    "markdown": "cd scripts && node generate-markdown.js",
+    "download": "cd scripts && node download-specs.js",
+    "download:test": "cd scripts && node download-specs.js --limit=5 --published-only",
+    "references": "cd scripts && node extract-references.js",
+    "references:drafts": "cd scripts && node extract-references.js --include-drafts",
+    "serve": "cd downloads && python3 -m http.server 9999",
+    "all": "npm run scrape && npm run analyze && npm run markdown"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.3.1",
+    "fetch-cookie": "^3.0.1",
+    "mammoth": "^1.11.0",
+    "node-fetch": "^3.3.2",
+    "pdf-parse": "^1.1.1",
+    "tough-cookie": "^4.1.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
