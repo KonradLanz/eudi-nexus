@@ -19,6 +19,31 @@ const INCLUDE_DRAFTS = args.includes('--include-drafts') || args.includes('-d');
 const ALL_SPECS = args.includes('--all') || args.includes('-a');
 const EUDI_MODE = !ALL_SPECS; // EUDI focus is the default
 
+// Load ETSI work item URLs from esi_overview.json
+let etsiWorkItemUrls = new Map();
+async function loadEtsiUrls() {
+  try {
+    const overviewPath = path.join(OUTPUT_PATH, 'esi_overview.json');
+    const data = JSON.parse(await fs.readFile(overviewPath, 'utf-8'));
+    
+    // Build lookup from ETSI number to portal URL
+    const allItems = [...(data.activeWorkItems || []), ...(data.publishedDocuments || [])];
+    for (const item of allItems) {
+      if (item.etsiNumber && item.detailUrl) {
+        // Extract just the WKI_ID for a cleaner URL
+        const wkiMatch = item.detailUrl.match(/WKI_ID=(\d+)/);
+        if (wkiMatch) {
+          const cleanUrl = `https://portal.etsi.org/webapp/WorkProgram/Report_WorkItem.asp?WKI_ID=${wkiMatch[1]}`;
+          etsiWorkItemUrls.set(item.etsiNumber, cleanUrl);
+        }
+      }
+    }
+    console.log(`Loaded ${etsiWorkItemUrls.size} ETSI work item URLs\n`);
+  } catch (e) {
+    console.log('Note: Could not load esi_overview.json for work item URLs\n');
+  }
+}
+
 // EUDI Wallet ecosystem relevant specifications
 // These are the core specs for the European Digital Identity Wallet
 const EUDI_RELEVANT_SPECS = new Set([
@@ -170,6 +195,9 @@ async function extractReferences() {
     console.log('(including draft documents)');
   }
   console.log('');
+
+  // Load ETSI work item URLs for proper portal links
+  await loadEtsiUrls();
 
   // Find all documents (PDFs and optionally Word drafts)
   const pdfFiles = await findPdfFiles(SPECS_PATH);
@@ -1077,23 +1105,20 @@ function generateHtmlVisualization(graphData) {
       return sourceColors[node.source] || '#9E9E9E';
     }
     
+    // ETSI Work Item URLs lookup (populated from esi_overview.json)
+    const etsiWorkItemUrls = ${JSON.stringify(Object.fromEntries(etsiWorkItemUrls))};
+    
     // Generate URL for a document based on its source
     function getDocumentUrl(node) {
       const id = node.id;
       const source = node.source;
       
       if (source === 'etsi') {
-        // ETSI: search page with document number
-        // e.g. "TS 119 472-2" -> search for "119 472-2"
-        const match = id.match(/(EN|TS|TR|ES|EG|SR)\\s+(\\d+)\\s+(\\d+)(?:-(\\d+))?/);
-        if (match) {
-          const type = match[1];
-          const num1 = match[2];
-          const num2 = match[3];
-          const part = match[4] || '';
-          const query = part ? \`\${num1} \${num2}-\${part}\` : \`\${num1} \${num2}\`;
-          return \`https://www.etsi.org/deliver/etsi_\${type.toLowerCase()}/\${num1}\${num2}_\${num1}\${num2}99/\`;
+        // First check if we have a work item URL from esi_overview.json
+        if (etsiWorkItemUrls[id]) {
+          return etsiWorkItemUrls[id];
         }
+        // Fallback: search page with document number
         return \`https://www.etsi.org/standards#page=1&search=\${encodeURIComponent(id)}\`;
       }
       
