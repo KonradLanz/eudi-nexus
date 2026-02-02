@@ -1,6 +1,11 @@
 import * as cheerio from 'cheerio';
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { ETSIClient } from './etsi-client.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const BASE_URL = 'https://portal.etsi.org';
 
@@ -232,3 +237,27 @@ async function createSummaryReport(items, downloadPath) {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+// Main entry point when run directly
+async function main() {
+  const downloadPath = path.join(__dirname, '../downloads');
+  
+  // Ensure downloads directory exists
+  await fs.mkdir(downloadPath, { recursive: true });
+  
+  console.log('EUDI Nexus - ETSI Work Program Scraper');
+  console.log('======================================\n');
+  
+  const client = new ETSIClient();
+  
+  try {
+    await scrapeWorkProgram(client, downloadPath);
+    await analyzeWorkItems(downloadPath);
+    console.log('\nDone! Output saved to downloads/');
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
+}
+
+main();
