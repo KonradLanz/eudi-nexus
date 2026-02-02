@@ -1,7 +1,7 @@
 {
-  "name": "etsi-downloader",
+  "name": "eudi-nexus",
   "version": "1.0.0",
-  "description": "Tools to scrape and download ETSI ESI specifications",
+  "description": "EUDI Wallet ecosystem - ETSI ESI standards reference graph and analysis tool",
   "type": "module",
   "scripts": {
     "scrape": "node src/work-program-scraper.js",
@@ -10,7 +10,10 @@
     "download": "cd scripts && node download-specs.js",
     "download:test": "cd scripts && node download-specs.js --limit=5 --published-only",
     "references": "cd scripts && node extract-references.js",
+    "references:all": "cd scripts && node extract-references.js --all",
     "references:drafts": "cd scripts && node extract-references.js --include-drafts",
+    "references:all:drafts": "cd scripts && node extract-references.js --all --include-drafts",
+    "build": "cd scripts && node extract-references.js --include-drafts",
     "serve": "cd downloads && python3 -m http.server 9999",
     "all": "npm run scrape && npm run analyze && npm run markdown"
   },
@@ -24,6 +27,6 @@
     "tough-cookie": "^4.1.3"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   }
 }

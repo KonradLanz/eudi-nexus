@@ -16,6 +16,79 @@ const OUTPUT_PATH = path.join(__dirname, '../downloads');
 // CLI flags
 const args = process.argv.slice(2);
 const INCLUDE_DRAFTS = args.includes('--include-drafts') || args.includes('-d');
+const ALL_SPECS = args.includes('--all') || args.includes('-a');
+const EUDI_MODE = !ALL_SPECS; // EUDI focus is the default
+
+// EUDI Wallet ecosystem relevant specifications
+// These are the core specs for the European Digital Identity Wallet
+const EUDI_RELEVANT_SPECS = new Set([
+  // Trust Services - Core
+  'TS 119 102-1', 'TS 119 102-2',
+  'EN 319 102-1',
+  'EN 319 401', 'EN 319 403',
+  
+  // Electronic Signatures (AdES)
+  'EN 319 122-1', 'EN 319 122-2', // CAdES
+  'EN 319 132-1', 'EN 319 132-2', // XAdES
+  'EN 319 142-1', 'EN 319 142-2', // PAdES
+  'TS 119 182-1', 'TS 119 182-2', // JAdES
+  
+  // Signature Creation & Validation
+  'EN 319 112-1', 'TS 119 172-1', 'TS 119 172-2', 'TS 119 172-3', 'TS 119 172-4',
+  'TS 119 192',
+  
+  // Trust Lists
+  'TS 119 612', 'TS 119 614-1', 'TS 119 615',
+  
+  // Certificates & PKI
+  'EN 319 411-1', 'EN 319 411-2', 'EN 319 412-1', 'EN 319 412-2', 'EN 319 412-3', 'EN 319 412-4', 'EN 319 412-5',
+  'EN 319 421', 'EN 319 422',
+  
+  // Remote Signing
+  'TS 119 431-1', 'TS 119 431-2', 'TS 119 432',
+  'TS 119 441',
+  
+  // Wallet & Credentials - The core EUDI specs
+  'TS 119 461', 'TS 119 462',
+  'TS 119 471', 'TS 119 472-1', 'TS 119 472-2', 'TS 119 472-3',
+  'TS 119 475', 'TS 119 476', 'TS 119 476-1', 'TS 119 478', 'TS 119 479-1', 'TS 119 479-2',
+  'TS 119 495',
+  
+  // Preservation
+  'TS 119 511', 'TS 119 512',
+  'TS 119 524-1', 'TS 119 524-2',
+  'TS 119 534-1', 'TS 119 534-2',
+  
+  // Registered E-Mail / E-Delivery  
+  'EN 319 521', 'EN 319 522-1', 'EN 319 522-2', 'EN 319 522-3',
+  'EN 319 531', 'EN 319 532-1', 'EN 319 532-2', 'EN 319 532-3', 'EN 319 532-4',
+  
+  // Policy & Security Requirements
+  'TS 119 541', 'TS 119 542',
+  'TS 119 602',
+  
+  // Cryptographic Suites
+  'TS 119 312',
+  
+  // Technical Reports & Guidance for EUDI
+  'TR 119 000', 'TR 119 001', 'TR 119 100',
+  'TR 119 400', 'TR 119 460', 'TR 119 476', 'TR 119 476-1',
+  'TR 119 500', 'TR 119 520-1', 'TR 119 520-2', 'TR 119 530', 'TR 119 540',
+  'TR 119 600',
+]);
+
+// External specs relevant to EUDI (always included when referenced)
+const EUDI_EXTERNAL_SPECS = new Set([
+  // Core OIDF specs for EUDI Wallet
+  'OpenID4VP', 'OpenID4VCI', 'OpenID4VC-HAIP', 'HAIP', 'SD-JWT', 'SD-JWT VC',
+  'OpenID Connect', 'OpenID Connect Core',
+  
+  // Key RFCs
+  'RFC 5280', 'RFC 3161', 'RFC 6960', 'RFC 5652', 'RFC 8017',
+  'RFC 7515', 'RFC 7516', 'RFC 7517', 'RFC 7518', 'RFC 7519', // JOSE
+  'RFC 8392', 'RFC 8747', // CBOR/CWT
+  'RFC 9449', 'RFC 9126', // OAuth DPoP, PAR
+]);
 
 // Regex patterns for different reference types
 const REF_PATTERNS = {
@@ -56,9 +129,43 @@ const REF_PATTERNS = {
   ],
 };
 
+// Helper to check if a spec is EUDI-relevant
+function isEudiRelevant(specId, source = 'etsi') {
+  if (!EUDI_MODE) return true; // All specs mode
+  
+  if (source === 'etsi') {
+    // Check direct match or base spec match (e.g., "TS 119 472-2" matches "TS 119 472")
+    if (EUDI_RELEVANT_SPECS.has(specId)) return true;
+    
+    // Check if it's a sub-part of a relevant spec series
+    const baseSpec = specId.replace(/-\d+$/, '');
+    if (EUDI_RELEVANT_SPECS.has(baseSpec)) return true;
+    
+    // Check 119 xxx series - all are EUDI relevant
+    if (/^(TS|TR|EN)\s+119\s+\d/.test(specId)) return true;
+    
+    return false;
+  }
+  
+  // External specs - check against EUDI external list
+  if (EUDI_EXTERNAL_SPECS.has(specId)) return true;
+  
+  // Always include commonly referenced security/crypto RFCs
+  if (source === 'ietf' && /^RFC\s*(5280|3161|6960|5652|7515|7516|7517|7518|7519|8392)$/i.test(specId)) {
+    return true;
+  }
+  
+  return false;
+}
+
 async function extractReferences() {
-  console.log('ETSI Reference Extractor');
-  console.log('========================');
+  console.log('EUDI Nexus - ETSI Reference Extractor');
+  console.log('=====================================');
+  if (EUDI_MODE) {
+    console.log('Mode: EUDI Wallet ecosystem focus');
+  } else {
+    console.log('Mode: All ETSI ESI specifications');
+  }
   if (INCLUDE_DRAFTS) {
     console.log('(including draft documents)');
   }
@@ -98,6 +205,12 @@ async function extractReferences() {
       const docId = normalizeDocId(filenameToDocId(filename));
       
       if (docId) {
+        // Skip non-EUDI documents in EUDI mode
+        if (EUDI_MODE && !isEudiRelevant(docId, 'etsi')) {
+          console.log(`   SKIP: Not EUDI-relevant`);
+          continue;
+        }
+        
         // Count total refs across all types
         const countRefs = (obj) => Object.values(obj).reduce((sum, arr) => sum + arr.length, 0);
         const normativeCount = countRefs(refs.normative);
@@ -113,14 +226,15 @@ async function extractReferences() {
             path: pdfPath,
             referencesCount: 0,
             referencedByCount: 0,
+            isEudiCore: EUDI_RELEVANT_SPECS.has(docId),
           });
         }
         graph.nodes.get(docId).referencesCount = totalCount;
         
-        // Add ETSI edges
+        // Add ETSI edges (filter by EUDI relevance)
         for (const ref of refs.normative.etsi) {
           const targetId = normalizeDocId(ref);
-          if (targetId && targetId !== docId) {
+          if (targetId && targetId !== docId && isEudiRelevant(targetId, 'etsi')) {
             graph.edges.push({ from: docId, to: targetId, type: 'normative', source: 'etsi' });
             ensureNode(graph, targetId, 'etsi');
             graph.nodes.get(targetId).referencedByCount++;
@@ -129,25 +243,29 @@ async function extractReferences() {
         
         for (const ref of refs.informative.etsi) {
           const targetId = normalizeDocId(ref);
-          if (targetId && targetId !== docId) {
+          if (targetId && targetId !== docId && isEudiRelevant(targetId, 'etsi')) {
             graph.edges.push({ from: docId, to: targetId, type: 'informative', source: 'etsi' });
             ensureNode(graph, targetId, 'etsi');
             graph.nodes.get(targetId).referencedByCount++;
           }
         }
         
-        // Add external refs (IETF, ISO, ITU, W3C, OIDF)
+        // Add external refs (IETF, ISO, ITU, W3C, OIDF) - filter by EUDI relevance
         const externalTypes = ['ietf', 'iso', 'itu', 'w3c', 'oidf'];
         for (const extType of externalTypes) {
           for (const ref of refs.normative[extType] || []) {
-            graph.edges.push({ from: docId, to: ref, type: 'normative', source: extType });
-            ensureExternalNode(graph, ref, extType);
-            graph.nodes.get(ref).referencedByCount++;
+            if (isEudiRelevant(ref, extType)) {
+              graph.edges.push({ from: docId, to: ref, type: 'normative', source: extType });
+              ensureExternalNode(graph, ref, extType);
+              graph.nodes.get(ref).referencedByCount++;
+            }
           }
           for (const ref of refs.informative[extType] || []) {
-            graph.edges.push({ from: docId, to: ref, type: 'informative', source: extType });
-            ensureExternalNode(graph, ref, extType);
-            graph.nodes.get(ref).referencedByCount++;
+            if (isEudiRelevant(ref, extType)) {
+              graph.edges.push({ from: docId, to: ref, type: 'informative', source: extType });
+              ensureExternalNode(graph, ref, extType);
+              graph.nodes.get(ref).referencedByCount++;
+            }
           }
         }
         
@@ -194,6 +312,12 @@ async function extractReferences() {
         const docId = normalizeDocId(filenameToDocId(filename)) || docxFilenameToDocId(filename);
         
         if (docId) {
+          // Skip non-EUDI documents in EUDI mode
+          if (EUDI_MODE && !isEudiRelevant(docId, 'etsi')) {
+            console.log(`   SKIP: Not EUDI-relevant`);
+            continue;
+          }
+          
           const countRefs = (obj) => Object.values(obj).reduce((sum, arr) => sum + arr.length, 0);
           const normativeCount = countRefs(refs.normative);
           const informativeCount = countRefs(refs.informative);
@@ -209,6 +333,7 @@ async function extractReferences() {
               referencesCount: 0,
               referencedByCount: 0,
               isDraft: true,
+              isEudiCore: EUDI_RELEVANT_SPECS.has(docId),
             });
           } else {
             // Update existing node to mark as draft if it wasn't downloaded as PDF
@@ -220,10 +345,10 @@ async function extractReferences() {
           }
           graph.nodes.get(docId).referencesCount = totalCount;
           
-          // Add ETSI edges
+          // Add ETSI edges (filter by EUDI relevance)
           for (const ref of refs.normative.etsi) {
             const targetId = normalizeDocId(ref);
-            if (targetId && targetId !== docId) {
+            if (targetId && targetId !== docId && isEudiRelevant(targetId, 'etsi')) {
               graph.edges.push({ from: docId, to: targetId, type: 'normative', source: 'etsi' });
               ensureNode(graph, targetId, 'etsi');
               graph.nodes.get(targetId).referencedByCount++;
@@ -232,25 +357,29 @@ async function extractReferences() {
           
           for (const ref of refs.informative.etsi) {
             const targetId = normalizeDocId(ref);
-            if (targetId && targetId !== docId) {
+            if (targetId && targetId !== docId && isEudiRelevant(targetId, 'etsi')) {
               graph.edges.push({ from: docId, to: targetId, type: 'informative', source: 'etsi' });
               ensureNode(graph, targetId, 'etsi');
               graph.nodes.get(targetId).referencedByCount++;
             }
           }
           
-          // Add external refs
+          // Add external refs (filter by EUDI relevance)
           const externalTypes = ['ietf', 'iso', 'itu', 'w3c', 'oidf'];
           for (const extType of externalTypes) {
             for (const ref of refs.normative[extType] || []) {
-              graph.edges.push({ from: docId, to: ref, type: 'normative', source: extType });
-              ensureExternalNode(graph, ref, extType);
-              graph.nodes.get(ref).referencedByCount++;
+              if (isEudiRelevant(ref, extType)) {
+                graph.edges.push({ from: docId, to: ref, type: 'normative', source: extType });
+                ensureExternalNode(graph, ref, extType);
+                graph.nodes.get(ref).referencedByCount++;
+              }
             }
             for (const ref of refs.informative[extType] || []) {
-              graph.edges.push({ from: docId, to: ref, type: 'informative', source: extType });
-              ensureExternalNode(graph, ref, extType);
-              graph.nodes.get(ref).referencedByCount++;
+              if (isEudiRelevant(ref, extType)) {
+                graph.edges.push({ from: docId, to: ref, type: 'informative', source: extType });
+                ensureExternalNode(graph, ref, extType);
+                graph.nodes.get(ref).referencedByCount++;
+              }
             }
           }
           
@@ -463,13 +592,22 @@ async function extractReferencesFromDocx(docxPath) {
 
 // Parse draft filenames like ESI-0019472-2v121v114.docx
 function docxFilenameToDocId(filename) {
-  // Format: ESI-XXXYYYYY-Zv...
-  const match = filename.match(/ESI-(\d{3})(\d{4,5})-?(\d)?/i);
+  // Format: ESI-00XXXYYY-Z... where the number encodes as 1XX YYY
+  // ESI-0019472-2 -> 19472 -> 119 472 -> TS 119 472-2
+  // ESI-0019475 -> 19475 -> 119 475 -> TS 119 475
+  // Pattern: 1XYYY where series=11X and number=YYY, OR 19XYY where series=119 and number=XYY
+  const match = filename.match(/ESI-00(\d)(\d)(\d{3})-?(\d)?/i);
   if (match) {
-    const num1 = match[1];
-    const num2 = match[2].slice(0, 3);
-    const part = match[3] ? `-${parseInt(match[3], 10)}` : '';
-    return `TS ${num1} ${num2}${part}`;
+    // Decode: first two digits form the series prefix (1+digit), third digit continues series
+    // e.g., 19472 -> 1, 9, 472 -> series 119, number 472
+    const d1 = match[1]; // 1
+    const d2 = match[2]; // 9
+    const rest = match[3]; // 472
+    const part = match[4] ? `-${parseInt(match[4], 10)}` : '';
+    
+    // Series is 1XX where XX is d1+d2 (e.g., 119 from "19")
+    const series = `1${d1}${d2}`;
+    return `TS ${series} ${rest}${part}`;
   }
   
   // Try other patterns
@@ -839,29 +977,42 @@ function generateMermaidGraph(graphData) {
 }
 
 function generateHtmlVisualization(graphData) {
+  const title = EUDI_MODE ? 'EUDI Nexus - Wallet Ecosystem Standards' : 'ETSI ESI Reference Graph';
+  const subtitle = EUDI_MODE 
+    ? 'Interactive map of ETSI ESI standards for the European Digital Identity Wallet' 
+    : 'Interactive map of all ETSI ESI specifications';
+  
   return `<!DOCTYPE html>
 <html>
 <head>
-  <title>ETSI ESI Reference Graph</title>
+  <title>${title}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="${subtitle}">
   <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; }
-    h1 { margin-top: 0; }
-    #graph { width: 100%; height: 700px; border: 1px solid #ddd; border-radius: 8px; }
-    .stats { display: flex; gap: 20px; margin-bottom: 20px; }
-    .stat { background: #f5f5f5; padding: 15px 20px; border-radius: 8px; }
-    .stat-value { font-size: 24px; font-weight: bold; color: #333; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #fafafa; }
+    h1 { margin-top: 0; color: #1a237e; }
+    .subtitle { color: #666; margin-top: -10px; margin-bottom: 20px; }
+    #graph { width: 100%; height: 700px; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+    .stats { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+    .stat { background: #fff; padding: 15px 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .stat-value { font-size: 24px; font-weight: bold; color: #1a237e; }
     .stat-label { font-size: 12px; color: #666; text-transform: uppercase; }
     .legend { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
     .legend-item { display: flex; align-items: center; gap: 5px; font-size: 14px; }
     .legend-color { width: 16px; height: 16px; border-radius: 3px; }
-    .controls { margin-bottom: 15px; }
-    .controls label { margin-right: 15px; }
-    #info { margin-top: 15px; padding: 15px; background: #f9f9f9; border-radius: 8px; display: none; }
+    .controls { margin-bottom: 15px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .controls label { margin-right: 15px; cursor: pointer; }
+    #info { margin-top: 15px; padding: 15px; background: #fff; border-radius: 8px; display: none; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .mode-badge { display: inline-block; background: #1a237e; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; margin-left: 10px; vertical-align: middle; }
+    footer { margin-top: 20px; text-align: center; color: #666; font-size: 12px; }
+    footer a { color: #1a237e; }
   </style>
 </head>
 <body>
-  <h1>ETSI ESI Reference Graph</h1>
+  <h1>${title}${EUDI_MODE ? '<span class="mode-badge">EUDI Focus</span>' : ''}</h1>
+  <p class="subtitle">${subtitle}</p>
   
   <div class="stats">
     <div class="stat">
@@ -1119,6 +1270,14 @@ function generateHtmlVisualization(graphData) {
     
     buildNetwork();
   </script>
+  
+  <footer>
+    <p>
+      <strong>EUDI Nexus</strong> - ETSI ESI standards reference graph for the European Digital Identity Wallet ecosystem<br>
+      <a href="https://github.com/cre8/eudi-nexus" target="_blank">GitHub</a> |
+      Data sourced from <a href="https://www.etsi.org" target="_blank">ETSI</a>
+    </p>
+  </footer>
 </body>
 </html>`;
 }
