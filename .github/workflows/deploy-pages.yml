@@ -41,6 +41,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Scrape ETSI work program
+        run: npm run scrape
+      
       - name: Download ETSI specifications
         run: npm run download
         env:
