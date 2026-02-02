@@ -234,6 +234,99 @@ async function createSummaryReport(items, downloadPath) {
   console.log('   By stage:', summary.byStage);
 }
 
+// Analyze and create esi_overview.json (needed by download script)
+async function analyzeWorkItems(downloadPath) {
+  const data = JSON.parse(await fs.readFile(path.join(downloadPath, 'work_items.json'), 'utf-8'));
+  
+  console.log(`\n📊 Analyzing work items...`);
+  
+  // Deduplicate by ETSI number (keep latest version based on workItemId)
+  const byEtsiNumber = new Map();
+  for (const item of data) {
+    const key = item.etsiNumber;
+    if (!key) continue;
+    
+    const existing = byEtsiNumber.get(key);
+    if (!existing || parseInt(item.workItemId) > parseInt(existing.workItemId)) {
+      byEtsiNumber.set(key, item);
+    }
+  }
+  
+  // Separate active work (Drafting Stage) from published
+  const activeWork = [];
+  const published = [];
+  
+  for (const item of byEtsiNumber.values()) {
+    item.cleanStage = item.stage?.replace(/[\n\t]+/g, ' ').trim() || 'Unknown';
+    
+    if (item.cleanStage.includes('Drafting') || item.cleanStage.includes('approval')) {
+      activeWork.push(item);
+    } else {
+      published.push(item);
+    }
+  }
+  
+  // Sort active work by next status date
+  activeWork.sort((a, b) => {
+    const dateA = a.nextStatus?.date || a.currentStatus?.date || '9999';
+    const dateB = b.nextStatus?.date || b.currentStatus?.date || '9999';
+    return dateA.localeCompare(dateB);
+  });
+  
+  // Group by document type
+  const groupByType = (items) => {
+    const groups = {};
+    for (const item of items) {
+      const match = item.etsiNumber?.match(/^(EN|TS|TR|ES|EG)/i);
+      const type = match ? match[1].toUpperCase() : 'Other';
+      if (!groups[type]) groups[type] = [];
+      groups[type].push(item);
+    }
+    return groups;
+  };
+  
+  const formatItem = (item) => ({
+    etsiNumber: item.etsiNumber,
+    reference: item.reference,
+    title: item.title,
+    subtitle: item.subtitle,
+    stage: item.cleanStage,
+    currentStatus: item.currentStatus,
+    nextStatus: item.nextStatus,
+    detailUrl: item.detailUrl,
+    scheduleUrl: item.scheduleUrl
+  });
+  
+  const activeByType = groupByType(activeWork);
+  const publishedByType = groupByType(published);
+  
+  // Create esi_overview.json (required by download script)
+  const overview = {
+    generatedAt: new Date().toISOString(),
+    statistics: {
+      totalScraped: data.length,
+      uniqueDocuments: byEtsiNumber.size,
+      activeWorkItems: activeWork.length,
+      publishedDocuments: published.length
+    },
+    activeWorkByType: Object.fromEntries(
+      Object.entries(activeByType).map(([k, v]) => [k, v.length])
+    ),
+    publishedByType: Object.fromEntries(
+      Object.entries(publishedByType).map(([k, v]) => [k, v.length])
+    ),
+    activeWorkItems: activeWork.map(formatItem),
+    publishedDocuments: published.map(formatItem)
+  };
+  
+  await fs.writeFile(path.join(downloadPath, 'esi_overview.json'), JSON.stringify(overview, null, 2));
+  
+  console.log(`   Unique documents: ${byEtsiNumber.size}`);
+  console.log(`   Active work items: ${activeWork.length}`);
+  console.log(`   Published documents: ${published.length}`);
+  console.log(`   Saved esi_overview.json`);
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }

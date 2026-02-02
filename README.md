@@ -1,109 +1,98 @@
-# ETSI ESI Work Program Tools
+# EUDI Nexus
 
-Tools to scrape, analyze, and download ETSI ESI (Electronic Signatures and Infrastructures) specifications.
+Interactive reference graph of ETSI ESI standards for the **European Digital Identity Wallet** ecosystem.
 
-## Setup
+🔗 **Live Demo**: [cre8.github.io/eudi-nexus](https://cre8.github.io/eudi-nexus)
 
-1. Install dependencies:
+## Features
 
-   ```bash
-   npm install
-   ```
+- **EUDI-focused**: Filters to ~100 specs relevant to the EUDI Wallet (default mode)
+- **Interactive graph**: Visualize normative and informative references between specs
+- **Multi-source**: Includes ETSI, IETF RFCs, ISO/IEC, ITU-T, W3C, and OIDF (OpenID4VP, OpenID4VCI, etc.)
+- **Draft support**: Includes work-in-progress documents from ETSI docbox
+- **Clickable links**: Navigate directly to spec sources
 
-2. Configure credentials:
-
-   ```bash
-   cp .env.example .env
-   # Edit .env with your ETSI portal credentials
-   ```
-
-## Usage
-
-### Quick Start (run all steps)
+## Quick Start
 
 ```bash
-npm run all        # Scrape → Analyze → Generate Markdown
-npm run download   # Download all published PDFs (143 specs, ~53MB)
+# Install dependencies
+npm install
+
+# Run everything (scrape → download → build)
+npm run scrape      # Scrape ETSI work program
+npm run download    # Download PDFs (requires credentials)
+npm run build       # Generate reference graph
+
+# View locally
+npm run serve       # Opens http://localhost:9999
 ```
-
-### Individual Commands
-
-| Command | Description |
-| -------- | ------------- |
-| `npm run scrape` | Scrape work items from ETSI portal |
-| `npm run analyze` | Process scraped data → `esi_overview.json` |
-| `npm run markdown` | Generate markdown tables → `esi_overview.md` |
-| `npm run download` | Download all published PDFs |
-| `npm run download:test` | Test download with 5 files |
-
-### Download Options
-
-```bash
-# Download with limit
-cd scripts && node download-specs.js --limit=10
-
-# Download only published specs (skip active work items)
-cd scripts && node download-specs.js --published-only
-
-# Combine options
-cd scripts && node download-specs.js --limit=20 --published-only
-```
-
-## Project Structure
-
-```string
-etsi/
-├── src/
-│   ├── etsi-client.js          # ETSI API client with authentication
-│   └── work-program-scraper.js # Scrapes Work Program page
-├── scripts/
-│   ├── analyze.js              # Creates esi_overview.json
-│   ├── generate-markdown.js    # Creates esi_overview.md
-│   └── download-specs.js       # Downloads PDF specifications
-├── downloads/
-│   ├── work_items.json         # Raw scraped data
-│   ├── esi_overview.json       # Processed summary (44 active, 225 published)
-│   ├── esi_overview.md         # Markdown tables with links
-│   └── specs/                  # Downloaded PDFs organized by type
-│       ├── EN/                 # European Norms
-│       ├── TS/                 # Technical Specifications
-│       ├── TR/                 # Technical Reports
-│       └── Other/              # Special Reports, etc.
-├── .env                        # Your credentials (gitignored)
-├── .env.example                # Example configuration
-└── package.json
-```
-
-## Output Data
-
-### esi_overview.json
-
-Contains:
-
-- `activeWorkItems`: 44 specifications currently being worked on
-- `publishedDocuments`: 225 published specifications
-- `statistics`: Summary counts by document type
-- Each item includes: ETSI number, title, status, version, dates, links
-
-### esi_overview.md
-
-Markdown tables with:
-
-- Summary statistics
-- Active work items by type (EN, TS, TR)
-- Published documents by type
-- Clickable links to ETSI portal detail pages
 
 ## Configuration
 
-Edit `.env`:
+Create a `.env` file with your ETSI portal credentials (needed for downloading specs):
 
-```env
-ETSI_USERNAME=your-username
-ETSI_PASSWORD=your-password
+```bash
+ETSI_USERNAME=your_username
+ETSI_PASSWORD=your_password
 ```
 
-## Requirements
+## Commands
 
-- Node.js 18+
-- ETSI portal account with ESI committee access
+| Command | Description |
+|---------|-------------|
+| `npm run scrape` | Scrape work items from ETSI portal → `esi_overview.json` |
+| `npm run download` | Download all published PDFs (~150 specs) |
+| `npm run build` | Extract references and build graph (EUDI focus + drafts) |
+| `npm run serve` | Serve the visualization locally on port 9999 |
+
+### Reference Extraction Options
+
+| Command | Description |
+|---------|-------------|
+| `npm run references` | EUDI-focused specs only |
+| `npm run references:all` | All ETSI ESI specs |
+| `npm run references:drafts` | EUDI specs + draft documents |
+| `npm run references:all:drafts` | Everything |
+
+## Output Files
+
+All output goes to the `downloads/` directory:
+
+| File | Description |
+|------|-------------|
+| `index.html` | Interactive visualization (deployed to GitHub Pages) |
+| `references.json` | Full reference data as JSON |
+| `references.dot` | Graphviz DOT format |
+| `references.mmd` | Mermaid diagram format |
+| `esi_overview.json` | Scraped work items summary |
+| `specs/` | Downloaded PDF/DOCX specifications |
+
+## EUDI-Relevant Specifications
+
+The default mode focuses on specs relevant to the EUDI Wallet ecosystem:
+
+- **Trust Services**: EN 319 xxx series
+- **Electronic Signatures**: CAdES, XAdES, PAdES, JAdES
+- **Wallet & Credentials**: TS 119 46x, 47x, 49x series
+- **External Standards**: OpenID4VP, OpenID4VCI, HAIP, SD-JWT, key RFCs
+
+Use `--all` flag to include all ETSI ESI specifications.
+
+## CI/CD
+
+The GitHub Actions workflow automatically:
+1. Scrapes the ETSI work program
+2. Downloads specifications
+3. Extracts references and builds the graph
+4. Deploys to GitHub Pages
+
+Runs on:
+- Push to `main` branch
+- Weekly schedule (Mondays)
+- Manual trigger
+
+Required secrets: `ETSI_USERNAME`, `ETSI_PASSWORD`
+
+## License
+
+MIT
