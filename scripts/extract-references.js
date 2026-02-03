@@ -1034,6 +1034,10 @@ function generateHtmlVisualization(graphData) {
     .controls label { margin-right: 15px; cursor: pointer; }
     #info { margin-top: 15px; padding: 15px; background: #fff; border-radius: 8px; display: none; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .mode-badge { display: inline-block; background: #1a237e; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; margin-left: 10px; vertical-align: middle; }
+    .search-container { display: inline-flex; align-items: center; gap: 10px; margin-left: 20px; }
+    #nodeSearch { padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; min-width: 250px; font-size: 14px; }
+    #resetView { padding: 6px 12px; background: #1a237e; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+    #resetView:hover { background: #0d1454; }
     footer { margin-top: 20px; text-align: center; color: #666; font-size: 12px; }
     footer a { color: #1a237e; }
   </style>
@@ -1081,6 +1085,12 @@ function generateHtmlVisualization(graphData) {
     <label><input type="checkbox" id="showExternal" checked> External standards (IETF, ISO, ITU, OIDF)</label>
     <label><input type="checkbox" id="showDrafts" checked> Draft documents</label>
     <label><input type="checkbox" id="showUndownloaded"> ETSI docs not downloaded</label>
+    <span class="search-container">
+      <select id="nodeSearch">
+        <option value="">-- Search / Select Document --</option>
+      </select>
+      <button id="resetView">Reset View</button>
+    </span>
   </div>
   
   <div id="graph"></div>
@@ -1088,6 +1098,10 @@ function generateHtmlVisualization(graphData) {
 
   <script>
     const graphData = ${JSON.stringify(graphData)};
+    
+    // Global references for search functionality
+    let currentNetwork = null;
+    let currentNodes = null;
     
     const sourceColors = {
       etsi: { EN: '#4CAF50', TS: '#2196F3', TR: '#FF9800', ES: '#9C27B0', EG: '#795548', SR: '#607D8B' },
@@ -1103,6 +1117,33 @@ function generateHtmlVisualization(graphData) {
         return sourceColors.etsi[node.type] || '#9E9E9E';
       }
       return sourceColors[node.source] || '#9E9E9E';
+    }
+    
+    // Populate search dropdown with all nodes grouped by source
+    function populateSearchDropdown(nodes) {
+      const select = document.getElementById('nodeSearch');
+      select.innerHTML = '<option value="">-- Search / Select Document --</option>';
+      
+      // Group nodes by source
+      const grouped = {};
+      nodes.forEach(n => {
+        const source = n.source.toUpperCase();
+        if (!grouped[source]) grouped[source] = [];
+        grouped[source].push(n);
+      });
+      
+      // Sort sources and add optgroups
+      Object.keys(grouped).sort().forEach(source => {
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = source;
+        grouped[source].sort((a, b) => a.id.localeCompare(b.id)).forEach(n => {
+          const option = document.createElement('option');
+          option.value = n.id;
+          option.textContent = n.id + (n.isDraft ? ' (draft)' : '');
+          optgroup.appendChild(option);
+        });
+        select.appendChild(optgroup);
+      });
     }
     
     // ETSI Work Item URLs lookup (populated from esi_overview.json)
@@ -1246,10 +1287,18 @@ function generateHtmlVisualization(graphData) {
       
       const network = new vis.Network(container, data, options);
       
+      // Store references for search functionality
+      currentNetwork = network;
+      currentNodes = nodes;
+      populateSearchDropdown(filteredNodes);
+      
       network.on('click', function(params) {
         if (params.nodes.length > 0) {
           const nodeId = params.nodes[0];
           const node = graphData.nodes.find(n => n.id === nodeId);
+          
+          // Sync dropdown with clicked node
+          document.getElementById('nodeSearch').value = nodeId;
           const incoming = graphData.edges.filter(e => e.to === nodeId);
           const outgoing = graphData.edges.filter(e => e.from === nodeId);
           
@@ -1292,6 +1341,32 @@ function generateHtmlVisualization(graphData) {
     document.getElementById('showExternal').addEventListener('change', buildNetwork);
     document.getElementById('showDrafts').addEventListener('change', buildNetwork);
     document.getElementById('showUndownloaded').addEventListener('change', buildNetwork);
+    
+    // Search dropdown handler
+    document.getElementById('nodeSearch').addEventListener('change', function() {
+      const nodeId = this.value;
+      if (nodeId && currentNetwork && currentNodes) {
+        const nodeIds = currentNodes.getIds();
+        if (nodeIds.includes(nodeId)) {
+          currentNetwork.selectNodes([nodeId]);
+          currentNetwork.focus(nodeId, { scale: 1.5, animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+          // Trigger click event to show info
+          currentNetwork.emit('click', { nodes: [nodeId] });
+        } else {
+          alert('This document is currently hidden by the active filters.');
+        }
+      }
+    });
+    
+    // Reset view handler
+    document.getElementById('resetView').addEventListener('click', function() {
+      if (currentNetwork) {
+        currentNetwork.fit({ animation: { duration: 500, easingFunction: 'easeInOutQuad' } });
+        currentNetwork.selectNodes([]);
+        document.getElementById('nodeSearch').value = '';
+        document.getElementById('info').style.display = 'none';
+      }
+    });
     
     buildNetwork();
   </script>
