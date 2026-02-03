@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
+import * as cheerio from 'cheerio';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,6 +12,8 @@ const pdfParse = require('pdf-parse');
 import mammoth from 'mammoth';
 
 const SPECS_PATH = path.join(__dirname, '../downloads/specs');
+const OIDF_SPECS_PATH = path.join(__dirname, '../downloads/specs/OIDF');
+const IETF_SPECS_PATH = path.join(__dirname, '../downloads/specs/IETF');
 const OUTPUT_PATH = path.join(__dirname, '../downloads');
 
 // CLI flags
@@ -438,6 +441,286 @@ async function extractReferences() {
     }
   }
 
+  // Process OIDF HTML specifications
+  const oidfHtmlFiles = await findHtmlFiles(OIDF_SPECS_PATH);
+  if (oidfHtmlFiles.length > 0) {
+    console.log(`\nProcessing ${oidfHtmlFiles.length} OIDF specifications...`);
+    
+    for (let i = 0; i < oidfHtmlFiles.length; i++) {
+      const htmlPath = oidfHtmlFiles[i];
+      const filename = path.basename(htmlPath);
+      const progress = `[${i + 1}/${oidfHtmlFiles.length}]`;
+      
+      process.stdout.write(`${progress} ${filename} (OIDF)...`);
+      
+      try {
+        const refs = await extractReferencesFromHtml(htmlPath);
+        
+        // Get document ID from filename
+        const docId = htmlFilenameToOidfId(filename);
+        
+        if (docId) {
+          const countRefs = (obj) => Object.values(obj).reduce((sum, arr) => sum + arr.length, 0);
+          const normativeCount = countRefs(refs.normative);
+          const informativeCount = countRefs(refs.informative);
+          const totalCount = countRefs(refs.all);
+          
+          // Add/update OIDF node (mark as having a path now - it's downloaded)
+          if (!graph.nodes.has(docId)) {
+            graph.nodes.set(docId, {
+              id: docId,
+              type: 'OIDF',
+              source: 'oidf',
+              path: htmlPath,
+              referencesCount: 0,
+              referencedByCount: 0,
+              isEudiCore: EUDI_EXTERNAL_SPECS.has(docId),
+            });
+          } else {
+            // Update existing node with path
+            graph.nodes.get(docId).path = htmlPath;
+          }
+          graph.nodes.get(docId).referencesCount = totalCount;
+          
+          // Add edges from OIDF spec to its references
+          // ETSI references
+          for (const ref of refs.normative.etsi || []) {
+            const targetId = normalizeDocId(ref);
+            if (targetId && targetId !== docId && isEudiRelevant(targetId, 'etsi')) {
+              graph.edges.push({ from: docId, to: targetId, type: 'normative', source: 'etsi' });
+              ensureNode(graph, targetId, 'etsi');
+              graph.nodes.get(targetId).referencedByCount++;
+            }
+          }
+          
+          for (const ref of refs.informative.etsi || []) {
+            const targetId = normalizeDocId(ref);
+            if (targetId && targetId !== docId && isEudiRelevant(targetId, 'etsi')) {
+              graph.edges.push({ from: docId, to: targetId, type: 'informative', source: 'etsi' });
+              ensureNode(graph, targetId, 'etsi');
+              graph.nodes.get(targetId).referencedByCount++;
+            }
+          }
+          
+          // IETF references (RFCs)
+          for (const ref of refs.normative.ietf || []) {
+            if (ref !== docId) {
+              graph.edges.push({ from: docId, to: ref, type: 'normative', source: 'ietf' });
+              ensureExternalNode(graph, ref, 'ietf');
+              graph.nodes.get(ref).referencedByCount++;
+            }
+          }
+          
+          for (const ref of refs.informative.ietf || []) {
+            if (ref !== docId) {
+              graph.edges.push({ from: docId, to: ref, type: 'informative', source: 'ietf' });
+              ensureExternalNode(graph, ref, 'ietf');
+              graph.nodes.get(ref).referencedByCount++;
+            }
+          }
+          
+          // Other OIDF specs
+          for (const ref of refs.normative.oidf || []) {
+            if (ref !== docId) {
+              graph.edges.push({ from: docId, to: ref, type: 'normative', source: 'oidf' });
+              ensureExternalNode(graph, ref, 'oidf');
+              graph.nodes.get(ref).referencedByCount++;
+            }
+          }
+          
+          for (const ref of refs.informative.oidf || []) {
+            if (ref !== docId) {
+              graph.edges.push({ from: docId, to: ref, type: 'informative', source: 'oidf' });
+              ensureExternalNode(graph, ref, 'oidf');
+              graph.nodes.get(ref).referencedByCount++;
+            }
+          }
+          
+          // ISO references
+          for (const ref of refs.normative.iso || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'normative', source: 'iso' });
+            ensureExternalNode(graph, ref, 'iso');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          for (const ref of refs.informative.iso || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'informative', source: 'iso' });
+            ensureExternalNode(graph, ref, 'iso');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          // W3C references
+          for (const ref of refs.normative.w3c || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'normative', source: 'w3c' });
+            ensureExternalNode(graph, ref, 'w3c');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          for (const ref of refs.informative.w3c || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'informative', source: 'w3c' });
+            ensureExternalNode(graph, ref, 'w3c');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          results.documents.push({
+            file: filename,
+            docId,
+            source: 'oidf',
+            normativeRefs: normativeCount,
+            informativeRefs: informativeCount,
+            totalRefs: totalCount,
+            references: refs,
+          });
+          
+          console.log(`   OK: ${normativeCount} norm, ${informativeCount} info`);
+        } else {
+          console.log(`   WARN: Could not determine doc ID`);
+        }
+        
+      } catch (error) {
+        console.log(`   ERROR: ${error.message}`);
+        results.errors.push({ file: filename, error: error.message, source: 'oidf' });
+      }
+    }
+  }
+
+  // Process IETF RFC text files
+  const ietfTxtFiles = await findTxtFiles(IETF_SPECS_PATH);
+  if (ietfTxtFiles.length > 0) {
+    console.log(`\nProcessing ${ietfTxtFiles.length} IETF RFCs...`);
+    
+    for (let i = 0; i < ietfTxtFiles.length; i++) {
+      const txtPath = ietfTxtFiles[i];
+      const filename = path.basename(txtPath);
+      const progress = `[${i + 1}/${ietfTxtFiles.length}]`;
+      
+      process.stdout.write(`${progress} ${filename} (IETF)...`);
+      
+      try {
+        const refs = await extractReferencesFromTxt(txtPath);
+        
+        // Get RFC ID from filename
+        const docId = txtFilenameToRfcId(filename);
+        
+        if (docId) {
+          const countRefs = (obj) => Object.values(obj).reduce((sum, arr) => sum + arr.length, 0);
+          const normativeCount = countRefs(refs.normative);
+          const informativeCount = countRefs(refs.informative);
+          const totalCount = countRefs(refs.all);
+          
+          // Add/update IETF node (mark as having a path now - it's downloaded)
+          if (!graph.nodes.has(docId)) {
+            graph.nodes.set(docId, {
+              id: docId,
+              type: 'RFC',
+              source: 'ietf',
+              path: txtPath,
+              referencesCount: 0,
+              referencedByCount: 0,
+            });
+          } else {
+            // Update existing node with path
+            graph.nodes.get(docId).path = txtPath;
+          }
+          graph.nodes.get(docId).referencesCount = totalCount;
+          
+          // Add edges from IETF RFC to its references
+          // Other IETF RFCs
+          for (const ref of refs.normative.ietf || []) {
+            if (ref !== docId) {
+              graph.edges.push({ from: docId, to: ref, type: 'normative', source: 'ietf' });
+              ensureExternalNode(graph, ref, 'ietf');
+              graph.nodes.get(ref).referencedByCount++;
+            }
+          }
+          
+          for (const ref of refs.informative.ietf || []) {
+            if (ref !== docId) {
+              graph.edges.push({ from: docId, to: ref, type: 'informative', source: 'ietf' });
+              ensureExternalNode(graph, ref, 'ietf');
+              graph.nodes.get(ref).referencedByCount++;
+            }
+          }
+          
+          // OIDF specs
+          for (const ref of refs.normative.oidf || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'normative', source: 'oidf' });
+            ensureExternalNode(graph, ref, 'oidf');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          for (const ref of refs.informative.oidf || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'informative', source: 'oidf' });
+            ensureExternalNode(graph, ref, 'oidf');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          // ETSI references (less common from IETF but possible)
+          for (const ref of refs.normative.etsi || []) {
+            const targetId = normalizeDocId(ref);
+            if (targetId && targetId !== docId) {
+              graph.edges.push({ from: docId, to: targetId, type: 'normative', source: 'etsi' });
+              ensureNode(graph, targetId, 'etsi');
+              graph.nodes.get(targetId).referencedByCount++;
+            }
+          }
+          
+          for (const ref of refs.informative.etsi || []) {
+            const targetId = normalizeDocId(ref);
+            if (targetId && targetId !== docId) {
+              graph.edges.push({ from: docId, to: targetId, type: 'informative', source: 'etsi' });
+              ensureNode(graph, targetId, 'etsi');
+              graph.nodes.get(targetId).referencedByCount++;
+            }
+          }
+          
+          // ISO/W3C references
+          for (const ref of refs.normative.iso || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'normative', source: 'iso' });
+            ensureExternalNode(graph, ref, 'iso');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          for (const ref of refs.informative.iso || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'informative', source: 'iso' });
+            ensureExternalNode(graph, ref, 'iso');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          for (const ref of refs.normative.w3c || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'normative', source: 'w3c' });
+            ensureExternalNode(graph, ref, 'w3c');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          for (const ref of refs.informative.w3c || []) {
+            graph.edges.push({ from: docId, to: ref, type: 'informative', source: 'w3c' });
+            ensureExternalNode(graph, ref, 'w3c');
+            graph.nodes.get(ref).referencedByCount++;
+          }
+          
+          results.documents.push({
+            file: filename,
+            docId,
+            source: 'ietf',
+            normativeRefs: normativeCount,
+            informativeRefs: informativeCount,
+            totalRefs: totalCount,
+            references: refs,
+          });
+          
+          console.log(`   OK: ${normativeCount} norm, ${informativeCount} info`);
+        } else {
+          console.log(`   WARN: Could not determine doc ID`);
+        }
+        
+      } catch (error) {
+        console.log(`   ERROR: ${error.message}`);
+        results.errors.push({ file: filename, error: error.message, source: 'ietf' });
+      }
+    }
+  }
+
   // Convert Map to array for JSON
   const graphData = {
     nodes: Array.from(graph.nodes.values()),
@@ -556,6 +839,46 @@ async function findDocxFiles(dir) {
   return files.sort();
 }
 
+async function findHtmlFiles(dir) {
+  const files = [];
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...await findHtmlFiles(fullPath));
+      } else if (entry.name.endsWith('.html') && !entry.name.startsWith('oidf_specs_summary')) {
+        files.push(fullPath);
+      }
+    }
+  } catch (e) {
+    // Directory may not exist
+  }
+  
+  return files.sort();
+}
+
+async function findTxtFiles(dir) {
+  const files = [];
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...await findTxtFiles(fullPath));
+      } else if (entry.name.endsWith('.txt')) {
+        files.push(fullPath);
+      }
+    }
+  } catch (e) {
+    // Directory may not exist
+  }
+  
+  return files.sort();
+}
+
 async function extractReferencesFromDocx(docxPath) {
   const result = await mammoth.extractRawText({ path: docxPath });
   const text = result.value;
@@ -649,6 +972,178 @@ function docxFilenameToDocId(filename) {
   }
   
   return null;
+}
+
+// Extract references from OIDF HTML specifications
+async function extractReferencesFromHtml(htmlPath) {
+  const html = await fs.readFile(htmlPath, 'utf-8');
+  const $ = cheerio.load(html);
+  
+  // Get plain text content for regex matching
+  const text = $('body').text();
+  
+  const normative = { etsi: new Set(), ietf: new Set(), iso: new Set(), itu: new Set(), w3c: new Set(), oidf: new Set() };
+  const informative = { etsi: new Set(), ietf: new Set(), iso: new Set(), itu: new Set(), w3c: new Set(), oidf: new Set() };
+  const all = { etsi: new Set(), ietf: new Set(), iso: new Set(), itu: new Set(), w3c: new Set(), oidf: new Set() };
+  
+  // Try to find normative/informative references sections in HTML
+  // OpenID specs often have <section id="normative-references"> or similar
+  let normativeText = '';
+  let informativeText = '';
+  
+  // Look for section headers containing "normative" or "informative"
+  $('section, div, h2, h3').each((i, el) => {
+    const $el = $(el);
+    const id = $el.attr('id') || '';
+    const headerText = $el.find('h2, h3').first().text() || $el.text().slice(0, 100);
+    
+    if (/normative/i.test(id) || /normative\s+ref/i.test(headerText)) {
+      normativeText = $el.text();
+    }
+    if (/informative/i.test(id) || /informative\s+ref/i.test(headerText)) {
+      informativeText = $el.text();
+    }
+  });
+  
+  // Also check for <dl> definition lists which are common in OIDF specs
+  $('dl').each((i, dl) => {
+    const prevHeader = $(dl).prevAll('h2, h3, h4').first().text();
+    if (/normative/i.test(prevHeader)) {
+      normativeText += ' ' + $(dl).text();
+    }
+    if (/informative/i.test(prevHeader)) {
+      informativeText += ' ' + $(dl).text();
+    }
+  });
+  
+  // Extract from normative section
+  if (normativeText) {
+    const refs = extractAllRefs(normativeText);
+    for (const [type, set] of Object.entries(refs)) {
+      for (const ref of set) {
+        normative[type]?.add(ref);
+        all[type]?.add(ref);
+      }
+    }
+  }
+  
+  // Extract from informative section
+  if (informativeText) {
+    const refs = extractAllRefs(informativeText);
+    for (const [type, set] of Object.entries(refs)) {
+      for (const ref of set) {
+        if (!normative[type]?.has(ref)) {
+          informative[type]?.add(ref);
+        }
+        all[type]?.add(ref);
+      }
+    }
+  }
+  
+  // If no structured sections found, search whole document
+  if (normative.etsi.size === 0 && normative.ietf.size === 0 && informative.etsi.size === 0) {
+    const refs = extractAllRefs(text);
+    for (const [type, set] of Object.entries(refs)) {
+      for (const ref of set) {
+        all[type]?.add(ref);
+      }
+    }
+  }
+  
+  // Convert to arrays
+  const toArrays = (obj) => {
+    const result = {};
+    for (const [type, set] of Object.entries(obj)) {
+      result[type] = Array.from(set).sort();
+    }
+    return result;
+  };
+  
+  return {
+    normative: toArrays(normative),
+    informative: toArrays(informative),
+    all: toArrays(all),
+  };
+}
+
+// Get OIDF spec ID from filename
+function htmlFilenameToOidfId(filename) {
+  // filename format: OpenID4VP.html, OpenID_Connect_Core.html, SD-JWT.html
+  const base = path.basename(filename, '.html');
+  return base.replace(/_/g, ' ');
+}
+
+// Get RFC ID from filename
+function txtFilenameToRfcId(filename) {
+  // filename format: rfc7515.txt
+  const match = filename.match(/rfc(\d+)\.txt/i);
+  if (match) {
+    return `RFC ${match[1]}`;
+  }
+  return null;
+}
+
+// Extract references from IETF RFC text files
+async function extractReferencesFromTxt(txtPath) {
+  const text = await fs.readFile(txtPath, 'utf-8');
+  
+  const normative = { etsi: new Set(), ietf: new Set(), iso: new Set(), itu: new Set(), w3c: new Set(), oidf: new Set() };
+  const informative = { etsi: new Set(), ietf: new Set(), iso: new Set(), itu: new Set(), w3c: new Set(), oidf: new Set() };
+  const all = { etsi: new Set(), ietf: new Set(), iso: new Set(), itu: new Set(), w3c: new Set(), oidf: new Set() };
+  
+  // IETF RFCs have sections like "Normative References" and "Informative References"
+  // Usually numbered like "7.1. Normative References" or "8. References"
+  const normativeMatch = text.match(/(?:Normative\s+References|NORMATIVE\s+REFERENCES)\s*\n([\s\S]*?)(?=\n\s*(?:\d+\.?\s*(?:Informative|Non-Normative)|Informative\s+References|INFORMATIVE|Appendix|Author|Acknowledgment|$))/i);
+  const informativeMatch = text.match(/(?:Informative\s+References|INFORMATIVE\s+REFERENCES|Non-Normative\s+References)\s*\n([\s\S]*?)(?=\n\s*(?:\d+\.?\s+[A-Z]|Appendix|Author|Acknowledgment|$))/i);
+  
+  // Extract from normative section
+  if (normativeMatch) {
+    const refs = extractAllRefs(normativeMatch[1]);
+    for (const [type, set] of Object.entries(refs)) {
+      for (const ref of set) {
+        normative[type]?.add(ref);
+        all[type]?.add(ref);
+      }
+    }
+  }
+  
+  // Extract from informative section
+  if (informativeMatch) {
+    const refs = extractAllRefs(informativeMatch[1]);
+    for (const [type, set] of Object.entries(refs)) {
+      for (const ref of set) {
+        if (!normative[type]?.has(ref)) {
+          informative[type]?.add(ref);
+        }
+        all[type]?.add(ref);
+      }
+    }
+  }
+  
+  // If no structured sections found, search whole document
+  if (normative.ietf.size === 0 && informative.ietf.size === 0) {
+    const refs = extractAllRefs(text);
+    for (const [type, set] of Object.entries(refs)) {
+      for (const ref of set) {
+        all[type]?.add(ref);
+      }
+    }
+  }
+  
+  // Convert to arrays
+  const toArrays = (obj) => {
+    const result = {};
+    for (const [type, set] of Object.entries(obj)) {
+      result[type] = Array.from(set).sort();
+    }
+    return result;
+  };
+  
+  return {
+    normative: toArrays(normative),
+    informative: toArrays(informative),
+    all: toArrays(all),
+  };
 }
 
 async function extractReferencesFromPdf(pdfPath) {

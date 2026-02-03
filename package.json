@@ -9,13 +9,18 @@
     "markdown": "cd scripts && node generate-markdown.js",
     "download": "cd scripts && node download-specs.js",
     "download:test": "cd scripts && node download-specs.js --limit=5 --published-only",
+    "download:oidf": "cd scripts && node download-oidf-specs.js",
     "references": "cd scripts && node extract-references.js",
     "references:all": "cd scripts && node extract-references.js --all",
     "references:drafts": "cd scripts && node extract-references.js --include-drafts",
     "references:all:drafts": "cd scripts && node extract-references.js --all --include-drafts",
+    "crawl": "cd scripts && node crawl-references.js",
+    "crawl:deep": "cd scripts && node crawl-references.js --depth 2",
+    "crawl:verbose": "cd scripts && node crawl-references.js --verbose",
     "build": "cd scripts && node extract-references.js --include-drafts",
+    "build:full": "cd scripts && node crawl-references.js",
     "serve": "cd downloads && python3 -m http.server 9999",
-    "all": "npm run scrape && npm run analyze && npm run markdown"
+    "all": "npm run scrape && npm run analyze && npm run markdown && npm run download:oidf"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
