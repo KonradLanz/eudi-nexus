@@ -45,47 +45,19 @@ const OIDF_SPECS = [
     version: '1.0',
   },
   {
-    id: 'SD-JWT',
-    name: 'Selective Disclosure for JWTs',
-    url: 'https://www.ietf.org/archive/id/draft-ietf-oauth-selective-disclosure-jwt-13.html',
-    version: 'draft-13',
-    source: 'ietf-draft', // This is an IETF draft, but often referenced as OIDF ecosystem
-  },
-  {
-    id: 'SD-JWT VC',
-    name: 'SD-JWT-based Verifiable Credentials',
-    url: 'https://www.ietf.org/archive/id/draft-ietf-oauth-sd-jwt-vc-05.html',
-    version: 'draft-05',
-    source: 'ietf-draft',
-  },
-  {
     id: 'OpenID Federation',
     name: 'OpenID Federation',
     url: 'https://openid.net/specs/openid-federation-1_0.html',
     version: '1.0',
   },
-  {
-    id: 'OAuth 2.0 DPoP',
-    name: 'OAuth 2.0 Demonstrating Proof of Possession',
-    url: 'https://datatracker.ietf.org/doc/html/rfc9449',
-    version: 'RFC 9449',
-    source: 'ietf',
-  },
-  {
-    id: 'OAuth 2.0 PAR',
-    name: 'OAuth 2.0 Pushed Authorization Requests',
-    url: 'https://datatracker.ietf.org/doc/html/rfc9126',
-    version: 'RFC 9126',
-    source: 'ietf',
-  },
-  {
-    id: 'OAuth 2.0 RAR',
-    name: 'OAuth 2.0 Rich Authorization Requests',
-    url: 'https://datatracker.ietf.org/doc/html/rfc9396',
-    version: 'RFC 9396',
-    source: 'ietf',
-  },
 ];
+
+// Note: The following specs are from IETF, not OIDF:
+// - SD-JWT (draft-ietf-oauth-selective-disclosure-jwt) - IETF draft
+// - SD-JWT VC (draft-ietf-oauth-sd-jwt-vc) - IETF draft
+// - OAuth 2.0 DPoP (RFC 9449) - already in IETF folder
+// - OAuth 2.0 PAR (RFC 9126) - already in IETF folder
+// - OAuth 2.0 RAR (RFC 9396) - already in IETF folder
 
 async function downloadOidfSpecs() {
   console.log('📥 OIDF Specification Downloader');
