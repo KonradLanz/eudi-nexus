@@ -108,7 +108,7 @@ const EUDI_RELEVANT_SPECS = new Set([
 // External specs relevant to EUDI (always included when referenced)
 const EUDI_EXTERNAL_SPECS = new Set([
   // Core OIDF specs for EUDI Wallet
-  'OpenID4VP', 'OpenID4VCI', 'OpenID4VC-HAIP', 'HAIP', 'SD-JWT', 'SD-JWT VC',
+  'OpenID4VP', 'OpenID4VCI', 'OpenID4VC-HAIP', 'HAIP',
   'OpenID Connect', 'OpenID Connect Core',
   
   // Key RFCs
@@ -116,6 +116,8 @@ const EUDI_EXTERNAL_SPECS = new Set([
   'RFC 7515', 'RFC 7516', 'RFC 7517', 'RFC 7518', 'RFC 7519', // JOSE
   'RFC 8392', 'RFC 8747', // CBOR/CWT
   'RFC 9449', 'RFC 9126', // OAuth DPoP, PAR
+  // SD-JWT specs (IETF drafts, now RFCs)
+  'SD-JWT', 'SD-JWT VC',
 ]);
 
 // Regex patterns for different reference types
@@ -125,9 +127,10 @@ const REF_PATTERNS = {
     /ETSI\s+(EN|TS|TR|ES|EG|SR)\s+(\d{3}\s*\d{3}(?:-\d+)?)/gi,
     /(?<![A-Z])(EN|TS|TR|ES|EG|SR)\s+(\d{3}\s*\d{3}(?:-\d+)?)/gi,
   ],
-  // IETF RFCs
+  // IETF RFCs and drafts
   ietf: [
     /RFC\s*(\d{3,5})/gi,
+    /SD-JWT(?:\s+VC)?/gi,
   ],
   // ISO/IEC standards
   iso: [
@@ -148,7 +151,6 @@ const REF_PATTERNS = {
     /OpenID4VC(?:-HAIP)?(?:\s+[\d.]+)?/gi,
     /OpenID\s+Connect(?:\s+Core)?(?:\s+[\d.]+)?/gi,
     /OpenID\s+for\s+Verifiable\s+(?:Presentations?|Credentials?)(?:\s+[\d.]+)?/gi,
-    /SD-JWT(?:\s+VC)?/gi,
     /\bHAIP\b/g,
   ],
   // CEN/CENELEC European standards
@@ -1264,12 +1266,23 @@ function extractAllRefs(text) {
     }
   }
   
-  // Extract IETF RFCs
+  // Extract IETF RFCs and drafts (including SD-JWT)
   for (const pattern of REF_PATTERNS.ietf) {
     pattern.lastIndex = 0;
     let match;
     while ((match = pattern.exec(text)) !== null) {
-      refs.ietf.add(`RFC ${match[1]}`);
+      const matched = match[0];
+      // Handle SD-JWT separately
+      if (/SD-JWT/i.test(matched)) {
+        if (/SD-JWT\s*VC/i.test(matched)) {
+          refs.ietf.add('SD-JWT VC');
+        } else {
+          refs.ietf.add('SD-JWT');
+        }
+      } else if (match[1]) {
+        // RFC number pattern
+        refs.ietf.add(`RFC ${match[1]}`);
+      }
     }
   }
   
@@ -1318,8 +1331,6 @@ function extractAllRefs(text) {
       else if (/OpenID\s+(for\s+)?Verifiable\s+Presentation/i.test(spec)) spec = 'OpenID4VP';
       else if (/OpenID\s+(for\s+)?Verifiable\s+Credential/i.test(spec)) spec = 'OpenID4VCI';
       else if (/OpenID\s+Connect/i.test(spec)) spec = 'OpenID Connect';
-      else if (/SD-JWT\s*VC/i.test(spec)) spec = 'SD-JWT VC';
-      else if (/SD-JWT/i.test(spec)) spec = 'SD-JWT';
       else if (/^HAIP$/i.test(spec)) spec = 'HAIP';
       refs.oidf.add(spec);
     }
@@ -1578,6 +1589,7 @@ function generateHtmlVisualization(graphData) {
     <label><input type="checkbox" id="showNormative" checked> Normative refs</label>
     <label><input type="checkbox" id="showInformative" checked> Informative refs</label>
     <label><input type="checkbox" id="showExternal" checked> External standards (IETF, ISO, ITU, OIDF)</label>
+    <label><input type="checkbox" id="showExternalDirect" checked> Direct refs only</label>
     <label><input type="checkbox" id="showDrafts" checked> Draft documents</label>
     <label><input type="checkbox" id="showUndownloaded"> ETSI docs not downloaded</label>
     <span class="search-container">
@@ -1664,6 +1676,9 @@ function generateHtmlVisualization(graphData) {
         if (rfcMatch) {
           return \`https://datatracker.ietf.org/doc/html/rfc\${rfcMatch[1]}\`;
         }
+        // SD-JWT specs (IETF drafts/RFCs)
+        if (/SD-JWT\\s*VC/i.test(id)) return 'https://datatracker.ietf.org/doc/draft-ietf-oauth-sd-jwt-vc/';
+        if (/SD-JWT/i.test(id)) return 'https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/';
       }
       
       if (source === 'iso') {
@@ -1694,7 +1709,6 @@ function generateHtmlVisualization(graphData) {
         if (/OpenID4VC-HAIP|HAIP/i.test(id)) return 'https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-1_0.html';
         if (/OpenID4VC/i.test(id)) return 'https://openid.net/specs/';
         if (/OpenID Connect/i.test(id)) return 'https://openid.net/specs/openid-connect-core-1_0.html';
-        if (/SD-JWT/i.test(id)) return 'https://datatracker.ietf.org/doc/html/rfc9449';
         return 'https://openid.net/developers/specs/';
       }
       
@@ -1705,14 +1719,31 @@ function generateHtmlVisualization(graphData) {
       const showNormative = document.getElementById('showNormative').checked;
       const showInformative = document.getElementById('showInformative').checked;
       const showExternal = document.getElementById('showExternal').checked;
+      const showExternalDirect = document.getElementById('showExternalDirect').checked;
       const showDrafts = document.getElementById('showDrafts').checked;
       const showUndownloaded = document.getElementById('showUndownloaded').checked;
+      
+      // Helper to check if a node is external
+      const isExternal = (source) => ['ietf', 'iso', 'itu', 'w3c', 'oidf'].includes(source);
+      
+      // Build a map of node sources for quick lookup
+      const nodeSourceMap = {};
+      graphData.nodes.forEach(n => { nodeSourceMap[n.id] = n.source; });
       
       // Filter edges
       const filteredEdges = graphData.edges.filter(e => {
         if (e.type === 'normative' && !showNormative) return false;
         if (e.type === 'informative' && !showInformative) return false;
-        if (!showExternal && ['ietf', 'iso', 'itu', 'w3c', 'oidf'].includes(e.source)) return false;
+        if (!showExternal && isExternal(e.source)) return false;
+        
+        // When "Direct refs only" is checked, exclude external-to-external edges
+        if (showExternal && showExternalDirect) {
+          const fromSource = nodeSourceMap[e.from];
+          const toSource = nodeSourceMap[e.to];
+          // Skip if both ends are external (e.g., RFC -> RFC)
+          if (isExternal(fromSource) && isExternal(toSource)) return false;
+        }
+        
         return true;
       });
       
@@ -1726,7 +1757,7 @@ function generateHtmlVisualization(graphData) {
       const filteredNodes = graphData.nodes.filter(n => {
         if (!nodeIds.has(n.id)) return false;
         // External standards (IETF, ISO, ITU)
-        if (['ietf', 'iso', 'itu', 'w3c', 'oidf'].includes(n.source)) return showExternal;
+        if (isExternal(n.source)) return showExternal;
         // Draft documents
         if (n.isDraft && !showDrafts) return false;
         // ETSI docs not downloaded
@@ -1834,6 +1865,7 @@ function generateHtmlVisualization(graphData) {
     document.getElementById('showNormative').addEventListener('change', buildNetwork);
     document.getElementById('showInformative').addEventListener('change', buildNetwork);
     document.getElementById('showExternal').addEventListener('change', buildNetwork);
+    document.getElementById('showExternalDirect').addEventListener('change', buildNetwork);
     document.getElementById('showDrafts').addEventListener('change', buildNetwork);
     document.getElementById('showUndownloaded').addEventListener('change', buildNetwork);
     
