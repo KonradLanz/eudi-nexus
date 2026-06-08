@@ -2,11 +2,11 @@
  * backfill-headers.js
  *
  * Finds all downloaded files that have no .headers.* sidecar and
- * backfills them via a HEAD request to their known URL.
+ * backfills them via a HEAD request (or GET for auth-required files).
  *
- * URL sources (in priority order):
- *   1. _download_results.json  (url field per entry, keyed by filePath)
- *   2. guessUrl()              reconstruct from ETSI delivery filename pattern
+ * URL resolution priority:
+ *   1. _download_results.json  (url per filePath, most reliable)
+ *   2. work_items.json → detailUrl → scrape download link (same as download-specs.js)
  *
  * Usage:
  *   npm run backfill-headers
@@ -16,11 +16,17 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import * as cheerio from 'cheerio';
+import { ETSIClient } from '../src/etsi-client.js';
 import { formatBytes } from '../src/http-cache.js';
+import dotenv from 'dotenv';
 
-const __dirname   = path.dirname(fileURLToPath(import.meta.url));
-const SPECS_PATH  = path.join(__dirname, '..', 'downloads', 'specs');
+const __dirname    = path.dirname(fileURLToPath(import.meta.url));
+const SPECS_PATH   = path.join(__dirname, '..', 'downloads', 'specs');
 const RESULTS_FILE = path.join(SPECS_PATH, '_download_results.json');
+const WORK_ITEMS   = path.join(__dirname, '..', 'downloads', 'work_items.json');
+
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 const dryRun = process.argv.includes('--dry-run');
 if (dryRun) console.log('\uD83D\uDDFB  Dry-run mode \u2014 no requests will be made\n');
@@ -29,26 +35,26 @@ async function main() {
   console.log('\uD83D\uDD27 Header Backfill');
   console.log('================\n');
 
-  // Build URL map: absoluteFilePath → url  (from previous successful downloads)
+  // ─ URL map from previous download results (filePath → url) ─
   const urlByFile = new Map();
   try {
     const raw = JSON.parse(await fs.readFile(RESULTS_FILE, 'utf-8'));
-    for (const entry of (raw.success ?? [])) {
-      if (entry.filePath && entry.url) urlByFile.set(entry.filePath, entry.url);
-    }
-  } catch { /* no results yet — first run */ }
+    for (const e of (raw.success ?? []))
+      if (e.filePath && e.url) urlByFile.set(e.filePath, e.url);
+  } catch { /* first run */ }
 
-  // Collect all files missing a .headers.* sidecar
-  const missing = [];
+  // ─ Disk index: filename (lowercase) → filePath, for matching work items ─
+  const diskByName = new Map();
+  const missing    = [];
   const dirs = await fs.readdir(SPECS_PATH, { withFileTypes: true });
   for (const dir of dirs) {
     if (!dir.isDirectory()) continue;
     const subDir = path.join(SPECS_PATH, dir.name);
-    const files  = await fs.readdir(subDir);
-    for (const file of files) {
+    for (const file of await fs.readdir(subDir)) {
       if (file.startsWith('.') || file.startsWith('_')) continue;
       const filePath   = path.join(subDir, file);
       const headerPath = path.join(subDir, `.headers.${file}`);
+      diskByName.set(file.toLowerCase(), filePath);
       const hasHeaders = await fs.stat(headerPath).then(() => true).catch(() => false);
       if (!hasHeaders) missing.push(filePath);
     }
@@ -57,26 +63,70 @@ async function main() {
   console.log(`\uD83D\uDD0D Found ${missing.length} file(s) without HTTP header sidecar:\n`);
   if (missing.length === 0) { console.log('\u2705 All files have headers. Nothing to do.'); return; }
 
-  let ok = 0, failed = 0, skipped = 0;
+  // ─ Load work_items.json and build digit-heuristic → detailUrl map ─
+  const detailUrlByDigits = new Map(); // digit-key → { detailUrl, etsiNumber }
+  try {
+    const items = JSON.parse(await fs.readFile(WORK_ITEMS, 'utf-8'));
+    for (const item of items) {
+      if (!item.detailUrl || !item.etsiNumber) continue;
+      const digits = item.etsiNumber.replace(/[^0-9]/g, '');
+      for (const len of [7, 6, 5]) {
+        const key = digits.slice(0, len);
+        if (key.length === len) detailUrlByDigits.set(key, { detailUrl: item.detailUrl, etsiNumber: item.etsiNumber });
+      }
+    }
+  } catch (e) {
+    console.warn(`\u26A0\uFE0F Could not load work_items.json: ${e.message}`);
+  }
+
+  // Login once (needed for docbox / portal URLs)
+  const client = new ETSIClient();
+  if (!dryRun) {
+    process.stdout.write('\uD83D\uDD10 Logging in... ');
+    const ok = await client.login(process.env.ETSI_USERNAME, process.env.ETSI_PASSWORD);
+    console.log(ok ? '\u2705' : '\u26A0\uFE0F  Login failed (portal URLs may not work)');
+    console.log();
+  }
+
+  let written = 0, failed = 0, noUrl = 0;
 
   for (const filePath of missing) {
-    const rel = path.relative(path.join(__dirname, '..'), filePath);
-    const url = urlByFile.get(filePath) ?? guessUrl(filePath);
+    const rel      = path.relative(path.join(__dirname, '..'), filePath);
+    const basename = path.basename(filePath).toLowerCase();
 
-    if (!url) {
+    // Resolve URL: results JSON → work_items heuristic
+    let downloadUrl = urlByFile.get(filePath) ?? null;
+    if (!downloadUrl) {
+      const allDigits = basename.replace(/[^0-9]/g, '');
+      for (const len of [7, 6, 5]) {
+        const key   = allDigits.slice(0, len);
+        const match = detailUrlByDigits.get(key);
+        if (match) {
+          if (!dryRun) {
+            downloadUrl = await resolveDownloadUrl(client, match.detailUrl).catch(() => null);
+          } else {
+            downloadUrl = `(would resolve from ${match.etsiNumber} detailUrl)`;
+          }
+          break;
+        }
+      }
+    }
+
+    if (!downloadUrl) {
       console.log(`  \u2753 ${rel}`);
-      console.log(`     \u2715 No URL \u2014 will be resolved on next npm run download`);
-      skipped++;
+      console.log(`     \u2715 No URL found in results or work_items.json`);
+      noUrl++;
       continue;
     }
 
     console.log(`  \uD83D\uDCC4 ${rel}`);
-    console.log(`     \uD83D\uDD17 ${url}`);
+    console.log(`     \uD83D\uDD17 ${downloadUrl}`);
 
-    if (dryRun) { skipped++; continue; }
+    if (dryRun) { noUrl++; continue; }
 
     try {
-      const resp = await fetch(url, {
+      const isPublic = downloadUrl.includes('www.etsi.org/deliver');
+      const resp = await (isPublic ? fetch : client.fetch.bind(client))(downloadUrl, {
         method: 'HEAD',
         headers: {
           'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
@@ -85,7 +135,7 @@ async function main() {
       });
 
       if (resp.ok || resp.status === 304) {
-        const stat = await fs.stat(filePath);
+        const stat  = await fs.stat(filePath);
         const cache = { 'x-downloaded-at': stat.mtime.toISOString() };
         for (const h of ['etag', 'last-modified', 'content-length', 'content-type', 'cache-control']) {
           const v = resp.headers.get(h);
@@ -98,9 +148,9 @@ async function main() {
         const size = cache['content-length'] ? formatBytes(parseInt(cache['content-length'])) : '?';
         const etag = cache['etag'] ? ` | ETag: ${cache['etag']}` : '';
         console.log(`     \u2705 ${resp.status} \u2014 Size: ${size}${etag}`);
-        ok++;
+        written++;
       } else {
-        console.log(`     \u26A0\uFE0F HTTP ${resp.status} \u2014 headers not saved`);
+        console.log(`     \u26A0\uFE0F HTTP ${resp.status}`);
         failed++;
       }
     } catch (e) {
@@ -112,42 +162,36 @@ async function main() {
   }
 
   console.log(`\n\uD83D\uDCCA Backfill Summary:`);
-  console.log(`   \u2705 Written:  ${ok}`);
+  console.log(`   \u2705 Written:  ${written}`);
   console.log(`   \u274C Failed:   ${failed}`);
-  console.log(`   \u2753 Skipped:  ${skipped}${skipped > 0 ? '  \u2190 re-run after: npm run download' : ''}`);
+  console.log(`   \u2753 No URL:   ${noUrl}`);
+  if (noUrl > 0) console.log(`\n   \u2192 For remaining files, run: npm run download`);
 }
 
-/**
- * Reconstruct the ETSI public delivery URL from the filename.
- *
- * Handles:
- *   en_319403v020202p.pdf   → etsi_en/319400_319499/319403/02.02.02_60/...
- *   ts_10153301v010301p.pdf → etsi_ts/1015330_1015399/1015330/...  (7-digit)
- *   sr_003091v010102p.pdf   → etsi_sr/3000_3099/3091/01.01.02_60/...
- *   tr_10153302v010301p.pdf → etsi_tr/1015330_1015399/1015332/...
- */
-function guessUrl(filePath) {
-  const file = path.basename(filePath).toLowerCase();
-  // Match: <type>_<num 6-7 digits>v<MM><mm><pp>p.pdf
-  const m = file.match(/^(en|ts|tr|es|eg|sr)_(\d{6,7})v(\d{2})(\d{2})(\d{2})p\.pdf$/);
-  if (!m) return null;
+/** Scrape a ETSI portal detail page and return the first download URL found. */
+async function resolveDownloadUrl(client, detailUrl) {
+  const resp = await client.fetch(detailUrl, { headers: client.getDefaultHeaders() });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const $ = cheerio.load(await resp.text());
 
-  const [, type, num, major, minor, patch] = m;
-  const numInt = parseInt(num);
-
-  // Range bucket: round down to nearest 100 for 6-digit, nearest 10 for 7-digit
-  const bucket   = num.length === 7 ? 10 : 100;
-  const rangeStart = Math.floor(numInt / bucket) * bucket;
-  const rangeEnd   = rangeStart + (bucket - 1);
-  const rangeStr   = `${rangeStart}_${rangeEnd}`;
-
-  const verPad = [
-    String(parseInt(major)).padStart(2, '0'),
-    String(parseInt(minor)).padStart(2, '0'),
-    String(parseInt(patch)).padStart(2, '0')
-  ].join('.');
-
-  return `https://www.etsi.org/deliver/etsi_${type}/${rangeStr}/${num}/${verPad}_60/${file}`;
+  let url = null;
+  $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
+    const h = $(el).attr('href');
+    if (h?.includes('.pdf') && !url) url = h;
+  });
+  if (!url) $('a[href*="pda.etsi.org"]').each((_, el) => {
+    if (!url) url = $(el).attr('href');
+  });
+  if (!url) $('a[href*="docbox.etsi.org"]').each((_, el) => {
+    const h = $(el).attr('href')?.trim();
+    if (h && !url) url = h;
+  });
+  if (!url) $('a').each((_, el) => {
+    const h = $(el).attr('href') || '';
+    if (!url && h.includes('.pdf') && h.includes('etsi')) url = h;
+    if (!url && h.includes('.zip')) url = h;
+  });
+  return url;
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
