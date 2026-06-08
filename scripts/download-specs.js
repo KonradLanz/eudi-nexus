@@ -110,25 +110,25 @@ async function downloadLatestSpecs() {
     try {
       const downloadInfo = await fetchDownloadLink(client, item);
 
+      // Always save schedule sidecar — for every item where we fetched the detail page
+      if (downloadInfo !== null) {
+        const wkiId       = extractWkiId(item.detailUrl);
+        const sidecarPath = await saveScheduleSidecar(downloadInfo.$, wkiId, item);
+        if (sidecarPath) {
+          await saveResponseHeaders(sidecarPath, downloadInfo.responseHeaders);
+        }
+      }
+
       if (downloadInfo?.stopped) {
         const wkiId       = extractWkiId(item.detailUrl);
         const scheduleUrl = wkiId ? `https://portal.etsi.org/eWPM/index.html#/schedule?WKI_ID=${wkiId}` : null;
         console.log(`    \uD83D\uDED1 STOPPED work item \u2014 no file available`);
         if (scheduleUrl) console.log(`    \uD83D\uDCC5 Schedule: ${scheduleUrl}`);
-
-        const sidecarPath = await saveScheduleSidecar(downloadInfo.$, wkiId, item);
-        if (sidecarPath) {
-          // Cache the HTTP response headers next to the sidecar
-          await saveResponseHeaders(sidecarPath, downloadInfo.responseHeaders);
-          console.log(`    \uD83D\uDDC3\uFE0F  Sidecar: ${path.relative(path.join(__dirname, '..'), sidecarPath)}`);
-        }
-
         results.stopped.push({
           etsiNumber: item.etsiNumber,
           wkiId,
           scheduleUrl,
           detailUrl: item.detailUrl,
-          sidecar: sidecarPath,
         });
         await sleep(200);
         continue;
@@ -303,30 +303,24 @@ async function headersOnlyCheck(client, item, existingPath, cache, integrity, re
 
 /**
  * Fetch the detail page and extract the download URL.
+ * Always returns responseHeaders + cheerio instance ($) for schedule sidecar.
  * Returns:
- *   { url, type }                       — normal download
- *   { stopped: true, $, responseHeaders } — STOPPED (cheerio + raw headers for caching)
- *   null                                — no download found
- *
- * responseHeaders is a plain object snapshot of the Fetch Response headers,
- * captured before .text() consumes the body (headers remain accessible after).
+ *   { url, type, $, responseHeaders }      — normal download
+ *   { stopped: true, $, responseHeaders }   — STOPPED
+ *   null                                    — no detailUrl
  */
 async function fetchDownloadLink(client, item) {
   if (!item.detailUrl) return null;
   const response = await client.fetch(item.detailUrl, { headers: client.getDefaultHeaders() });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-  // Snapshot headers now — they're still readable after .text()
   const responseHeaders = snapshotHeaders(response);
-
   const html = await response.text();
+  const $    = cheerio.load(html);
 
   if (/\bSTOPPED\b/.test(html)) {
-    const $ = cheerio.load(html);
     return { stopped: true, $, responseHeaders };
   }
-
-  const $ = cheerio.load(html);
 
   let downloadUrl = null, downloadType = null;
   $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
@@ -349,13 +343,11 @@ async function fetchDownloadLink(client, item) {
       downloadType = href.includes('.pdf') ? 'draft-pdf' : 'draft-docx';
     }
   });
-  return downloadUrl ? { url: downloadUrl, type: downloadType } : null;
+
+  // Always return $ and responseHeaders even when no download link found
+  return { url: downloadUrl ?? null, type: downloadType, $, responseHeaders };
 }
 
-/**
- * Snapshot Fetch response headers into a plain object.
- * Works even after the body has been consumed.
- */
 function snapshotHeaders(response) {
   const tracked = ['etag', 'last-modified', 'content-length', 'content-type', 'cache-control'];
   const snap = { 'x-downloaded-at': new Date().toISOString() };
@@ -366,23 +358,29 @@ function snapshotHeaders(response) {
   return snap;
 }
 
-/**
- * Write a .headers.<basename> sidecar from a plain-object header snapshot.
- * Mirrors saveHeaders() from http-cache.js but accepts a pre-captured object.
- */
 async function saveResponseHeaders(filePath, headerSnapshot) {
   if (!headerSnapshot) return;
-  const cachePath = headerCachePath(filePath);
-  await fs.writeFile(cachePath, JSON.stringify(headerSnapshot, null, 2));
+  await fs.writeFile(headerCachePath(filePath), JSON.stringify(headerSnapshot, null, 2));
 }
 
 /**
- * Save the schedule table from the detail page as a sidecar HTML file.
- * downloads/specs/_stopped/<safe-etsiNumber>.schedule.html
+ * Save the schedule/milestone table from the detail page as a sidecar.
+ * Location: downloads/specs/_schedules/<safe-etsiNumber>.schedule.html
+ * Skips silently if sidecar already exists (re-downloaded on integrity-fail only).
  */
 async function saveScheduleSidecar($, wkiId, item) {
   if (!$) return null;
   try {
+    const schedulesDir = path.join(DOWNLOAD_PATH, '_schedules');
+    await fs.mkdir(schedulesDir, { recursive: true });
+    const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+    const outPath = path.join(schedulesDir, `${safe}.schedule.html`);
+
+    // Skip if sidecar already up-to-date (exists + has headers)
+    const alreadyExists = await fs.stat(outPath).then(() => true).catch(() => false);
+    if (alreadyExists) return outPath;
+
+    // Find schedule/milestone table
     let scheduleTable = null;
     $('table').each((_, tbl) => {
       const text = $(tbl).text().toLowerCase();
@@ -391,28 +389,25 @@ async function saveScheduleSidecar($, wkiId, item) {
       }
     });
 
+    // Capture any STOPPED context blocks
     const stoppedContext = [];
     $('*').each((_, el) => {
       const txt = $(el).children().length === 0 ? $(el).text().trim() : '';
       if (txt.toUpperCase().includes('STOPPED')) stoppedContext.push($(el).parent().html()?.trim() ?? txt);
     });
 
-    const tableHtml  = scheduleTable ? scheduleTable.html() : null;
-    const stoppedDir = path.join(DOWNLOAD_PATH, '_stopped');
-    await fs.mkdir(stoppedDir, { recursive: true });
-
-    const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-    const outPath = path.join(stoppedDir, `${safe}.schedule.html`);
-
+    const tableHtml = scheduleTable ? scheduleTable.html() : null;
     const payload = [
       `<!-- etsiNumber: ${item.etsiNumber} -->`,
       `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
       `<!-- detailUrl: ${item.detailUrl ?? ''} -->`,
       `<!-- savedAt: ${new Date().toISOString()} -->`,
       '',
-      '<!-- === STOPPED CONTEXT === -->',
-      stoppedContext.map(s => `<div class="stopped-ctx">${s}</div>`).join('\n'),
-      '',
+      ...(stoppedContext.length ? [
+        '<!-- === STOPPED CONTEXT === -->',
+        stoppedContext.map(s => `<div class="stopped-ctx">${s}</div>`).join('\n'),
+        '',
+      ] : []),
       '<!-- === SCHEDULE TABLE === -->',
       tableHtml
         ? `<table class="schedule-table">${tableHtml}</table>`
@@ -427,7 +422,6 @@ async function saveScheduleSidecar($, wkiId, item) {
   }
 }
 
-/** Extract WKI_ID from a portal detail URL. */
 function extractWkiId(detailUrl) {
   if (!detailUrl) return null;
   const m = detailUrl.match(/WKI_ID=(\d+)/);
