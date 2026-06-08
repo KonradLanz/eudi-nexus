@@ -177,17 +177,14 @@ async function buildDiskIndex(basePath) {
 }
 
 function findInDiskIndex(diskIndex, etsiNumber) {
-  // For ESI draft names like "DTS/ESI-0019172-2-old": extract the numeric run after ESI-
   const esiMatch = etsiNumber.match(/ESI-00?(\d{6,7})/);
   if (esiMatch) {
-    const key = esiMatch[1].replace(/^0+/, ''); // strip leading zeros
+    const key = esiMatch[1].replace(/^0+/, '');
     for (const [name, filePath] of diskIndex) {
       if (name.includes(key)) return filePath;
     }
   }
-  // Standard ETSI numbers: "EN 319 403" → "319403", "SR 019 510" → all digits
   const allDigits = etsiNumber.replace(/[^0-9]/g, '');
-  // Try longest match first (7 digits), then 6
   for (const len of [7, 6, 5]) {
     const digits = allDigits.slice(0, len);
     if (digits.length < len) continue;
@@ -310,12 +307,25 @@ async function downloadFile(client, downloadInfo, item) {
     const filePath  = path.join(targetDir, filename);
     await fs.writeFile(filePath, buffer);
     await saveHeaders(filePath, response);
+    await saveUrlSidecar(filePath, downloadInfo.url);
 
     return { label: `${subDir}/${filename} (${formatBytes(buffer.length)})`, filePath, url: downloadInfo.url };
   } catch (error) {
     console.error(`    Download error: ${error.message}`);
     return null;
   }
+}
+
+/** Write a .url.<filename> sidecar recording where the file came from. */
+async function saveUrlSidecar(filePath, url) {
+  const source = url.includes('www.etsi.org/deliver') ? 'etsi-delivery'
+               : url.includes('docbox.etsi.org')       ? 'docbox'
+               : url.includes('pda.etsi.org')           ? 'pda'
+               : 'portal';
+  await fs.writeFile(
+    path.join(path.dirname(filePath), `.url.${path.basename(filePath)}`),
+    JSON.stringify({ url, source, savedAt: new Date().toISOString() }, null, 2)
+  );
 }
 
 function resolveDetailUrl(item) {
