@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import * as cheerio from 'cheerio';
 import { ETSIClient } from '../src/etsi-client.js';
+import { saveHeaders, loadHeaders, conditionalHeaders, formatCacheInfo } from '../src/http-cache.js';
 import dotenv from 'dotenv';
 
 // Load .env from project root
@@ -13,141 +14,116 @@ const DOWNLOAD_PATH = '../downloads/specs';
 const BASE_URL = 'https://portal.etsi.org';
 
 async function downloadLatestSpecs() {
-  console.log('📥 ETSI Specification Downloader');
+  console.log('\uD83D\uDCE5 ETSI Specification Downloader');
   console.log('================================\n');
 
-  // Check for command line args
   const args = process.argv.slice(2);
   const limitArg = args.find(a => a.startsWith('--limit='));
   const limit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
   const publishedOnly = args.includes('--published-only');
 
-  // Load work items
   const workItems = JSON.parse(await fs.readFile('../downloads/esi_overview.json', 'utf-8'));
-  
-  // Get unique active items (we're most interested in latest versions)
-  const activeItems = workItems.activeWorkItems;
+  const activeItems    = workItems.activeWorkItems;
   const publishedItems = workItems.publishedDocuments;
-  
-  console.log(`📋 Found ${activeItems.length} active + ${publishedItems.length} published items\n`);
+  console.log(`\uD83D\uDCCB Found ${activeItems.length} active + ${publishedItems.length} published items\n`);
 
-  // Create client and login
   const client = new ETSIClient();
-  
-  console.log('🔐 Logging in...');
-  const loggedIn = await client.login(
-    process.env.ETSI_USERNAME,
-    process.env.ETSI_PASSWORD
-  );
+  console.log('\uD83D\uDD10 Logging in...');
+  const loggedIn = await client.login(process.env.ETSI_USERNAME, process.env.ETSI_PASSWORD);
+  if (!loggedIn) { console.error('\u274C Login failed'); process.exit(1); }
+  console.log('\u2705 Login successful!\n');
 
-  if (!loggedIn) {
-    console.error('❌ Login failed');
-    process.exit(1);
-  }
-  console.log('✅ Login successful!\n');
-
-  // Create download directory
   await fs.mkdir(DOWNLOAD_PATH, { recursive: true });
 
-  // Build index of already-downloaded files for idempotency
-  const alreadyDownloaded = await buildDownloadIndex(DOWNLOAD_PATH);
-  console.log(`🗂️  Already downloaded: ${alreadyDownloaded.size} files (will skip)\n`);
+  // Build file index: sanitized-key → absolute file path
+  const fileIndex = await buildDownloadIndex(DOWNLOAD_PATH);
+  console.log(`\uD83D\uDDC2\uFE0F  Already downloaded: ${fileIndex.size} files\n`);
 
-  // Track downloads
-  const results = {
-    success: [],
-    skipped: [],
-    failed: [],
-    noDownload: []
-  };
+  const results = { success: [], skipped: [], revalidated: [], failed: [], noDownload: [] };
 
-  // Process items - published items first (they have downloads), then active
   const allItems = publishedOnly ? publishedItems : [...publishedItems, ...activeItems];
-  
-  // Deduplicate by ETSI number (keep first occurrence which is the latest)
   const seen = new Set();
   const uniqueItems = allItems.filter(item => {
     const key = item.etsiNumber;
     if (!key || seen.has(key)) return false;
-    seen.add(key);
-    return true;
+    seen.add(key); return true;
   });
 
   const itemsToProcess = limit ? uniqueItems.slice(0, limit) : uniqueItems;
-  console.log(`📦 Processing ${itemsToProcess.length} specifications${limit ? ` (limited to ${limit})` : ''}...\n`);
+  console.log(`\uD83D\uDCE6 Processing ${itemsToProcess.length} specifications${limit ? ` (limited to ${limit})` : ''}...\n`);
 
   for (let i = 0; i < itemsToProcess.length; i++) {
     const item = itemsToProcess[i];
     const progress = `[${i + 1}/${uniqueItems.length}]`;
-
-    // Idempotency check: skip if already downloaded
     const safeKey = (item.etsiNumber || '').replace(/[^a-zA-Z0-9-_]/g, '_');
-    if (alreadyDownloaded.has(safeKey)) {
-      console.log(`${progress} ${item.etsiNumber}`);
-      console.log(`    ⏭️  Already downloaded, skipping`);
-      results.skipped.push({ etsiNumber: item.etsiNumber });
+    console.log(`${progress} ${item.etsiNumber}`);
+
+    // ── Idempotency: file exists ───────────────────────────────────────────────
+    if (fileIndex.has(safeKey)) {
+      const existingPath = fileIndex.get(safeKey);
+      const cache = await loadHeaders(existingPath);
+      if (cache) {
+        console.log(`    \u23ED\uFE0F  Cached: ${formatCacheInfo(cache)}`);
+      } else {
+        console.log(`    \u23ED\uFE0F  Already downloaded (no HTTP cache sidecar)`);
+      }
+      results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath, cache });
       continue;
     }
-    
-    console.log(`${progress} ${item.etsiNumber}`);
-    
+
     try {
       const downloadInfo = await fetchDownloadLink(client, item);
-      
+
       if (downloadInfo && downloadInfo.url) {
-        const filename = await downloadFile(client, downloadInfo, item);
-        if (filename) {
-          results.success.push({ etsiNumber: item.etsiNumber, filename, url: downloadInfo.url });
-          console.log(`    ✅ Downloaded: ${filename}`);
+        const result = await downloadFile(client, downloadInfo, item);
+        if (result) {
+          results.success.push({ etsiNumber: item.etsiNumber, ...result });
+          console.log(`    \u2705 Downloaded: ${result.filename}`);
         } else {
-          results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download failed', url: downloadInfo.url });
-          console.log(`    ❌ Download failed`);
-          console.log(`    🔗 URL: ${downloadInfo.url}`);
+          const attemptedUrl = downloadInfo.url;
+          results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download failed', url: attemptedUrl });
+          console.log(`    \u274C Download failed`);
+          console.log(`    \uD83D\uDD17 URL: ${attemptedUrl}`);
         }
       } else {
-        // Show the detail page URL so the user can try in browser
         const attemptedUrl = item.detailUrl
           ? (item.detailUrl.startsWith('http') ? item.detailUrl : `${BASE_URL}${item.detailUrl}`)
           : '(no detail URL)';
         results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No download link found', attemptedUrl });
-        console.log(`    ⚠️  No download available`);
-        console.log(`    🔗 Tried: ${attemptedUrl}`);
+        console.log(`    \u26A0\uFE0F  No download available`);
+        console.log(`    \uD83D\uDD17 Tried: ${attemptedUrl}`);
       }
-      
-      // Rate limiting
+
       await sleep(500);
-      
     } catch (error) {
       const attemptedUrl = item.detailUrl
         ? (item.detailUrl.startsWith('http') ? item.detailUrl : `${BASE_URL}${item.detailUrl}`)
         : '(no detail URL)';
       results.failed.push({ etsiNumber: item.etsiNumber, reason: error.message, attemptedUrl });
-      console.log(`    ❌ Error: ${error.message}`);
-      console.log(`    🔗 Tried: ${attemptedUrl}`);
+      console.log(`    \u274C Error: ${error.message}`);
+      console.log(`    \uD83D\uDD17 Tried: ${attemptedUrl}`);
     }
   }
 
-  // Save results
   await fs.writeFile(
     path.join(DOWNLOAD_PATH, '_download_results.json'),
     JSON.stringify(results, null, 2)
   );
 
-  console.log('\n📊 Download Summary:');
-  console.log(`   ✅ Success:              ${results.success.length}`);
-  console.log(`   ⏭️  Skipped (cached):     ${results.skipped.length}`);
-  console.log(`   ❌ Failed:               ${results.failed.length}`);
-  console.log(`   ⚠️  No download available: ${results.noDownload.length}`);
-  console.log(`\n💾 Results saved to ${DOWNLOAD_PATH}/_download_results.json`);
+  console.log('\n\uD83D\uDCCA Download Summary:');
+  console.log(`   \u2705 Success:               ${results.success.length}`);
+  console.log(`   \u23ED\uFE0F  Skipped (cached):      ${results.skipped.length}`);
+  console.log(`   \u274C Failed:                ${results.failed.length}`);
+  console.log(`   \u26A0\uFE0F  No download available:  ${results.noDownload.length}`);
+  console.log(`\n\uD83D\uDCBE Results saved to ${DOWNLOAD_PATH}/_download_results.json`);
 }
 
 /**
- * Build a Set of already-downloaded ETSI numbers by scanning
- * the downloads/specs subdirectories. Uses the sanitized ETSI
- * number as key (same logic as downloadFile).
+ * Returns a Map of sanitized-key → absolute file path.
+ * Skips hidden dot-files (sidecar .headers.* files).
  */
 async function buildDownloadIndex(basePath) {
-  const index = new Set();
+  const index = new Map();
   try {
     const dirs = await fs.readdir(basePath, { withFileTypes: true });
     for (const entry of dirs) {
@@ -155,73 +131,44 @@ async function buildDownloadIndex(basePath) {
       const subDir = path.join(basePath, entry.name);
       const files = await fs.readdir(subDir);
       for (const file of files) {
-        // Strip extension to get the sanitized ETSI number
+        if (file.startsWith('.')) continue; // skip sidecar files
         const base = path.basename(file, path.extname(file));
-        index.add(base);
+        index.set(base, path.join(subDir, file));
       }
     }
-  } catch {
-    // downloads/specs doesn't exist yet — that's fine
-  }
+  } catch { /* directory doesn't exist yet */ }
   return index;
 }
 
 async function fetchDownloadLink(client, item) {
-  if (!item.detailUrl) {
-    return null;
-  }
+  if (!item.detailUrl) return null;
 
-  const response = await client.fetch(item.detailUrl, {
-    headers: client.getDefaultHeaders()
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
+  const response = await client.fetch(item.detailUrl, { headers: client.getDefaultHeaders() });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
   const html = await response.text();
   const $ = cheerio.load(html);
 
-  // Look for ETSI delivery system PDF links (primary source)
-  // Format: https://www.etsi.org/deliver/etsi_XX/XXXXXX_XXXXXX/XXXXXXXX/XX.XX.XX_XX/XX_XXXXXXXX.pdf
   let downloadUrl = null;
   let downloadType = null;
 
-  // Look for the main PDF download link from ETSI delivery system
   $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
     const href = $(el).attr('href');
-    if (href && href.includes('.pdf')) {
-      downloadUrl = href;
-      downloadType = 'pdf';
-    }
+    if (href && href.includes('.pdf')) { downloadUrl = href; downloadType = 'pdf'; }
   });
-
-  // Also check for pda.etsi.org links (alternative download source)
   if (!downloadUrl) {
     $('a[href*="pda.etsi.org"]').each((_, el) => {
       const href = $(el).attr('href');
-      if (href) {
-        downloadUrl = href;
-        downloadType = 'pda';
-      }
+      if (href) { downloadUrl = href; downloadType = 'pda'; }
     });
   }
-
-  // Check for any other PDF/ZIP links
   if (!downloadUrl) {
     $('a').each((_, el) => {
       const href = $(el).attr('href') || '';
-      if (href.includes('.pdf') && href.includes('etsi')) {
-        downloadUrl = href;
-        downloadType = 'pdf';
-      } else if (href.includes('.zip') && !downloadUrl) {
-        downloadUrl = href;
-        downloadType = 'zip';
-      }
+      if (href.includes('.pdf') && href.includes('etsi')) { downloadUrl = href; downloadType = 'pdf'; }
+      else if (href.includes('.zip') && !downloadUrl) { downloadUrl = href; downloadType = 'zip'; }
     });
   }
-
-  // Check for docbox.etsi.org draft links (Word docs or PDFs)
   if (!downloadUrl) {
     $('a[href*="docbox.etsi.org"]').each((_, el) => {
       const href = $(el).attr('href')?.trim();
@@ -237,9 +184,9 @@ async function fetchDownloadLink(client, item) {
 
 async function downloadFile(client, downloadInfo, item) {
   try {
-    // For ETSI delivery URLs, we can download directly without auth
-    const fetchFn = downloadInfo.url.includes('www.etsi.org/deliver') ? fetch : client.fetch.bind(client);
-    
+    const isPublicDelivery = downloadInfo.url.includes('www.etsi.org/deliver');
+    const fetchFn = isPublicDelivery ? fetch : client.fetch.bind(client);
+
     const response = await fetchFn(downloadInfo.url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
@@ -247,60 +194,47 @@ async function downloadFile(client, downloadInfo, item) {
       }
     });
 
-    if (!response.ok) {
-      return null;
-    }
+    if (!response.ok) return null;
 
-    // Get filename from Content-Disposition header or URL
     let filename = null;
     const contentDisposition = response.headers.get('content-disposition');
-    
     if (contentDisposition) {
       const match = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
-      if (match) {
-        filename = match[1].replace(/['"]/g, '');
-      }
+      if (match) filename = match[1].replace(/['"]/g, '');
     }
-    
     if (!filename) {
-      // Extract from URL
       const urlPath = new URL(downloadInfo.url).pathname;
       filename = path.basename(urlPath);
     }
-    
     if (!filename || filename === '' || filename === '/') {
-      // Create filename from ETSI number
       const safeNumber = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-      const ext = downloadInfo.type === 'pdf' ? '.pdf' : 
-                  downloadInfo.type === 'zip' ? '.zip' :
-                  downloadInfo.type === 'draft-docx' ? '.docx' :
-                  downloadInfo.type === 'draft-pdf' ? '.pdf' : '.bin';
+      const ext = { pdf: '.pdf', zip: '.zip', 'draft-docx': '.docx', 'draft-pdf': '.pdf' }[downloadInfo.type] || '.bin';
       filename = `${safeNumber}${ext}`;
     }
-
-    // Sanitize filename
     filename = filename.replace(/[<>:"/\\|?*]/g, '_');
 
-    // Download content
     const buffer = Buffer.from(await response.arrayBuffer());
-    
-    // Skip if too small (likely an error page)
     if (buffer.length < 1000) {
-      console.log(`    ⚠️ File too small (${buffer.length} bytes), likely not a valid document`);
+      console.log(`    \u26A0\uFE0F File too small (${buffer.length} bytes), skipping`);
       return null;
     }
-    
-    // Create subdirectory based on document type
+
     const typeMatch = item.etsiNumber?.match(/^(EN|TS|TR|ES|EG)/i);
     const subDir = typeMatch ? typeMatch[1].toUpperCase() : 'Other';
     const targetDir = path.join(DOWNLOAD_PATH, subDir);
     await fs.mkdir(targetDir, { recursive: true });
-    
+
     const filePath = path.join(targetDir, filename);
     await fs.writeFile(filePath, buffer);
 
-    return `${subDir}/${filename} (${formatBytes(buffer.length)})`;
-    
+    // Save HTTP cache headers sidecar
+    await saveHeaders(filePath, response);
+
+    return {
+      filename: `${subDir}/${filename} (${formatBytes(buffer.length)})`,
+      filePath,
+      url: downloadInfo.url
+    };
   } catch (error) {
     console.error(`    Download error: ${error.message}`);
     return null;
@@ -315,8 +249,6 @@ function formatBytes(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
 downloadLatestSpecs().catch(console.error);
