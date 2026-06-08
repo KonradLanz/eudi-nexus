@@ -110,12 +110,20 @@ async function downloadLatestSpecs() {
     try {
       const downloadInfo = await fetchDownloadLink(client, item);
 
-      // Always save schedule sidecar — for every item where we fetched the detail page
       if (downloadInfo !== null) {
-        const wkiId       = extractWkiId(item.detailUrl);
-        const sidecarPath = await saveScheduleSidecar(downloadInfo.$, wkiId, item);
-        if (sidecarPath) {
-          await saveResponseHeaders(sidecarPath, downloadInfo.responseHeaders);
+        const wkiId = extractWkiId(item.detailUrl);
+
+        // Always save workitem HTML sidecar
+        const wiPath = await saveWorkitemSidecar(downloadInfo.html, wkiId, item);
+        if (wiPath) await saveResponseHeaders(wiPath, downloadInfo.responseHeaders);
+
+        // Always save schedule sidecar
+        const scPath = await saveScheduleSidecar(downloadInfo.$, wkiId, item);
+        if (scPath) await saveResponseHeaders(scPath, downloadInfo.responseHeaders);
+
+        // Log extracted status
+        if (downloadInfo.status) {
+          console.log(`    \uD83D\uDCCC Status: ${downloadInfo.status}`);
         }
       }
 
@@ -129,6 +137,7 @@ async function downloadLatestSpecs() {
           wkiId,
           scheduleUrl,
           detailUrl: item.detailUrl,
+          status: downloadInfo.status ?? null,
         });
         await sleep(200);
         continue;
@@ -138,10 +147,10 @@ async function downloadLatestSpecs() {
         const result = await downloadFile(client, downloadInfo, item);
         if (result) {
           if (isRedownload) {
-            results.redownloaded.push({ etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url });
+            results.redownloaded.push({ etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url, status: downloadInfo.status ?? null });
             console.log(`    \uD83D\uDD04 Re-downloaded: ${result.label}`);
           } else {
-            results.success.push({ etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url });
+            results.success.push({ etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url, status: downloadInfo.status ?? null });
             console.log(`    \u2705 Downloaded: ${result.label}`);
           }
           console.log(`    \uD83D\uDCC4 ${path.relative(path.join(__dirname, '..'), result.filePath)}`);
@@ -152,7 +161,7 @@ async function downloadLatestSpecs() {
         }
       } else {
         const tried = resolveDetailUrl(item);
-        results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No download link found', tried });
+        results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No download link found', tried, status: downloadInfo?.status ?? null });
         console.log(`    \u26A0\uFE0F  No download available`);
         console.log(`    \uD83D\uDD17 Tried: ${tried}`);
       }
@@ -302,12 +311,13 @@ async function headersOnlyCheck(client, item, existingPath, cache, integrity, re
 // ── Network helpers ──────────────────────────────────────────────────────────
 
 /**
- * Fetch the detail page and extract the download URL.
- * Always returns responseHeaders + cheerio instance ($) for schedule sidecar.
+ * Fetch the detail page and extract all useful data in one pass.
  * Returns:
- *   { url, type, $, responseHeaders }      — normal download
- *   { stopped: true, $, responseHeaders }   — STOPPED
- *   null                                    — no detailUrl
+ *   { url, type, $, html, responseHeaders, status, stopped? }  — always
+ *   null  — no detailUrl
+ *
+ * status  — extracted from the "<!-- Status Last Update -->" comment block,
+ *           e.g. "Work item adopted (2026-06-03)"
  */
 async function fetchDownloadLink(client, item) {
   if (!item.detailUrl) return null;
@@ -318,10 +328,17 @@ async function fetchDownloadLink(client, item) {
   const html = await response.text();
   const $    = cheerio.load(html);
 
+  // ─ Status extraction ─────────────────────────────────────────────
+  // The status lives in the first anchor tag after the HTML comment
+  // "<!-- Status Last Update -->".
+  // Regex approach (cheerio comment nodes are tricky to traverse):
+  const status = extractStatus(html);
+
   if (/\bSTOPPED\b/.test(html)) {
-    return { stopped: true, $, responseHeaders };
+    return { stopped: true, $, html, responseHeaders, status };
   }
 
+  // ─ Download link extraction ─────────────────────────────────────
   let downloadUrl = null, downloadType = null;
   $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
     const href = $(el).attr('href');
@@ -344,8 +361,26 @@ async function fetchDownloadLink(client, item) {
     }
   });
 
-  // Always return $ and responseHeaders even when no download link found
-  return { url: downloadUrl ?? null, type: downloadType, $, responseHeaders };
+  return { url: downloadUrl ?? null, type: downloadType, $, html, responseHeaders, status };
+}
+
+/**
+ * Extract the work item status from the raw HTML.
+ * Looks for the first <a> or <b> text after "<!-- Status Last Update -->".
+ * Returns a trimmed string like "Work item adopted (2026-06-03)" or null.
+ */
+function extractStatus(html) {
+  // Find the comment, then grab the first <b>...</b> or <nobr>...</nobr> text after it
+  const afterComment = html.split('<!-- Status Last Update -->')[1];
+  if (!afterComment) return null;
+  // Take only a small window (500 chars) to avoid false matches further down
+  const window = afterComment.slice(0, 500);
+  const m = window.match(/<(?:b|nobr)[^>]*>([^<]+)<\/(?:b|nobr)>/);
+  if (m) return m[1].trim();
+  // Fallback: any anchor text in that window
+  const a = window.match(/<a[^>]*>[\s\S]*?<b[^>]*><nobr>([^<]+)<\/nobr>/);
+  if (a) return a[1].trim();
+  return null;
 }
 
 function snapshotHeaders(response) {
@@ -364,23 +399,42 @@ async function saveResponseHeaders(filePath, headerSnapshot) {
 }
 
 /**
+ * Save the full work item HTML as a sidecar.
+ * Location: downloads/specs/_workitems/<safe-etsiNumber>.workitem.html
+ * Skips if already exists.
+ */
+async function saveWorkitemSidecar(html, wkiId, item) {
+  if (!html) return null;
+  try {
+    const dir  = path.join(DOWNLOAD_PATH, '_workitems');
+    await fs.mkdir(dir, { recursive: true });
+    const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+    const outPath = path.join(dir, `${safe}.workitem.html`);
+    const exists  = await fs.stat(outPath).then(() => true).catch(() => false);
+    if (exists) return outPath;
+    await fs.writeFile(outPath, html, 'utf-8');
+    return outPath;
+  } catch (err) {
+    console.log(`    \u26A0\uFE0F  Could not save workitem sidecar: ${err.message}`);
+    return null;
+  }
+}
+
+/**
  * Save the schedule/milestone table from the detail page as a sidecar.
  * Location: downloads/specs/_schedules/<safe-etsiNumber>.schedule.html
- * Skips silently if sidecar already exists (re-downloaded on integrity-fail only).
+ * Skips if already exists.
  */
 async function saveScheduleSidecar($, wkiId, item) {
   if (!$) return null;
   try {
-    const schedulesDir = path.join(DOWNLOAD_PATH, '_schedules');
-    await fs.mkdir(schedulesDir, { recursive: true });
+    const dir  = path.join(DOWNLOAD_PATH, '_schedules');
+    await fs.mkdir(dir, { recursive: true });
     const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-    const outPath = path.join(schedulesDir, `${safe}.schedule.html`);
+    const outPath = path.join(dir, `${safe}.schedule.html`);
+    const exists  = await fs.stat(outPath).then(() => true).catch(() => false);
+    if (exists) return outPath;
 
-    // Skip if sidecar already up-to-date (exists + has headers)
-    const alreadyExists = await fs.stat(outPath).then(() => true).catch(() => false);
-    if (alreadyExists) return outPath;
-
-    // Find schedule/milestone table
     let scheduleTable = null;
     $('table').each((_, tbl) => {
       const text = $(tbl).text().toLowerCase();
@@ -389,7 +443,6 @@ async function saveScheduleSidecar($, wkiId, item) {
       }
     });
 
-    // Capture any STOPPED context blocks
     const stoppedContext = [];
     $('*').each((_, el) => {
       const txt = $(el).children().length === 0 ? $(el).text().trim() : '';
