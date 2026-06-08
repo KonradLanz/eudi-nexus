@@ -19,6 +19,7 @@
     "crawl:verbose": "cd scripts && node crawl-references.js --verbose",
     "build": "cd scripts && node extract-references.js --include-drafts",
     "build:full": "cd scripts && node crawl-references.js",
+    "retry-failed": "cd scripts && node retry-failed.js",
     "serve": "cd downloads && python3 -m http.server 9999",
     "all": "npm run scrape && npm run analyze && npm run markdown && npm run download:oidf"
   },
