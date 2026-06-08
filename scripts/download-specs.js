@@ -111,10 +111,22 @@ async function downloadLatestSpecs() {
       const downloadInfo = await fetchDownloadLink(client, item);
 
       if (downloadInfo?.stopped) {
-        const scheduleUrl = buildScheduleUrl(item.detailUrl);
+        const wkiId       = extractWkiId(item.detailUrl);
+        const scheduleUrl = wkiId ? `https://portal.etsi.org/eWPM/index.html#/schedule?WKI_ID=${wkiId}` : null;
         console.log(`    \uD83D\uDED1 STOPPED work item \u2014 no file available`);
         if (scheduleUrl) console.log(`    \uD83D\uDCC5 Schedule: ${scheduleUrl}`);
-        results.stopped.push({ etsiNumber: item.etsiNumber, scheduleUrl, detailUrl: item.detailUrl });
+
+        // Save schedule table sidecar for later analysis
+        const sidecarPath = await saveScheduleSidecar(downloadInfo.$, wkiId, item);
+        if (sidecarPath) console.log(`    \uD83D\uDDC3\uFE0F  Sidecar: ${path.relative(path.join(__dirname, '..'), sidecarPath)}`);
+
+        results.stopped.push({
+          etsiNumber: item.etsiNumber,
+          wkiId,
+          scheduleUrl,
+          detailUrl: item.detailUrl,
+          sidecar: sidecarPath,
+        });
         await sleep(200);
         continue;
       }
@@ -218,13 +230,12 @@ function findInDiskIndex(diskIndex, etsiNumber) {
   if (esiMatch) {
     const num  = esiMatch[1].replace(/^0+/, '');
     const part = esiMatch[2] ?? '';  // e.g. "-2" or ""
-    // Build regex: non-digit boundary, optional leading zeros, num, optional part
     const reStr = `(?<![0-9])0*${num}${part ? part.replace('-', '-0*') : ''}(?![0-9])`;
     const re    = new RegExp(reStr);
     for (const [name, filePath] of diskIndex) {
       if (re.test(name)) return filePath;
     }
-    // Fallback: match without part if no specific part file found
+    // Fallback: match without part
     if (part) {
       const reFallback = new RegExp(`(?<![0-9])0*${num}(?![0-9])`);
       for (const [name, filePath] of diskIndex) {
@@ -258,7 +269,6 @@ async function saveResults(newResults) {
   const redownloadedNums = new Set((newResults.redownloaded ?? []).map(e => e.etsiNumber));
   existing.success      = [...successMap.values()].filter(e => !redownloadedNums.has(e.etsiNumber));
   existing.redownloaded = (newResults.redownloaded ?? []);
-  // Merge stopped: keep previous entries, add new ones
   const stoppedMap = new Map((existing.stopped ?? []).map(e => [e.etsiNumber, e]));
   for (const e of (newResults.stopped ?? [])) stoppedMap.set(e.etsiNumber, e);
   existing.stopped    = [...stoppedMap.values()];
@@ -302,7 +312,7 @@ async function headersOnlyCheck(client, item, existingPath, cache, integrity, re
  * Fetch the detail page and extract the download URL.
  * Returns:
  *   { url, type }          — normal download
- *   { stopped: true }      — work item is STOPPED
+ *   { stopped: true, $ }   — work item is STOPPED (cheerio instance included for sidecar)
  *   null                   — no download found
  */
 async function fetchDownloadLink(client, item) {
@@ -311,8 +321,10 @@ async function fetchDownloadLink(client, item) {
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const html = await response.text();
 
-  // STOPPED detection — appears as bold text on the detail page
-  if (/\bSTOPPED\b/.test(html)) return { stopped: true };
+  if (/\bSTOPPED\b/.test(html)) {
+    const $ = cheerio.load(html);
+    return { stopped: true, $ };
+  }
 
   const $ = cheerio.load(html);
 
@@ -340,12 +352,65 @@ async function fetchDownloadLink(client, item) {
   return downloadUrl ? { url: downloadUrl, type: downloadType } : null;
 }
 
-/** Extract WKI_ID from a portal detail URL and build a schedule URL. */
-function buildScheduleUrl(detailUrl) {
+/**
+ * Save the schedule table from the detail page as a sidecar HTML file.
+ * Looks for a <table> containing milestone/schedule rows.
+ * File: downloads/specs/_stopped/<safe-etsiNumber>.schedule.html
+ */
+async function saveScheduleSidecar($, wkiId, item) {
+  if (!$) return null;
+  try {
+    // Find the schedule/milestone table — usually contains th with "Milestone" or "Stage"
+    let scheduleTable = null;
+    $('table').each((_, tbl) => {
+      const text = $(tbl).text().toLowerCase();
+      if (text.includes('milestone') || text.includes('stage') || text.includes('target')) {
+        scheduleTable = $(tbl);
+      }
+    });
+
+    // Also grab a small context block around STOPPED text for reference
+    const stoppedContext = [];
+    $('*').each((_, el) => {
+      const txt = $(el).children().length === 0 ? $(el).text().trim() : '';
+      if (txt.toUpperCase().includes('STOPPED')) stoppedContext.push($(el).parent().html()?.trim() ?? txt);
+    });
+
+    const tableHtml   = scheduleTable ? scheduleTable.html() : null;
+    const stoppedDir  = path.join(DOWNLOAD_PATH, '_stopped');
+    await fs.mkdir(stoppedDir, { recursive: true });
+
+    const safe     = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+    const outPath  = path.join(stoppedDir, `${safe}.schedule.html`);
+
+    const payload = [
+      `<!-- etsiNumber: ${item.etsiNumber} -->`,
+      `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
+      `<!-- detailUrl: ${item.detailUrl ?? ''} -->`,
+      `<!-- savedAt: ${new Date().toISOString()} -->`,
+      '',
+      '<!-- === STOPPED CONTEXT === -->',
+      stoppedContext.map(s => `<div class="stopped-ctx">${s}</div>`).join('\n'),
+      '',
+      '<!-- === SCHEDULE TABLE === -->',
+      tableHtml
+        ? `<table class="schedule-table">${tableHtml}</table>`
+        : '<!-- no schedule table found -->',
+    ].join('\n');
+
+    await fs.writeFile(outPath, payload, 'utf-8');
+    return outPath;
+  } catch (err) {
+    console.log(`    \u26A0\uFE0F  Could not save schedule sidecar: ${err.message}`);
+    return null;
+  }
+}
+
+/** Extract WKI_ID from a portal detail URL. */
+function extractWkiId(detailUrl) {
   if (!detailUrl) return null;
   const m = detailUrl.match(/WKI_ID=(\d+)/);
-  if (!m) return null;
-  return `https://portal.etsi.org/eWPM/index.html#/schedule?WKI_ID=${m[1]}`;
+  return m ? m[1] : null;
 }
 
 async function downloadFile(client, downloadInfo, item) {
