@@ -46,7 +46,7 @@ async function downloadLatestSpecs() {
 
   console.log(`\uD83D\uDDC2\uFE0F  Already downloaded: ${cachedByNumber.size} files (${diskIndex.size} on disk)\n`);
 
-  const results = { success: [], redownloaded: [], skipped: [], changed: [], failed: [], noDownload: [] };
+  const results = { success: [], redownloaded: [], skipped: [], stopped: [], changed: [], failed: [], noDownload: [] };
 
   const allItems    = publishedOnly ? publishedItems : [...publishedItems, ...activeItems];
   const seen        = new Set();
@@ -107,11 +107,17 @@ async function downloadLatestSpecs() {
 
     if (!needsDownload) continue;
 
-    // Always resolve fresh download URL from the work item detail page.
-    // This ensures we get the correct file even on re-downloads where the
-    // disk-index may have matched the wrong cached file.
     try {
       const downloadInfo = await fetchDownloadLink(client, item);
+
+      if (downloadInfo?.stopped) {
+        const scheduleUrl = buildScheduleUrl(item.detailUrl);
+        console.log(`    \uD83D\uDED1 STOPPED work item \u2014 no file available`);
+        if (scheduleUrl) console.log(`    \uD83D\uDCC5 Schedule: ${scheduleUrl}`);
+        results.stopped.push({ etsiNumber: item.etsiNumber, scheduleUrl, detailUrl: item.detailUrl });
+        await sleep(200);
+        continue;
+      }
 
       if (downloadInfo?.url) {
         const result = await downloadFile(client, downloadInfo, item);
@@ -156,6 +162,7 @@ async function downloadLatestSpecs() {
     console.log(`   \u2705 Downloaded (new):       ${results.success.length}`);
     console.log(`   \uD83D\uDD04 Re-downloaded:          ${results.redownloaded.length}`);
     console.log(`   \u23ED\uFE0F  Skipped (cached):       ${results.skipped.length}`);
+    console.log(`   \uD83D\uDED1 Stopped work items:     ${results.stopped.length}`);
     console.log(`   \u274C Failed:                 ${results.failed.length}`);
     console.log(`   \u26A0\uFE0F  No download available:  ${results.noDownload.length}`);
   }
@@ -202,23 +209,27 @@ async function buildDiskIndex(basePath) {
 /**
  * Match ETSI number against on-disk filenames.
  *
- * Uses exact digit-boundary matching to avoid false positives like
- * "TS 101 536" (digits: 101536) matching "tr_10153302v..." via substring.
- *
- * Strategy:
- *   1. ESI draft names (ESI-0019412) → numeric key after ESI-
- *   2. Standard numbers → require digit sequence to appear at a word boundary
- *      in the filename (preceded/followed by non-digit or start/end of token).
+ * For ESI draft names like "RTS/ESI-0019403-2v122" the part suffix (-2)
+ * is included in the match so Part 1 and Part 2 are never confused.
  */
 function findInDiskIndex(diskIndex, etsiNumber) {
-  // ESI draft names like "DTS/ESI-0019172-2"
-  const esiMatch = etsiNumber.match(/ESI-00?(\d{5,7})/);
+  // ESI draft: "DTS/ESI-0019403-2" → match "0019403-2" or "19403-2"
+  const esiMatch = etsiNumber.match(/ESI-0*(\d{5,7})(-\d+)?/);
   if (esiMatch) {
-    const key = esiMatch[1].replace(/^0+/, '');
+    const num  = esiMatch[1].replace(/^0+/, '');
+    const part = esiMatch[2] ?? '';  // e.g. "-2" or ""
+    // Build regex: non-digit boundary, optional leading zeros, num, optional part
+    const reStr = `(?<![0-9])0*${num}${part ? part.replace('-', '-0*') : ''}(?![0-9])`;
+    const re    = new RegExp(reStr);
     for (const [name, filePath] of diskIndex) {
-      // Boundary check: key must not be surrounded by more digits
-      const re = new RegExp(`(?<![0-9])0*${key}(?![0-9])`);
       if (re.test(name)) return filePath;
+    }
+    // Fallback: match without part if no specific part file found
+    if (part) {
+      const reFallback = new RegExp(`(?<![0-9])0*${num}(?![0-9])`);
+      for (const [name, filePath] of diskIndex) {
+        if (reFallback.test(name)) return filePath;
+      }
     }
   }
 
@@ -227,7 +238,6 @@ function findInDiskIndex(diskIndex, etsiNumber) {
   for (const len of [7, 6]) {
     const digits = allDigits.slice(0, len);
     if (digits.length < len) continue;
-    // Require the digit sequence to be at a non-digit boundary in the filename
     const re = new RegExp(`(?<![0-9])0*${digits.replace(/^0+/, '')}(?![0-9])`);
     for (const [name, filePath] of diskIndex) {
       if (re.test(name)) return filePath;
@@ -237,21 +247,24 @@ function findInDiskIndex(diskIndex, etsiNumber) {
 }
 
 async function saveResults(newResults) {
-  let existing = { success: [], redownloaded: [], skipped: [], changed: [], failed: [], noDownload: [] };
+  let existing = { success: [], redownloaded: [], skipped: [], stopped: [], changed: [], failed: [], noDownload: [] };
   try { existing = JSON.parse(await fs.readFile(RESULTS_FILE, 'utf-8')); } catch { /* first run */ }
   const successMap = new Map([
-    ...(existing.success     ?? []).map(e => [e.etsiNumber, e]),
+    ...(existing.success      ?? []).map(e => [e.etsiNumber, e]),
     ...(existing.redownloaded ?? []).map(e => [e.etsiNumber, e]),
   ]);
   for (const e of [...(newResults.success ?? []), ...(newResults.redownloaded ?? [])])
     successMap.set(e.etsiNumber, e);
-  // Split back by whether they are re-downloads
   const redownloadedNums = new Set((newResults.redownloaded ?? []).map(e => e.etsiNumber));
   existing.success      = [...successMap.values()].filter(e => !redownloadedNums.has(e.etsiNumber));
   existing.redownloaded = (newResults.redownloaded ?? []);
-  existing.failed       = newResults.failed;
-  existing.noDownload   = newResults.noDownload;
-  existing.changed      = newResults.changed;
+  // Merge stopped: keep previous entries, add new ones
+  const stoppedMap = new Map((existing.stopped ?? []).map(e => [e.etsiNumber, e]));
+  for (const e of (newResults.stopped ?? [])) stoppedMap.set(e.etsiNumber, e);
+  existing.stopped    = [...stoppedMap.values()];
+  existing.failed     = newResults.failed;
+  existing.noDownload = newResults.noDownload;
+  existing.changed    = newResults.changed;
   await fs.writeFile(RESULTS_FILE, JSON.stringify(existing, null, 2));
 }
 
@@ -285,12 +298,23 @@ async function headersOnlyCheck(client, item, existingPath, cache, integrity, re
 
 // ── Network helpers ──────────────────────────────────────────────────────────
 
+/**
+ * Fetch the detail page and extract the download URL.
+ * Returns:
+ *   { url, type }          — normal download
+ *   { stopped: true }      — work item is STOPPED
+ *   null                   — no download found
+ */
 async function fetchDownloadLink(client, item) {
   if (!item.detailUrl) return null;
   const response = await client.fetch(item.detailUrl, { headers: client.getDefaultHeaders() });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const html = await response.text();
-  const $    = cheerio.load(html);
+
+  // STOPPED detection — appears as bold text on the detail page
+  if (/\bSTOPPED\b/.test(html)) return { stopped: true };
+
+  const $ = cheerio.load(html);
 
   let downloadUrl = null, downloadType = null;
   $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
@@ -314,6 +338,14 @@ async function fetchDownloadLink(client, item) {
     }
   });
   return downloadUrl ? { url: downloadUrl, type: downloadType } : null;
+}
+
+/** Extract WKI_ID from a portal detail URL and build a schedule URL. */
+function buildScheduleUrl(detailUrl) {
+  if (!detailUrl) return null;
+  const m = detailUrl.match(/WKI_ID=(\d+)/);
+  if (!m) return null;
+  return `https://portal.etsi.org/eWPM/index.html#/schedule?WKI_ID=${m[1]}`;
 }
 
 async function downloadFile(client, downloadInfo, item) {
