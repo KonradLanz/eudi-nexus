@@ -41,15 +41,10 @@ async function downloadLatestSpecs() {
 
   await fs.mkdir(DOWNLOAD_PATH, { recursive: true });
 
-  // ── Primary cache index: etsiNumber → filePath, built from previous results ──
-  // This is the correct idempotency key — filename patterns are too fragile.
   const cachedByNumber = await loadCachedIndex();
+  const diskIndex      = await buildDiskIndex(DOWNLOAD_PATH);
 
-  // ── Secondary index: scan disk for files without a results entry (legacy) ──
-  const diskIndex = await buildDiskIndex(DOWNLOAD_PATH);
-
-  const totalCached = cachedByNumber.size;
-  console.log(`\uD83D\uDDC2\uFE0F  Already downloaded: ${totalCached} files (${diskIndex.size} on disk)\n`);
+  console.log(`\uD83D\uDDC2\uFE0F  Already downloaded: ${cachedByNumber.size} files (${diskIndex.size} on disk)\n`);
 
   const results = { success: [], skipped: [], changed: [], failed: [], noDownload: [] };
 
@@ -68,45 +63,39 @@ async function downloadLatestSpecs() {
     const progress = `[${i + 1}/${uniqueItems.length}]`;
     console.log(`${progress} ${item.etsiNumber}`);
 
-    // ── Resolve existing file path ────────────────────────────────────────────
-    // 1. Check results index (reliable, etsiNumber-keyed)
-    // 2. Fallback: scan disk index for partial filename match (legacy files)
     let existingPath = cachedByNumber.get(item.etsiNumber) ?? null;
-    if (!existingPath) {
-      existingPath = findInDiskIndex(diskIndex, item.etsiNumber);
-    }
+    if (!existingPath) existingPath = findInDiskIndex(diskIndex, item.etsiNumber);
 
-    // ── Already on disk ───────────────────────────────────────────────────────
     if (existingPath) {
       const fileExists = await fs.stat(existingPath).then(() => true).catch(() => false);
       if (fileExists) {
         const cache     = await loadHeaders(existingPath);
         const integrity = await checkIntegrity(existingPath);
+        const relPath   = path.relative(path.join(__dirname, '..'), existingPath);
 
         if (!integrity.ok && integrity.cachedSize !== null) {
-          // Truncated / corrupt — fall through to re-download
           console.log(`    \u26A0\uFE0F  Integrity FAIL \u2014 disk: ${formatBytes(integrity.diskSize)}, expected: ${formatBytes(integrity.cachedSize)} \u2014 re-downloading`);
+          console.log(`    \uD83D\uDCC4 ${relPath}`);
         } else if (headersOnly) {
           await headersOnlyCheck(client, item, existingPath, cache, integrity, results);
           await sleep(200);
           continue;
         } else {
           const cacheInfo = formatCacheInfo(cache, integrity);
-          console.log(`    \u23ED\uFE0F  Cached: ${cacheInfo}`);
+          const noHeaders = !cache ? ' \u26A0\uFE0F no HTTP headers cached \u2014 run npm run backfill-headers' : '';
+          console.log(`    \u23ED\uFE0F  Cached: ${cacheInfo}${noHeaders}`);
+          console.log(`    \uD83D\uDCC4 ${relPath}`);
           results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
           continue;
         }
       }
-      // File entry exists in index but file is gone from disk — re-download
     }
 
-    // ── Skip new downloads in headers-only mode ───────────────────────────────
     if (headersOnly) {
       console.log(`    \u23ED\uFE0F  Not cached \u2014 skipping (headers-only mode)`);
       continue;
     }
 
-    // ── Download ──────────────────────────────────────────────────────────────
     try {
       const downloadInfo = await fetchDownloadLink(client, item);
 
@@ -115,6 +104,7 @@ async function downloadLatestSpecs() {
         if (result) {
           results.success.push({ etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url });
           console.log(`    \u2705 Downloaded: ${result.label}`);
+          console.log(`    \uD83D\uDCC4 ${path.relative(path.join(__dirname, '..'), result.filePath)}`);
         } else {
           results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download returned no data', url: downloadInfo.url });
           console.log(`    \u274C Download failed`);
@@ -136,7 +126,6 @@ async function downloadLatestSpecs() {
     }
   }
 
-  // ── Persist results: merge with previous so index stays complete ──────────
   await saveResults(results);
 
   console.log('\n\uD83D\uDCCA Download Summary:');
@@ -155,10 +144,6 @@ async function downloadLatestSpecs() {
 
 // ── Cache index helpers ──────────────────────────────────────────────────────
 
-/**
- * Load etsiNumber → filePath map from persisted results JSON.
- * Only entries where the key "filePath" is present are included.
- */
 async function loadCachedIndex() {
   const index = new Map();
   try {
@@ -166,20 +151,14 @@ async function loadCachedIndex() {
     for (const entry of (raw.success ?? [])) {
       if (entry.etsiNumber && entry.filePath) index.set(entry.etsiNumber, entry.filePath);
     }
-    // Also keep previously skipped entries (they have a .file property from old format)
     for (const entry of (raw.skipped ?? [])) {
       if (entry.etsiNumber && (entry.file || entry.filePath))
         index.set(entry.etsiNumber, entry.file ?? entry.filePath);
     }
-  } catch { /* no results file yet — fresh run */ }
+  } catch { /* no results file yet */ }
   return index;
 }
 
-/**
- * Scan subdirectories for actual files (no dot-files).
- * Returns Map<lowercaseBasename, absolutePath> as fallback for legacy files
- * that predate the results JSON.
- */
 async function buildDiskIndex(basePath) {
   const index = new Map();
   try {
@@ -197,42 +176,37 @@ async function buildDiskIndex(basePath) {
   return index;
 }
 
-/**
- * Heuristic: try to find a legacy file by matching the numeric part of the
- * ETSI number against filenames on disk.
- * e.g. "EN 319 403" → looks for files containing "319403" (case-insensitive)
- */
 function findInDiskIndex(diskIndex, etsiNumber) {
-  // Extract digits-only key: "EN 319 403-1" → "319403" (drop suffixes like -1, -2)
-  const digits = etsiNumber.replace(/[^0-9]/g, '').slice(0, 6);
-  if (digits.length < 4) return null;
-  for (const [name, filePath] of diskIndex) {
-    if (name.includes(digits)) return filePath;
+  // For ESI draft names like "DTS/ESI-0019172-2-old": extract the numeric run after ESI-
+  const esiMatch = etsiNumber.match(/ESI-00?(\d{6,7})/);
+  if (esiMatch) {
+    const key = esiMatch[1].replace(/^0+/, ''); // strip leading zeros
+    for (const [name, filePath] of diskIndex) {
+      if (name.includes(key)) return filePath;
+    }
+  }
+  // Standard ETSI numbers: "EN 319 403" → "319403", "SR 019 510" → all digits
+  const allDigits = etsiNumber.replace(/[^0-9]/g, '');
+  // Try longest match first (7 digits), then 6
+  for (const len of [7, 6, 5]) {
+    const digits = allDigits.slice(0, len);
+    if (digits.length < len) continue;
+    for (const [name, filePath] of diskIndex) {
+      if (name.includes(digits)) return filePath;
+    }
   }
   return null;
 }
 
-/**
- * Merge new results into the persisted file so the index grows over runs.
- * Existing entries are kept; new success entries are added / updated.
- */
 async function saveResults(newResults) {
   let existing = { success: [], skipped: [], changed: [], failed: [], noDownload: [] };
-  try {
-    existing = JSON.parse(await fs.readFile(RESULTS_FILE, 'utf-8'));
-  } catch { /* first run */ }
-
-  // Upsert success entries by etsiNumber
+  try { existing = JSON.parse(await fs.readFile(RESULTS_FILE, 'utf-8')); } catch { /* first run */ }
   const successMap = new Map((existing.success ?? []).map(e => [e.etsiNumber, e]));
   for (const e of newResults.success) successMap.set(e.etsiNumber, e);
-  existing.success = [...successMap.values()];
-
-  // Replace volatile lists
-  existing.failed    = newResults.failed;
+  existing.success    = [...successMap.values()];
+  existing.failed     = newResults.failed;
   existing.noDownload = newResults.noDownload;
-  existing.changed   = newResults.changed;
-  // skipped is transient — don't persist (it's derived from success)
-
+  existing.changed    = newResults.changed;
   await fs.writeFile(RESULTS_FILE, JSON.stringify(existing, null, 2));
 }
 
@@ -240,21 +214,26 @@ async function saveResults(newResults) {
 
 async function headersOnlyCheck(client, item, existingPath, cache, integrity, results) {
   const downloadInfo = await fetchDownloadLink(client, item).catch(() => null);
+  const relPath = path.relative(path.join(__dirname, '..'), existingPath);
   if (!downloadInfo?.url) {
     console.log(`    \u23ED\uFE0F  Cached (no URL to HEAD): ${formatCacheInfo(cache, integrity)}`);
+    console.log(`    \uD83D\uDCC4 ${relPath}`);
     results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
     return;
   }
   const check = await checkRemoteChanged(downloadInfo.url, existingPath);
   if (check.changed === true) {
     console.log(`    \uD83D\uDD04 CHANGED: ${check.reason}`);
+    console.log(`    \uD83D\uDCC4 ${relPath}`);
     console.log(`    \uD83D\uDD17 ${downloadInfo.url}`);
-    results.changed.push({ etsiNumber: item.etsiNumber, reason: check.reason, url: downloadInfo.url });
+    results.changed.push({ etsiNumber: item.etsiNumber, reason: check.reason, url: downloadInfo.url, filePath: existingPath });
   } else if (check.changed === false) {
     console.log(`    \u2705 Up-to-date: ${formatCacheInfo(cache, integrity)}`);
+    console.log(`    \uD83D\uDCC4 ${relPath}`);
     results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
   } else {
     console.log(`    \u2753 Unverifiable: ${check.reason} | ${formatCacheInfo(cache, integrity)}`);
+    console.log(`    \uD83D\uDCC4 ${relPath}`);
     results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath, note: check.reason });
   }
 }
@@ -279,8 +258,8 @@ async function fetchDownloadLink(client, item) {
   });
   if (!downloadUrl) $('a').each((_, el) => {
     const href = $(el).attr('href') || '';
-    if (href.includes('.pdf') && href.includes('etsi'))     { downloadUrl = href; downloadType = 'pdf'; }
-    else if (href.includes('.zip') && !downloadUrl)          { downloadUrl = href; downloadType = 'zip'; }
+    if (href.includes('.pdf') && href.includes('etsi'))   { downloadUrl = href; downloadType = 'pdf'; }
+    else if (href.includes('.zip') && !downloadUrl)        { downloadUrl = href; downloadType = 'zip'; }
   });
   if (!downloadUrl) $('a[href*="docbox.etsi.org"]').each((_, el) => {
     const href = $(el).attr('href')?.trim();
@@ -304,7 +283,6 @@ async function downloadFile(client, downloadInfo, item) {
     });
     if (!response.ok) return null;
 
-    // Resolve filename
     let filename = null;
     const cd = response.headers.get('content-disposition');
     if (cd) {
@@ -321,7 +299,7 @@ async function downloadFile(client, downloadInfo, item) {
 
     const buffer = Buffer.from(await response.arrayBuffer());
     if (buffer.length < 1000) {
-      console.log(`    \u26A0\uFE0F File too small (${buffer.length} bytes) — skipping`);
+      console.log(`    \u26A0\uFE0F File too small (${buffer.length} bytes) \u2014 skipping`);
       return null;
     }
 
