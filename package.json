@@ -12,6 +12,8 @@
     "download:check": "cd scripts && node download-specs.js --headers-only",
     "download:check:test": "cd scripts && node download-specs.js --headers-only --limit=10",
     "download:oidf": "cd scripts && node download-oidf-specs.js",
+    "backfill-headers": "node scripts/backfill-headers.js",
+    "backfill-headers:dry": "node scripts/backfill-headers.js --dry-run",
     "references": "cd scripts && node extract-references.js",
     "references:all": "cd scripts && node extract-references.js --all",
     "references:drafts": "cd scripts && node extract-references.js --include-drafts",
