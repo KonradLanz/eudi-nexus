@@ -49,9 +49,14 @@ async function downloadLatestSpecs() {
   // Create download directory
   await fs.mkdir(DOWNLOAD_PATH, { recursive: true });
 
+  // Build index of already-downloaded files for idempotency
+  const alreadyDownloaded = await buildDownloadIndex(DOWNLOAD_PATH);
+  console.log(`🗂️  Already downloaded: ${alreadyDownloaded.size} files (will skip)\n`);
+
   // Track downloads
   const results = {
     success: [],
+    skipped: [],
     failed: [],
     noDownload: []
   };
@@ -74,6 +79,15 @@ async function downloadLatestSpecs() {
   for (let i = 0; i < itemsToProcess.length; i++) {
     const item = itemsToProcess[i];
     const progress = `[${i + 1}/${uniqueItems.length}]`;
+
+    // Idempotency check: skip if already downloaded
+    const safeKey = (item.etsiNumber || '').replace(/[^a-zA-Z0-9-_]/g, '_');
+    if (alreadyDownloaded.has(safeKey)) {
+      console.log(`${progress} ${item.etsiNumber}`);
+      console.log(`    ⏭️  Already downloaded, skipping`);
+      results.skipped.push({ etsiNumber: item.etsiNumber });
+      continue;
+    }
     
     console.log(`${progress} ${item.etsiNumber}`);
     
@@ -86,20 +100,30 @@ async function downloadLatestSpecs() {
           results.success.push({ etsiNumber: item.etsiNumber, filename, url: downloadInfo.url });
           console.log(`    ✅ Downloaded: ${filename}`);
         } else {
-          results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download failed' });
+          results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download failed', url: downloadInfo.url });
           console.log(`    ❌ Download failed`);
+          console.log(`    🔗 URL: ${downloadInfo.url}`);
         }
       } else {
-        results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No download link found' });
-        console.log(`    ⚠️ No download available`);
+        // Show the detail page URL so the user can try in browser
+        const attemptedUrl = item.detailUrl
+          ? (item.detailUrl.startsWith('http') ? item.detailUrl : `${BASE_URL}${item.detailUrl}`)
+          : '(no detail URL)';
+        results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No download link found', attemptedUrl });
+        console.log(`    ⚠️  No download available`);
+        console.log(`    🔗 Tried: ${attemptedUrl}`);
       }
       
       // Rate limiting
       await sleep(500);
       
     } catch (error) {
-      results.failed.push({ etsiNumber: item.etsiNumber, reason: error.message });
+      const attemptedUrl = item.detailUrl
+        ? (item.detailUrl.startsWith('http') ? item.detailUrl : `${BASE_URL}${item.detailUrl}`)
+        : '(no detail URL)';
+      results.failed.push({ etsiNumber: item.etsiNumber, reason: error.message, attemptedUrl });
       console.log(`    ❌ Error: ${error.message}`);
+      console.log(`    🔗 Tried: ${attemptedUrl}`);
     }
   }
 
@@ -110,10 +134,36 @@ async function downloadLatestSpecs() {
   );
 
   console.log('\n📊 Download Summary:');
-  console.log(`   ✅ Success: ${results.success.length}`);
-  console.log(`   ❌ Failed: ${results.failed.length}`);
-  console.log(`   ⚠️ No download available: ${results.noDownload.length}`);
+  console.log(`   ✅ Success:              ${results.success.length}`);
+  console.log(`   ⏭️  Skipped (cached):     ${results.skipped.length}`);
+  console.log(`   ❌ Failed:               ${results.failed.length}`);
+  console.log(`   ⚠️  No download available: ${results.noDownload.length}`);
   console.log(`\n💾 Results saved to ${DOWNLOAD_PATH}/_download_results.json`);
+}
+
+/**
+ * Build a Set of already-downloaded ETSI numbers by scanning
+ * the downloads/specs subdirectories. Uses the sanitized ETSI
+ * number as key (same logic as downloadFile).
+ */
+async function buildDownloadIndex(basePath) {
+  const index = new Set();
+  try {
+    const dirs = await fs.readdir(basePath, { withFileTypes: true });
+    for (const entry of dirs) {
+      if (!entry.isDirectory()) continue;
+      const subDir = path.join(basePath, entry.name);
+      const files = await fs.readdir(subDir);
+      for (const file of files) {
+        // Strip extension to get the sanitized ETSI number
+        const base = path.basename(file, path.extname(file));
+        index.add(base);
+      }
+    }
+  } catch {
+    // downloads/specs doesn't exist yet — that's fine
+  }
+  return index;
 }
 
 async function fetchDownloadLink(client, item) {
