@@ -46,7 +46,7 @@ async function downloadLatestSpecs() {
 
   console.log(`\uD83D\uDDC2\uFE0F  Already downloaded: ${cachedByNumber.size} files (${diskIndex.size} on disk)\n`);
 
-  const results = { success: [], skipped: [], changed: [], failed: [], noDownload: [] };
+  const results = { success: [], redownloaded: [], skipped: [], changed: [], failed: [], noDownload: [] };
 
   const allItems    = publishedOnly ? publishedItems : [...publishedItems, ...activeItems];
   const seen        = new Set();
@@ -66,6 +66,9 @@ async function downloadLatestSpecs() {
     let existingPath = cachedByNumber.get(item.etsiNumber) ?? null;
     if (!existingPath) existingPath = findInDiskIndex(diskIndex, item.etsiNumber);
 
+    let needsDownload = false;
+    let isRedownload  = false;
+
     if (existingPath) {
       const fileExists = await fs.stat(existingPath).then(() => true).catch(() => false);
       if (fileExists) {
@@ -76,6 +79,8 @@ async function downloadLatestSpecs() {
         if (!integrity.ok && integrity.cachedSize !== null) {
           console.log(`    \u26A0\uFE0F  Integrity FAIL \u2014 disk: ${formatBytes(integrity.diskSize)}, expected: ${formatBytes(integrity.cachedSize)} \u2014 re-downloading`);
           console.log(`    \uD83D\uDCC4 ${relPath}`);
+          needsDownload = true;
+          isRedownload  = true;
         } else if (headersOnly) {
           await headersOnlyCheck(client, item, existingPath, cache, integrity, results);
           await sleep(200);
@@ -88,7 +93,11 @@ async function downloadLatestSpecs() {
           results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
           continue;
         }
+      } else {
+        needsDownload = true;
       }
+    } else {
+      needsDownload = true;
     }
 
     if (headersOnly) {
@@ -96,14 +105,24 @@ async function downloadLatestSpecs() {
       continue;
     }
 
+    if (!needsDownload) continue;
+
+    // Always resolve fresh download URL from the work item detail page.
+    // This ensures we get the correct file even on re-downloads where the
+    // disk-index may have matched the wrong cached file.
     try {
       const downloadInfo = await fetchDownloadLink(client, item);
 
       if (downloadInfo?.url) {
         const result = await downloadFile(client, downloadInfo, item);
         if (result) {
-          results.success.push({ etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url });
-          console.log(`    \u2705 Downloaded: ${result.label}`);
+          if (isRedownload) {
+            results.redownloaded.push({ etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url });
+            console.log(`    \uD83D\uDD04 Re-downloaded: ${result.label}`);
+          } else {
+            results.success.push({ etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url });
+            console.log(`    \u2705 Downloaded: ${result.label}`);
+          }
           console.log(`    \uD83D\uDCC4 ${path.relative(path.join(__dirname, '..'), result.filePath)}`);
         } else {
           results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download returned no data', url: downloadInfo.url });
@@ -134,7 +153,8 @@ async function downloadLatestSpecs() {
     console.log(`   \uD83D\uDD04 Changed on remote:      ${results.changed.length}`);
     console.log(`   \u26A0\uFE0F  No download available:  ${results.noDownload.length}`);
   } else {
-    console.log(`   \u2705 Success:               ${results.success.length}`);
+    console.log(`   \u2705 Downloaded (new):       ${results.success.length}`);
+    console.log(`   \uD83D\uDD04 Re-downloaded:          ${results.redownloaded.length}`);
     console.log(`   \u23ED\uFE0F  Skipped (cached):       ${results.skipped.length}`);
     console.log(`   \u274C Failed:                 ${results.failed.length}`);
     console.log(`   \u26A0\uFE0F  No download available:  ${results.noDownload.length}`);
@@ -149,6 +169,9 @@ async function loadCachedIndex() {
   try {
     const raw = JSON.parse(await fs.readFile(RESULTS_FILE, 'utf-8'));
     for (const entry of (raw.success ?? [])) {
+      if (entry.etsiNumber && entry.filePath) index.set(entry.etsiNumber, entry.filePath);
+    }
+    for (const entry of (raw.redownloaded ?? [])) {
       if (entry.etsiNumber && entry.filePath) index.set(entry.etsiNumber, entry.filePath);
     }
     for (const entry of (raw.skipped ?? [])) {
@@ -176,34 +199,59 @@ async function buildDiskIndex(basePath) {
   return index;
 }
 
+/**
+ * Match ETSI number against on-disk filenames.
+ *
+ * Uses exact digit-boundary matching to avoid false positives like
+ * "TS 101 536" (digits: 101536) matching "tr_10153302v..." via substring.
+ *
+ * Strategy:
+ *   1. ESI draft names (ESI-0019412) → numeric key after ESI-
+ *   2. Standard numbers → require digit sequence to appear at a word boundary
+ *      in the filename (preceded/followed by non-digit or start/end of token).
+ */
 function findInDiskIndex(diskIndex, etsiNumber) {
-  const esiMatch = etsiNumber.match(/ESI-00?(\d{6,7})/);
+  // ESI draft names like "DTS/ESI-0019172-2"
+  const esiMatch = etsiNumber.match(/ESI-00?(\d{5,7})/);
   if (esiMatch) {
     const key = esiMatch[1].replace(/^0+/, '');
     for (const [name, filePath] of diskIndex) {
-      if (name.includes(key)) return filePath;
+      // Boundary check: key must not be surrounded by more digits
+      const re = new RegExp(`(?<![0-9])0*${key}(?![0-9])`);
+      if (re.test(name)) return filePath;
     }
   }
+
+  // Standard ETSI numbers: "EN 319 403", "SR 003 091", "TS 101 536"
   const allDigits = etsiNumber.replace(/[^0-9]/g, '');
-  for (const len of [7, 6, 5]) {
+  for (const len of [7, 6]) {
     const digits = allDigits.slice(0, len);
     if (digits.length < len) continue;
+    // Require the digit sequence to be at a non-digit boundary in the filename
+    const re = new RegExp(`(?<![0-9])0*${digits.replace(/^0+/, '')}(?![0-9])`);
     for (const [name, filePath] of diskIndex) {
-      if (name.includes(digits)) return filePath;
+      if (re.test(name)) return filePath;
     }
   }
   return null;
 }
 
 async function saveResults(newResults) {
-  let existing = { success: [], skipped: [], changed: [], failed: [], noDownload: [] };
+  let existing = { success: [], redownloaded: [], skipped: [], changed: [], failed: [], noDownload: [] };
   try { existing = JSON.parse(await fs.readFile(RESULTS_FILE, 'utf-8')); } catch { /* first run */ }
-  const successMap = new Map((existing.success ?? []).map(e => [e.etsiNumber, e]));
-  for (const e of newResults.success) successMap.set(e.etsiNumber, e);
-  existing.success    = [...successMap.values()];
-  existing.failed     = newResults.failed;
-  existing.noDownload = newResults.noDownload;
-  existing.changed    = newResults.changed;
+  const successMap = new Map([
+    ...(existing.success     ?? []).map(e => [e.etsiNumber, e]),
+    ...(existing.redownloaded ?? []).map(e => [e.etsiNumber, e]),
+  ]);
+  for (const e of [...(newResults.success ?? []), ...(newResults.redownloaded ?? [])])
+    successMap.set(e.etsiNumber, e);
+  // Split back by whether they are re-downloads
+  const redownloadedNums = new Set((newResults.redownloaded ?? []).map(e => e.etsiNumber));
+  existing.success      = [...successMap.values()].filter(e => !redownloadedNums.has(e.etsiNumber));
+  existing.redownloaded = (newResults.redownloaded ?? []);
+  existing.failed       = newResults.failed;
+  existing.noDownload   = newResults.noDownload;
+  existing.changed      = newResults.changed;
   await fs.writeFile(RESULTS_FILE, JSON.stringify(existing, null, 2));
 }
 
