@@ -5,7 +5,7 @@ import * as cheerio from 'cheerio';
 import { ETSIClient } from '../src/etsi-client.js';
 import {
   saveHeaders, loadHeaders, checkIntegrity, checkRemoteChanged,
-  formatCacheInfo, formatBytes
+  formatCacheInfo, formatBytes, headerCachePath
 } from '../src/http-cache.js';
 import dotenv from 'dotenv';
 
@@ -116,9 +116,12 @@ async function downloadLatestSpecs() {
         console.log(`    \uD83D\uDED1 STOPPED work item \u2014 no file available`);
         if (scheduleUrl) console.log(`    \uD83D\uDCC5 Schedule: ${scheduleUrl}`);
 
-        // Save schedule table sidecar for later analysis
         const sidecarPath = await saveScheduleSidecar(downloadInfo.$, wkiId, item);
-        if (sidecarPath) console.log(`    \uD83D\uDDC3\uFE0F  Sidecar: ${path.relative(path.join(__dirname, '..'), sidecarPath)}`);
+        if (sidecarPath) {
+          // Cache the HTTP response headers next to the sidecar
+          await saveResponseHeaders(sidecarPath, downloadInfo.responseHeaders);
+          console.log(`    \uD83D\uDDC3\uFE0F  Sidecar: ${path.relative(path.join(__dirname, '..'), sidecarPath)}`);
+        }
 
         results.stopped.push({
           etsiNumber: item.etsiNumber,
@@ -218,24 +221,16 @@ async function buildDiskIndex(basePath) {
   return index;
 }
 
-/**
- * Match ETSI number against on-disk filenames.
- *
- * For ESI draft names like "RTS/ESI-0019403-2v122" the part suffix (-2)
- * is included in the match so Part 1 and Part 2 are never confused.
- */
 function findInDiskIndex(diskIndex, etsiNumber) {
-  // ESI draft: "DTS/ESI-0019403-2" → match "0019403-2" or "19403-2"
   const esiMatch = etsiNumber.match(/ESI-0*(\d{5,7})(-\d+)?/);
   if (esiMatch) {
     const num  = esiMatch[1].replace(/^0+/, '');
-    const part = esiMatch[2] ?? '';  // e.g. "-2" or ""
+    const part = esiMatch[2] ?? '';
     const reStr = `(?<![0-9])0*${num}${part ? part.replace('-', '-0*') : ''}(?![0-9])`;
     const re    = new RegExp(reStr);
     for (const [name, filePath] of diskIndex) {
       if (re.test(name)) return filePath;
     }
-    // Fallback: match without part
     if (part) {
       const reFallback = new RegExp(`(?<![0-9])0*${num}(?![0-9])`);
       for (const [name, filePath] of diskIndex) {
@@ -243,8 +238,6 @@ function findInDiskIndex(diskIndex, etsiNumber) {
       }
     }
   }
-
-  // Standard ETSI numbers: "EN 319 403", "SR 003 091", "TS 101 536"
   const allDigits = etsiNumber.replace(/[^0-9]/g, '');
   for (const len of [7, 6]) {
     const digits = allDigits.slice(0, len);
@@ -311,19 +304,26 @@ async function headersOnlyCheck(client, item, existingPath, cache, integrity, re
 /**
  * Fetch the detail page and extract the download URL.
  * Returns:
- *   { url, type }          — normal download
- *   { stopped: true, $ }   — work item is STOPPED (cheerio instance included for sidecar)
- *   null                   — no download found
+ *   { url, type }                       — normal download
+ *   { stopped: true, $, responseHeaders } — STOPPED (cheerio + raw headers for caching)
+ *   null                                — no download found
+ *
+ * responseHeaders is a plain object snapshot of the Fetch Response headers,
+ * captured before .text() consumes the body (headers remain accessible after).
  */
 async function fetchDownloadLink(client, item) {
   if (!item.detailUrl) return null;
   const response = await client.fetch(item.detailUrl, { headers: client.getDefaultHeaders() });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+  // Snapshot headers now — they're still readable after .text()
+  const responseHeaders = snapshotHeaders(response);
+
   const html = await response.text();
 
   if (/\bSTOPPED\b/.test(html)) {
     const $ = cheerio.load(html);
-    return { stopped: true, $ };
+    return { stopped: true, $, responseHeaders };
   }
 
   const $ = cheerio.load(html);
@@ -353,14 +353,36 @@ async function fetchDownloadLink(client, item) {
 }
 
 /**
+ * Snapshot Fetch response headers into a plain object.
+ * Works even after the body has been consumed.
+ */
+function snapshotHeaders(response) {
+  const tracked = ['etag', 'last-modified', 'content-length', 'content-type', 'cache-control'];
+  const snap = { 'x-downloaded-at': new Date().toISOString() };
+  for (const h of tracked) {
+    const v = response.headers.get(h);
+    if (v) snap[h] = v;
+  }
+  return snap;
+}
+
+/**
+ * Write a .headers.<basename> sidecar from a plain-object header snapshot.
+ * Mirrors saveHeaders() from http-cache.js but accepts a pre-captured object.
+ */
+async function saveResponseHeaders(filePath, headerSnapshot) {
+  if (!headerSnapshot) return;
+  const cachePath = headerCachePath(filePath);
+  await fs.writeFile(cachePath, JSON.stringify(headerSnapshot, null, 2));
+}
+
+/**
  * Save the schedule table from the detail page as a sidecar HTML file.
- * Looks for a <table> containing milestone/schedule rows.
- * File: downloads/specs/_stopped/<safe-etsiNumber>.schedule.html
+ * downloads/specs/_stopped/<safe-etsiNumber>.schedule.html
  */
 async function saveScheduleSidecar($, wkiId, item) {
   if (!$) return null;
   try {
-    // Find the schedule/milestone table — usually contains th with "Milestone" or "Stage"
     let scheduleTable = null;
     $('table').each((_, tbl) => {
       const text = $(tbl).text().toLowerCase();
@@ -369,19 +391,18 @@ async function saveScheduleSidecar($, wkiId, item) {
       }
     });
 
-    // Also grab a small context block around STOPPED text for reference
     const stoppedContext = [];
     $('*').each((_, el) => {
       const txt = $(el).children().length === 0 ? $(el).text().trim() : '';
       if (txt.toUpperCase().includes('STOPPED')) stoppedContext.push($(el).parent().html()?.trim() ?? txt);
     });
 
-    const tableHtml   = scheduleTable ? scheduleTable.html() : null;
-    const stoppedDir  = path.join(DOWNLOAD_PATH, '_stopped');
+    const tableHtml  = scheduleTable ? scheduleTable.html() : null;
+    const stoppedDir = path.join(DOWNLOAD_PATH, '_stopped');
     await fs.mkdir(stoppedDir, { recursive: true });
 
-    const safe     = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-    const outPath  = path.join(stoppedDir, `${safe}.schedule.html`);
+    const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+    const outPath = path.join(stoppedDir, `${safe}.schedule.html`);
 
     const payload = [
       `<!-- etsiNumber: ${item.etsiNumber} -->`,
@@ -461,7 +482,6 @@ async function downloadFile(client, downloadInfo, item) {
   }
 }
 
-/** Write a .url.<filename> sidecar recording where the file came from. */
 async function saveUrlSidecar(filePath, url) {
   const source = url.includes('www.etsi.org/deliver') ? 'etsi-delivery'
                : url.includes('docbox.etsi.org')       ? 'docbox'
