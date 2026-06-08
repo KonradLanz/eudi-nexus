@@ -5,21 +5,21 @@
  * backfills them via a HEAD request to their known URL.
  *
  * URL sources (in priority order):
- *   1. _download_results.json (has url field per entry)
- *   2. For ETSI public PDFs: reconstruct from filename pattern
+ *   1. _download_results.json  (url field per entry, keyed by filePath)
+ *   2. guessUrl()              reconstruct from ETSI delivery filename pattern
  *
  * Usage:
  *   npm run backfill-headers
- *   node scripts/backfill-headers.js --dry-run    # list only, no requests
+ *   npm run backfill-headers:dry    # list only, no requests
  */
 
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { saveHeaders, formatBytes } from '../src/http-cache.js';
+import { formatBytes } from '../src/http-cache.js';
 
-const __dirname  = path.dirname(fileURLToPath(import.meta.url));
-const SPECS_PATH = path.join(__dirname, '..', 'downloads', 'specs');
+const __dirname   = path.dirname(fileURLToPath(import.meta.url));
+const SPECS_PATH  = path.join(__dirname, '..', 'downloads', 'specs');
 const RESULTS_FILE = path.join(SPECS_PATH, '_download_results.json');
 
 const dryRun = process.argv.includes('--dry-run');
@@ -29,16 +29,16 @@ async function main() {
   console.log('\uD83D\uDD27 Header Backfill');
   console.log('================\n');
 
-  // Build URL map from results JSON
-  const urlByFile = new Map(); // absolutePath → url
+  // Build URL map: absoluteFilePath → url  (from previous successful downloads)
+  const urlByFile = new Map();
   try {
     const raw = JSON.parse(await fs.readFile(RESULTS_FILE, 'utf-8'));
     for (const entry of (raw.success ?? [])) {
       if (entry.filePath && entry.url) urlByFile.set(entry.filePath, entry.url);
     }
-  } catch { /* no results yet */ }
+  } catch { /* no results yet — first run */ }
 
-  // Find all files without a .headers.* sidecar
+  // Collect all files missing a .headers.* sidecar
   const missing = [];
   const dirs = await fs.readdir(SPECS_PATH, { withFileTypes: true });
   for (const dir of dirs) {
@@ -47,9 +47,9 @@ async function main() {
     const files  = await fs.readdir(subDir);
     for (const file of files) {
       if (file.startsWith('.') || file.startsWith('_')) continue;
-      const filePath    = path.join(subDir, file);
-      const headerPath  = path.join(subDir, `.headers.${file}`);
-      const hasHeaders  = await fs.stat(headerPath).then(() => true).catch(() => false);
+      const filePath   = path.join(subDir, file);
+      const headerPath = path.join(subDir, `.headers.${file}`);
+      const hasHeaders = await fs.stat(headerPath).then(() => true).catch(() => false);
       if (!hasHeaders) missing.push(filePath);
     }
   }
@@ -65,7 +65,7 @@ async function main() {
 
     if (!url) {
       console.log(`  \u2753 ${rel}`);
-      console.log(`     \u2715 No URL found \u2014 skipping (add manually or re-download)`);
+      console.log(`     \u2715 No URL \u2014 will be resolved on next npm run download`);
       skipped++;
       continue;
     }
@@ -85,27 +85,18 @@ async function main() {
       });
 
       if (resp.ok || resp.status === 304) {
-        // saveHeaders expects a Response-like object with a .headers.get() method
-        // and synthesises x-downloaded-at from the file's mtime
-        const stat  = await fs.stat(filePath);
-        const fakeResponse = {
-          headers: {
-            get: (h) => resp.headers.get(h)
-          }
-        };
-        // Override x-downloaded-at with the file's mtime instead of now
-        const rawHeaders = {};
-        for (const h of ['etag','last-modified','content-length','content-type','cache-control']) {
+        const stat = await fs.stat(filePath);
+        const cache = { 'x-downloaded-at': stat.mtime.toISOString() };
+        for (const h of ['etag', 'last-modified', 'content-length', 'content-type', 'cache-control']) {
           const v = resp.headers.get(h);
-          if (v) rawHeaders[h] = v;
+          if (v) cache[h] = v;
         }
-        rawHeaders['x-downloaded-at'] = stat.mtime.toISOString();
         await fs.writeFile(
           path.join(path.dirname(filePath), `.headers.${path.basename(filePath)}`),
-          JSON.stringify(rawHeaders, null, 2)
+          JSON.stringify(cache, null, 2)
         );
-        const size = rawHeaders['content-length'] ? formatBytes(parseInt(rawHeaders['content-length'])) : '?';
-        const etag = rawHeaders['etag'] ? ` | ETag: ${rawHeaders['etag']}` : '';
+        const size = cache['content-length'] ? formatBytes(parseInt(cache['content-length'])) : '?';
+        const etag = cache['etag'] ? ` | ETag: ${cache['etag']}` : '';
         console.log(`     \u2705 ${resp.status} \u2014 Size: ${size}${etag}`);
         ok++;
       } else {
@@ -123,28 +114,39 @@ async function main() {
   console.log(`\n\uD83D\uDCCA Backfill Summary:`);
   console.log(`   \u2705 Written:  ${ok}`);
   console.log(`   \u274C Failed:   ${failed}`);
-  console.log(`   \u2753 Skipped:  ${skipped}`);
+  console.log(`   \u2753 Skipped:  ${skipped}${skipped > 0 ? '  \u2190 re-run after: npm run download' : ''}`);
 }
 
 /**
- * Try to reconstruct the download URL from the filename for public ETSI PDFs.
- * Pattern: downloads/specs/EN/en_319403v020202p.pdf
- *   → https://www.etsi.org/deliver/etsi_en/319400_319499/319403/02.02.02_60/en_319403v020202p.pdf
- * This only works for standard published PDFs, not drafts.
+ * Reconstruct the ETSI public delivery URL from the filename.
+ *
+ * Handles:
+ *   en_319403v020202p.pdf   → etsi_en/319400_319499/319403/02.02.02_60/...
+ *   ts_10153301v010301p.pdf → etsi_ts/1015330_1015399/1015330/...  (7-digit)
+ *   sr_003091v010102p.pdf   → etsi_sr/3000_3099/3091/01.01.02_60/...
+ *   tr_10153302v010301p.pdf → etsi_tr/1015330_1015399/1015332/...
  */
 function guessUrl(filePath) {
   const file = path.basename(filePath).toLowerCase();
-  // Only attempt for standard ETSI delivery filenames: en_NNNNNN vXXYYZZp.pdf
-  const m = file.match(/^(en|ts|tr|es|eg)_(\d{6,7})v(\d{2})(\d{2})(\d{2})p\.pdf$/);
+  // Match: <type>_<num 6-7 digits>v<MM><mm><pp>p.pdf
+  const m = file.match(/^(en|ts|tr|es|eg|sr)_(\d{6,7})v(\d{2})(\d{2})(\d{2})p\.pdf$/);
   if (!m) return null;
+
   const [, type, num, major, minor, patch] = m;
-  const numInt   = parseInt(num);
-  const rangeStart = Math.floor(numInt / 100) * 100;
-  const rangeEnd   = rangeStart + 99;
+  const numInt = parseInt(num);
+
+  // Range bucket: round down to nearest 100 for 6-digit, nearest 10 for 7-digit
+  const bucket   = num.length === 7 ? 10 : 100;
+  const rangeStart = Math.floor(numInt / bucket) * bucket;
+  const rangeEnd   = rangeStart + (bucket - 1);
   const rangeStr   = `${rangeStart}_${rangeEnd}`;
-  const ver        = `${parseInt(major)}.${parseInt(minor)}.${parseInt(patch)}`;
-  const verPad     = `${String(parseInt(major)).padStart(2,'0')}.${String(parseInt(minor)).padStart(2,'0')}.${String(parseInt(patch)).padStart(2,'0')}`;
-  // e.g. https://www.etsi.org/deliver/etsi_en/319400_319499/319403/02.02.02_60/en_319403v020202p.pdf
+
+  const verPad = [
+    String(parseInt(major)).padStart(2, '0'),
+    String(parseInt(minor)).padStart(2, '0'),
+    String(parseInt(patch)).padStart(2, '0')
+  ].join('.');
+
   return `https://www.etsi.org/deliver/etsi_${type}/${rangeStr}/${num}/${verPad}_60/${file}`;
 }
 
