@@ -22,7 +22,7 @@ EN   319   4   01
 ## Die Familie: `319` = Signatur-Welt
 
 **Eselsbrücke:** *„Drei-neunzehn — da wird unterschrieben."*  
-**Dummer Merksatz:** *„319 klingt wie ‚drei-eins-neun' — stell dir vor, du unterschreibst dreimal, einmal, neunmal bis es rechtsgültig ist."*
+**Merksatz:** *„319 — du unterschreibst nicht dreimal, sondern nur 1 x und brauchst deshalb 9 x weniger Papier."*
 
 Alle Normen der `EN 319 xxx`-Familie befassen sich mit elektronischen Signaturen, Vertrauensdiensten und dem digitalen Identitätsökosystem in Europa. Sie sind das technische Rückgrat von eIDAS.
 
@@ -161,5 +161,5 @@ Wenn du ein neues `EN 319 xxx`-Dokument siehst, stelle dir diese drei Fragen:
 2. **Welche Rolle?** → Letzte zwei Stellen: `01`=Spielregeln, `11`=Ausweis-Profil, `21`=Signatur-Profil, `31`=TÜV
 3. **Welche Version?** → `v2.2.1` — und gibt es eine neuere? Schau in die `predecessors`-Kette
 
-**Beispiel:** `EN 319 431 v1.1.1`
+**Beispiel:** `EN 319 431 v1.1.1`  
 → Gruppe `4` = TSP (Wer darf es?) → Suffix `31` = Konformitätsprüfung (TÜV) → **„Der TÜV für Vertrauensdiensteanbieter"** ✓

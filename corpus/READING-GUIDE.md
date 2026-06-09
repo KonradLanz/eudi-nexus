@@ -22,7 +22,7 @@ EN   319   4   01
 ## The Family: `319` = Signature World
 
 **Mnemonic:** *"Three-nineteen — where things get signed."*  
-**Silly hook:** *"319 — think ‘three-one-nine': you sign once, get verified once, and wait nine days for legal validity."*
+**Silly hook:** *"319 — you don't sign three times, just once, and need nine times less paper for it."*
 
 All `EN 319 xxx` standards deal with electronic signatures, trust services, and the digital identity ecosystem in Europe. They are the technical backbone of eIDAS.
 
@@ -32,12 +32,12 @@ All `EN 319 xxx` standards deal with electronic signatures, trust services, and 
 
 | Group | Short Name | Topic | Mnemonic | Silly Hook |
 |-------|------------|-------|----------|------------|
-| `1xx` | SigFormat | Signature formats | *"What does a signature look like?"* | *"1 like ‘first impression' — the shape you see first"* |
-| `2xx` | SigProc | Creation & validation | *"How do you make and verify one?"* | *"2 like ‘two steps' — sign first, then verify"* |
-| `3xx` | TSA | Timestamps | *"When did it happen?"* | *"3 like ‘three o’clock' — the timestamp records when"* |
-| `4xx` | TSP | Trust Service Providers | *"Who is allowed to do it?"* | *"4 like ‘four-eyes principle' — only the authorised may grant trust"* |
-| `5xx` | LTA | Preservation / Long-term archiving | *"How does it stay valid?"* | *"5 like ‘fifty years' — long-term archiving thinks in decades"* |
-| `6xx` | TrustList | Trusted Lists / Trust Status | *"Who knows whom?"* | *"6 like ‘six degrees of separation' — the trust list connects everyone"* |
+| `1xx` | SigFormat | Signature formats | *"What does a signature look like?"* | *"1 like 'first impression' — the shape you see first"* |
+| `2xx` | SigProc | Creation & validation | *"How do you make and verify one?"* | *"2 like 'two steps' — sign first, then verify"* |
+| `3xx` | TSA | Timestamps | *"When did it happen?"* | *"3 like 'three o'clock' — the timestamp records when"* |
+| `4xx` | TSP | Trust Service Providers | *"Who is allowed to do it?"* | *"4 like 'four-eyes principle' — only the authorised may grant trust"* |
+| `5xx` | LTA | Preservation / Long-term archiving | *"How does it stay valid?"* | *"5 like 'fifty years' — long-term archiving thinks in decades"* |
+| `6xx` | TrustList | Trusted Lists / Trust Status | *"Who knows whom?"* | *"6 like 'six degrees of separation' — the trust list connects everyone"* |
 | `46x/47x/49x` | WalletLayer | Wallet, Credentials, Attestations | *"The new wallet universe"* | *"46x/47x/49x — the next generation, almost at 500"* |
 
 ---
@@ -48,12 +48,12 @@ Within each group, the last two digits reveal the **document type**:
 
 | Suffix | Role | Mnemonic | Silly Hook |
 |--------|------|----------|------------|
-| `x01` | Policy / Requirements (general) | *"The rules of the game"* | *"01 like ‘Article 1' — the general framework, the principles"* |
+| `x01` | Policy / Requirements (general) | *"The rules of the game"* | *"01 like 'Article 1' — the general framework, the principles"* |
 | `x11` | Certificate profile | *"What the ID card looks like"* | *"11 like a penalty kick — precisely defined, no room for interpretation"* |
-| `x21` | Signature/service profile | *"What the signature looks like"* | *"21 like ‘blackjack' — the optimal, concrete implementation"* |
-| `x31` | Conformance testing | *"The technical audit"* | *"31 like ‘December 31st' — the deadline when everything gets checked"* |
+| `x21` | Signature/service profile | *"What the signature looks like"* | *"21 like 'blackjack' — the optimal, concrete implementation"* |
+| `x31` | Conformance testing | *"The technical audit"* | *"31 like 'December 31st' — the deadline when everything gets checked"* |
 | `x41` | Trust list format | *"The directory"* | *"41 like a statutory register — formal listing obligation"* |
-| `x51` | Additional profiles / Extensions | *"The special cases"* | *"51 like ‘Area 51' — the specialised, slightly hidden cases"* |
+| `x51` | Additional profiles / Extensions | *"The special cases"* | *"51 like 'Area 51' — the specialised, slightly hidden cases"* |
 
 ---
 
@@ -127,7 +127,7 @@ Within each group, the last two digits reveal the **document type**:
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-|  USE CASES       mDoc (Proximity) · SD-JWT · ZKP (emerging)    |
+|  USE CASES       mDoc (Proximity) · SD-JWT · ZKP (emerging)     |
 |  (iso/oidf)      OID4VP (Presentation) · OID4VCI (Issuance)     |
 ├──────────────────────────────────────────────────────────────────┤
 |  WALLET          TS 119 461 (RemoteID) · 471 (WalletTrust)      |
