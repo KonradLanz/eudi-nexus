@@ -33,7 +33,7 @@
     "ingest": "python3 scripts/pdf-ingest.py downloads/specs/",
     "ingest:one": "python3 scripts/pdf-ingest.py",
     "search": "python3 scripts/spec-search.py",
-    "setup:py": "pip install -r requirements.txt"
+    "setup:py": "pip3 install -r requirements.txt"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
