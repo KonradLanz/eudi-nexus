@@ -15,23 +15,31 @@ dotenv.config({ path: path.join(__dirname, '..', '.env') });
 const DOWNLOAD_PATH = '../downloads/specs';
 const RESULTS_FILE  = path.join(DOWNLOAD_PATH, '_download_results.json');
 const BASE_URL      = 'https://portal.etsi.org';
-
-// Public work-item report — same content as the portal detail page but
-// without navigation chrome, and accessible without login.
 const PUBLIC_REPORT_BASE = 'https://portal.etsi.org/webapp/WorkProgram/Report_WorkItem.asp';
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// Default TTL for workitem sidecars: 8 hours.
+// Within this window no network request is made unless --force-update-check or --force-download.
+const SIDECAR_TTL_MS = 8 * 60 * 60 * 1000;
 
-/** Build the canonical public Report_WorkItem URL for a WKI_ID. */
+// ── CLI flags ─────────────────────────────────────────────────────────────────
+
+const args               = process.argv.slice(2);
+const limitArg           = args.find(a => a.startsWith('--limit='));
+const LIMIT              = limitArg ? parseInt(limitArg.split('=')[1]) : null;
+const PUBLISHED_ONLY     = args.includes('--published-only');
+const HEADERS_ONLY       = args.includes('--headers-only');
+// --force-update-check  → HEAD + ETag for every sidecar; refresh only if 200
+// --force-download      → full GET always; defined clean state, ignores ETag/TTL
+const FORCE_UPDATE_CHECK = args.includes('--force-update-check');
+const FORCE_DOWNLOAD     = args.includes('--force-download');
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 function publicReportUrl(wkiId) {
   if (!wkiId) return null;
   return `${PUBLIC_REPORT_BASE}?WKI_ID=${wkiId}`;
 }
 
-/**
- * Strip query parameters whose value is empty/whitespace.
- * e.g. "...?WKI_ID=78824&action=" → "...?WKI_ID=78824"
- */
 function cleanUrl(raw) {
   try {
     const u = new URL(raw.startsWith('http') ? raw : `${BASE_URL}${raw}`);
@@ -39,9 +47,7 @@ function cleanUrl(raw) {
       if (!v || !v.trim()) u.searchParams.delete(k);
     }
     return u.toString();
-  } catch {
-    return raw;
-  }
+  } catch { return raw; }
 }
 
 function extractWkiId(url) {
@@ -52,19 +58,46 @@ function extractWkiId(url) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ── Main ─────────────────────────────────────────────────────────────────────
+/**
+ * Check whether a sidecar file is fresh enough to skip network.
+ *
+ * Reads x-downloaded-at from the .headers sidecar.
+ * Returns true  → fresh (skip)
+ *         false → stale or no timestamp (re-check)
+ */
+async function isSidecarFresh(sidecarPath) {
+  try {
+    const headersPath = headerCachePath(sidecarPath);
+    const raw = JSON.parse(await fs.readFile(headersPath, 'utf-8'));
+    const downloaded = raw['x-downloaded-at'] ?? raw['x-checked-at'];
+    if (!downloaded) return false;
+    return (Date.now() - new Date(downloaded).getTime()) < SIDECAR_TTL_MS;
+  } catch { return false; }
+}
+
+/**
+ * Touch the sidecar's .headers file with a new x-checked-at timestamp
+ * without changing the main content.
+ */
+async function touchSidecarHeaders(sidecarPath) {
+  try {
+    const headersPath = headerCachePath(sidecarPath);
+    let existing = {};
+    try { existing = JSON.parse(await fs.readFile(headersPath, 'utf-8')); } catch { /* ok */ }
+    existing['x-checked-at'] = new Date().toISOString();
+    await fs.writeFile(headersPath, JSON.stringify(existing, null, 2));
+  } catch { /* non-fatal */ }
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
 
 async function downloadLatestSpecs() {
   console.log('\uD83D\uDCE5 ETSI Specification Downloader');
   console.log('================================\n');
 
-  const args          = process.argv.slice(2);
-  const limitArg      = args.find(a => a.startsWith('--limit='));
-  const limit         = limitArg ? parseInt(limitArg.split('=')[1]) : null;
-  const publishedOnly = args.includes('--published-only');
-  const headersOnly   = args.includes('--headers-only');
-
-  if (headersOnly) console.log('\uD83D\uDC41\uFE0F  Mode: --headers-only (HEAD requests, no downloads)\n');
+  if (FORCE_DOWNLOAD)      console.log('⚡ Mode: --force-download (full GET, ignores ETag/TTL)\n');
+  else if (FORCE_UPDATE_CHECK) console.log('🔍 Mode: --force-update-check (HEAD + ETag for all sidecars)\n');
+  else if (HEADERS_ONLY)   console.log('\uD83D\uDC41\uFE0F  Mode: --headers-only (HEAD requests, no downloads)\n');
 
   const workItems      = JSON.parse(await fs.readFile('../downloads/esi_overview.json', 'utf-8'));
   const activeItems    = workItems.activeWorkItems;
@@ -89,7 +122,7 @@ async function downloadLatestSpecs() {
     changed: [], failed: [], noDownload: [],
   };
 
-  const allItems    = publishedOnly ? publishedItems : [...publishedItems, ...activeItems];
+  const allItems    = PUBLISHED_ONLY ? publishedItems : [...publishedItems, ...activeItems];
   const seen        = new Set();
   const uniqueItems = allItems.filter(item => {
     if (!item.etsiNumber || seen.has(item.etsiNumber)) return false;
@@ -97,8 +130,8 @@ async function downloadLatestSpecs() {
     return true;
   });
 
-  const itemsToProcess = limit ? uniqueItems.slice(0, limit) : uniqueItems;
-  console.log(`\uD83D\uDCE6 Processing ${itemsToProcess.length} specifications${limit ? ` (limited to ${limit})` : ''}...\n`);
+  const itemsToProcess = LIMIT ? uniqueItems.slice(0, LIMIT) : uniqueItems;
+  console.log(`\uD83D\uDCE6 Processing ${itemsToProcess.length} specifications${LIMIT ? ` (limited to ${LIMIT})` : ''}...\n`);
 
   for (let i = 0; i < itemsToProcess.length; i++) {
     const item     = itemsToProcess[i];
@@ -119,18 +152,23 @@ async function downloadLatestSpecs() {
         const relPath   = path.relative(path.join(__dirname, '..'), existingPath);
 
         if (!integrity.ok && integrity.cachedSize !== null) {
-          console.log(`    \u26A0\uFE0F  Integrity FAIL \u2014 disk: ${formatBytes(integrity.diskSize)}, expected: ${formatBytes(integrity.cachedSize)} \u2014 re-downloading`);
-          console.log(`    \uD83D\uDCC4 ${relPath}`);
+          // Corrupted — always re-download
+          console.log(`    \u26A0\uFE0F  Integrity FAIL \u2014 re-downloading`);
           needsDownload = true;
           isRedownload  = true;
-        } else if (headersOnly) {
+        } else if (FORCE_DOWNLOAD) {
+          // Explicit clean-slate re-download
+          console.log(`    \uD83D\uDD04 --force-download \u2014 re-downloading`);
+          needsDownload = true;
+          isRedownload  = true;
+        } else if (HEADERS_ONLY || FORCE_UPDATE_CHECK) {
           await headersOnlyCheck(client, item, existingPath, cache, integrity, results);
           await sleep(200);
           continue;
         } else {
-          const cacheInfo = formatCacheInfo(cache, integrity);
-          const noHeaders = !cache ? ' \u26A0\uFE0F no HTTP headers cached \u2014 run npm run backfill-headers' : '';
-          console.log(`    \u23ED\uFE0F  Cached: ${cacheInfo}${noHeaders}`);
+          // Default: serve from cache
+          const noHeaders = !cache ? ' \u26A0\uFE0F no HTTP headers cached' : '';
+          console.log(`    \u23ED\uFE0F  Cached: ${formatCacheInfo(cache, integrity)}${noHeaders}`);
           console.log(`    \uD83D\uDCC4 ${relPath}`);
           results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
           continue;
@@ -142,7 +180,7 @@ async function downloadLatestSpecs() {
       needsDownload = true;
     }
 
-    if (headersOnly) {
+    if (HEADERS_ONLY) {
       console.log(`    \u23ED\uFE0F  Not cached \u2014 skipping (headers-only mode)`);
       continue;
     }
@@ -152,9 +190,42 @@ async function downloadLatestSpecs() {
       const info = await fetchDetailPage(client, item);
 
       if (info) {
-        // Sidecars — skip silently if already on disk
-        const wiPath = await saveWorkitemSidecar(info.html, info.wkiId, item);
-        if (wiPath) await saveResponseHeaders(wiPath, info.responseHeaders);
+        // ── Workitem sidecar ───────────────────────────────────────────────
+        const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const wiDir   = path.join(DOWNLOAD_PATH, '_workitems');
+        const wiPath  = path.join(wiDir, `${safe}.workitem.html`);
+        await fs.mkdir(wiDir, { recursive: true });
+
+        const wiExists = await fs.stat(wiPath).then(() => true).catch(() => false);
+        const fresh    = wiExists && !FORCE_UPDATE_CHECK && !FORCE_DOWNLOAD
+                         ? await isSidecarFresh(wiPath)
+                         : false;
+
+        if (fresh) {
+          console.log(`    \u23ED\uFE0F  Workitem sidecar fresh (< ${SIDECAR_TTL_MS / 3600000}h)`);
+        } else if (FORCE_UPDATE_CHECK && wiExists) {
+          // HEAD + ETag for the workitem URL
+          const wiUrl = publicReportUrl(info.wkiId);
+          if (wiUrl) {
+            const check = await checkRemoteChanged(wiUrl, wiPath).catch(() => ({ changed: null }));
+            if (check.changed === true) {
+              console.log(`    🔄 Workitem changed — refreshing sidecar`);
+              await saveWorkitemSidecarForced(info.html, info.wkiId, item, wiPath);
+              await saveResponseHeaders(wiPath, info.responseHeaders);
+            } else {
+              await touchSidecarHeaders(wiPath);
+              console.log(`    ✅ Workitem sidecar up-to-date`);
+            }
+          }
+        } else if (FORCE_DOWNLOAD || !wiExists) {
+          // Full write
+          await saveWorkitemSidecarForced(info.html, info.wkiId, item, wiPath);
+          await saveResponseHeaders(wiPath, info.responseHeaders);
+        } else {
+          // First time — write once
+          const saved = await saveWorkitemSidecar(info.html, info.wkiId, item);
+          if (saved) await saveResponseHeaders(saved, info.responseHeaders);
+        }
 
         const scPath = await saveScheduleSidecar(info.$, info.wkiId, item);
         if (scPath) await saveResponseHeaders(scPath, info.responseHeaders);
@@ -169,13 +240,7 @@ async function downloadLatestSpecs() {
           : null;
         console.log(`    \uD83D\uDED1 STOPPED work item \u2014 no file available`);
         if (scheduleUrl) console.log(`    \uD83D\uDCC5 ${scheduleUrl}`);
-        results.stopped.push({
-          etsiNumber: item.etsiNumber,
-          wkiId:      info.wkiId,
-          scheduleUrl,
-          detailUrl:  item.detailUrl,
-          status:     info.status ?? null,
-        });
+        results.stopped.push({ etsiNumber: item.etsiNumber, wkiId: info.wkiId, scheduleUrl, detailUrl: item.detailUrl, status: info.status ?? null });
         await sleep(200);
         continue;
       }
@@ -197,11 +262,7 @@ async function downloadLatestSpecs() {
           console.log(`    \u274C Download failed`);
         }
       } else {
-        results.noDownload.push({
-          etsiNumber: item.etsiNumber,
-          reason:     'No download link found',
-          status:     info?.status ?? null,
-        });
+        results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No download link found', status: info?.status ?? null });
         console.log(`    \u26A0\uFE0F  No download link found`);
       }
 
@@ -215,7 +276,7 @@ async function downloadLatestSpecs() {
   await saveResults(results);
 
   console.log('\n\uD83D\uDCCA Download Summary:');
-  if (headersOnly) {
+  if (HEADERS_ONLY || FORCE_UPDATE_CHECK) {
     console.log(`   \u2705 Up-to-date:             ${results.skipped.length}`);
     console.log(`   \uD83D\uDD04 Changed on remote:      ${results.changed.length}`);
     console.log(`   \u26A0\uFE0F  No download available:  ${results.noDownload.length}`);
@@ -317,7 +378,7 @@ async function saveResults(newResults) {
   await fs.writeFile(RESULTS_FILE, JSON.stringify(existing, null, 2));
 }
 
-// ── Headers-only check ───────────────────────────────────────────────────────
+// ── Headers-only / force-update-check ────────────────────────────────────────
 
 async function headersOnlyCheck(client, item, existingPath, cache, integrity, results) {
   const info    = await fetchDetailPage(client, item).catch(() => null);
@@ -334,6 +395,7 @@ async function headersOnlyCheck(client, item, existingPath, cache, integrity, re
     console.log(`    \uD83D\uDCC4 ${relPath}`);
     results.changed.push({ etsiNumber: item.etsiNumber, reason: check.reason, url: info.url, filePath: existingPath });
   } else if (check.changed === false) {
+    await touchSidecarHeaders(existingPath);
     console.log(`    \u2705 Up-to-date: ${formatCacheInfo(cache, integrity)}`);
     console.log(`    \uD83D\uDCC4 ${relPath}`);
     results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
@@ -346,43 +408,23 @@ async function headersOnlyCheck(client, item, existingPath, cache, integrity, re
 
 // ── Network helpers ───────────────────────────────────────────────────────────
 
-/**
- * Fetch the work-item detail page and extract all useful data in one pass.
- *
- * Strategy:
- *   1. Try public Report_WorkItem.asp?WKI_ID=... (no login, cleaner HTML)
- *      → found download link or STOPPED  →  done
- *      → no download link                →  fall through
- *   2. Authenticated portal detailUrl
- *      → may expose draft .docx / .zip links
- *
- * Returns:
- *   { url, type, $, html, responseHeaders, status, wkiId, usedLogin, stopped? }
- *   null  — no WKI_ID and no detailUrl
- */
 async function fetchDetailPage(client, item) {
   const wkiId     = extractWkiId(item.detailUrl) ?? extractWkiId(item.wkiId);
   const publicUrl = publicReportUrl(wkiId);
   const portalUrl = item.detailUrl ? cleanUrl(item.detailUrl) : null;
 
-  // 1. Public URL
   if (publicUrl) {
     try {
-      const res = await fetch(publicUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
-        redirect: 'follow',
-      });
+      const res = await fetch(publicUrl, { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' }, redirect: 'follow' });
       if (res.ok) {
         const responseHeaders = snapshotHeaders(res);
         const html   = await res.text();
         const parsed = parseDetailHtml(html, wkiId, responseHeaders, false);
         if (parsed.url || parsed.stopped) return parsed;
-        // no download link found on public page → try authenticated
       }
-    } catch { /* network error — fall through */ }
+    } catch { /* fall through */ }
   }
 
-  // 2. Authenticated portal fallback
   if (!portalUrl) return null;
   const res = await client.fetch(portalUrl, { headers: client.getDefaultHeaders() });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -391,10 +433,6 @@ async function fetchDetailPage(client, item) {
   return parseDetailHtml(html, wkiId, responseHeaders, true);
 }
 
-/**
- * Parse a work-item detail HTML page.
- * Extracts: status, STOPPED flag, best download URL+type.
- */
 function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
   const $      = cheerio.load(html);
   const status = extractStatus(html);
@@ -405,47 +443,30 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
 
   let downloadUrl = null, downloadType = null;
 
-  // Published PDF on etsi.org/deliver (public CDN, preferred)
   $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
     const href = $(el).attr('href');
     if (href?.includes('.pdf')) { downloadUrl = href; downloadType = 'pdf'; }
   });
-
-  // PDA download
   if (!downloadUrl) $('a[href*="pda.etsi.org"]').each((_, el) => {
     const href = $(el).attr('href');
     if (href) { downloadUrl = href; downloadType = 'pda'; }
   });
-
-  // Generic .pdf or .zip on any etsi domain
   if (!downloadUrl) $('a').each((_, el) => {
     const href = $(el).attr('href') || '';
-    if (!downloadUrl && href.includes('.pdf') && href.includes('etsi'))
-      { downloadUrl = href; downloadType = 'pdf'; }
-    else if (!downloadUrl && href.includes('.zip') && href.includes('etsi'))
-      { downloadUrl = href; downloadType = 'zip'; }
+    if (!downloadUrl && href.includes('.pdf') && href.includes('etsi'))  { downloadUrl = href; downloadType = 'pdf'; }
+    else if (!downloadUrl && href.includes('.zip') && href.includes('etsi')) { downloadUrl = href; downloadType = 'zip'; }
   });
-
-  // Docbox drafts: .docx / .doc / .pdf / .zip
   if (!downloadUrl) $('a[href*="docbox.etsi.org"]').each((_, el) => {
     const href = $(el).attr('href')?.trim();
     if (!href) return;
-    if (href.includes('.docx') || href.includes('.doc'))
-      { downloadUrl = href; downloadType = 'draft-docx'; return false; }
-    if (href.includes('.pdf'))
-      { downloadUrl = href; downloadType = 'draft-pdf'; return false; }
-    if (href.includes('.zip'))
-      { downloadUrl = href; downloadType = 'zip'; }
+    if (href.includes('.docx') || href.includes('.doc'))  { downloadUrl = href; downloadType = 'draft-docx'; return false; }
+    if (href.includes('.pdf'))                             { downloadUrl = href; downloadType = 'draft-pdf';  return false; }
+    if (href.includes('.zip'))                             { downloadUrl = href; downloadType = 'zip'; }
   });
 
   return { url: downloadUrl ?? null, type: downloadType, $, html, responseHeaders, status, wkiId, usedLogin };
 }
 
-/**
- * Extract work item status from raw HTML.
- * Text immediately after the "<!-- Status Last Update -->" comment.
- * e.g. "Work item adopted (2026-06-03)"
- */
 function extractStatus(html) {
   const after = html.split('<!-- Status Last Update -->')[1];
   if (!after) return null;
@@ -472,9 +493,9 @@ async function saveResponseHeaders(filePath, headerSnapshot) {
   await fs.writeFile(headerCachePath(filePath), JSON.stringify(headerSnapshot, null, 2));
 }
 
-// ── Sidecar writers ────────────────────────────────────────────────────────────
+// ── Sidecar writers ───────────────────────────────────────────────────────────
 
-/** Save full work item HTML → _workitems/<safe>.workitem.html */
+/** Write workitem sidecar only if it does not exist yet. */
 async function saveWorkitemSidecar(html, wkiId, item) {
   if (!html) return null;
   try {
@@ -483,12 +504,30 @@ async function saveWorkitemSidecar(html, wkiId, item) {
     const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
     const outPath = path.join(dir, `${safe}.workitem.html`);
     if (await fs.stat(outPath).then(() => true).catch(() => false)) return outPath;
-    await fs.writeFile(outPath, html, 'utf-8');
+    await fs.writeFile(outPath, [
+      `<!-- etsiNumber: ${item.etsiNumber} -->`,
+      `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
+      `<!-- savedAt: ${new Date().toISOString()} -->`,
+      '',
+      html,
+    ].join('\n'), 'utf-8');
     return outPath;
   } catch (err) {
     console.log(`    \u26A0\uFE0F  Could not save workitem sidecar: ${err.message}`);
     return null;
   }
+}
+
+/** Overwrite workitem sidecar unconditionally (--force-download / changed). */
+async function saveWorkitemSidecarForced(html, wkiId, item, outPath) {
+  if (!html) return;
+  await fs.writeFile(outPath, [
+    `<!-- etsiNumber: ${item.etsiNumber} -->`,
+    `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
+    `<!-- savedAt: ${new Date().toISOString()} -->`,
+    '',
+    html,
+  ].join('\n'), 'utf-8');
 }
 
 /** Save schedule/milestone table → _schedules/<safe>.schedule.html */
@@ -521,9 +560,7 @@ async function saveScheduleSidecar($, wkiId, item) {
       `<!-- detailUrl: ${item.detailUrl ?? ''} -->`,
       `<!-- savedAt: ${new Date().toISOString()} -->`,
       '',
-      ...(stoppedCtx.length
-        ? ['<!-- === STOPPED CONTEXT === -->', stoppedCtx.map(s => `<div class="stopped-ctx">${s}</div>`).join('\n'), '']
-        : []),
+      ...(stoppedCtx.length ? ['<!-- === STOPPED CONTEXT === -->', stoppedCtx.map(s => `<div class="stopped-ctx">${s}</div>`).join('\n'), ''] : []),
       '<!-- === SCHEDULE TABLE === -->',
       tableHtml ? `<table class="schedule-table">${tableHtml}</table>` : '<!-- no schedule table found -->',
     ].join('\n');
@@ -540,7 +577,6 @@ async function saveScheduleSidecar($, wkiId, item) {
 
 async function downloadFile(client, info, item) {
   try {
-    // Public ETSI delivery CDN needs no auth; everything else uses the session
     const isPublic = info.url.includes('www.etsi.org/deliver');
     const fetchFn  = isPublic ? fetch : client.fetch.bind(client);
     const response = await fetchFn(info.url, {
@@ -551,7 +587,6 @@ async function downloadFile(client, info, item) {
     });
     if (!response.ok) return null;
 
-    // Filename: content-disposition → URL path → safe fallback
     let filename = null;
     const cd = response.headers.get('content-disposition');
     if (cd) {
@@ -581,11 +616,7 @@ async function downloadFile(client, info, item) {
     await saveHeaders(filePath, response);
     await saveUrlSidecar(filePath, info.url, info.type);
 
-    return {
-      label:    `${subDir}/${filename} (${formatBytes(buffer.length)})`,
-      filePath,
-      url:      info.url,
-    };
+    return { label: `${subDir}/${filename} (${formatBytes(buffer.length)})`, filePath, url: info.url };
   } catch (error) {
     console.error(`    Download error: ${error.message}`);
     return null;
