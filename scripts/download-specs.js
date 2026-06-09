@@ -10,15 +10,16 @@ import {
 import dotenv from 'dotenv';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+const PROJECT_ROOT = path.join(__dirname, '..');
+dotenv.config({ path: path.join(PROJECT_ROOT, '.env') });
 
-const DOWNLOAD_PATH = '../downloads/specs';
-const RESULTS_FILE  = path.join(DOWNLOAD_PATH, '_download_results.json');
-const BASE_URL      = 'https://portal.etsi.org';
+// All paths relative to __dirname so the script works regardless of CWD
+const DOWNLOAD_PATH  = path.join(PROJECT_ROOT, 'downloads', 'specs');
+const OVERVIEW_FILE  = path.join(PROJECT_ROOT, 'downloads', 'esi_overview.json');
+const RESULTS_FILE   = path.join(DOWNLOAD_PATH, '_download_results.json');
+const BASE_URL       = 'https://portal.etsi.org';
 const PUBLIC_REPORT_BASE = 'https://portal.etsi.org/webapp/WorkProgram/Report_WorkItem.asp';
 
-// Default TTL for workitem sidecars: 8 hours.
-// Within this window no network request is made unless --force-update-check or --force-download.
 const SIDECAR_TTL_MS = 8 * 60 * 60 * 1000;
 
 // ── CLI flags ─────────────────────────────────────────────────────────────────
@@ -28,8 +29,6 @@ const limitArg           = args.find(a => a.startsWith('--limit='));
 const LIMIT              = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const PUBLISHED_ONLY     = args.includes('--published-only');
 const HEADERS_ONLY       = args.includes('--headers-only');
-// --force-update-check  → HEAD + ETag for every sidecar; refresh only if 200
-// --force-download      → full GET always; defined clean state, ignores ETag/TTL
 const FORCE_UPDATE_CHECK = args.includes('--force-update-check');
 const FORCE_DOWNLOAD     = args.includes('--force-download');
 
@@ -58,34 +57,22 @@ function extractWkiId(url) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-/**
- * Check whether a sidecar file is fresh enough to skip network.
- *
- * Reads x-downloaded-at from the .headers sidecar.
- * Returns true  → fresh (skip)
- *         false → stale or no timestamp (re-check)
- */
 async function isSidecarFresh(sidecarPath) {
   try {
-    const headersPath = headerCachePath(sidecarPath);
-    const raw = JSON.parse(await fs.readFile(headersPath, 'utf-8'));
+    const raw        = JSON.parse(await fs.readFile(headerCachePath(sidecarPath), 'utf-8'));
     const downloaded = raw['x-downloaded-at'] ?? raw['x-checked-at'];
     if (!downloaded) return false;
     return (Date.now() - new Date(downloaded).getTime()) < SIDECAR_TTL_MS;
   } catch { return false; }
 }
 
-/**
- * Touch the sidecar's .headers file with a new x-checked-at timestamp
- * without changing the main content.
- */
 async function touchSidecarHeaders(sidecarPath) {
   try {
-    const headersPath = headerCachePath(sidecarPath);
+    const p = headerCachePath(sidecarPath);
     let existing = {};
-    try { existing = JSON.parse(await fs.readFile(headersPath, 'utf-8')); } catch { /* ok */ }
+    try { existing = JSON.parse(await fs.readFile(p, 'utf-8')); } catch { /* ok */ }
     existing['x-checked-at'] = new Date().toISOString();
-    await fs.writeFile(headersPath, JSON.stringify(existing, null, 2));
+    await fs.writeFile(p, JSON.stringify(existing, null, 2));
   } catch { /* non-fatal */ }
 }
 
@@ -95,11 +82,11 @@ async function downloadLatestSpecs() {
   console.log('\uD83D\uDCE5 ETSI Specification Downloader');
   console.log('================================\n');
 
-  if (FORCE_DOWNLOAD)      console.log('⚡ Mode: --force-download (full GET, ignores ETag/TTL)\n');
+  if (FORCE_DOWNLOAD)          console.log('⚡ Mode: --force-download (full GET, ignores ETag/TTL)\n');
   else if (FORCE_UPDATE_CHECK) console.log('🔍 Mode: --force-update-check (HEAD + ETag for all sidecars)\n');
-  else if (HEADERS_ONLY)   console.log('\uD83D\uDC41\uFE0F  Mode: --headers-only (HEAD requests, no downloads)\n');
+  else if (HEADERS_ONLY)       console.log('\uD83D\uDC41\uFE0F  Mode: --headers-only (HEAD requests, no downloads)\n');
 
-  const workItems      = JSON.parse(await fs.readFile('../downloads/esi_overview.json', 'utf-8'));
+  const workItems      = JSON.parse(await fs.readFile(OVERVIEW_FILE, 'utf-8'));
   const activeItems    = workItems.activeWorkItems;
   const publishedItems = workItems.publishedDocuments;
   console.log(`\uD83D\uDCCB Found ${activeItems.length} active + ${publishedItems.length} published items\n`);
@@ -149,15 +136,13 @@ async function downloadLatestSpecs() {
       if (fileExists) {
         const cache     = await loadHeaders(existingPath);
         const integrity = await checkIntegrity(existingPath);
-        const relPath   = path.relative(path.join(__dirname, '..'), existingPath);
+        const relPath   = path.relative(PROJECT_ROOT, existingPath);
 
         if (!integrity.ok && integrity.cachedSize !== null) {
-          // Corrupted — always re-download
           console.log(`    \u26A0\uFE0F  Integrity FAIL \u2014 re-downloading`);
           needsDownload = true;
           isRedownload  = true;
         } else if (FORCE_DOWNLOAD) {
-          // Explicit clean-slate re-download
           console.log(`    \uD83D\uDD04 --force-download \u2014 re-downloading`);
           needsDownload = true;
           isRedownload  = true;
@@ -166,7 +151,6 @@ async function downloadLatestSpecs() {
           await sleep(200);
           continue;
         } else {
-          // Default: serve from cache
           const noHeaders = !cache ? ' \u26A0\uFE0F no HTTP headers cached' : '';
           console.log(`    \u23ED\uFE0F  Cached: ${formatCacheInfo(cache, integrity)}${noHeaders}`);
           console.log(`    \uD83D\uDCC4 ${relPath}`);
@@ -180,49 +164,41 @@ async function downloadLatestSpecs() {
       needsDownload = true;
     }
 
-    if (HEADERS_ONLY) {
-      console.log(`    \u23ED\uFE0F  Not cached \u2014 skipping (headers-only mode)`);
-      continue;
-    }
+    if (HEADERS_ONLY) { console.log(`    \u23ED\uFE0F  Not cached \u2014 skipping (headers-only mode)`); continue; }
     if (!needsDownload) continue;
 
     try {
       const info = await fetchDetailPage(client, item);
 
       if (info) {
-        // ── Workitem sidecar ───────────────────────────────────────────────
-        const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-        const wiDir   = path.join(DOWNLOAD_PATH, '_workitems');
-        const wiPath  = path.join(wiDir, `${safe}.workitem.html`);
+        const safe   = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+        const wiDir  = path.join(DOWNLOAD_PATH, '_workitems');
+        const wiPath = path.join(wiDir, `${safe}.workitem.html`);
         await fs.mkdir(wiDir, { recursive: true });
 
         const wiExists = await fs.stat(wiPath).then(() => true).catch(() => false);
         const fresh    = wiExists && !FORCE_UPDATE_CHECK && !FORCE_DOWNLOAD
-                         ? await isSidecarFresh(wiPath)
-                         : false;
+                         ? await isSidecarFresh(wiPath) : false;
 
         if (fresh) {
           console.log(`    \u23ED\uFE0F  Workitem sidecar fresh (< ${SIDECAR_TTL_MS / 3600000}h)`);
         } else if (FORCE_UPDATE_CHECK && wiExists) {
-          // HEAD + ETag for the workitem URL
           const wiUrl = publicReportUrl(info.wkiId);
           if (wiUrl) {
             const check = await checkRemoteChanged(wiUrl, wiPath).catch(() => ({ changed: null }));
             if (check.changed === true) {
-              console.log(`    🔄 Workitem changed — refreshing sidecar`);
+              console.log(`    \uD83D\uDD04 Workitem changed \u2014 refreshing sidecar`);
               await saveWorkitemSidecarForced(info.html, info.wkiId, item, wiPath);
               await saveResponseHeaders(wiPath, info.responseHeaders);
             } else {
               await touchSidecarHeaders(wiPath);
-              console.log(`    ✅ Workitem sidecar up-to-date`);
+              console.log(`    \u2705 Workitem sidecar up-to-date`);
             }
           }
         } else if (FORCE_DOWNLOAD || !wiExists) {
-          // Full write
           await saveWorkitemSidecarForced(info.html, info.wkiId, item, wiPath);
           await saveResponseHeaders(wiPath, info.responseHeaders);
         } else {
-          // First time — write once
           const saved = await saveWorkitemSidecar(info.html, info.wkiId, item);
           if (saved) await saveResponseHeaders(saved, info.responseHeaders);
         }
@@ -236,8 +212,7 @@ async function downloadLatestSpecs() {
 
       if (info?.stopped) {
         const scheduleUrl = info.wkiId
-          ? `https://portal.etsi.org/eWPM/index.html#/schedule?WKI_ID=${info.wkiId}`
-          : null;
+          ? `https://portal.etsi.org/eWPM/index.html#/schedule?WKI_ID=${info.wkiId}` : null;
         console.log(`    \uD83D\uDED1 STOPPED work item \u2014 no file available`);
         if (scheduleUrl) console.log(`    \uD83D\uDCC5 ${scheduleUrl}`);
         results.stopped.push({ etsiNumber: item.etsiNumber, wkiId: info.wkiId, scheduleUrl, detailUrl: item.detailUrl, status: info.status ?? null });
@@ -249,14 +224,9 @@ async function downloadLatestSpecs() {
         const result = await downloadFile(client, info, item);
         if (result) {
           const entry = { etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url, status: info.status ?? null };
-          if (isRedownload) {
-            results.redownloaded.push(entry);
-            console.log(`    \uD83D\uDD04 Re-downloaded: ${result.label}`);
-          } else {
-            results.success.push(entry);
-            console.log(`    \u2705 Downloaded: ${result.label}`);
-          }
-          console.log(`    \uD83D\uDCC4 ${path.relative(path.join(__dirname, '..'), result.filePath)}`);
+          if (isRedownload) { results.redownloaded.push(entry); console.log(`    \uD83D\uDD04 Re-downloaded: ${result.label}`); }
+          else              { results.success.push(entry);      console.log(`    \u2705 Downloaded: ${result.label}`); }
+          console.log(`    \uD83D\uDCC4 ${path.relative(PROJECT_ROOT, result.filePath)}`);
         } else {
           results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download returned no data', url: info.url });
           console.log(`    \u274C Download failed`);
@@ -330,16 +300,11 @@ function findInDiskIndex(diskIndex, etsiNumber) {
   if (esiMatch) {
     const num  = esiMatch[1].replace(/^0+/, '');
     const part = esiMatch[2] ?? '';
-    const reStr = `(?<![0-9])0*${num}${part ? part.replace('-', '-0*') : ''}(?![0-9])`;
-    const re    = new RegExp(reStr);
-    for (const [name, filePath] of diskIndex) {
-      if (re.test(name)) return filePath;
-    }
+    const re   = new RegExp(`(?<![0-9])0*${num}${part ? part.replace('-', '-0*') : ''}(?![0-9])`);
+    for (const [name, filePath] of diskIndex) { if (re.test(name)) return filePath; }
     if (part) {
-      const reFallback = new RegExp(`(?<![0-9])0*${num}(?![0-9])`);
-      for (const [name, filePath] of diskIndex) {
-        if (reFallback.test(name)) return filePath;
-      }
+      const reFb = new RegExp(`(?<![0-9])0*${num}(?![0-9])`);
+      for (const [name, filePath] of diskIndex) { if (reFb.test(name)) return filePath; }
     }
   }
   const allDigits = etsiNumber.replace(/[^0-9]/g, '');
@@ -347,9 +312,7 @@ function findInDiskIndex(diskIndex, etsiNumber) {
     const digits = allDigits.slice(0, len);
     if (digits.length < len) continue;
     const re = new RegExp(`(?<![0-9])0*${digits.replace(/^0+/, '')}(?![0-9])`);
-    for (const [name, filePath] of diskIndex) {
-      if (re.test(name)) return filePath;
-    }
+    for (const [name, filePath] of diskIndex) { if (re.test(name)) return filePath; }
   }
   return null;
 }
@@ -382,7 +345,7 @@ async function saveResults(newResults) {
 
 async function headersOnlyCheck(client, item, existingPath, cache, integrity, results) {
   const info    = await fetchDetailPage(client, item).catch(() => null);
-  const relPath = path.relative(path.join(__dirname, '..'), existingPath);
+  const relPath = path.relative(PROJECT_ROOT, existingPath);
   if (!info?.url) {
     console.log(`    \u23ED\uFE0F  Cached (no URL to HEAD): ${formatCacheInfo(cache, integrity)}`);
     console.log(`    \uD83D\uDCC4 ${relPath}`);
@@ -437,9 +400,7 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
   const $      = cheerio.load(html);
   const status = extractStatus(html);
 
-  if (/\bSTOPPED\b/.test(html)) {
-    return { stopped: true, $, html, responseHeaders, status, wkiId, usedLogin };
-  }
+  if (/\bSTOPPED\b/.test(html)) return { stopped: true, $, html, responseHeaders, status, wkiId, usedLogin };
 
   let downloadUrl = null, downloadType = null;
 
@@ -481,10 +442,7 @@ function extractStatus(html) {
 function snapshotHeaders(response) {
   const tracked = ['etag', 'last-modified', 'content-length', 'content-type', 'cache-control'];
   const snap    = { 'x-downloaded-at': new Date().toISOString() };
-  for (const h of tracked) {
-    const v = response.headers.get(h);
-    if (v) snap[h] = v;
-  }
+  for (const h of tracked) { const v = response.headers.get(h); if (v) snap[h] = v; }
   return snap;
 }
 
@@ -495,7 +453,6 @@ async function saveResponseHeaders(filePath, headerSnapshot) {
 
 // ── Sidecar writers ───────────────────────────────────────────────────────────
 
-/** Write workitem sidecar only if it does not exist yet. */
 async function saveWorkitemSidecar(html, wkiId, item) {
   if (!html) return null;
   try {
@@ -508,8 +465,7 @@ async function saveWorkitemSidecar(html, wkiId, item) {
       `<!-- etsiNumber: ${item.etsiNumber} -->`,
       `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
       `<!-- savedAt: ${new Date().toISOString()} -->`,
-      '',
-      html,
+      '', html,
     ].join('\n'), 'utf-8');
     return outPath;
   } catch (err) {
@@ -518,19 +474,16 @@ async function saveWorkitemSidecar(html, wkiId, item) {
   }
 }
 
-/** Overwrite workitem sidecar unconditionally (--force-download / changed). */
 async function saveWorkitemSidecarForced(html, wkiId, item, outPath) {
   if (!html) return;
   await fs.writeFile(outPath, [
     `<!-- etsiNumber: ${item.etsiNumber} -->`,
     `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
     `<!-- savedAt: ${new Date().toISOString()} -->`,
-    '',
-    html,
+    '', html,
   ].join('\n'), 'utf-8');
 }
 
-/** Save schedule/milestone table → _schedules/<safe>.schedule.html */
 async function saveScheduleSidecar($, wkiId, item) {
   if (!$) return null;
   try {
@@ -546,13 +499,11 @@ async function saveScheduleSidecar($, wkiId, item) {
       if (text.includes('milestone') || text.includes('stage') || text.includes('target'))
         scheduleTable = $(tbl);
     });
-
     const stoppedCtx = [];
     $('*').each((_, el) => {
       const txt = $(el).children().length === 0 ? $(el).text().trim() : '';
       if (txt.toUpperCase().includes('STOPPED')) stoppedCtx.push($(el).parent().html()?.trim() ?? txt);
     });
-
     const tableHtml = scheduleTable ? scheduleTable.html() : null;
     const payload = [
       `<!-- etsiNumber: ${item.etsiNumber} -->`,
@@ -564,7 +515,6 @@ async function saveScheduleSidecar($, wkiId, item) {
       '<!-- === SCHEDULE TABLE === -->',
       tableHtml ? `<table class="schedule-table">${tableHtml}</table>` : '<!-- no schedule table found -->',
     ].join('\n');
-
     await fs.writeFile(outPath, payload, 'utf-8');
     return outPath;
   } catch (err) {
@@ -589,10 +539,7 @@ async function downloadFile(client, info, item) {
 
     let filename = null;
     const cd = response.headers.get('content-disposition');
-    if (cd) {
-      const m = cd.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
-      if (m) filename = m[1].replace(/["']/g, '');
-    }
+    if (cd) { const m = cd.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/); if (m) filename = m[1].replace(/["']/g, ''); }
     if (!filename) filename = path.basename(new URL(info.url).pathname);
     if (!filename || filename === '' || filename === '/') {
       const safe = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
@@ -602,10 +549,7 @@ async function downloadFile(client, info, item) {
     filename = filename.replace(/[<>:"/\\|?*]/g, '_');
 
     const buffer = Buffer.from(await response.arrayBuffer());
-    if (buffer.length < 1000) {
-      console.log(`    \u26A0\uFE0F File too small (${buffer.length} bytes) \u2014 skipping`);
-      return null;
-    }
+    if (buffer.length < 1000) { console.log(`    \u26A0\uFE0F File too small (${buffer.length} bytes) \u2014 skipping`); return null; }
 
     const typeMatch = item.etsiNumber?.match(/^(EN|TS|TR|ES|EG)/i);
     const subDir    = typeMatch ? typeMatch[1].toUpperCase() : 'Other';
