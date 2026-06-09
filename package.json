@@ -30,10 +30,11 @@
     "retry-failed": "cd scripts && node retry-failed.js",
     "serve": "cd downloads && python3 -m http.server 9999",
     "all": "npm run scrape && npm run analyze && npm run markdown && npm run download:oidf",
-    "ingest": "python3 scripts/pdf-ingest.py downloads/specs/",
-    "ingest:one": "python3 scripts/pdf-ingest.py",
-    "search": "python3 scripts/spec-search.py",
-    "setup:py": "pip3 install -r requirements.txt"
+    "setup:venv": "python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && echo '\n✅ Done. Activate with: source .venv/bin/activate'",
+    "setup:py": "npm run setup:venv",
+    "ingest": ".venv/bin/python3 scripts/pdf-ingest.py downloads/specs/",
+    "ingest:one": ".venv/bin/python3 scripts/pdf-ingest.py",
+    "search": ".venv/bin/python3 scripts/spec-search.py"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
