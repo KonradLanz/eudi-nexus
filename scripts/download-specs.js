@@ -31,6 +31,7 @@ const PUBLISHED_ONLY     = args.includes('--published-only');
 const HEADERS_ONLY       = args.includes('--headers-only');
 const FORCE_UPDATE_CHECK = args.includes('--force-update-check');
 const FORCE_DOWNLOAD     = args.includes('--force-download');
+const REPAIR_WKI_IDS     = args.includes('--repair-wki-ids');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -74,6 +75,59 @@ async function touchSidecarHeaders(sidecarPath) {
     existing['x-checked-at'] = new Date().toISOString();
     await fs.writeFile(p, JSON.stringify(existing, null, 2));
   } catch { /* non-fatal */ }
+}
+
+// ── Repair mode: fix wkiId: unknown in existing sidecars ─────────────────────
+
+async function repairWkiIds() {
+  console.log('\uD83D\uDCE5 ETSI Specification Downloader');
+  console.log('================================\n');
+  console.log('\uD83D\uDD27 Mode: --repair-wki-ids (local only, no login, no downloads)\n');
+
+  const wiDir = path.join(DOWNLOAD_PATH, '_workitems');
+  let files;
+  try { files = (await fs.readdir(wiDir)).filter(f => f.endsWith('.workitem.html')); }
+  catch { console.log('\u26A0\uFE0F  No _workitems directory found.'); process.exit(0); }
+
+  const limited = LIMIT ? files.slice(0, LIMIT) : files;
+  console.log(`\uD83D\uDCCB Found ${files.length} workitem sidecar(s)${LIMIT ? ` (limited to ${LIMIT})` : ''}\n`);
+
+  let repaired = 0, alreadyOk = 0, noIdFound = 0;
+
+  for (const file of limited) {
+    const filePath = path.join(wiDir, file);
+    const raw = await fs.readFile(filePath, 'utf-8');
+
+    const headerMatch = raw.match(/<!-- wkiId: (\d+|unknown) -->/);
+    const currentId   = headerMatch?.[1];
+
+    if (currentId && currentId !== 'unknown') {
+      alreadyOk++;
+      continue;
+    }
+
+    // Extract from HTML body: any WKI_ID=\d+ occurrence
+    const bodyMatch = raw.match(/WKI_ID=(\d+)/i);
+    if (!bodyMatch) {
+      console.log(`  \u2753 ${file} — no WKI_ID found in body, skipping`);
+      noIdFound++;
+      continue;
+    }
+
+    const foundId = bodyMatch[1];
+    const fixed   = raw.replace(
+      /<!-- wkiId: (\d+|unknown) -->/,
+      `<!-- wkiId: ${foundId} -->`
+    );
+    await fs.writeFile(filePath, fixed, 'utf-8');
+    console.log(`  \uD83D\uDD27 ${file} — repaired: unknown → ${foundId}`);
+    repaired++;
+  }
+
+  console.log(`\n\uD83D\uDCCA Repair Summary:`);
+  console.log(`   \uD83D\uDD27 Repaired:       ${repaired}`);
+  console.log(`   \u2705 Already OK:    ${alreadyOk}`);
+  console.log(`   \u2753 No ID found:   ${noIdFound}`);
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -578,4 +632,10 @@ async function saveUrlSidecar(filePath, url, type) {
   );
 }
 
-downloadLatestSpecs().catch(console.error);
+// ── Entry point ───────────────────────────────────────────────────────────────
+
+if (REPAIR_WKI_IDS) {
+  repairWkiIds().catch(console.error);
+} else {
+  downloadLatestSpecs().catch(console.error);
+}
