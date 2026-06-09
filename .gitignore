@@ -1,4 +1,3 @@
-node_modules/
 .env
-downloads/
-*.log
+.venv/
+node_modules/
