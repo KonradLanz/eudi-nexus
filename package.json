@@ -33,8 +33,12 @@
     "setup:venv": "python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && echo '\n✅ Done. Activate with: source .venv/bin/activate'",
     "setup:py": "npm run setup:venv",
     "ingest": ".venv/bin/python3 scripts/pdf-ingest.py downloads/specs/",
+    "ingest:force": ".venv/bin/python3 scripts/pdf-ingest.py downloads/specs/ --force",
     "ingest:one": ".venv/bin/python3 scripts/pdf-ingest.py",
-    "search": ".venv/bin/python3 scripts/spec-search.py"
+    "search": ".venv/bin/python3 scripts/spec-search.py",
+    "qa": ".venv/bin/python3 scripts/ingest-qa.py",
+    "qa:verbose": ".venv/bin/python3 scripts/ingest-qa.py --verbose",
+    "qa:json": ".venv/bin/python3 scripts/ingest-qa.py --json"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
