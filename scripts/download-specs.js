@@ -78,6 +78,12 @@ async function touchSidecarHeaders(sidecarPath) {
 }
 
 // ── Repair mode: fix wkiId: unknown in existing sidecars ─────────────────────
+//
+// Source-of-truth priority:
+//   1. Header already has a digit  → skip (already OK)
+//   2. esi_overview.json detailUrl → primary source, no warning
+//   3. HTML body WKI_ID=…         → fallback, emit warning (ETSI HTML is untrusted)
+//   4. Nothing found               → warning, skip
 
 async function repairWkiIds() {
   console.log('\uD83D\uDCE5 ETSI Specification Downloader');
@@ -89,45 +95,74 @@ async function repairWkiIds() {
   try { files = (await fs.readdir(wiDir)).filter(f => f.endsWith('.workitem.html')); }
   catch { console.log('\u26A0\uFE0F  No _workitems directory found.'); process.exit(0); }
 
+  // Build etsiNumber → detailUrl lookup from esi_overview.json (our source of truth)
+  const overviewIndex = new Map();
+  try {
+    const ov = JSON.parse(await fs.readFile(OVERVIEW_FILE, 'utf-8'));
+    for (const item of [...(ov.activeWorkItems ?? []), ...(ov.publishedDocuments ?? [])]) {
+      if (item.etsiNumber && item.detailUrl) overviewIndex.set(item.etsiNumber, item.detailUrl);
+    }
+  } catch { console.log('\u26A0\uFE0F  Could not load esi_overview.json — falling back to HTML body only'); }
+
   const limited = LIMIT ? files.slice(0, LIMIT) : files;
   console.log(`\uD83D\uDCCB Found ${files.length} workitem sidecar(s)${LIMIT ? ` (limited to ${LIMIT})` : ''}\n`);
 
-  let repaired = 0, alreadyOk = 0, noIdFound = 0;
+  let repaired = 0, alreadyOk = 0, noIdFound = 0, htmlFallback = 0;
 
   for (const file of limited) {
     const filePath = path.join(wiDir, file);
     const raw = await fs.readFile(filePath, 'utf-8');
 
+    // 1. Already has a valid digit → skip
     const headerMatch = raw.match(/<!-- wkiId: (\d+|unknown) -->/);
     const currentId   = headerMatch?.[1];
+    if (currentId && currentId !== 'unknown') { alreadyOk++; continue; }
 
-    if (currentId && currentId !== 'unknown') {
-      alreadyOk++;
-      continue;
+    // Derive etsiNumber from filename: DMI_ESI-0019103.workitem.html → DMI/ESI-0019103
+    const etsiNumber = file.replace('.workitem.html', '').replace(/_/g, '/');
+
+    // 2. Primary: detailUrl from esi_overview.json
+    let foundId   = null;
+    let source    = null;
+    const detailUrl = overviewIndex.get(etsiNumber);
+    if (detailUrl) {
+      foundId = extractWkiId(detailUrl);
+      if (foundId) source = 'detailUrl';
     }
 
-    // Extract from HTML body: any WKI_ID=\d+ occurrence
-    const bodyMatch = raw.match(/WKI_ID=(\d+)/i);
-    if (!bodyMatch) {
-      console.log(`  \u2753 ${file} — no WKI_ID found in body, skipping`);
+    // 3. Fallback: HTML body (untrusted, emit warning)
+    if (!foundId) {
+      const bodyMatch = raw.match(/WKI_ID=(\d+)/i);
+      if (bodyMatch) {
+        foundId = bodyMatch[1];
+        source  = 'html-body';
+        console.log(`  \u26A0\uFE0F  ${file} — not in overview, extracted WKI_ID from HTML body (unverified)`);
+        htmlFallback++;
+      }
+    }
+
+    // 4. Nothing found
+    if (!foundId) {
+      console.log(`  \u2753 ${file} — no WKI_ID found in overview or HTML body, skipping`);
       noIdFound++;
       continue;
     }
 
-    const foundId = bodyMatch[1];
-    const fixed   = raw.replace(
+    const fixed = raw.replace(
       /<!-- wkiId: (\d+|unknown) -->/,
       `<!-- wkiId: ${foundId} -->`
     );
     await fs.writeFile(filePath, fixed, 'utf-8');
-    console.log(`  \uD83D\uDD27 ${file} — repaired: unknown → ${foundId}`);
+    const sourceLabel = source === 'detailUrl' ? '' : ' (from HTML body ⚠️)';
+    console.log(`  \uD83D\uDD27 ${file} — repaired: unknown → ${foundId}${sourceLabel}`);
     repaired++;
   }
 
   console.log(`\n\uD83D\uDCCA Repair Summary:`);
-  console.log(`   \uD83D\uDD27 Repaired:       ${repaired}`);
-  console.log(`   \u2705 Already OK:    ${alreadyOk}`);
-  console.log(`   \u2753 No ID found:   ${noIdFound}`);
+  console.log(`   \uD83D\uDD27 Repaired:                ${repaired}`);
+  if (htmlFallback) console.log(`   \u26A0\uFE0F  Via HTML fallback:        ${htmlFallback}`);
+  console.log(`   \u2705 Already OK:             ${alreadyOk}`);
+  console.log(`   \u2753 No ID found:            ${noIdFound}`);
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
