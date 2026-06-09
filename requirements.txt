@@ -1,0 +1,4 @@
+# Python dependencies for eudi-nexus scripts
+# Install with:  pip install -r requirements.txt
+
+pdfplumber>=0.11.0   # pdf-ingest.py: page-by-page PDF text extraction
