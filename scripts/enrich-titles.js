@@ -19,33 +19,22 @@ import { isAvailable, bestModel, activeProvider, suggestShortTitle, detectTitleI
   from '../src/local-ai.js';
 
 const __dirname    = path.dirname(fileURLToPath(import.meta.url));
-const SPECS_ROOT   = path.join(__dirname, '..', 'downloads', 'specs');
+const PROJECT_ROOT = path.join(__dirname, '..');
+const SPECS_ROOT   = path.join(PROJECT_ROOT, 'downloads', 'specs');
 const WORKITEM_DIR = path.join(SPECS_ROOT, '_workitems');
 const TITLES_DIR   = path.join(SPECS_ROOT, '_titles');
 
 // ── CLI flags ─────────────────────────────────────────────────────────────────
 
 const args               = process.argv.slice(2);
-const FORCE              = args.includes('--force');               // re-run everything
-const FORCE_SHORT_TITLES = args.includes('--force-new-short-titles'); // AI only, keep extracted data
+const FORCE              = args.includes('--force');
+const FORCE_SHORT_TITLES = args.includes('--force-new-short-titles');
 const NO_AI              = args.includes('--no-ai');
 const limitArg           = args.find(a => a.startsWith('--limit='));
 const LIMIT              = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 
 // ── Title extraction ──────────────────────────────────────────────────────────
 
-/**
- * Extract fullTitle and etsiShortTitle from a workitem sidecar HTML.
- *
- * ETSI HTML structure:
- *   <td class="Head1"><b>Title</b></td>
- *   <td class="Table" COLSPAN="6">
- *     <font class="Normal">Full title here </font>
- *     <BR><FONT Color="#708090">ETSI short title</FONT>
- *   </td>
- *
- * cheerio + htmlparser2 handle ETSI's broken HTML4 gracefully.
- */
 function extractWorkitemTitles(html) {
   const $ = cheerio.load(html);
 
@@ -135,26 +124,32 @@ async function enrichTitles() {
 
   await fs.mkdir(TITLES_DIR, { recursive: true });
 
-  const aiOk    = !NO_AI && await isAvailable();
-  const model   = aiOk ? await bestModel()      : null;
-  const provider = aiOk ? await activeProvider() : null;
+  const aiOk     = !NO_AI && await isAvailable();
+  const model    = aiOk ? await bestModel()       : null;
+  const provider = aiOk ? await activeProvider()  : null;
 
-  if (NO_AI)      console.log('\u26A0\uFE0F   --no-ai \u2014 skipping AI generation');
-  else if (aiOk)  console.log(`\u2705  ${provider === 'lmstudio' ? 'LM Studio' : 'Ollama'} \u2014 model: ${model}`);
-  else            console.log('\u26A0\uFE0F   No local AI \u2014 extraction only');
+  if (NO_AI)               console.log('\u26A0\uFE0F   --no-ai \u2014 skipping AI generation');
+  else if (aiOk)           console.log(`\u2705  ${provider === 'lmstudio' ? 'LM Studio' : 'Ollama'} \u2014 model: ${model}`);
+  else                     console.log('\u26A0\uFE0F   No local AI \u2014 extraction only');
 
-  if (FORCE)              console.log('\u26A1 --force: re-running everything');
+  if (FORCE)               console.log('\u26A1 --force: re-running everything');
   else if (FORCE_SHORT_TITLES) console.log('\uD83E\uDD16 --force-new-short-titles: AI only, extracted data preserved');
   console.log();
 
   let sidecarFiles;
   try {
-    // Only *.workitem.html — dotfiles (.headers.*) stay on disk but are not processed
+    // Only *.workitem.html — dotfiles (.headers.*) are explicitly excluded
     sidecarFiles = (await fs.readdir(WORKITEM_DIR))
-      .filter(f => f.endsWith('.workitem.html'));
+      .filter(f => !f.startsWith('.') && f.endsWith('.workitem.html'));
   } catch {
     console.error(`\u274C  No _workitems directory found at:\n    ${WORKITEM_DIR}`);
     console.error('    Run npm run download first.');
+    process.exit(1);
+  }
+
+  if (!sidecarFiles.length) {
+    console.error('\u274C  No *.workitem.html sidecars found in _workitems/');
+    console.error('    Run npm run download first to generate them.');
     process.exit(1);
   }
 
@@ -177,14 +172,12 @@ async function enrichTitles() {
 
     console.log(`${progress} ${etsiNumber}`);
 
-    // ── --force-new-short-titles: load existing record, only re-run AI ────
     if (FORCE_SHORT_TITLES && !FORCE) {
       const existingRecord = await fs.readFile(outPath, 'utf-8')
         .then(JSON.parse).catch(() => null);
 
       if (!existingRecord) {
         console.log('    \u26A0\uFE0F  No existing record \u2014 running full extraction first');
-        // fall through to full extraction below
       } else {
         const sourceTitle = existingRecord.fullTitleWorkitem ?? existingRecord.fullTitlePdf ?? existingRecord.etsiShortTitle;
         if (!aiOk || !sourceTitle) {
@@ -209,7 +202,6 @@ async function enrichTitles() {
       }
     }
 
-    // ── default: skip if complete record exists ───────────────────────────
     if (!FORCE && !FORCE_SHORT_TITLES) {
       const existing = await fs.readFile(outPath, 'utf-8').then(JSON.parse).catch(() => null);
       if (existing?.shortTitle) {
@@ -219,32 +211,18 @@ async function enrichTitles() {
       }
     }
 
-    // ── Full extraction ───────────────────────────────────────────────────
     const { fullTitle, etsiShortTitle } = extractWorkitemTitles(html);
 
-    if (!fullTitle) {
-      console.log('    \u26A0\uFE0F  Could not extract title');
-      stats.noTitle++;
-    } else {
-      console.log(`    \uD83D\uDCC4 Full:  ${fullTitle.slice(0, 90)}${fullTitle.length > 90 ? '\u2026' : ''}`);
-    }
-    if (etsiShortTitle) {
-      console.log(`    \uD83C\uDFE0 ETSI:  ${etsiShortTitle.slice(0, 90)}${etsiShortTitle.length > 90 ? '\u2026' : ''}`);
-    }
+    if (!fullTitle) { console.log('    \u26A0\uFE0F  Could not extract title'); stats.noTitle++; }
+    else console.log(`    \uD83D\uDCC4 Full:  ${fullTitle.slice(0, 90)}${fullTitle.length > 90 ? '\u2026' : ''}`);
+    if (etsiShortTitle) console.log(`    \uD83C\uDFE0 ETSI:  ${etsiShortTitle.slice(0, 90)}${etsiShortTitle.length > 90 ? '\u2026' : ''}`);
 
     const fullTitlePdf  = await extractPdfTitle(etsiNumber);
-    if (fullTitlePdf) {
-      console.log(`    \uD83D\uDCD1 PDF:   ${fullTitlePdf.slice(0, 90)}${fullTitlePdf.length > 90 ? '\u2026' : ''}`);
-      stats.withPdf++;
-    }
+    if (fullTitlePdf) { console.log(`    \uD83D\uDCD1 PDF:   ${fullTitlePdf.slice(0, 90)}${fullTitlePdf.length > 90 ? '\u2026' : ''}`); stats.withPdf++; }
 
     const inconsistency = detectTitleInconsistency(fullTitle, fullTitlePdf);
-    if (inconsistency) {
-      console.log(`    \u26A0\uFE0F  \u2248 Title mismatch WorkItem vs PDF`);
-      stats.inconsistent++;
-    }
+    if (inconsistency) { console.log(`    \u26A0\uFE0F  \u2248 Title mismatch WorkItem vs PDF`); stats.inconsistent++; }
 
-    // AI short title — always generate, ETSI short titles are often still too long
     let shortTitle       = null;
     let shortTitleSource = 'unavailable';
     const sourceTitle    = fullTitle ?? fullTitlePdf ?? etsiShortTitle;
@@ -278,15 +256,14 @@ async function enrichTitles() {
     stats.new++;
   }
 
-  // ── Summary ───────────────────────────────────────────────────────────────
   console.log('\n\uD83D\uDCCA Summary:');
-  console.log(`   \uD83C\uDFF7\uFE0F  New records:           ${stats.new}`);
-  console.log(`   \uD83E\uDD16 AI short titles:       ${stats.aiShortTitle}`);
+  console.log(`   \uD83C\uDFF7\uFE0F  New records:              ${stats.new}`);
+  console.log(`   \uD83E\uDD16 AI short titles:          ${stats.aiShortTitle}`);
   if (stats.aiRefreshed) console.log(`   \uD83D\uDD04 AI short titles refreshed: ${stats.aiRefreshed}`);
-  console.log(`   \u23ED\uFE0F  Skipped (cached):      ${stats.skipped}`);
-  console.log(`   \uD83D\uDCD1 With PDF title:         ${stats.withPdf}`);
-  console.log(`   \u26A0\uFE0F  Inconsistencies:       ${stats.inconsistent}`);
-  console.log(`   \u2753  No title extracted:     ${stats.noTitle}`);
+  console.log(`   \u23ED\uFE0F  Skipped (cached):         ${stats.skipped}`);
+  console.log(`   \uD83D\uDCD1 With PDF title:            ${stats.withPdf}`);
+  console.log(`   \u26A0\uFE0F  Inconsistencies:          ${stats.inconsistent}`);
+  console.log(`   \u2753  No title extracted:        ${stats.noTitle}`);
   console.log(`\n\uD83D\uDCBE  Title records \u2192 downloads/specs/_titles/`);
 
   if (!aiOk && !NO_AI) {
