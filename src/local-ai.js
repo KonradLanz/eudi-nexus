@@ -2,20 +2,21 @@
  * local-ai.js — Multi-provider local AI client.
  *
  * Supported providers (checked in order):
- *   1. LM Studio  http://localhost:1234  (OpenAI-compatible, runs MLX models on Apple Silicon)
+ *   1. LM Studio  http://localhost:1234  (OpenAI-compatible)
  *   2. Ollama     http://localhost:11434 (native Ollama API)
  *
- * The first available provider wins.  Both are checked in parallel so startup
- * is fast even if one is not running.
+ * Configuration via .env:
+ *   LMSTUDIO_BASE_URL=http://localhost:1234
+ *   LMSTUDIO_MODEL=google/gemma-4-31b-qat       ← preferred model id (exact match)
+ *   LMSTUDIO_CONTEXT=2048                        ← num_ctx passed to LM Studio
+ *   OLLAMA_BASE_URL=http://localhost:11434
+ *   OLLAMA_MODEL=llama3.2                        ← preferred Ollama model
  *
- * Usage:
- *   import { isAvailable, suggestShortTitle, bestModel, activeProvider }
- *     from '../src/local-ai.js';
- *
- *   if (await isAvailable()) {
- *     console.log(await activeProvider());   // 'lmstudio' | 'ollama'
- *     const title = await suggestShortTitle(fullTitle);
- *   }
+ * Model selection priority (LM Studio):
+ *   1. LMSTUDIO_MODEL env var (exact id match against /v1/models list)
+ *   2. First model whose id contains 'gemma-4'
+ *   3. First model whose id contains 'gemma'
+ *   4. First model in list
  */
 
 import dotenv from 'dotenv';
@@ -27,32 +28,73 @@ dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 // ── config ────────────────────────────────────────────────────────────────────
 
-const TIMEOUT_MS = 15_000;
+const TIMEOUT_MS = 20_000;
 const PROBE_MS   =  3_000;
 
-// LM Studio — OpenAI-compatible REST API
-const LMS_BASE = process.env.LMSTUDIO_BASE_URL ?? 'http://localhost:1234';
+const LMS_BASE      = process.env.LMSTUDIO_BASE_URL  ?? 'http://localhost:1234';
+const LMS_PREFERRED = process.env.LMSTUDIO_MODEL     ?? null;   // exact model id
+const LMS_CONTEXT   = parseInt(process.env.LMSTUDIO_CONTEXT ?? '2048', 10);
 
-// Ollama — native API
 const OLLAMA_BASE      = process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434';
-const OLLAMA_PREFERRED = ['llama3.2', 'llama3', 'mistral', 'phi3', 'gemma2'];
+const OLLAMA_PREFERRED = process.env.OLLAMA_MODEL
+  ? [process.env.OLLAMA_MODEL]
+  : ['llama3.2', 'llama3', 'mistral', 'phi3', 'gemma2'];
 
-// ── state (module-level cache, reset per process) ─────────────────────────────
+// ── system prompt (shared across providers) ───────────────────────────────────
+
+const SYSTEM_PROMPT =
+`You are a technical standards editor specialising in ETSI and eIDAS standards.
+
+Your task: given the full title of an ETSI standard, output a short title of
+AT MOST FOUR WORDS that captures the document's core topic.
+
+Rules:
+- Maximum 4 words. Fewer is better.
+- Use official abbreviations where widely known (e.g. TSP, PKI, eID, QSCD, PSD2).
+- Never include the ETSI number, version, or "Part N" in the short title.
+- Respond with ONLY the short title — no punctuation, no explanation, no quotes.
+- Do not start with "A", "An", "The".
+
+Examples:
+  "Electronic Signatures and Infrastructures (ESI); Certificate Profiles" → Certificate Profiles ESI
+  "Electronic Signatures and Infrastructures (ESI); Trust Service Provider (TSP) — Part 1" → TSP Conformity Assessment
+  "Quantum-Safe Cryptography; Hybrid Key Exchange Mechanisms" → Quantum-Safe Hybrid KEM`;
+
+// ── state ─────────────────────────────────────────────────────────────────────
 
 /** @type {null | 'lmstudio' | 'ollama' | false} */
-let _provider    = null;   // null = not yet probed
-let _model       = null;
+let _provider = null;
+let _model    = null;
 
 // ── provider detection ────────────────────────────────────────────────────────
+
+function pickLmsModel(ids) {
+  if (!ids.length) return null;
+  // 1. exact env match
+  if (LMS_PREFERRED && ids.includes(LMS_PREFERRED)) return LMS_PREFERRED;
+  // 2. partial env match (case-insensitive)
+  if (LMS_PREFERRED) {
+    const pref = LMS_PREFERRED.toLowerCase();
+    const hit  = ids.find(id => id.toLowerCase().includes(pref));
+    if (hit) return hit;
+  }
+  // 3. prefer gemma-4 variants
+  const g4 = ids.find(id => id.toLowerCase().includes('gemma-4'));
+  if (g4) return g4;
+  // 4. prefer any gemma
+  const g  = ids.find(id => id.toLowerCase().includes('gemma'));
+  if (g) return g;
+  // 5. fallback: first in list
+  return ids[0];
+}
 
 async function probeLmStudio() {
   try {
     const res = await fetchWithTimeout(`${LMS_BASE}/v1/models`, { method: 'GET' }, PROBE_MS);
     if (!res.ok) return null;
-    const data   = await res.json();
-    const models = (data.data ?? []).map(m => m.id);
-    // LM Studio lists the currently loaded model; use the first available
-    const model  = models[0] ?? null;
+    const data  = await res.json();
+    const ids   = (data.data ?? []).map(m => m.id);
+    const model = pickLmsModel(ids);
     return model ? { provider: 'lmstudio', model } : null;
   } catch {
     return null;
@@ -72,76 +114,57 @@ async function probeOllama() {
   }
 }
 
-/**
- * Detect the first available local AI provider.
- * LM Studio is tried first (better for MLX / Apple Silicon).
- * Both probes run in parallel; whichever resolves first with a result wins.
- * Result is cached for the lifetime of the process.
- */
 async function detect() {
   if (_provider !== null) return _provider !== false;
-
-  // Race: first successful probe wins
   const [lms, ollama] = await Promise.all([probeLmStudio(), probeOllama()]);
-
-  // Priority: LM Studio > Ollama
   const winner = lms ?? ollama ?? null;
-  if (winner) {
-    _provider = winner.provider;
-    _model    = winner.model;
-  } else {
-    _provider = false;
-  }
+  if (winner) { _provider = winner.provider; _model = winner.model; }
+  else        { _provider = false; }
   return _provider !== false;
 }
 
 // ── public API ────────────────────────────────────────────────────────────────
 
-/** Returns true if any local AI provider is reachable. */
-export async function isAvailable() {
-  return detect();
-}
-
-/** Returns the model identifier selected during detection, or null. */
-export async function bestModel() {
-  await detect();
-  return _model;
-}
-
-/** Returns 'lmstudio', 'ollama', or null. */
-export async function activeProvider() {
-  await detect();
-  return _provider || null;
-}
+export async function isAvailable()   { return detect(); }
+export async function bestModel()     { await detect(); return _model; }
+export async function activeProvider(){ await detect(); return _provider || null; }
 
 // ── core generate ─────────────────────────────────────────────────────────────
 
-async function generateLmStudio(prompt, model) {
+async function generateLmStudio(systemPrompt, userPrompt, model) {
+  const body = {
+    model,
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user',   content: userPrompt   },
+    ],
+    temperature: 0.15,
+    max_tokens:  20,
+    stream:      false,
+  };
+  // Pass context window size if configured
+  if (LMS_CONTEXT) body.num_ctx = LMS_CONTEXT;
+
   const res = await fetchWithTimeout(`${LMS_BASE}/v1/chat/completions`, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: 'user', content: prompt }],
-      temperature:  0.2,
-      max_tokens:   24,
-      stream:       false,
-    }),
+    body:    JSON.stringify(body),
   }, TIMEOUT_MS);
   if (!res.ok) throw new Error(`LM Studio HTTP ${res.status}`);
   const data = await res.json();
   return (data.choices?.[0]?.message?.content ?? '').trim();
 }
 
-async function generateOllama(prompt, model) {
+async function generateOllama(systemPrompt, userPrompt, model) {
   const res = await fetchWithTimeout(`${OLLAMA_BASE}/api/generate`, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       model,
-      prompt,
+      system:  systemPrompt,
+      prompt:  userPrompt,
       stream:  false,
-      options: { temperature: 0.2, num_predict: 24 },
+      options: { temperature: 0.15, num_predict: 20, num_ctx: LMS_CONTEXT },
     }),
   }, TIMEOUT_MS);
   if (!res.ok) throw new Error(`Ollama HTTP ${res.status}`);
@@ -149,41 +172,40 @@ async function generateOllama(prompt, model) {
   return (data.response ?? '').trim();
 }
 
-async function generate(prompt) {
+async function generate(systemPrompt, userPrompt) {
   await detect();
   if (!_provider || !_model) throw new Error('No local AI provider available');
   return _provider === 'lmstudio'
-    ? generateLmStudio(prompt, _model)
-    : generateOllama(prompt, _model);
+    ? generateLmStudio(systemPrompt, userPrompt, _model)
+    : generateOllama(systemPrompt, userPrompt, _model);
 }
 
 // ── public task helpers ───────────────────────────────────────────────────────
 
 /**
  * Suggest a short title (≤4 words) for an ETSI standard.
- * Returns null if AI is unavailable or the response fails sanity checks.
  *
- * @param {string} fullTitle  — full ETSI document title
- * @param {string} [hint]     — optional context, e.g. the ETSI number
+ * @param {string} fullTitle   — full ETSI document title
+ * @param {string} [hint]      — optional context, e.g. ETSI number / scope
  * @returns {Promise<string|null>}
  */
 export async function suggestShortTitle(fullTitle, hint = '') {
   if (!(await isAvailable())) return null;
 
-  const context = hint ? `\nDocument: ${hint}` : '';
-  const prompt =
-`You are a technical standards editor. Given the full title of an ETSI standard, \
-respond with a short title of at most four words that captures its core topic.
-Respond with ONLY the short title — no punctuation, no explanation, no quotes.${context}
-
-Full title: "${fullTitle.replace(/"/g, "'")}"
-
-Short title:`;
+  const context   = hint ? `\nDocument reference: ${hint}` : '';
+  const userPrompt =
+`Full title: "${fullTitle.replace(/"/g, "'")}"
+Short title (max 4 words):${context}`;
 
   try {
-    const raw     = await generate(prompt);
-    const cleaned = raw.replace(/^["'\s]+|["'\s]+$/g, '').replace(/\n.*/s, '').trim();
-    const words   = cleaned.split(/\s+/).filter(Boolean);
+    const raw     = await generate(SYSTEM_PROMPT, userPrompt);
+    // Strip any leading/trailing punctuation, quotes, newlines the model added
+    const cleaned = raw
+      .split('\n')[0]
+      .replace(/^[#*\-•>\s"']+/, '')
+      .replace(/["'\s]+$/, '')
+      .trim();
+    const words = cleaned.split(/\s+/).filter(Boolean);
     if (words.length === 0 || words.length > 8) return null;
     return words.slice(0, 4).join(' ');
   } catch {
@@ -200,13 +222,11 @@ export function detectTitleInconsistency(titleA, titleB, labelA = 'WorkItem', la
   const norm  = s => s.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
   const nA = norm(titleA), nB = norm(titleB);
   if (nA === nB) return null;
-
   const setA  = new Set(nA.split(' '));
   const setB  = new Set(nB.split(' '));
   const inter = [...setA].filter(w => setB.has(w)).length;
   const union = new Set([...setA, ...setB]).size;
   const sim   = inter / union;
-
   if (sim >= 0.80) return null;
   return `${labelA}: "${titleA.slice(0, 80)}" vs ${labelB}: "${titleB.slice(0, 80)}"`;
 }
