@@ -19,6 +19,11 @@ Output pro Norm (corpus/specs/<stem>.json):
     }
 
 Kurzname-Schema: konsistent mit corpus/LESEHILFE.md und corpus/READING-GUIDE.md
+
+Dateiname-Schemas (beide werden unterstuetzt):
+  Kurz:  ts_119403v020201p.pdf   → TS 119 403  v2.2.1
+  Lang:  ts_11913201v010001p.pdf → TS 119 132 01  v1.0.1
+         Aufbau: {typ}_{serie:3}{rolle:1}{seq:2}{suffix:2}v{maj:2}{min:2}{pat:2}p
 """
 
 import argparse
@@ -121,9 +126,19 @@ SECTION_RE = re.compile(
     re.MULTILINE,
 )
 
-# ETSI-Portal-Schema: en_319403v020202p.pdf
-FILENAME_ETSI_RE = re.compile(
-    r"^(?P<type>[a-z]+)_(?P<family>\d{3})(?P<number>\d{3,4})v"
+# Schema KURZ: ts_119403v020201p.pdf
+#   {typ}_{serie:3}{number:3-4}v{maj:2}{min:2}{pat:2}p
+FILENAME_SHORT_RE = re.compile(
+    r"^(?P<type>[a-z]+)_(?P<serie>\d{3})(?P<number>\d{3,4})v"
+    r"(?P<vmaj>\d{2})(?P<vmin>\d{2})(?P<vpatch>\d{2})p\.pdf$",
+    re.IGNORECASE,
+)
+
+# Schema LANG: ts_11913201v010001p.pdf
+#   {typ}_{serie:3}{rolle:1}{seq:2}{suffix:2}v{maj:2}{min:2}{pat:2}p
+#   Norm = "{TYP} {serie} {rolle}{seq} {suffix}"  z.B. "TS 119 132 01"
+FILENAME_LONG_RE = re.compile(
+    r"^(?P<type>[a-z]+)_(?P<serie>\d{3})(?P<rolle>\d{1})(?P<seq>\d{2})(?P<suffix>\d{2})v"
     r"(?P<vmaj>\d{2})(?P<vmin>\d{2})(?P<vpatch>\d{2})p\.pdf$",
     re.IGNORECASE,
 )
@@ -143,20 +158,40 @@ SKIP_PREFIXES = (".",)
 
 def parse_filename(pdf_path: Path) -> tuple[str, str]:
     """Gibt (norm, version) zurueck.
-    Beispiel: en_319403v020202p.pdf -> ('EN 319 403', 'v2.2.2')
+
+    Beispiele:
+      en_319403v020202p.pdf    -> ('EN 319 403', 'v2.2.2')
+      ts_11913201v010001p.pdf  -> ('TS 119 132 01', 'v1.0.1')
     """
     name = pdf_path.name
-    m = FILENAME_ETSI_RE.match(name)
+
+    # --- Schema KURZ: 3+3/4 Ziffern ---
+    m = FILENAME_SHORT_RE.match(name)
     if m:
         doc_type = m.group("type").upper()
-        family   = m.group("family")
+        serie    = m.group("serie")
         number   = m.group("number")
-        norm     = f"{doc_type} {family} {number}"
+        norm     = f"{doc_type} {serie} {number}"
         version  = f"v{int(m.group('vmaj'))}.{int(m.group('vmin'))}.{int(m.group('vpatch'))}"
         return norm, version
+
+    # --- Schema LANG: 3+1+2+2 Ziffern ---
+    m = FILENAME_LONG_RE.match(name)
+    if m:
+        doc_type = m.group("type").upper()
+        serie    = m.group("serie")           # z.B. "119"
+        rolle    = m.group("rolle")           # z.B. "1"
+        seq      = m.group("seq")             # z.B. "32"
+        suffix   = m.group("suffix")          # z.B. "01"
+        norm     = f"{doc_type} {serie} {rolle}{seq} {suffix}"   # "TS 119 132 01"
+        version  = f"v{int(m.group('vmaj'))}.{int(m.group('vmin'))}.{int(m.group('vpatch'))}"
+        return norm, version
+
+    # --- Manuelles Schema ---
     m = FILENAME_MANUAL_RE.match(name)
     if m:
         return m.group("norm").replace("_", " "), m.group("version").lower()
+
     return pdf_path.stem, "vX.X.X"
 
 
