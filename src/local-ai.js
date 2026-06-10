@@ -9,6 +9,10 @@
  *   LMSTUDIO_BASE_URL=http://localhost:1234
  *   LMSTUDIO_MODEL=google/gemma-4-31b-qat       ← preferred model id (exact match)
  *   LMSTUDIO_CONTEXT=2048                        ← num_ctx passed to LM Studio
+ *   LMSTUDIO_MAX_TOKENS=300                      ← max_tokens for completion (default 300)
+ *                                                  Thinking models (Gemma 4 QAT) use
+ *                                                  ~150-200 reasoning tokens before output —
+ *                                                  set this high enough to leave room for output.
  *   OLLAMA_BASE_URL=http://localhost:11434
  *   OLLAMA_MODEL=llama3.2                        ← preferred Ollama model
  *
@@ -28,12 +32,14 @@ dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 // ── config ────────────────────────────────────────────────────────────────────
 
-const TIMEOUT_MS = 20_000;
+const TIMEOUT_MS = 60_000;  // raised: thinking models need more time
 const PROBE_MS   =  3_000;
 
-const LMS_BASE      = process.env.LMSTUDIO_BASE_URL  ?? 'http://localhost:1234';
-const LMS_PREFERRED = process.env.LMSTUDIO_MODEL     ?? null;   // exact model id
-const LMS_CONTEXT   = parseInt(process.env.LMSTUDIO_CONTEXT ?? '2048', 10);
+const LMS_BASE       = process.env.LMSTUDIO_BASE_URL  ?? 'http://localhost:1234';
+const LMS_PREFERRED  = process.env.LMSTUDIO_MODEL     ?? null;   // exact model id
+const LMS_CONTEXT    = parseInt(process.env.LMSTUDIO_CONTEXT    ?? '2048', 10);
+const LMS_MAX_TOKENS = parseInt(process.env.LMSTUDIO_MAX_TOKENS ?? '300',  10);
+// ^ 300 = ~166 reasoning tokens (Gemma 4 QAT typical) + headroom for output
 
 const OLLAMA_BASE      = process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434';
 const OLLAMA_PREFERRED = process.env.OLLAMA_MODEL
@@ -139,7 +145,7 @@ async function generateLmStudio(systemPrompt, userPrompt, model) {
       { role: 'user',   content: userPrompt   },
     ],
     temperature: 0.15,
-    max_tokens:  20,
+    max_tokens:  LMS_MAX_TOKENS,
     stream:      false,
   };
   // Pass context window size if configured
@@ -164,7 +170,7 @@ async function generateOllama(systemPrompt, userPrompt, model) {
       system:  systemPrompt,
       prompt:  userPrompt,
       stream:  false,
-      options: { temperature: 0.15, num_predict: 20, num_ctx: LMS_CONTEXT },
+      options: { temperature: 0.15, num_predict: LMS_MAX_TOKENS, num_ctx: LMS_CONTEXT },
     }),
   }, TIMEOUT_MS);
   if (!res.ok) throw new Error(`Ollama HTTP ${res.status}`);
@@ -185,6 +191,11 @@ async function generate(systemPrompt, userPrompt) {
 /**
  * Suggest a short title (≤4 words) for an ETSI standard.
  *
+ * Thinking models (e.g. Gemma 4 QAT) emit reasoning tokens before the actual
+ * answer. LM Studio surfaces these as <think>...</think> in the content field
+ * or as invisible reasoning_tokens in usage. We strip any <think> block before
+ * parsing the result.
+ *
  * @param {string} fullTitle   — full ETSI document title
  * @param {string} [hint]      — optional context, e.g. ETSI number / scope
  * @returns {Promise<string|null>}
@@ -192,19 +203,23 @@ async function generate(systemPrompt, userPrompt) {
 export async function suggestShortTitle(fullTitle, hint = '') {
   if (!(await isAvailable())) return null;
 
-  const context   = hint ? `\nDocument reference: ${hint}` : '';
+  const context    = hint ? `\nDocument reference: ${hint}` : '';
   const userPrompt =
 `Full title: "${fullTitle.replace(/"/g, "'")}"
 Short title (max 4 words):${context}`;
 
   try {
-    const raw     = await generate(SYSTEM_PROMPT, userPrompt);
-    // Strip any leading/trailing punctuation, quotes, newlines the model added
-    const cleaned = raw
+    const raw = await generate(SYSTEM_PROMPT, userPrompt);
+
+    // Strip <think>...</think> blocks emitted by thinking models (Gemma 4 QAT)
+    const withoutThinking = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+
+    const cleaned = withoutThinking
       .split('\n')[0]
       .replace(/^[#*\-•>\s"']+/, '')
       .replace(/["'\s]+$/, '')
       .trim();
+
     const words = cleaned.split(/\s+/).filter(Boolean);
     if (words.length === 0 || words.length > 8) return null;
     return words.slice(0, 4).join(' ');
