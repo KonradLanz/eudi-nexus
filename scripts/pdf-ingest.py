@@ -9,13 +9,15 @@ Usage:
 
 Output pro Norm (corpus/specs/<stem>.json):
     {
-      "norm":        "EN 319 403",
-      "shortname":   "TSP-Audit",
-      "version":     "v2.2.2",
-      "source_pdf":  "...",
-      "ingested_at": "2026-06-10T00:00:00Z",
-      "page_count":  42,
-      "pages":       [ { "page_nr", "anchor", "section", "section_title", "text_clean" } ]
+      "norm":              "EN 319 403",
+      "shortname":         "TSP-Audit",       # kanonisch, stabil
+      "shortnameSource":   "shortnames-map",  # 'manual'|'shortnames-map'|'titles-sidecar'|'ai'
+      "shortTitleAI":      null,              # AI-Vorschlag (≤4 Wörter), kein Identifier
+      "version":           "v2.2.2",
+      "source_pdf":        "...",
+      "ingested_at":       "2026-06-10T00:00:00Z",
+      "page_count":        42,
+      "pages":             [ { "page_nr", "anchor", "section", "section_title", "text_clean" } ]
     }
 
 Kurzname-Schema: konsistent mit corpus/LESEHILFE.md und corpus/READING-GUIDE.md
@@ -41,9 +43,8 @@ except ImportError:
 
 # ---------------------------------------------------------------------------
 # Kurzname-Mapping  (kanonisch, konsistent mit LESEHILFE.md / READING-GUIDE.md)
+# Fallback — primary source is _titles/*.title.json via get_shortname()
 # ---------------------------------------------------------------------------
-# Schluessel: normalisierte Norm-ID ohne Leerzeichen, z.B. "EN319401"
-# Wert: Kurzname gemaess Lesehilfe
 SHORTNAMES: dict[str, str] = {
     # Fundament
     "RFC5280":    "PKIX",
@@ -108,13 +109,64 @@ SHORTNAMES: dict[str, str] = {
     "TS119615":   "TrustList-EU-TS",
 }
 
+# ---------------------------------------------------------------------------
+# _titles sidecar lookup
+# ---------------------------------------------------------------------------
 
-def get_shortname(norm: str) -> str:
-    """Schlaegt Kurzname nach, z.B. 'EN 319 401' -> 'TSP-Baseline'.
-    Fallback: leerer String.
+def _load_titles_index(titles_dir: Path) -> dict[str, dict]:
     """
-    key = norm.replace(" ", "").replace("-", "")
-    return SHORTNAMES.get(key, "")
+    Load all *.title.json files from _titles/ into a dict keyed by
+    normalised etsiNumber (no spaces, no hyphens, uppercase).
+    Returns empty dict if the directory does not exist.
+    """
+    index: dict[str, dict] = {}
+    if not titles_dir.is_dir():
+        return index
+    for f in titles_dir.glob("*.title.json"):
+        try:
+            rec = json.loads(f.read_text(encoding="utf-8"))
+            key = re.sub(r"[\s-]", "", rec.get("etsiNumber", "")).upper()
+            if key:
+                index[key] = rec
+        except Exception:
+            pass
+    return index
+
+
+_TITLES_INDEX: dict[str, dict] | None = None  # lazy-loaded singleton
+
+
+def get_shortname(norm: str, titles_dir: Path | None = None) -> tuple[str, str]:
+    """
+    Return (shortname, shortnameSource) for a given norm string.
+
+    Priority:
+      1. _titles/*.title.json  →  etsiShortTitle field  (source: 'titles-sidecar')
+         (shortTitleAI is intentionally NOT used as shortname here — it is a
+          suggestion only and goes to the shortTitleAI field in the corpus.)
+      2. SHORTNAMES map                                  (source: 'shortnames-map')
+      3. empty string                                    (source: '')
+    """
+    global _TITLES_INDEX
+
+    # Lazy-load sidecar index
+    if titles_dir is not None and _TITLES_INDEX is None:
+        _TITLES_INDEX = _load_titles_index(titles_dir)
+
+    key = re.sub(r"[\s-]", "", norm).upper()
+
+    # 1. _titles sidecar — use etsiShortTitle as canonical shortname candidate
+    if _TITLES_INDEX:
+        rec = _TITLES_INDEX.get(key)
+        if rec and rec.get("etsiShortTitle"):
+            return rec["etsiShortTitle"], "titles-sidecar"
+
+    # 2. SHORTNAMES map fallback
+    sn = SHORTNAMES.get(key, "")
+    if sn:
+        return sn, "shortnames-map"
+
+    return "", ""
 
 
 # ---------------------------------------------------------------------------
@@ -127,7 +179,6 @@ SECTION_RE = re.compile(
 )
 
 # Schema KURZ: ts_119403v020201p.pdf
-#   {typ}_{serie:3}{number:3-4}v{maj:2}{min:2}{pat:2}p
 FILENAME_SHORT_RE = re.compile(
     r"^(?P<type>[a-z]+)_(?P<serie>\d{3})(?P<number>\d{3,4})v"
     r"(?P<vmaj>\d{2})(?P<vmin>\d{2})(?P<vpatch>\d{2})p\.pdf$",
@@ -135,8 +186,6 @@ FILENAME_SHORT_RE = re.compile(
 )
 
 # Schema LANG: ts_11913201v010001p.pdf
-#   {typ}_{serie:3}{rolle:1}{seq:2}{suffix:2}v{maj:2}{min:2}{pat:2}p
-#   Norm = "{TYP} {serie} {rolle}{seq} {suffix}"  z.B. "TS 119 132 01"
 FILENAME_LONG_RE = re.compile(
     r"^(?P<type>[a-z]+)_(?P<serie>\d{3})(?P<rolle>\d{1})(?P<seq>\d{2})(?P<suffix>\d{2})v"
     r"(?P<vmaj>\d{2})(?P<vmin>\d{2})(?P<vpatch>\d{2})p\.pdf$",
@@ -157,15 +206,8 @@ SKIP_PREFIXES = (".",)
 # ---------------------------------------------------------------------------
 
 def parse_filename(pdf_path: Path) -> tuple[str, str]:
-    """Gibt (norm, version) zurueck.
-
-    Beispiele:
-      en_319403v020202p.pdf    -> ('EN 319 403', 'v2.2.2')
-      ts_11913201v010001p.pdf  -> ('TS 119 132 01', 'v1.0.1')
-    """
     name = pdf_path.name
 
-    # --- Schema KURZ: 3+3/4 Ziffern ---
     m = FILENAME_SHORT_RE.match(name)
     if m:
         doc_type = m.group("type").upper()
@@ -175,19 +217,17 @@ def parse_filename(pdf_path: Path) -> tuple[str, str]:
         version  = f"v{int(m.group('vmaj'))}.{int(m.group('vmin'))}.{int(m.group('vpatch'))}"
         return norm, version
 
-    # --- Schema LANG: 3+1+2+2 Ziffern ---
     m = FILENAME_LONG_RE.match(name)
     if m:
         doc_type = m.group("type").upper()
-        serie    = m.group("serie")           # z.B. "119"
-        rolle    = m.group("rolle")           # z.B. "1"
-        seq      = m.group("seq")             # z.B. "32"
-        suffix   = m.group("suffix")          # z.B. "01"
-        norm     = f"{doc_type} {serie} {rolle}{seq} {suffix}"   # "TS 119 132 01"
+        serie    = m.group("serie")
+        rolle    = m.group("rolle")
+        seq      = m.group("seq")
+        suffix   = m.group("suffix")
+        norm     = f"{doc_type} {serie} {rolle}{seq} {suffix}"
         version  = f"v{int(m.group('vmaj'))}.{int(m.group('vmin'))}.{int(m.group('vpatch'))}"
         return norm, version
 
-    # --- Manuelles Schema ---
     m = FILENAME_MANUAL_RE.match(name)
     if m:
         return m.group("norm").replace("_", " "), m.group("version").lower()
@@ -236,13 +276,19 @@ def collect_pdfs(inputs: list[str]) -> list[Path]:
 # Kern: ein PDF einlesen
 # ---------------------------------------------------------------------------
 
-def ingest_pdf(pdf_path: Path, corpus_root: Path, verbose: bool = True) -> dict:
-    norm, version   = parse_filename(pdf_path)
-    shortname       = get_shortname(norm)
-    shortname_label = f"  [{shortname}]" if shortname else ""
+def ingest_pdf(
+    pdf_path: Path,
+    corpus_root: Path,
+    titles_dir: Path | None = None,
+    verbose: bool = True,
+) -> dict:
+    norm, version           = parse_filename(pdf_path)
+    shortname, sn_source    = get_shortname(norm, titles_dir)
+    shortname_label         = f"  [{shortname}]" if shortname else ""
 
     if verbose:
-        print(f"[INGEST] {pdf_path.name}  →  {norm} {version}{shortname_label}")
+        src_label = f" ({sn_source})" if sn_source else ""
+        print(f"[INGEST] {pdf_path.name}  →  {norm} {version}{shortname_label}{src_label}")
 
     pages_out: list[dict] = []
     current_section = ""
@@ -268,13 +314,16 @@ def ingest_pdf(pdf_path: Path, corpus_root: Path, verbose: bool = True) -> dict:
                 print(f"  ... Seite {page_nr}/{page_count}")
 
     doc = {
-        "norm":        norm,
-        "shortname":   shortname,
-        "version":     version,
-        "source_pdf":  str(pdf_path),
-        "ingested_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "page_count":  page_count,
-        "pages":       pages_out,
+        "norm":            norm,
+        "shortname":       shortname,
+        "shortnameSource": sn_source,
+        # shortTitleAI is populated later by enrich-titles.js — set to null here
+        "shortTitleAI":    None,
+        "version":         version,
+        "source_pdf":      str(pdf_path),
+        "ingested_at":     datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "page_count":      page_count,
+        "pages":           pages_out,
     }
 
     out = output_path(pdf_path, corpus_root)
@@ -311,6 +360,10 @@ Beispiele:
         help="Corpus-Wurzel (Standard: corpus/)",
     )
     parser.add_argument(
+        "--titles", default="downloads/specs/_titles",
+        help="_titles-Verzeichnis mit *.title.json Sidecars (Standard: downloads/specs/_titles)",
+    )
+    parser.add_argument(
         "--force", "-f", action="store_true",
         help="Bereits vorhandene JSON-Dateien ueberschreiben",
     )
@@ -321,6 +374,7 @@ Beispiele:
     args = parser.parse_args()
 
     corpus_root = Path(args.corpus)
+    titles_dir  = Path(args.titles)
     verbose     = not args.quiet
     pdf_files   = collect_pdfs(args.input)
 
@@ -330,6 +384,11 @@ Beispiele:
     if verbose:
         print(f"[INFO]  {len(pdf_files)} PDFs gefunden  "
               f"({'--force: immer ueberschreiben' if args.force else 'idempotent: vorhandene ueberspringen'})")
+        if titles_dir.is_dir():
+            count = len(list(titles_dir.glob("*.title.json")))
+            print(f"[INFO]  _titles index: {count} sidecars in {titles_dir}")
+        else:
+            print(f"[INFO]  _titles index: nicht vorhanden ({titles_dir}) — nur SHORTNAMES-Map")
 
     ok = skipped = errors = 0
     for pdf in pdf_files:
@@ -340,7 +399,7 @@ Beispiele:
             skipped += 1
             continue
         try:
-            ingest_pdf(pdf, corpus_root, verbose=verbose)
+            ingest_pdf(pdf, corpus_root, titles_dir=titles_dir, verbose=verbose)
             ok += 1
         except Exception as exc:  # noqa: BLE001
             print(f"[ERROR] {pdf.name}: {exc}", file=sys.stderr)

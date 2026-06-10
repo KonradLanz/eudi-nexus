@@ -4,10 +4,24 @@
  * Reads workitem sidecars (_workitems/*.workitem.html), extracts fullTitle
  * and etsiShortTitle, then generates a ≤4-word AI short title.
  *
+ * After writing each _titles sidecar the script optionally patches the
+ * matching corpus/specs JSON with shortTitleAI and title fields.
+ * It never overwrites canonical shortname unless shortname is empty or
+ * was derived from the SHORTNAMES map (shortnameSource = 'shortnames-map').
+ *
+ * Field model:
+ *   shortname         canonical stable ID  (kuratiert / map / sidecar-promoted)
+ *   shortnameSource   'manual'|'shortnames-map'|'titles-sidecar'|'ai'
+ *   shortTitleAI      AI suggestion ≤4 words (suggestion only, NOT used as ID)
+ *   etsiShortTitle    raw ETSI portal label
+ *   fullTitleWorkitem raw HTML workitem title
+ *   fullTitlePdf      raw PDF title (if extracted)
+ *
  * Flags:
  *   --force                  re-run everything (re-extract + re-generate AI)
  *   --force-new-short-titles re-run AI only; keep extracted titles from disk
  *   --no-ai                  extract titles only, skip AI
+ *   --no-corpus-write        skip patching corpus/specs JSON files
  *   --limit=N                process first N sidecars
  */
 
@@ -23,6 +37,7 @@ const PROJECT_ROOT = path.join(__dirname, '..');
 const SPECS_ROOT   = path.join(PROJECT_ROOT, 'downloads', 'specs');
 const WORKITEM_DIR = path.join(SPECS_ROOT, '_workitems');
 const TITLES_DIR   = path.join(SPECS_ROOT, '_titles');
+const CORPUS_DIR   = path.join(PROJECT_ROOT, 'corpus', 'specs');
 
 // ── CLI flags ─────────────────────────────────────────────────────────────────
 
@@ -30,44 +45,161 @@ const args               = process.argv.slice(2);
 const FORCE              = args.includes('--force');
 const FORCE_SHORT_TITLES = args.includes('--force-new-short-titles');
 const NO_AI              = args.includes('--no-ai');
+const NO_CORPUS_WRITE    = args.includes('--no-corpus-write');
 const limitArg           = args.find(a => a.startsWith('--limit='));
 const LIMIT              = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 
+// ── Corpus patching ───────────────────────────────────────────────────────────
+
+/**
+ * Find the corpus/specs JSON whose "norm" field matches etsiNumber.
+ * Normalises both sides (strip spaces/hyphens, uppercase) for fuzzy match.
+ */
+async function findCorpusJson(etsiNumber) {
+  try {
+    await fs.access(CORPUS_DIR);
+  } catch {
+    return null; // corpus dir does not exist yet
+  }
+
+  const needle = etsiNumber.replace(/[\s-]/g, '').toUpperCase();
+  let files;
+  try { files = await fs.readdir(CORPUS_DIR); } catch { return null; }
+
+  for (const f of files) {
+    if (!f.endsWith('.json')) continue;
+    const fullPath = path.join(CORPUS_DIR, f);
+    try {
+      const rec = JSON.parse(await fs.readFile(fullPath, 'utf-8'));
+      const hay  = (rec.norm ?? '').replace(/[\s-]/g, '').toUpperCase();
+      if (hay === needle) return { path: fullPath, record: rec };
+    } catch { /* skip unreadable */ }
+  }
+  return null;
+}
+
+/**
+ * Patch a corpus JSON with title fields derived from the _titles sidecar.
+ *
+ * Rules:
+ *  - shortTitleAI is always overwritten with the latest AI suggestion.
+ *  - shortname is only overwritten if currently empty or from 'shortnames-map'.
+ *  - shortnameSource is set accordingly.
+ *  - title fields (fullTitleWorkitem, etsiShortTitle, fullTitlePdf) are written
+ *    if not already present.
+ */
+async function patchCorpusJson(etsiNumber, titleRecord) {
+  const found = await findCorpusJson(etsiNumber);
+  if (!found) return false;
+
+  const { path: corpusPath, record } = found;
+
+  // Always update the AI suggestion field
+  if (titleRecord.shortTitle) {
+    record.shortTitleAI = titleRecord.shortTitle;
+  }
+
+  // Patch shortname only if not already canonical
+  const currentSource = record.shortnameSource ?? (record.shortname ? 'shortnames-map' : '');
+  const mayPromote = !record.shortname || currentSource === 'shortnames-map';
+
+  if (mayPromote && titleRecord.shortTitle) {
+    // Use etsiShortTitle as shortname candidate (more stable than AI)
+    // AI short title goes to shortTitleAI only — never auto-promoted to shortname
+    // (promotion is a manual/downstream step)
+  }
+
+  // Write source title fields if missing
+  if (!record.fullTitleWorkitem && titleRecord.fullTitleWorkitem) {
+    record.fullTitleWorkitem = titleRecord.fullTitleWorkitem;
+  }
+  if (!record.etsiShortTitle && titleRecord.etsiShortTitle) {
+    record.etsiShortTitle = titleRecord.etsiShortTitle;
+  }
+  if (!record.fullTitlePdf && titleRecord.fullTitlePdf) {
+    record.fullTitlePdf = titleRecord.fullTitlePdf;
+  }
+
+  // Mark corpus provenance
+  if (!record.shortnameSource) {
+    record.shortnameSource = record.shortname ? 'shortnames-map' : '';
+  }
+  record.titleEnrichedAt = new Date().toISOString();
+
+  await fs.writeFile(corpusPath, JSON.stringify(record, null, 2) + '\n', 'utf-8');
+  return true;
+}
+
 // ── Title extraction ──────────────────────────────────────────────────────────
+
+// Dummy-title guard: values that are not real titles
+const DUMMY_TITLE_RE = /^(title\s*\d+\s*)+$/i;
 
 function extractWorkitemTitles(html) {
   const $ = cheerio.load(html);
 
+  // Strategy 1: look for <b>Title</b> label in a table row, grab sibling td
   let titleCell = null;
-  $('b').each((_, el) => {
-    if ($(el).text().trim() === 'Title') {
-      titleCell = $(el).closest('tr').find('td[class="Table"], td.Table').first();
+  $('b, strong').each((_, el) => {
+    const txt = $(el).text().trim();
+    if (/^title$/i.test(txt)) {
+      // Try td.Table first, then any td sibling
+      const row  = $(el).closest('tr');
+      const cell = row.find('td[class="Table"], td.Table').first();
+      if (cell.length) { titleCell = cell; return false; }
+      // fallback: next td in the same row
+      const tds = row.find('td');
+      tds.each((i, td) => {
+        if ($(td).find('b, strong').filter((_, b) => /^title$/i.test($(b).text().trim())).length) {
+          const next = tds.eq(i + 1);
+          if (next.length) { titleCell = next; return false; }
+        }
+      });
       return false;
     }
   });
+
+  // Strategy 2: scan all th/td pairs for a "Title" label
+  if (!titleCell) {
+    $('tr').each((_, row) => {
+      const cells = $(row).find('th, td');
+      cells.each((i, cell) => {
+        if (/^title$/i.test($(cell).text().trim())) {
+          const next = cells.eq(i + 1);
+          if (next.length) { titleCell = next; return false; }
+        }
+      });
+      if (titleCell) return false;
+    });
+  }
 
   if (!titleCell || !titleCell.length) return { fullTitle: null, etsiShortTitle: null };
 
   const cellHtml = titleCell.html() ?? '';
   const parts    = cellHtml.split(/<br\s*\/?>/i);
 
-  const fullTitle = parts[0]
+  const rawFullTitle = parts[0]
     ? cheerio.load(parts[0]).text().replace(/\s+/g, ' ').trim() || null
     : null;
+
+  // Reject dummy titles like "Title 1 Title 2"
+  const fullTitle = rawFullTitle && !DUMMY_TITLE_RE.test(rawFullTitle) ? rawFullTitle : null;
 
   let etsiShortTitle = null;
   if (parts[1]) {
     const $p = cheerio.load(parts[1]);
+    // Prefer grey-coloured font (ETSI portal convention)
     $p('font').each((_, el) => {
-      const color = ($p(el).attr('color') ?? '').toLowerCase();
-      if (color === '#708090' || color === '708090') {
+      const color = ($p(el).attr('color') ?? '').toLowerCase().replace(/^#/, '');
+      if (color === '708090' || color === 'slategray' || color === 'slategrey') {
         const txt = $p(el).text().replace(/\s+/g, ' ').trim();
-        if (txt) { etsiShortTitle = txt; return false; }
+        if (txt && !DUMMY_TITLE_RE.test(txt)) { etsiShortTitle = txt; return false; }
       }
     });
+    // Fallback: plain text of second part (only if meaningfully long)
     if (!etsiShortTitle) {
       const txt = $p.text().replace(/[\u00a0\s]+/g, ' ').trim();
-      if (txt.length > 3) etsiShortTitle = txt;
+      if (txt.length > 8 && !DUMMY_TITLE_RE.test(txt)) etsiShortTitle = txt;
     }
   }
 
@@ -134,11 +266,11 @@ async function enrichTitles() {
 
   if (FORCE)               console.log('\u26A1 --force: re-running everything');
   else if (FORCE_SHORT_TITLES) console.log('\uD83E\uDD16 --force-new-short-titles: AI only, extracted data preserved');
+  if (NO_CORPUS_WRITE)     console.log('\uD83D\uDEAB --no-corpus-write: skipping corpus JSON patches');
   console.log();
 
   let sidecarFiles;
   try {
-    // Only *.workitem.html — dotfiles (.headers.*) are explicitly excluded
     sidecarFiles = (await fs.readdir(WORKITEM_DIR))
       .filter(f => !f.startsWith('.') && f.endsWith('.workitem.html'));
   } catch {
@@ -156,7 +288,11 @@ async function enrichTitles() {
   if (LIMIT) sidecarFiles = sidecarFiles.slice(0, LIMIT);
   console.log(`\uD83D\uDCCB  Found ${sidecarFiles.length} workitem sidecars${LIMIT ? ` (limited to ${LIMIT})` : ''}\n`);
 
-  const stats = { new: 0, skipped: 0, noTitle: 0, withPdf: 0, inconsistent: 0, aiShortTitle: 0, aiRefreshed: 0 };
+  const stats = {
+    new: 0, skipped: 0, noTitle: 0, withPdf: 0,
+    inconsistent: 0, aiShortTitle: 0, aiRefreshed: 0,
+    corpusPatched: 0,
+  };
 
   for (let i = 0; i < sidecarFiles.length; i++) {
     const file     = sidecarFiles[i];
@@ -172,6 +308,7 @@ async function enrichTitles() {
 
     console.log(`${progress} ${etsiNumber}`);
 
+    // ── --force-new-short-titles: AI only, keep existing extraction ───────────
     if (FORCE_SHORT_TITLES && !FORCE) {
       const existingRecord = await fs.readFile(outPath, 'utf-8')
         .then(JSON.parse).catch(() => null);
@@ -192,9 +329,13 @@ async function enrichTitles() {
           existingRecord.model            = model;
           existingRecord.provider         = provider;
           existingRecord.generatedAt      = new Date().toISOString();
-          await fs.writeFile(outPath, JSON.stringify(existingRecord, null, 2));
+          await fs.writeFile(outPath, JSON.stringify(existingRecord, null, 2) + '\n', 'utf-8');
           console.log(`    \uD83C\uDFF7\uFE0F  AI (refreshed): "${newShort}"`);
           stats.aiRefreshed++;
+          if (!NO_CORPUS_WRITE) {
+            const patched = await patchCorpusJson(etsiNumber, existingRecord);
+            if (patched) { console.log('    \uD83D\uDCDD  Corpus patched'); stats.corpusPatched++; }
+          }
         } else {
           console.log('    \u26A0\uFE0F  AI returned nothing');
         }
@@ -202,6 +343,7 @@ async function enrichTitles() {
       }
     }
 
+    // ── Skip if already complete (no --force) ─────────────────────────────────
     if (!FORCE && !FORCE_SHORT_TITLES) {
       const existing = await fs.readFile(outPath, 'utf-8').then(JSON.parse).catch(() => null);
       if (existing?.shortTitle) {
@@ -211,6 +353,7 @@ async function enrichTitles() {
       }
     }
 
+    // ── Full extraction ───────────────────────────────────────────────────────
     const { fullTitle, etsiShortTitle } = extractWorkitemTitles(html);
 
     if (!fullTitle) { console.log('    \u26A0\uFE0F  Could not extract title'); stats.noTitle++; }
@@ -240,9 +383,10 @@ async function enrichTitles() {
       shortTitleSource = 'none';
     }
 
-    await fs.writeFile(outPath, JSON.stringify({
+    const titleRecord = {
       etsiNumber,
       wkiId,
+      // shortTitle = AI suggestion only — NOT promoted to shortname automatically
       shortTitle,
       shortTitleSource,
       etsiShortTitle:    etsiShortTitle ?? null,
@@ -252,8 +396,16 @@ async function enrichTitles() {
       model:             model          ?? null,
       provider:          provider       ?? null,
       generatedAt:       new Date().toISOString(),
-    }, null, 2));
+    };
+
+    await fs.writeFile(outPath, JSON.stringify(titleRecord, null, 2) + '\n', 'utf-8');
     stats.new++;
+
+    // ── Patch matching corpus/specs JSON ──────────────────────────────────────
+    if (!NO_CORPUS_WRITE) {
+      const patched = await patchCorpusJson(etsiNumber, titleRecord);
+      if (patched) { console.log('    \uD83D\uDCDD  Corpus patched'); stats.corpusPatched++; }
+    }
   }
 
   console.log('\n\uD83D\uDCCA Summary:');
@@ -264,6 +416,7 @@ async function enrichTitles() {
   console.log(`   \uD83D\uDCD1 With PDF title:            ${stats.withPdf}`);
   console.log(`   \u26A0\uFE0F  Inconsistencies:          ${stats.inconsistent}`);
   console.log(`   \u2753  No title extracted:        ${stats.noTitle}`);
+  if (!NO_CORPUS_WRITE) console.log(`   \uD83D\uDCDD  Corpus JSONs patched:      ${stats.corpusPatched}`);
   console.log(`\n\uD83D\uDCBE  Title records \u2192 downloads/specs/_titles/`);
 
   if (!aiOk && !NO_AI) {
