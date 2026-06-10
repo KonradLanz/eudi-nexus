@@ -38,6 +38,7 @@ const SPECS_ROOT   = path.join(PROJECT_ROOT, 'downloads', 'specs');
 const WORKITEM_DIR = path.join(SPECS_ROOT, '_workitems');
 const TITLES_DIR   = path.join(SPECS_ROOT, '_titles');
 const CORPUS_DIR   = path.join(PROJECT_ROOT, 'corpus', 'specs');
+const RESULTS_JSON = path.join(SPECS_ROOT, '_download_results.json');
 
 // ── CLI flags ─────────────────────────────────────────────────────────────────
 
@@ -48,6 +49,23 @@ const NO_AI              = args.includes('--no-ai');
 const NO_CORPUS_WRITE    = args.includes('--no-corpus-write');
 const limitArg           = args.find(a => a.startsWith('--limit='));
 const LIMIT              = limitArg ? parseInt(limitArg.split('=')[1]) : null;
+
+// ── STOPPED items ─────────────────────────────────────────────────────────────
+
+/**
+ * Returns a Set of etsiNumber strings that are listed under "stopped" in
+ * _download_results.json.  These work items are abandoned — no AI title needed.
+ */
+async function loadStoppedEtsiNumbers() {
+  try {
+    const raw     = await fs.readFile(RESULTS_JSON, 'utf-8');
+    const results = JSON.parse(raw);
+    const stopped = results.stopped ?? [];
+    return new Set(stopped.map(s => (s.etsiNumber ?? '').trim()).filter(Boolean));
+  } catch {
+    return new Set(); // file absent → treat as empty
+  }
+}
 
 // ── Corpus patching ───────────────────────────────────────────────────────────
 
@@ -269,6 +287,13 @@ async function enrichTitles() {
   if (NO_CORPUS_WRITE)     console.log('\uD83D\uDEAB --no-corpus-write: skipping corpus JSON patches');
   console.log();
 
+  // Load STOPPED etsiNumbers — these are abandoned work items, no AI title needed
+  const stoppedNumbers = await loadStoppedEtsiNumbers();
+  if (stoppedNumbers.size > 0) {
+    console.log(`\u23F9\uFE0F  Loaded ${stoppedNumbers.size} STOPPED work items \u2014 will skip`);
+    console.log();
+  }
+
   let sidecarFiles;
   try {
     sidecarFiles = (await fs.readdir(WORKITEM_DIR))
@@ -289,7 +314,7 @@ async function enrichTitles() {
   console.log(`\uD83D\uDCCB  Found ${sidecarFiles.length} workitem sidecars${LIMIT ? ` (limited to ${LIMIT})` : ''}\n`);
 
   const stats = {
-    new: 0, skipped: 0, noTitle: 0, withPdf: 0,
+    new: 0, skipped: 0, skippedStopped: 0, noTitle: 0, withPdf: 0,
     inconsistent: 0, aiShortTitle: 0, aiRefreshed: 0,
     corpusPatched: 0,
   };
@@ -305,6 +330,13 @@ async function enrichTitles() {
     const wkiM       = html.match(/<!--\s*wkiId:\s*(\d+)\s*-->/);
     const etsiNumber = numM ? numM[1].trim() : stem.replace(/_/g, ' ');
     const wkiId      = wkiM ? wkiM[1] : null;
+
+    // ── Skip STOPPED work items ───────────────────────────────────────────────
+    if (stoppedNumbers.has(etsiNumber)) {
+      console.log(`${progress} ${etsiNumber}  \u23F9\uFE0F  STOPPED \u2014 skipping`);
+      stats.skippedStopped++;
+      continue;
+    }
 
     console.log(`${progress} ${etsiNumber}`);
 
@@ -413,6 +445,7 @@ async function enrichTitles() {
   console.log(`   \uD83E\uDD16 AI short titles:          ${stats.aiShortTitle}`);
   if (stats.aiRefreshed) console.log(`   \uD83D\uDD04 AI short titles refreshed: ${stats.aiRefreshed}`);
   console.log(`   \u23ED\uFE0F  Skipped (cached):         ${stats.skipped}`);
+  console.log(`   \u23F9\uFE0F  Skipped (STOPPED):        ${stats.skippedStopped}`);
   console.log(`   \uD83D\uDCD1 With PDF title:            ${stats.withPdf}`);
   console.log(`   \u26A0\uFE0F  Inconsistencies:          ${stats.inconsistent}`);
   console.log(`   \u2753  No title extracted:        ${stats.noTitle}`);
