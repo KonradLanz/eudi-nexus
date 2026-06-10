@@ -22,8 +22,9 @@ const INCLUDE_DRAFTS = args.includes('--include-drafts') || args.includes('-d');
 const ALL_SPECS = args.includes('--all') || args.includes('-a');
 const EUDI_MODE = !ALL_SPECS; // EUDI focus is the default
 
-// Load ETSI work item URLs from esi_overview.json
+// Load ETSI work item metadata from esi_overview.json
 let etsiWorkItemUrls = new Map();
+let etsiPublicationTitles = new Map();
 async function loadEtsiUrls() {
   try {
     const overviewPath = path.join(OUTPUT_PATH, 'esi_overview.json');
@@ -32,6 +33,9 @@ async function loadEtsiUrls() {
     // Build lookup from ETSI number to portal URL
     const allItems = [...(data.activeWorkItems || []), ...(data.publishedDocuments || [])];
     for (const item of allItems) {
+      if (item.etsiNumber && item.title) {
+        etsiPublicationTitles.set(item.etsiNumber, cleanPublicationTitle(item.title));
+      }
       if (item.etsiNumber && item.detailUrl) {
         // Extract just the WKI_ID for a cleaner URL
         const wkiMatch = item.detailUrl.match(/WKI_ID=(\d+)/);
@@ -41,10 +45,52 @@ async function loadEtsiUrls() {
         }
       }
     }
-    console.log(`Loaded ${etsiWorkItemUrls.size} ETSI work item URLs\n`);
+    console.log(`Loaded ${etsiWorkItemUrls.size} ETSI work item URLs and ${etsiPublicationTitles.size} publication titles\n`);
   } catch (e) {
-    console.log('Note: Could not load esi_overview.json for work item URLs\n');
+    console.log('Note: Could not load esi_overview.json for work item metadata\n');
   }
+}
+
+function cleanPublicationTitle(title) {
+  return title
+    ?.replace(/^Electronic Signatures and (?:Trust )?Infrastructures \(ESI\);?\s*/i, '')
+    .replace(/\s+/g, ' ')
+    .trim() || null;
+}
+
+const EXTERNAL_PUBLICATION_TITLES = new Map(Object.entries({
+  // IETF RFCs and drafts commonly referenced in the EUDI ecosystem
+  'RFC 3161': 'Internet X.509 Public Key Infrastructure Time-Stamp Protocol (TSP)',
+  'RFC 5280': 'Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile',
+  'RFC 5652': 'Cryptographic Message Syntax (CMS)',
+  'RFC 6960': 'X.509 Internet Public Key Infrastructure Online Certificate Status Protocol - OCSP',
+  'RFC 7515': 'JSON Web Signature (JWS)',
+  'RFC 7516': 'JSON Web Encryption (JWE)',
+  'RFC 7517': 'JSON Web Key (JWK)',
+  'RFC 7518': 'JSON Web Algorithms (JWA)',
+  'RFC 7519': 'JSON Web Token (JWT)',
+  'RFC 8017': 'PKCS #1: RSA Cryptography Specifications Version 2.2',
+  'RFC 8392': 'CBOR Web Token (CWT)',
+  'RFC 8747': 'Proof-of-Possession Key Semantics for CBOR Web Tokens (CWTs)',
+  'RFC 9126': 'OAuth 2.0 Pushed Authorization Requests',
+  'RFC 9449': 'OAuth 2.0 Demonstrating Proof of Possession (DPoP)',
+  'SD-JWT': 'Selective Disclosure for JWTs',
+  'SD-JWT VC': 'SD-JWT-based Verifiable Credentials',
+
+  // OpenID Foundation specifications
+  'HAIP': 'OpenID4VC High Assurance Interoperability Profile',
+  'OpenID4VC-HAIP': 'OpenID4VC High Assurance Interoperability Profile',
+  'OpenID4VCI': 'OpenID for Verifiable Credential Issuance',
+  'OpenID4VP': 'OpenID for Verifiable Presentations',
+  'OpenID Connect': 'OpenID Connect Core',
+  'OpenID Connect Core': 'OpenID Connect Core',
+}));
+
+function getPublicationTitle(docId, source = 'etsi') {
+  if (source === 'etsi') {
+    return etsiPublicationTitles.get(docId) || null;
+  }
+  return EXTERNAL_PUBLICATION_TITLES.get(docId) || null;
 }
 
 // EUDI Wallet ecosystem relevant specifications
@@ -254,6 +300,7 @@ async function extractReferences() {
         if (!graph.nodes.has(docId)) {
           graph.nodes.set(docId, {
             id: docId,
+            title: getPublicationTitle(docId, 'etsi'),
             type: docId.split(' ')[0],
             source: 'etsi',
             path: pdfPath,
@@ -262,6 +309,7 @@ async function extractReferences() {
             isEudiCore: EUDI_RELEVANT_SPECS.has(docId),
           });
         }
+        graph.nodes.get(docId).title = getPublicationTitle(docId, 'etsi');
         graph.nodes.get(docId).referencesCount = totalCount;
         
         // Add ETSI edges (filter by EUDI relevance)
@@ -360,6 +408,7 @@ async function extractReferences() {
           if (!graph.nodes.has(docId)) {
             graph.nodes.set(docId, {
               id: docId,
+              title: getPublicationTitle(docId, 'etsi'),
               type: docId.split(' ')[0],
               source: 'etsi',
               path: docxPath,
@@ -376,6 +425,7 @@ async function extractReferences() {
               node.path = docxPath;
             }
           }
+          graph.nodes.get(docId).title = getPublicationTitle(docId, 'etsi');
           graph.nodes.get(docId).referencesCount = totalCount;
           
           // Add ETSI edges (filter by EUDI relevance)
@@ -462,6 +512,7 @@ async function extractReferences() {
         const docId = htmlFilenameToOidfId(filename);
         
         if (docId) {
+          const publicationTitle = getPublicationTitle(docId, 'oidf') || await extractHtmlPublicationTitle(htmlPath);
           const countRefs = (obj) => Object.values(obj).reduce((sum, arr) => sum + arr.length, 0);
           const normativeCount = countRefs(refs.normative);
           const informativeCount = countRefs(refs.informative);
@@ -471,6 +522,7 @@ async function extractReferences() {
           if (!graph.nodes.has(docId)) {
             graph.nodes.set(docId, {
               id: docId,
+              title: publicationTitle,
               type: 'OIDF',
               source: 'oidf',
               path: htmlPath,
@@ -482,6 +534,7 @@ async function extractReferences() {
             // Update existing node with path
             graph.nodes.get(docId).path = htmlPath;
           }
+          graph.nodes.get(docId).title = publicationTitle;
           graph.nodes.get(docId).referencesCount = totalCount;
           
           // Add edges from OIDF spec to its references
@@ -605,6 +658,7 @@ async function extractReferences() {
         const docId = txtFilenameToRfcId(filename);
         
         if (docId) {
+          const publicationTitle = getPublicationTitle(docId, 'ietf') || await extractTxtPublicationTitle(txtPath);
           const countRefs = (obj) => Object.values(obj).reduce((sum, arr) => sum + arr.length, 0);
           const normativeCount = countRefs(refs.normative);
           const informativeCount = countRefs(refs.informative);
@@ -614,6 +668,7 @@ async function extractReferences() {
           if (!graph.nodes.has(docId)) {
             graph.nodes.set(docId, {
               id: docId,
+              title: publicationTitle,
               type: 'RFC',
               source: 'ietf',
               path: txtPath,
@@ -624,6 +679,7 @@ async function extractReferences() {
             // Update existing node with path
             graph.nodes.get(docId).path = txtPath;
           }
+          graph.nodes.get(docId).title = publicationTitle;
           graph.nodes.get(docId).referencesCount = totalCount;
           
           // Add edges from IETF RFC to its references
@@ -1085,6 +1141,27 @@ function txtFilenameToRfcId(filename) {
   return null;
 }
 
+async function extractHtmlPublicationTitle(htmlPath) {
+  const html = await fs.readFile(htmlPath, 'utf-8');
+  const $ = cheerio.load(html);
+  const title = $('h1').first().text() || $('title').first().text();
+  return cleanPublicationTitle(title.replace(/\s*-\s*OpenID Foundation$/i, ''));
+}
+
+async function extractTxtPublicationTitle(txtPath) {
+  const text = await fs.readFile(txtPath, 'utf-8');
+  const lines = text.split(/\r?\n/).slice(0, 80).map(line => line.trim()).filter(Boolean);
+  const titleIndex = lines.findIndex(line => /^Request for Comments:\s*\d+/i.test(line));
+  if (titleIndex >= 0) {
+    const title = lines.slice(titleIndex + 1).find(line => !/^(Category|ISSN|Updates|Obsoletes):/i.test(line));
+    if (title) return cleanPublicationTitle(title);
+  }
+
+  // Fall back to the centered RFC title often found near the top of RFC text files.
+  const fallback = lines.find(line => /\b(JSON|X\.509|OAuth|CBOR|Cryptographic|Token|JWT|JWS|JWE|JWK|JWA|PKCS|Certificate|Time-Stamp|Disclosure)\b/i.test(line));
+  return fallback ? cleanPublicationTitle(fallback) : null;
+}
+
 // Extract references from IETF RFC text files
 async function extractReferencesFromTxt(txtPath) {
   const text = await fs.readFile(txtPath, 'utf-8');
@@ -1400,6 +1477,7 @@ function ensureNode(graph, docId, source = 'etsi') {
   if (!graph.nodes.has(docId)) {
     graph.nodes.set(docId, {
       id: docId,
+      title: getPublicationTitle(docId, source),
       type: docId.split(' ')[0],
       source: source,
       path: null,
@@ -1413,6 +1491,7 @@ function ensureExternalNode(graph, ref, source) {
   if (!graph.nodes.has(ref)) {
     graph.nodes.set(ref, {
       id: ref,
+      title: getPublicationTitle(ref, source),
       type: ref.split(' ')[0],
       source: source,
       path: null,
