@@ -40,13 +40,33 @@ except ImportError:
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Sidecar detection
+#
+# The downloads/specs/ tree contains hidden sidecar files that look like PDFs
+# but are metadata stubs created by the download scripts.  They share the
+# same stem as the real PDF but carry a leading dot-prefixed extension segment:
+#
+#   .headers.tr_119600v010201p.pdf   ← HTTP-header cache
+#   .url.tr_119600v010201p.pdf       ← source-URL cache
+#
+# Pattern: filename starts with "." OR contains a dot-separated prefix before
+# the stem (i.e. the stem itself starts with a dot when resolved via Path.name).
+# We simply skip any file whose name starts with ".".
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _is_sidecar(path: Path) -> bool:
+    """Return True for hidden/sidecar files that are not real PDFs."""
+    return path.name.startswith(".")
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Regexes
 # ──────────────────────────────────────────────────────────────────────────────
 
 # TOC entry: "5.3  General requirements ......... 42"
 _TOC_LINE_RE = re.compile(
     r"^(?P<num>[A-Z]?\.?(?:\d+\.)*\d+\.?)\s{1,6}(?P<title>[^\n]{2,80?}?)"
-    r"[\.\s]{3,}\s*(?P<page>\d{1,4})\s*$"
+    r"[\.\ ]{3,}\s*(?P<page>\d{1,4})\s*$"
 )
 
 # Looser TOC line (no dots, just section + title + trailing number)
@@ -57,7 +77,7 @@ _TOC_LOOSE_RE = re.compile(
 # Annex entry in TOC: "Annex A (normative):  ... 55"
 _TOC_ANNEX_RE = re.compile(
     r"^Annex\s+(?P<letter>[A-Z])\s*\((?P<type>normative|informative)\)[:\s]*"
-    r"(?P<title>.{0,80}?)[\.\s]{0,20}\s*(?P<page>\d{1,4})\s*$",
+    r"(?P<title>.{0,80}?)[\.\ ]{0,20}\s*(?P<page>\d{1,4})\s*$",
     re.IGNORECASE,
 )
 
@@ -82,7 +102,7 @@ _SCOPE_RE = re.compile(r"^1\.?\s+Scope\b", re.IGNORECASE)
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Helpers
-# ��─────────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 
 def _page_text(page) -> str:
     """Extract raw text from a pdfplumber page, collapsed whitespace per line."""
@@ -281,7 +301,8 @@ def build_report(all_tocs: list[dict]) -> str:
 # ──────────────────────────────────────────────────────────────────────────────
 
 def _find_pdfs(root: Path) -> list[Path]:
-    return sorted(root.rglob("*.pdf"))
+    """Recursively find all real PDFs, skipping sidecar/hidden files."""
+    return sorted(p for p in root.rglob("*.pdf") if not _is_sidecar(p))
 
 
 def main() -> None:
@@ -310,6 +331,8 @@ def main() -> None:
         pdf_path = Path(args.pdf)
         if not pdf_path.is_file():
             sys.exit(f"[ERROR] Not found: {pdf_path}")
+        if _is_sidecar(pdf_path):
+            sys.exit(f"[ERROR] Sidecar file, not a real PDF: {pdf_path}")
         result = extract_toc(pdf_path)
         out_path = out_dir / f"{pdf_path.stem}.toc.json"
         out_path.write_text(json.dumps(result, indent=2, ensure_ascii=False))
