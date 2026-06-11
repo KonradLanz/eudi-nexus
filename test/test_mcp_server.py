@@ -4,12 +4,13 @@ test/test_mcp_server.py
 
 Unit + integration tests for scripts/mcp-server.py
 
-All tests are offline by default (use the populated test DB fixture).
-No live MCP transport is tested here — we call the tool functions directly.
+All tests are offline by default (populated test DB fixture, no network).
+Embedding tests use a mock that injects fake vectors into segments_vec
+so hybrid search can be tested without a live LM Studio / Ollama instance.
 
 Run:
-  pytest test/test_mcp_server.py -v
-  pytest test/test_mcp_server.py -v --run-embedding   # cosine tests
+  pytest test/test_mcp_server.py -v                  # offline (30 tests)
+  pytest test/test_mcp_server.py -v --run-embedding  # + embedding tests (33)
 """
 from __future__ import annotations
 
@@ -39,6 +40,42 @@ def _load(name: str, filename: str):
 
 
 build_index = _load("build_index", "build-index.py")
+
+
+# ── Fake embedding helpers ────────────────────────────────────────────────────
+
+EMBED_DIMS = 4  # matches create_schema(dims=4) in db_path fixture
+
+
+def _fake_vec(seed: int) -> list[float]:
+    """Deterministic unit-ish vector for a given seed."""
+    import math
+    raw = [math.sin(seed + i) for i in range(EMBED_DIMS)]
+    norm = math.sqrt(sum(x * x for x in raw)) or 1.0
+    return [x / norm for x in raw]
+
+
+def _floats_to_blob(v: list[float]) -> bytes:
+    return struct.pack(f"{len(v)}f", *v)
+
+
+def _insert_embeddings(db_path: Path) -> None:
+    """Insert fake embeddings into segments_vec for every segment in the DB."""
+    con = sqlite3.connect(str(db_path))
+    import sqlite_vec
+    con.enable_load_extension(True)
+    sqlite_vec.load(con)
+    con.enable_load_extension(False)
+    rows = con.execute("SELECT id FROM segments").fetchall()
+    for i, (seg_id,) in enumerate(rows):
+        blob = _floats_to_blob(_fake_vec(i))
+        con.execute(
+            "INSERT OR REPLACE INTO segments_vec(segment_id, embedding) VALUES (?, ?)",
+            (seg_id, blob),
+        )
+        con.execute("UPDATE segments SET has_embedding=1 WHERE id=?", (seg_id,))
+    con.commit()
+    con.close()
 
 
 # ── Fixtures ─────────────────────────────────────────────────────────────────
@@ -84,12 +121,12 @@ SEGMENTS_B = {
 
 @pytest.fixture(scope="module")
 def db_path(tmp_path_factory) -> Path:
-    """Module-scoped populated test DB (no embeddings)."""
+    """Module-scoped populated test DB (no embeddings initially)."""
     p = tmp_path_factory.mktemp("db") / "test.db"
     con = build_index._open_db(p)
-    build_index.create_schema(con, dims=4)
+    build_index.create_schema(con, dims=EMBED_DIMS)
     for data in (SEGMENTS_A, SEGMENTS_B):
-        import tempfile, json as _json
+        import json as _json
         td = tmp_path_factory.mktemp("seg")
         sf = td / f"{data['norm'].replace(' ', '_')}.segments.json"
         sf.write_text(_json.dumps(data))
@@ -99,12 +136,42 @@ def db_path(tmp_path_factory) -> Path:
 
 
 @pytest.fixture(scope="module")
+def db_path_with_embeddings(db_path: Path, tmp_path_factory) -> Path:
+    """
+    A copy of the test DB that has fake embeddings inserted.
+    Used only by embedding tests so offline tests stay isolated.
+    """
+    import shutil
+    p = tmp_path_factory.mktemp("db_emb") / "test_emb.db"
+    shutil.copy2(db_path, p)
+    _insert_embeddings(p)
+    return p
+
+
+@pytest.fixture(scope="module")
 def srv(db_path: Path):
-    """Load mcp-server module with DB_PATH pointing to test DB."""
+    """Load mcp-server module with DB_PATH pointing to test DB (no embeddings)."""
     os.environ["MCP_DB_PATH"] = str(db_path)
+    os.environ["EMBEDDING_BACKEND"] = "lmstudio"   # explicit — skip auto-probe
     mod = _load("mcp_server", "mcp-server.py")
-    # Reset lazy connection so it picks up the env var
     mod._db = None
+    mod._resolved_backend = "none"  # force BM25-only for offline suite
+    return mod
+
+
+@pytest.fixture(scope="module")
+def srv_emb(db_path_with_embeddings: Path):
+    """
+    mcp-server module wired to the embedding DB, with _embed mocked
+    to return a deterministic fake vector (same dims as segments_vec).
+    """
+    os.environ["MCP_DB_PATH"] = str(db_path_with_embeddings)
+    os.environ["EMBEDDING_BACKEND"] = "lmstudio"
+    mod = _load("mcp_server_emb", "mcp-server.py")
+    mod._db = None
+    mod._resolved_backend = "lmstudio"  # skip probe
+    # Patch _embed to return a fixed fake vector
+    mod._embed = lambda text: _fake_vec(0)
     return mod
 
 
@@ -117,7 +184,6 @@ class TestListNorms:
 
     def test_total_segments(self, srv):
         result = srv.list_norms()
-        # A: 4 indexed (HEADER skipped), B: 2 indexed
         assert result["total_segments"] == 6
 
     def test_norm_names_present(self, srv):
@@ -177,7 +243,6 @@ class TestGetSection:
         assert "6" not in sections
 
     def test_section_count_correct(self, srv):
-        # section 5: SECTION header + 2 NORM + 1 INFORM = 4
         result = srv.get_section(norm="319 401", section="5")
         assert result["segment_count"] == 4
 
@@ -202,10 +267,10 @@ class TestGetSection:
         assert result["segments"] == []
 
 
-# ── search_norm (BM25-only, no LM Studio) ────────────────────────────────
+# ── search_norm (BM25-only) ──────────────────────────────────────────────────────
 
 class TestSearchNormBM25:
-    """Tests with alpha=1.0 (BM25-only) — no LM Studio needed."""
+    """Tests with alpha=1.0 (BM25-only) — no embedding backend needed."""
 
     def test_finds_shall_segments(self, srv):
         result = srv.search_norm("shall", alpha=1.0)
@@ -258,36 +323,46 @@ class TestSearchNormBM25:
         assert result["mode"] == "bm25_only"
 
 
-# ── search_norm (hybrid, LM Studio) ─────────────────────────────────────
+# ── search_norm (hybrid, mocked embeddings) ──────────────────────────────────
 
 class TestSearchNormHybrid:
+    """
+    Hybrid tests use srv_emb: a server instance backed by a DB that has
+    fake embeddings + _embed() mocked to return the same fake vector.
+    No LM Studio / Ollama needed.
+    """
+
     @pytest.mark.embedding
-    def test_hybrid_mode_label(self, srv):
-        result = srv.search_norm("TSP audit requirements", alpha=0.5)
+    def test_hybrid_mode_label(self, srv_emb):
+        result = srv_emb.search_norm("TSP audit requirements", alpha=0.5)
         assert result["mode"] == "hybrid"
 
     @pytest.mark.embedding
-    def test_cosine_score_nonzero(self, srv):
-        result = srv.search_norm("TSP audit requirements", alpha=0.5)
+    def test_cosine_score_nonzero(self, srv_emb):
+        result = srv_emb.search_norm("TSP audit requirements", alpha=0.5)
         scores = [r["cosine_score"] for r in result["results"]]
         assert any(s > 0 for s in scores)
 
     @pytest.mark.embedding
-    def test_alpha_zero_cosine_only(self, srv):
-        result = srv.search_norm("TSP audit requirements", alpha=0.0)
+    def test_alpha_zero_cosine_only(self, srv_emb):
+        result = srv_emb.search_norm("TSP audit requirements", alpha=0.0)
         for r in result["results"]:
             assert r["bm25_score"] == 0.0
 
-    def test_lmstudio_unavailable_falls_back_gracefully(self, srv):
-        """If LM Studio is unreachable, search must still return BM25 results."""
-        original_base = srv.BASE_URL
-        srv.BASE_URL = "http://localhost:19999"  # unreachable
+    def test_fallback_when_embed_returns_none(self, srv):
+        """
+        If _embed() returns None (any backend unreachable), search must
+        still return BM25 results without raising an exception.
+        """
+        original_embed = srv._embed
+        srv._embed = lambda text: None          # simulate unreachable backend
+        srv._resolved_backend = "lmstudio"      # alpha<1.0 path will be taken
         try:
             result = srv.search_norm("audit", alpha=0.5)
-            # Must still return results via BM25
             assert result["result_count"] >= 0  # no exception
         finally:
-            srv.BASE_URL = original_base
+            srv._embed = original_embed
+            srv._resolved_backend = "none"
 
 
 # ── _norm_filter_clause ────────────────────────────────────────────────────
