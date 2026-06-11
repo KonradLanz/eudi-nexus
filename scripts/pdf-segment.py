@@ -63,6 +63,34 @@ except ImportError:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Magic-byte file-type detection
+# ─────────────────────────────────────────────────────────────────────────────
+
+# DOCX / XLSX / PPTX are all ZIP archives starting with PK\x03\x04
+_ZIP_MAGIC  = b"PK\x03\x04"
+_PDF_MAGIC  = b"%PDF"
+
+
+def _sniff_kind(path: Path) -> str:
+    """
+    Read the first 4 bytes of *path* and return 'docx', 'pdf', or 'unknown'.
+
+    ETSI sometimes serves DOCX files under a .pdf URL / filename.
+    This check catches that mislabelling before pdfplumber tries to open the
+    file and raises "No /Root object! - Is this really a PDF?".
+    """
+    try:
+        header = path.read_bytes()[:4]
+    except OSError:
+        return "unknown"
+    if header.startswith(_PDF_MAGIC):
+        return "pdf"
+    if header.startswith(_ZIP_MAGIC):
+        return "docx"   # ZIP → treat as DOCX (Office Open XML)
+    return "unknown"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Profiles
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -564,7 +592,9 @@ def find_source_file(rec: dict, stem: str) -> tuple[Path | None, str]:
 
     Priority:
       1. source_docx field in corpus JSON (explicit, set by docx-ingest.py)
-      2. source_pdf  field in corpus JSON
+      2. source_pdf  field in corpus JSON  — magic-byte verified
+         (ETSI sometimes serves DOCX under a .pdf URL; we detect that here
+          so the caller never gets "No /Root object! - Is this really a PDF?")
       3. Auto-discover <stem>.docx in DOWNLOAD_ROOTS
       4. Auto-discover <stem>.pdf  in DOWNLOAD_ROOTS
     """
@@ -575,12 +605,15 @@ def find_source_file(rec: dict, stem: str) -> tuple[Path | None, str]:
         if p.is_file():
             return p, "docx"
 
-    # 2. Explicit PDF
+    # 2. Explicit PDF — but verify magic bytes first
     pdf_str = rec.get("source_pdf", "")
     if pdf_str:
         p = Path(pdf_str)
         if p.is_file():
-            return p, "pdf"
+            real_kind = _sniff_kind(p)
+            if real_kind == "unknown":
+                real_kind = "pdf"   # best-effort: let pdfplumber report the error
+            return p, real_kind
 
     # 3 & 4. Auto-discover from norm stem (strip version suffix for glob)
     norm_base = re.sub(r"v\d{6}p$", "", stem)
@@ -912,32 +945,38 @@ Examples:
                 stem     = _safe_stem(cj.stem)
                 seg_path = corpus_root / "specs" / "_segments" / f"{stem}.segments.json"
                 if seg_path.exists():
-                    meta = json.loads(seg_path.read_text(encoding="utf-8"))
-                    total_segments += meta.get("segment_count", 0)
-                    kind = meta.get("source_kind", "pdf")
-                    if kind == "docx":
-                        docx_count += 1
-                    else:
-                        pdf_count  += 1
-                    for t, n in meta.get("type_counts", {}).items():
-                        type_totals[t] = type_totals.get(t, 0) + n
+                    try:
+                        data = json.loads(seg_path.read_text(encoding="utf-8"))
+                        total_segments += data.get("segment_count", 0)
+                        kind = data.get("source_kind", "pdf")
+                        if kind == "docx":
+                            docx_count += 1
+                        else:
+                            pdf_count += 1
+                        for t in SEGMENT_TYPES:
+                            type_totals[t] += data.get("type_counts", {}).get(t, 0)
+                    except Exception:
+                        pass
             else:
                 skipped += 1
         except Exception as exc:
-            print(f"[ERROR] {cj.name}: {exc}", file=sys.stderr)
             errors += 1
+            print(f"[ERROR] {cj.name}: {exc}", file=sys.stderr)
 
-    print(f"\n[📊]  Done: {done} processed | {skipped} skipped | {errors} errors")
-    if done:
-        print(f"      Sources: {docx_count}× DOCX (structured)  {pdf_count}× PDF (fallback)")
-    print(f"   Total segments: {total_segments}")
-    if args.stats or verbose:
-        for t in SEGMENT_TYPES:
-            n = type_totals.get(t, 0)
-            if n:
-                print(f"   {t:12} {n:>6}")
-    print(f"\n   📄 Segments → corpus/specs/_segments/")
-    print(f"   📝 AsciiDoc  → corpus/specs/_adoc/")
+    if verbose or args.stats:
+        print(f"\n{'─'*60}")
+        print(f"  Processed : {done}  (DOCX: {docx_count}, PDF: {pdf_count})")
+        print(f"  Skipped   : {skipped}")
+        print(f"  Errors    : {errors}")
+        print(f"  Segments  : {total_segments:,}")
+        if args.stats and total_segments:
+            print(f"\n  Type breakdown:")
+            for t in SEGMENT_TYPES:
+                n = type_totals.get(t, 0)
+                if n:
+                    pct = n / total_segments * 100
+                    print(f"    {t:12} {n:6,}  ({pct:5.1f}%)")
+        print(f"{'─'*60}")
 
 
 if __name__ == "__main__":
