@@ -22,19 +22,8 @@ Output per spec
   corpus/specs/_adoc/<stem>.adoc                — AsciiDoc with [[anchor]] backrefs
 
 Style detection
-  ETSI DOCX files use a consistent Word template across all specs:
-    Heading 1–9  — numbered clauses and annexes      → SECTION
-    ZA           — document title (cover page)        → OTHER
-    ZB           — document type (European Standard)  → OTHER
-    ZT           — scope line (cover page)            → OTHER
-    NO           — NOTE paragraphs                    → INFORM
-    EX           — EXAMPLE paragraphs                 → INFORM
-    B1 / B1+     — requirement items                  → NORM
-    BL           — normative body text                → NORM
-    toc 1–9      — table of contents lines            → TOC
-  detect_docx_heading_styles() scans a DOCX once and returns the set of
-  heading-type style names actually present, so unknown templates are flagged
-  automatically rather than silently misclassified.
+  ETSI DOCX files use a consistent Word template across all specs.
+  See docs/etsi-style-map.md for the full style reference and AI fallback guidance.
 
 Fair-use note:
   Local AI processing of standards documents for compliance research
@@ -157,7 +146,7 @@ PROFILES: dict[str, Profile] = {
     "etsi-contribution": Profile(
         name="etsi-contribution",
         header_zone=0.12, footer_zone=0.10,
-        heading_min_size=11.0, heading_bold_ratio=0.50,
+tml       heading_min_size=11.0, heading_bold_ratio=0.50,
         toc_run_threshold=3,
         header_re=[
             r"ETSI TC ESI",
@@ -233,30 +222,74 @@ SEGMENT_TYPES = (
 )
 
 # ── ETSI Word template — known style → segment type mapping ──────────────────
-# Derived empirically from all 15 DOCX in downloads/specs/EN/:
-#   15x Heading 1–2, 11x Heading 3, 5x Heading 4, 2x Heading 5,
-#   11x Heading 8, 2x Heading 9  → SECTION
-#   13x ZA (doc title), 11x ZB (doc type), 14x ZT (scope) → OTHER (cover)
-#   NO (notes), EX (examples) → INFORM
-#   B1, B1+, BL (body normative) → NORM
-#   toc 1–9 → TOC
+# Empirically derived from all 15 DOCX in downloads/specs/EN/.
+# Full reference: docs/etsi-style-map.md
+#
+# Frequency summary (≥2 docs):
+#   15x  Heading 1/2, ZA, ZT, FP, NO, EX, TT        → ✅ mapped
+#   13x  ZB, H6                                       → ✅ mapped
+#   12x  B1+                                          → NORM
+#   11x  Heading 3/8, toc 8                           → SECTION / TOC
+#    8x  BL, B2                                       → NORM
+#    6x  BN, B2+, ZD                                  → mapped
+#    5x  Heading 4, TH, List Paragraph                → mapped
+#    4x  B3, B4, TF                                   → mapped
+#    3x  PL, B3+                                      → NORM
+#    2x  Heading 5/9, Editor's Note                   → mapped
 _ETSI_STYLE_MAP: dict[str, str] = {
-    # Cover page styles
-    "za": "OTHER", "zb": "OTHER", "zt": "OTHER",
-    "fp": "OTHER",   # front page metadata (Reference, Keywords…)
-    # Informative
-    "no": "INFORM",  # NOTE:
-    "ex": "INFORM",  # EXAMPLE:
-    "ew": "INFORM",  # definitions / glossary entries
-    # Normative body
-    "b1": "NORM", "b1+": "NORM", "b2": "NORM", "b2+": "NORM",
-    "bl": "NORM",
+    # ── Cover page ────────────────────────────────────────────────
+    "za":           "OTHER",   # document title
+    "zb":           "OTHER",   # document type (European Standard / TS / TR)
+    "zt":           "OTHER",   # scope / status line
+    "zd":           "OTHER",   # additional cover metadata (6 docs)
+    "fp":           "OTHER",   # front-page metadata (Reference, Keywords…)
+
+    # ── Informative ───────────────────────────────────────────────
+    "no":           "INFORM",  # NOTE: paragraphs
+    "ex":           "INFORM",  # EXAMPLE: paragraphs
+    "ew":           "INFORM",  # definitions / editorial notes
+    "editor's note": "INFORM", # draft editor annotations
+
+    # ── Normative body text ───────────────────────────────────────
+    "b1":           "NORM",    # requirement depth 1
+    "b1+":          "NORM",    # continuation / sub-item depth 1
+    "b2":           "NORM",    # requirement depth 2
+    "b2+":          "NORM",    # continuation depth 2
+    "b3":           "NORM",    # requirement depth 3
+    "b3+":          "NORM",    # continuation depth 3
+    "b4":           "NORM",    # requirement depth 4
+    "bl":           "NORM",    # normative body (block / list)
+    "bn":           "NORM",    # body numbered (numbered requirement list)
+    "pl":           "NORM",    # paragraph list (non-numbered list item)
+    "list paragraph": "NORM",  # Word built-in list paragraph
+
+    # ── Table cells ───────────────────────────────────────────────
+    "th":           "TABLE",   # table header row
+    "tf":           "TABLE",   # table footer / figure caption
+
+    # ── Annex headings ────────────────────────────────────────────
+    # H6 is the ETSI-internal Annex heading style (present in 13/15 docs).
+    # It does NOT follow the "Heading N" Word convention.
+    "h6":           "SECTION",
 }
 
-# Styles NOT in this map but matching these patterns are flagged as unknown
-_KNOWN_STYLE_PREFIXES = ("heading", "toc ", "normal", "default paragraph",
-                          "za", "zb", "zt", "fp", "no", "ex", "ew",
-                          "b1", "b1+", "b2", "b2+", "bl", "tt")
+# Prefixes / exact names the segmenter handles without a map entry.
+# Styles NOT matching any of these are flagged ← UNKNOWN in --scan-styles
+# and trigger a warning during batch processing.
+_KNOWN_STYLE_PREFIXES = (
+    "heading",          # Heading 1 … Heading 9
+    "toc ",             # toc 1 … toc 9
+    "normal",
+    "default paragraph",
+    # All keys in _ETSI_STYLE_MAP are also implicitly known:
+    "za", "zb", "zt", "zd", "fp",
+    "no", "ex", "ew", "editor",
+    "b1", "b1+", "b2", "b2+", "b3", "b3+", "b4",
+    "bl", "bn", "pl", "list paragraph",
+    "th", "tf",
+    "h6",
+    "tt",               # monospace / code
+)
 
 
 def find_normative_keywords(text: str) -> list[str]:
@@ -311,6 +344,7 @@ def _warn_unknown_styles(unknown: set[str], docx_path: Path) -> None:
     """
     Print a warning when a DOCX contains style names we don't handle.
     In a future step these can be sent to a local AI model for classification.
+    See docs/etsi-style-map.md → AI Fallback section.
     """
     if not unknown:
         return
@@ -326,10 +360,9 @@ def _warn_unknown_styles(unknown: set[str], docx_path: Path) -> None:
     )
     # TODO: local AI fallback
     # If ollama / llama.cpp is available, classify each unknown style name
-    # against a short prompt:
+    # against a short prompt (see docs/etsi-style-map.md):
     #   "Given an ETSI standards Word style named '{style}' with sample text
     #    '{sample}', classify it as one of: SECTION NORM INFORM TABLE OTHER TOC"
-    # For now we emit a warning so the user can inspect and extend _ETSI_STYLE_MAP.
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -368,12 +401,12 @@ def _docx_para_type(para, profile: Profile) -> str:
     if not text:
         return "OTHER"
 
-    # 1. Explicit ETSI template map (ZA/ZB/ZT/NO/EX/B1/BL …)
+    # 1. Explicit ETSI template map
     mapped = _ETSI_STYLE_MAP.get(style_low)
     if mapped:
         return mapped
 
-    # 2. Heading N  (case-insensitive — "Heading 1", "HEADING 1", …)
+    # 2. Heading N  (case-insensitive)
     if re.match(r"heading", style_low, re.IGNORECASE):
         return "SECTION"
 
@@ -438,7 +471,7 @@ def segment_docx(
     seg_counters: dict[int, int] = {}
     current_section       = ""
     current_section_title = ""
-    para_idx = 0  # synthetic paragraph index (no page numbers in DOCX)
+    para_idx = 0
 
     def _new_seg(seg_type: str, text: str, para_num: int) -> dict:
         seg_counters[para_num] = seg_counters.get(para_num, 0) + 1
@@ -449,7 +482,7 @@ def segment_docx(
             "type":               seg_type,
             "page":               para_num,
             "anchor":             f"#para={para_num}",
-            "section":            current_section,        # captured AFTER update below
+            "section":            current_section,
             "section_title":      current_section_title,
             "text":               text,
             "normative_keywords": kw,
@@ -476,17 +509,13 @@ def segment_docx(
             seg_type = _docx_para_type(para, profile)
 
             # Update section state BEFORE building the segment dict
-            # (fixes race condition: previous code set section AFTER _new_seg)
             if seg_type == "SECTION":
                 m = _SECTION_RE.match(text)
                 if m:
                     current_section       = m.group("num").rstrip(".")
                     current_section_title = m.group("title").strip()
                 else:
-                    # Heading style but no clause number (e.g. "Foreword")
                     current_section_title = text
-                    # Keep current_section number unchanged so sub-clauses
-                    # still inherit the parent section number.
 
             segments.append(_new_seg(seg_type, text, para_idx))
 
@@ -500,7 +529,6 @@ def segment_docx(
             rows = []
             for row in tbl.rows:
                 cells = [cell.text.strip() for cell in row.cells]
-                # Deduplicate merged cells (python-docx repeats merged cell text)
                 deduped: list[str] = []
                 for c in cells:
                     if not deduped or c != deduped[-1]:
@@ -720,19 +748,15 @@ def find_source_file(rec: dict, stem: str) -> tuple[Path | None, str]:
     Priority:
       1. source_docx field in corpus JSON (explicit, set by docx-ingest.py)
       2. source_pdf  field in corpus JSON  — magic-byte verified
-         (ETSI sometimes serves DOCX under a .pdf URL; we detect that here
-          so the caller never gets "No /Root object! - Is this really a PDF?")
       3. Auto-discover <stem>.docx in DOWNLOAD_ROOTS
       4. Auto-discover <stem>.pdf  in DOWNLOAD_ROOTS
     """
-    # 1. Explicit DOCX
     docx_str = rec.get("source_docx", "")
     if docx_str:
         p = Path(docx_str)
         if p.is_file():
             return p, "docx"
 
-    # 2. Explicit PDF — but verify magic bytes first
     pdf_str = rec.get("source_pdf", "")
     if pdf_str:
         p = Path(pdf_str)
@@ -742,37 +766,28 @@ def find_source_file(rec: dict, stem: str) -> tuple[Path | None, str]:
                 real_kind = "pdf"
             return p, real_kind
 
-    # 3 & 4. Auto-discover from norm stem (strip version suffix for glob)
     norm_base = re.sub(r"v\d{6}p$", "", stem)
     for root in DOWNLOAD_ROOTS:
         for suffix, kind in [(".docx", "docx"), (".pdf", "pdf")]:
             for p in sorted(root.glob(f"{norm_base}*{suffix}"), reverse=True):
-                return p, kind  # highest version first
+                return p, kind
 
     return None, ""
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Shortname helper — e.g. "TS 119 615 v1.4.1"
+# Shortname helper
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _format_shortname(rec: dict) -> str:
-    """
-    Build a short human-readable label from corpus JSON fields, e.g.:
-      TS 119 615 v1.4.1 — Electronic Registered Delivery Services
-    Falls back gracefully when fields are absent.
-    """
-    norm    = rec.get("norm", "")          # e.g. "TS 119 615"
-    version = rec.get("version", "")       # e.g. "1.4.1" or "V1.4.1"
-    title   = rec.get("title", "")         # full English title
-    # Also try common alternative keys
+    norm    = rec.get("norm",    "")
+    version = rec.get("version", "")
+    title   = rec.get("title",   "")
     if not title:
         title = rec.get("doc_title", rec.get("description", ""))
     if not norm:
         norm = rec.get("spec", rec.get("number", ""))
-
-    # Normalise version prefix
-    ver_str = f" v{version.lstrip('Vv')}" if version else ""
+    ver_str   = f" v{version.lstrip('Vv')}" if version else ""
     title_str = f" — {title[:70]}" if title else ""
     return f"{norm}{ver_str}{title_str}".strip()
 
@@ -910,16 +925,6 @@ def process_corpus_json(
     force: bool = False,
     verbose: bool = True,
 ) -> str:
-    """
-    Process a single corpus JSON.
-    Tries DOCX first (richer table extraction), falls back to PDF.
-
-    Returns one of:
-      'processed'  — segmentation ran and output was written
-      'skipped'    — already segmented (idempotent, --force not set)
-      'nosource'   — no source file found
-      'error'      — segmentation failed
-    """
     try:
         rec = json.loads(corpus_json.read_text(encoding="utf-8"))
     except Exception as exc:
