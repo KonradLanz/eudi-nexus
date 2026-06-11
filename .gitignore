@@ -17,6 +17,11 @@ downloads/
 corpus/specs.bak_*/
 corpus/*.bak_*/
 
+# ── MCP index (built locally via: npm run index) ──────────────────────
+corpus/*.db
+corpus/*.db-shm
+corpus/*.db-wal
+
 # ── Node.js ──────────────────────────────────────────────────────────
 node_modules/
 npm-debug.log*
