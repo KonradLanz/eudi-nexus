@@ -13,6 +13,8 @@
     "download:check": "node scripts/download-specs.js --headers-only --yes",
     "download:check:test": "node scripts/download-specs.js --headers-only --limit=10 --yes",
     "download:force": "node scripts/download-specs.js --force-download --yes",
+    "download:docx": "node scripts/download-specs.js --docx-only --yes",
+    "download:docx:test": "node scripts/download-specs.js --docx-only --limit=10 --yes",
     "download:oidf": "node scripts/download-oidf-specs.js",
 
     "backfill-headers": "node scripts/backfill-headers.js",
@@ -68,6 +70,7 @@
     "pipeline:rebuild": "npm run ingest:force && npm run segment:force && npm run index:rebuild",
     "pipeline:full": "npm run download && npm run ingest && npm run toc && npm run segment && npm run index",
     "pipeline:full:rebuild": "npm run download:force && npm run ingest:force && npm run segment:force && npm run index:rebuild",
+    "pipeline:docx": "npm run download:docx && npm run ingest && npm run toc && npm run segment && npm run index",
 
     "search": ".venv/bin/python3 scripts/spec-search.py",
     "qa": ".venv/bin/python3 scripts/ingest-qa.py",

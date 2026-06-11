@@ -22,14 +22,10 @@ const PUBLIC_REPORT_BASE = 'https://portal.etsi.org/webapp/WorkProgram/Report_Wo
 
 const SIDECAR_TTL_MS = 8 * 60 * 60 * 1000;
 
-// ── Auth detection ─────────────────────────────────────────────────────────────
-// Without credentials → public PDFs only.
-// With credentials    → PDF + DOCX fetched in parallel; comparison sidecar written.
-
+// ── Auth detection ─────────────────────────────────────────────────────────────────
 const HAS_AUTH = Boolean(process.env.ETSI_USERNAME && process.env.ETSI_PASSWORD);
 
-// ── CLI flags ─────────────────────────────────────────────────────────────────
-
+// ── CLI flags ────────────────────────────────────────────────────────────────────
 const args               = process.argv.slice(2);
 const limitArg           = args.find(a => a.startsWith('--limit='));
 const LIMIT              = limitArg ? parseInt(limitArg.split('=')[1]) : null;
@@ -38,20 +34,17 @@ const HEADERS_ONLY       = args.includes('--headers-only');
 const FORCE_UPDATE_CHECK = args.includes('--force-update-check');
 const FORCE_DOWNLOAD     = args.includes('--force-download');
 const REPAIR_WKI_IDS     = args.includes('--repair-wki-ids');
-const YES_FLAG           = args.includes('--yes');  // skip interactive gate
+const YES_FLAG           = args.includes('--yes');
+// When set: download DOCX from docbox for docs already cached as PDF.
+// Only works with HAS_AUTH. Skips PDF download entirely.
+const DOCX_ONLY          = args.includes('--docx-only');
 
-// ── Usage / Copyright gate ────────────────────────────────────────────────────
-//
-// Legal basis: Art. 3, Directive (EU) 2019/790 (DSM Directive) —
-// TDM exception for scientific/technical research.
-// Other users may need to contact ETSI for appropriate licensing:
-// https://www.etsi.org/terms-of-use
-
+// ── Usage / Copyright gate ───────────────────────────────────────────────────────
 async function showUsageGate() {
   console.log('');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('━'.repeat(60));
   console.log(' 📥  ETSI Standards Downloader — Usage & Copyright Notice');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('━'.repeat(60));
   console.log('');
   console.log(' This tool downloads ETSI standards for local AI-assisted');
   console.log(' compliance research (Art. 3, Directive (EU) 2019/790 —');
@@ -66,13 +59,24 @@ async function showUsageGate() {
   console.log(' Auth credentials are never stored in the repository.');
   console.log('');
   if (HAS_AUTH) {
-    console.log(' 🔐 ETSI credentials detected → PDF + DOCX (parallel, with comparison)');
+    if (DOCX_ONLY) {
+      console.log(' 🔐 ETSI credentials detected → --docx-only mode');
+      console.log('     DOCX fetched from docbox.etsi.org WorkItem pages only.');
+      console.log('     PDF is NOT re-downloaded.');
+    } else {
+      console.log(' 🔐 ETSI credentials detected → PDF (deliver/) + DOCX (docbox, if linked in WorkItem)');
+    }
   } else {
-    console.log(' 🔓 No ETSI credentials → public PDFs only');
-    console.log('    (Set ETSI_USERNAME + ETSI_PASSWORD in .env for full access)');
+    console.log(' 🔓 No ETSI credentials → public PDFs only (deliver/)');
+    console.log('    (Set ETSI_USERNAME + ETSI_PASSWORD in .env for DOCX access)');
+    if (DOCX_ONLY) {
+      console.log('');
+      console.log(' ❌ --docx-only requires ETSI credentials. Aborting.');
+      process.exit(1);
+    }
   }
   console.log('');
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('━'.repeat(60));
   console.log('');
 
   if (YES_FLAG) {
@@ -98,7 +102,7 @@ async function showUsageGate() {
   console.log('');
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────────────────────────
 
 function publicReportUrl(wkiId) {
   if (!wkiId) return null;
@@ -142,17 +146,17 @@ async function touchSidecarHeaders(sidecarPath) {
   } catch { /* non-fatal */ }
 }
 
-// ── Repair mode ───────────────────────────────────────────────────────────────
+// ── Repair mode ───────────────────────────────────────────────────────────────────
 
 async function repairWkiIds() {
-  console.log('\uD83D\uDCE5 ETSI Specification Downloader');
+  console.log('📥 ETSI Specification Downloader');
   console.log('================================\n');
-  console.log('\uD83D\uDD27 Mode: --repair-wki-ids (local only, no login, no downloads)\n');
+  console.log('🔧 Mode: --repair-wki-ids (local only, no login, no downloads)\n');
 
   const wiDir = path.join(DOWNLOAD_PATH, '_workitems');
   let files;
   try { files = (await fs.readdir(wiDir)).filter(f => f.endsWith('.workitem.html')); }
-  catch { console.log('\u26A0\uFE0F  No _workitems directory found.'); process.exit(0); }
+  catch { console.log('⚠️  No _workitems directory found.'); process.exit(0); }
 
   const overviewIndex = new Map();
   try {
@@ -160,10 +164,10 @@ async function repairWkiIds() {
     for (const item of [...(ov.activeWorkItems ?? []), ...(ov.publishedDocuments ?? [])]) {
       if (item.etsiNumber && item.detailUrl) overviewIndex.set(item.etsiNumber, item.detailUrl);
     }
-  } catch { console.log('\u26A0\uFE0F  Could not load esi_overview.json — falling back to HTML body only'); }
+  } catch { console.log('⚠️  Could not load esi_overview.json'); }
 
   const limited = LIMIT ? files.slice(0, LIMIT) : files;
-  console.log(`\uD83D\uDCCB Found ${files.length} workitem sidecar(s)${LIMIT ? ` (limited to ${LIMIT})` : ''}\n`);
+  console.log(`📋 Found ${files.length} workitem sidecar(s)${LIMIT ? ` (limited to ${LIMIT})` : ''}\n`);
 
   let repaired = 0, alreadyOk = 0, noIdFound = 0, htmlFallback = 0;
 
@@ -177,81 +181,67 @@ async function repairWkiIds() {
 
     const etsiNumber = file.replace('.workitem.html', '').replace(/_/g, '/');
 
-    let foundId   = null;
-    let source    = null;
+    let foundId = null, source = null;
     const detailUrl = overviewIndex.get(etsiNumber);
-    if (detailUrl) {
-      foundId = extractWkiId(detailUrl);
-      if (foundId) source = 'detailUrl';
-    }
+    if (detailUrl) { foundId = extractWkiId(detailUrl); if (foundId) source = 'detailUrl'; }
 
     if (!foundId) {
       const bodyMatch = raw.match(/WKI_ID=(\d+)/i);
-      if (bodyMatch) {
-        foundId = bodyMatch[1];
-        source  = 'html-body';
-        console.log(`  \u26A0\uFE0F  ${file} — not in overview, extracted WKI_ID from HTML body (unverified)`);
-        htmlFallback++;
+      if (bodyMatch) { foundId = bodyMatch[1]; source = 'html-body'; htmlFallback++;
+        console.log(`  ⚠️  ${file} — not in overview, extracted WKI_ID from HTML body (unverified)`);
       }
     }
+    if (!foundId) { console.log(`  ❓ ${file} — no WKI_ID found, skipping`); noIdFound++; continue; }
 
-    if (!foundId) {
-      console.log(`  \u2753 ${file} — no WKI_ID found in overview or HTML body, skipping`);
-      noIdFound++;
-      continue;
-    }
-
-    const fixed = raw.replace(
-      /<!-- wkiId: (\d+|unknown) -->/,
-      `<!-- wkiId: ${foundId} -->`
-    );
+    const fixed = raw.replace(/<!-- wkiId: (\d+|unknown) -->/, `<!-- wkiId: ${foundId} -->`);
     await fs.writeFile(filePath, fixed, 'utf-8');
     const sourceLabel = source === 'detailUrl' ? '' : ' (from HTML body ⚠️)';
-    console.log(`  \uD83D\uDD27 ${file} — repaired: unknown → ${foundId}${sourceLabel}`);
+    console.log(`  🔧 ${file} — repaired: unknown → ${foundId}${sourceLabel}`);
     repaired++;
   }
 
-  console.log(`\n\uD83D\uDCCA Repair Summary:`);
-  console.log(`   \uD83D\uDD27 Repaired:                ${repaired}`);
-  if (htmlFallback) console.log(`   \u26A0\uFE0F  Via HTML fallback:        ${htmlFallback}`);
-  console.log(`   \u2705 Already OK:             ${alreadyOk}`);
-  console.log(`   \u2753 No ID found:            ${noIdFound}`);
+  console.log(`\n📊 Repair Summary:`);
+  console.log(`   🔧 Repaired:       ${repaired}`);
+  if (htmlFallback) console.log(`   ⚠️  HTML fallback: ${htmlFallback}`);
+  console.log(`   ✅ Already OK:   ${alreadyOk}`);
+  console.log(`   ❓ No ID found:  ${noIdFound}`);
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// ── Main ──────────────────────────────────────────────────────────────────────────
 
 async function downloadLatestSpecs() {
   await showUsageGate();
 
-  console.log('\uD83D\uDCE5 ETSI Specification Downloader');
+  console.log('📥 ETSI Specification Downloader');
   console.log('================================\n');
 
-  if (FORCE_DOWNLOAD)          console.log('⚡ Mode: --force-download (full GET, ignores ETag/TTL)\n');
-  else if (FORCE_UPDATE_CHECK) console.log('🔍 Mode: --force-update-check (HEAD + ETag for all sidecars)\n');
-  else if (HEADERS_ONLY)       console.log('\uD83D\uDC41\uFE0F  Mode: --headers-only (HEAD requests, no downloads)\n');
+  if (DOCX_ONLY)            console.log('📝 Mode: --docx-only (fetch DOCX from docbox WorkItem pages, skip PDF)\n');
+  else if (FORCE_DOWNLOAD)  console.log('⚡ Mode: --force-download (full GET, ignores ETag/TTL)\n');
+  else if (FORCE_UPDATE_CHECK) console.log('🔍 Mode: --force-update-check\n');
+  else if (HEADERS_ONLY)    console.log('👁️  Mode: --headers-only\n');
 
   const workItems      = JSON.parse(await fs.readFile(OVERVIEW_FILE, 'utf-8'));
   const activeItems    = workItems.activeWorkItems;
   const publishedItems = workItems.publishedDocuments;
-  console.log(`\uD83D\uDCCB Found ${activeItems.length} active + ${publishedItems.length} published items\n`);
+  console.log(`📋 Found ${activeItems.length} active + ${publishedItems.length} published items\n`);
 
   const client = new ETSIClient();
 
+  // Auth is required for DOCX (docbox.etsi.org is always authenticated)
   if (HAS_AUTH) {
-    console.log('\uD83D\uDD10 Logging in...');
+    console.log('🔐 Logging in...');
     const loggedIn = await client.login(process.env.ETSI_USERNAME, process.env.ETSI_PASSWORD);
-    if (!loggedIn) { console.error('\u274C Login failed'); process.exit(1); }
-    console.log('\u2705 Login successful! (PDF + DOCX parallel mode)\n');
+    if (!loggedIn) { console.error('❌ Login failed'); process.exit(1); }
+    console.log('✅ Login successful!\n');
   } else {
-    console.log('\uD83D\uDD13 No credentials — public PDF-only mode\n');
+    console.log('🔓 No credentials — public PDF-only mode (deliver/)\n');
   }
 
   await fs.mkdir(DOWNLOAD_PATH, { recursive: true });
 
   const cachedByNumber = await loadCachedIndex();
   const diskIndex      = await buildDiskIndex(DOWNLOAD_PATH);
-
-  console.log(`\uD83D\uDDD2\uFE0F  Already downloaded: ${cachedByNumber.size} files (${diskIndex.size} on disk)\n`);
+  console.log(`🗒️  Already downloaded: ${cachedByNumber.size} files (${diskIndex.size} on disk)\n`);
 
   const results = {
     success: [], redownloaded: [], skipped: [], stopped: [],
@@ -262,18 +252,24 @@ async function downloadLatestSpecs() {
   const seen        = new Set();
   const uniqueItems = allItems.filter(item => {
     if (!item.etsiNumber || seen.has(item.etsiNumber)) return false;
-    seen.add(item.etsiNumber);
-    return true;
+    seen.add(item.etsiNumber); return true;
   });
-
   const itemsToProcess = LIMIT ? uniqueItems.slice(0, LIMIT) : uniqueItems;
-  console.log(`\uD83D\uDCE6 Processing ${itemsToProcess.length} specifications${LIMIT ? ` (limited to ${LIMIT})` : ''}...\n`);
+  console.log(`📦 Processing ${itemsToProcess.length} specifications${LIMIT ? ` (limited to ${LIMIT})` : ''}...\n`);
 
   for (let i = 0; i < itemsToProcess.length; i++) {
     const item     = itemsToProcess[i];
     const progress = `[${i + 1}/${uniqueItems.length}]`;
     console.log(`${progress} ${item.etsiNumber}`);
 
+    // ── --docx-only mode: skip PDF logic entirely, just fetch DOCX ────────────
+    if (DOCX_ONLY) {
+      await fetchDocxOnly(client, item, results);
+      await sleep(400);
+      continue;
+    }
+
+    // ── Normal mode: PDF from deliver/ (idempotent) ──────────────────────
     let existingPath = cachedByNumber.get(item.etsiNumber) ?? null;
     if (!existingPath) existingPath = findInDiskIndex(diskIndex, item.etsiNumber);
 
@@ -288,95 +284,57 @@ async function downloadLatestSpecs() {
         const relPath   = path.relative(PROJECT_ROOT, existingPath);
 
         if (!integrity.ok && integrity.cachedSize !== null) {
-          console.log(`    \u26A0\uFE0F  Integrity FAIL \u2014 re-downloading`);
-          needsDownload = true;
-          isRedownload  = true;
+          console.log(`    ⚠️  Integrity FAIL — re-downloading`);
+          needsDownload = true; isRedownload = true;
         } else if (FORCE_DOWNLOAD) {
-          console.log(`    \uD83D\uDD04 --force-download \u2014 re-downloading`);
-          needsDownload = true;
-          isRedownload  = true;
+          console.log(`    🔄 --force-download — re-downloading`);
+          needsDownload = true; isRedownload = true;
         } else if (HEADERS_ONLY || FORCE_UPDATE_CHECK) {
           await headersOnlyCheck(client, item, existingPath, cache, integrity, results);
-          await sleep(200);
-          continue;
+          await sleep(200); continue;
         } else {
-          const noHeaders = !cache ? ' \u26A0\uFE0F no HTTP headers cached' : '';
-          console.log(`    \u23ED\uFE0F  Cached: ${formatCacheInfo(cache, integrity)}${noHeaders}`);
-          console.log(`    \uD83D\uDCC4 ${relPath}`);
+          const noHeaders = !cache ? ' ⚠️ no HTTP headers cached' : '';
+          console.log(`    ⏭️  Cached: ${formatCacheInfo(cache, integrity)}${noHeaders}`);
+          console.log(`    📄 ${relPath}`);
           results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
           continue;
         }
-      } else {
-        needsDownload = true;
-      }
-    } else {
-      needsDownload = true;
-    }
+      } else { needsDownload = true; }
+    } else { needsDownload = true; }
 
-    if (HEADERS_ONLY) { console.log(`    \u23ED\uFE0F  Not cached \u2014 skipping (headers-only mode)`); continue; }
+    if (HEADERS_ONLY) { console.log(`    ⏭️  Not cached — skipping (headers-only mode)`); continue; }
     if (!needsDownload) continue;
 
     try {
       const info = await fetchDetailPage(client, item);
 
       if (info) {
-        const safe   = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-        const wiDir  = path.join(DOWNLOAD_PATH, '_workitems');
-        const wiPath = path.join(wiDir, `${safe}.workitem.html`);
-        await fs.mkdir(wiDir, { recursive: true });
-
-        const wiExists = await fs.stat(wiPath).then(() => true).catch(() => false);
-        const fresh    = wiExists && !FORCE_UPDATE_CHECK && !FORCE_DOWNLOAD
-                         ? await isSidecarFresh(wiPath) : false;
-
-        if (fresh) {
-          console.log(`    \u23ED\uFE0F  Workitem sidecar fresh (< ${SIDECAR_TTL_MS / 3600000}h)`);
-        } else if (FORCE_UPDATE_CHECK && wiExists) {
-          const wiUrl = publicReportUrl(info.wkiId);
-          if (wiUrl) {
-            const check = await checkRemoteChanged(wiUrl, wiPath).catch(() => ({ changed: null }));
-            if (check.changed === true) {
-              console.log(`    \uD83D\uDD04 Workitem changed \u2014 refreshing sidecar`);
-              await saveWorkitemSidecarForced(info.html, info.wkiId, item, wiPath);
-              await saveResponseHeaders(wiPath, info.responseHeaders);
-            } else {
-              await touchSidecarHeaders(wiPath);
-              console.log(`    \u2705 Workitem sidecar up-to-date`);
-            }
-          }
-        } else if (FORCE_DOWNLOAD || !wiExists) {
-          await saveWorkitemSidecarForced(info.html, info.wkiId, item, wiPath);
-          await saveResponseHeaders(wiPath, info.responseHeaders);
-        } else {
-          const saved = await saveWorkitemSidecar(info.html, info.wkiId, item);
-          if (saved) await saveResponseHeaders(saved, info.responseHeaders);
-        }
-
+        // ── WorkItem sidecar (always save for all modes) ──────────────────
+        await maybeUpdateWorkitemSidecar(info, item);
         const scPath = await saveScheduleSidecar(info.$, info.wkiId, item);
         if (scPath) await saveResponseHeaders(scPath, info.responseHeaders);
 
-        if (info.status)    console.log(`    \uD83D\uDCCC Status: ${info.status}`);
-        if (info.usedLogin) console.log(`    \uD83D\uDD10 Used authenticated session`);
+        if (info.status)    console.log(`    📌 Status: ${info.status}`);
+        if (info.usedLogin) console.log(`    🔐 Used authenticated session`);
       }
 
       if (info?.stopped) {
         const scheduleUrl = info.wkiId
           ? `https://portal.etsi.org/eWPM/index.html#/schedule?WKI_ID=${info.wkiId}` : null;
-        console.log(`    \uD83D\uDED1 STOPPED work item \u2014 no file available`);
-        if (scheduleUrl) console.log(`    \uD83D\uDCC5 ${scheduleUrl}`);
-        results.stopped.push({ etsiNumber: item.etsiNumber, wkiId: info.wkiId, scheduleUrl, detailUrl: item.detailUrl, status: info.status ?? null });
-        await sleep(200);
-        continue;
+        console.log(`    🛑 STOPPED work item — no file available`);
+        if (scheduleUrl) console.log(`    📅 ${scheduleUrl}`);
+        results.stopped.push({ etsiNumber: item.etsiNumber, wkiId: info.wkiId, scheduleUrl });
+        await sleep(200); continue;
       }
 
       if (info?.url) {
-        // ── PDF download (always, primary pipeline) ────────────────────────
+        // ── PDF from deliver/ (always via public URL) ──────────────────
         const pdfResult = await downloadFile(client, info, item);
 
-        // ── DOCX download (parallel, authenticated + docxUrl from workitem) ─
-        // docxUrl is extracted directly from docbox.etsi.org links in the
-        // workitem HTML — more reliable than deriving from the PDF URL.
-        // Falls back to URL-derived candidate if no docbox link was found.
+        // ── DOCX from docbox (only if link found in WorkItem HTML + auth) ────
+        // Key rule: DOCX is NEVER derived from the deliver/ PDF URL.
+        // It must be an explicit <a href="...docbox.etsi.org/..."> link
+        // in the WorkItem page. If no such link exists → no DOCX.
         let docxResult = null;
         if (HAS_AUTH && info.docxUrl) {
           docxResult = await downloadFile(client, { ...info, url: info.docxUrl, type: 'docx' }, item);
@@ -390,52 +348,121 @@ async function downloadLatestSpecs() {
             status:     info.status ?? null,
             ...(docxResult ? { docxPath: docxResult.filePath, docxUrl: info.docxUrl } : {}),
           };
-          if (isRedownload) { results.redownloaded.push(entry); console.log(`    \uD83D\uDD04 Re-downloaded: ${pdfResult.label}`); }
-          else              { results.success.push(entry);      console.log(`    \u2705 Downloaded: ${pdfResult.label}`); }
-          console.log(`    \uD83D\uDCC4 ${path.relative(PROJECT_ROOT, pdfResult.filePath)}`);
+          if (isRedownload) { results.redownloaded.push(entry); console.log(`    🔄 Re-downloaded: ${pdfResult.label}`); }
+          else              { results.success.push(entry);      console.log(`    ✅ Downloaded: ${pdfResult.label}`); }
+          console.log(`    📄 ${path.relative(PROJECT_ROOT, pdfResult.filePath)}`);
 
           if (docxResult) {
-            console.log(`    📄 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
-            // Write a lightweight comparison sidecar so ingestor can pick the better source
+            console.log(`    📝 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
             await saveFormatComparisonSidecar(pdfResult.filePath, docxResult.filePath, item);
-          } else if (HAS_AUTH && info.docxUrl) {
-            console.log(`    ⚠️  DOCX not available (URL tried: ${info.docxUrl})`);
+          } else if (HAS_AUTH) {
+            // Auth present but no docbox link found in WorkItem — that's fine,
+            // not all documents have a DOCX on docbox.
+            console.log(`    ℹ️  No DOCX link in WorkItem (docbox) — PDF only`);
           }
         } else {
           results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download returned no data', url: info.url });
-          console.log(`    \u274C Download failed`);
+          console.log(`    ❌ Download failed`);
         }
       } else {
-        results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No download link found', status: info?.status ?? null });
-        console.log(`    \u26A0\uFE0F  No download link found`);
+        results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No download link found' });
+        console.log(`    ⚠️  No download link found`);
       }
 
       await sleep(500);
     } catch (error) {
       results.failed.push({ etsiNumber: item.etsiNumber, reason: error.message });
-      console.log(`    \u274C Error: ${error.message}`);
+      console.log(`    ❌ Error: ${error.message}`);
     }
   }
 
   await saveResults(results);
 
-  console.log('\n\uD83D\uDCCA Download Summary:');
+  console.log('\n📊 Download Summary:');
   if (HEADERS_ONLY || FORCE_UPDATE_CHECK) {
-    console.log(`   \u2705 Up-to-date:             ${results.skipped.length}`);
-    console.log(`   \uD83D\uDD04 Changed on remote:      ${results.changed.length}`);
-    console.log(`   \u26A0\uFE0F  No download available:  ${results.noDownload.length}`);
+    console.log(`   ✅ Up-to-date:            ${results.skipped.length}`);
+    console.log(`   🔄 Changed on remote:     ${results.changed.length}`);
+    console.log(`   ⚠️  No download:           ${results.noDownload.length}`);
   } else {
-    console.log(`   \u2705 Downloaded (new):       ${results.success.length}`);
-    console.log(`   \uD83D\uDD04 Re-downloaded:          ${results.redownloaded.length}`);
-    console.log(`   \u23ED\uFE0F  Skipped (cached):       ${results.skipped.length}`);
-    console.log(`   \uD83D\uDED1 Stopped work items:     ${results.stopped.length}`);
-    console.log(`   \u274C Failed:                 ${results.failed.length}`);
-    console.log(`   \u26A0\uFE0F  No download available:  ${results.noDownload.length}`);
+    console.log(`   ✅ Downloaded (new):      ${results.success.length}`);
+    console.log(`   🔄 Re-downloaded:         ${results.redownloaded.length}`);
+    console.log(`   ⏭️  Skipped (cached):      ${results.skipped.length}`);
+    console.log(`   🛑 Stopped work items:    ${results.stopped.length}`);
+    console.log(`   ❌ Failed:                ${results.failed.length}`);
+    console.log(`   ⚠️  No download link:      ${results.noDownload.length}`);
   }
-  console.log(`\n\uD83D\uDCBE Results saved to ${RESULTS_FILE}`);
+  console.log(`\n💾 Results saved to ${RESULTS_FILE}`);
 }
 
-// ── Cache index helpers ───────────────────────────────────────────────────────
+// ── --docx-only mode: fetch missing DOCXs for already-cached documents ────────
+//
+// This mode is designed to be run AFTER a normal download pass.
+// It reads existing WorkItem sidecars (or fetches fresh ones) to find
+// docbox DOCX links, then downloads only the DOCX — no PDF re-fetch.
+
+async function fetchDocxOnly(client, item, results) {
+  // Check if DOCX already present (skip if .format-comparison.json says docx exists)
+  const pdfPath = await findPdfPath(item);
+  if (pdfPath) {
+    const sidecarPath = pdfPath.replace(/\.[^.]+$/, '.format-comparison.json');
+    try {
+      const cmp = JSON.parse(await fs.readFile(sidecarPath, 'utf-8'));
+      if (cmp.docxPath) {
+        const docxAbs = path.join(PROJECT_ROOT, cmp.docxPath);
+        const exists  = await fs.stat(docxAbs).then(() => true).catch(() => false);
+        if (exists && !FORCE_DOWNLOAD) {
+          console.log(`    ⏭️  DOCX already present: ${cmp.docxPath}`);
+          results.skipped.push({ etsiNumber: item.etsiNumber });
+          return;
+        }
+      }
+    } catch { /* no sidecar yet — proceed */ }
+  }
+
+  // Fetch WorkItem page to get docbox DOCX link
+  let info;
+  try {
+    info = await fetchDetailPage(client, item);
+  } catch (err) {
+    console.log(`    ❌ WorkItem fetch error: ${err.message}`);
+    results.failed.push({ etsiNumber: item.etsiNumber, reason: err.message });
+    return;
+  }
+
+  if (!info?.docxUrl) {
+    console.log(`    ℹ️  No DOCX link in WorkItem (docbox) — skipping`);
+    results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No docbox DOCX link in WorkItem' });
+    return;
+  }
+
+  // Always update WorkItem sidecar in this mode (we just fetched it)
+  await maybeUpdateWorkitemSidecar(info, item);
+
+  const docxResult = await downloadFile(client, { ...info, url: info.docxUrl, type: 'docx' }, item);
+  if (!docxResult) {
+    console.log(`    ❌ DOCX download failed`);
+    results.failed.push({ etsiNumber: item.etsiNumber, reason: 'DOCX download returned no data', url: info.docxUrl });
+    return;
+  }
+
+  console.log(`    📝 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
+
+  // Update / create format-comparison sidecar
+  if (pdfPath) {
+    await saveFormatComparisonSidecar(pdfPath, docxResult.filePath, item);
+  } else {
+    console.log(`    ⚠️  No paired PDF found on disk — format-comparison sidecar not written`);
+  }
+
+  results.success.push({ etsiNumber: item.etsiNumber, docxPath: docxResult.filePath, docxUrl: info.docxUrl });
+}
+
+async function findPdfPath(item) {
+  const diskIndex = await buildDiskIndex(DOWNLOAD_PATH);
+  return findInDiskIndex(diskIndex, item.etsiNumber) ?? null;
+}
+
+// ── Cache index helpers ────────────────────────────────────────────────────────
 
 async function loadCachedIndex() {
   const index = new Map();
@@ -515,41 +542,40 @@ async function saveResults(newResults) {
   await fs.writeFile(RESULTS_FILE, JSON.stringify(existing, null, 2));
 }
 
-// ── Headers-only / force-update-check ────────────────────────────────────────
+// ── Headers-only / force-update-check ───────────────────────────────────────────
 
 async function headersOnlyCheck(client, item, existingPath, cache, integrity, results) {
   const info    = await fetchDetailPage(client, item).catch(() => null);
   const relPath = path.relative(PROJECT_ROOT, existingPath);
   if (!info?.url) {
-    console.log(`    \u23ED\uFE0F  Cached (no URL to HEAD): ${formatCacheInfo(cache, integrity)}`);
-    console.log(`    \uD83D\uDCC4 ${relPath}`);
+    console.log(`    ⏭️  Cached (no URL to HEAD): ${formatCacheInfo(cache, integrity)}`);
+    console.log(`    📄 ${relPath}`);
     results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
     return;
   }
   const check = await checkRemoteChanged(info.url, existingPath);
   if (check.changed === true) {
-    console.log(`    \uD83D\uDD04 CHANGED: ${check.reason}`);
-    console.log(`    \uD83D\uDCC4 ${relPath}`);
+    console.log(`    🔄 CHANGED: ${check.reason}`);
     results.changed.push({ etsiNumber: item.etsiNumber, reason: check.reason, url: info.url, filePath: existingPath });
   } else if (check.changed === false) {
     await touchSidecarHeaders(existingPath);
-    console.log(`    \u2705 Up-to-date: ${formatCacheInfo(cache, integrity)}`);
-    console.log(`    \uD83D\uDCC4 ${relPath}`);
+    console.log(`    ✅ Up-to-date: ${formatCacheInfo(cache, integrity)}`);
     results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath });
   } else {
-    console.log(`    \u2753 Unverifiable: ${check.reason} | ${formatCacheInfo(cache, integrity)}`);
-    console.log(`    \uD83D\uDCC4 ${relPath}`);
+    console.log(`    ❓ Unverifiable: ${check.reason}`);
     results.skipped.push({ etsiNumber: item.etsiNumber, file: existingPath, note: check.reason });
   }
+  console.log(`    📄 ${relPath}`);
 }
 
-// ── Network helpers ───────────────────────────────────────────────────────────
+// ── Network helpers ──────────────────────────────────────────────────────────────────
 
 async function fetchDetailPage(client, item) {
   const wkiId     = extractWkiId(item.detailUrl) ?? extractWkiId(item.wkiId);
   const publicUrl = publicReportUrl(wkiId);
   const portalUrl = item.detailUrl ? cleanUrl(item.detailUrl) : null;
 
+  // Try public WorkItem report first (no auth needed for PDF link discovery)
   if (publicUrl) {
     try {
       const res = await fetch(publicUrl, { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' }, redirect: 'follow' });
@@ -557,12 +583,18 @@ async function fetchDetailPage(client, item) {
         const responseHeaders = snapshotHeaders(res);
         const html   = await res.text();
         const parsed = parseDetailHtml(html, wkiId, responseHeaders, false);
-        if (parsed.url || parsed.stopped) return parsed;
+        // For docbox links we need the authenticated portal page, not the public report.
+        // If we don't need DOCX (no auth) or already found a docbox link, we're done.
+        if (parsed.url || parsed.stopped) {
+          if (!HAS_AUTH || parsed.docxUrl) return parsed;
+          // Has auth + no docbox link in public report → fall through to portal
+        }
       }
     } catch { /* fall through */ }
   }
 
   if (!portalUrl) return null;
+  // Authenticated portal page: used for docbox DOCX link discovery
   const res = await client.fetch(portalUrl, { headers: client.getDefaultHeaders() });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const responseHeaders = snapshotHeaders(res);
@@ -578,49 +610,45 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
 
   let downloadUrl = null, downloadType = null, docxUrl = null;
 
-  // ── Primary: published PDF from www.etsi.org/deliver ──────────────────────
+  // ── Primary: published PDF from www.etsi.org/deliver (always public) ──────
   $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
     const href = $(el).attr('href');
     if (href?.includes('.pdf')) { downloadUrl = href; downloadType = 'pdf'; }
   });
 
-  // ── Parallel DOCX: collect docbox.etsi.org DOCX link independently ────────
-  // This runs regardless of whether a PDF was already found, so both can be
-  // fetched in parallel. The docbox link is the authoritative DOCX source —
-  // it comes directly from the workitem page and is more reliable than
-  // deriving a .docx URL from the PDF delivery path.
+  // ── DOCX: only from docbox.etsi.org (authenticated, explicit link) ────────
+  // IMPORTANT: DOCX is NEVER derived from the deliver/ PDF URL.
+  // It must be an explicit <a href="docbox.etsi.org/..."> in the WorkItem page.
+  // The docbox link format is: https://docbox.etsi.org/ESI/.../...v010101.docx
   if (HAS_AUTH) {
     $('a[href*="docbox.etsi.org"]').each((_, el) => {
       const href = $(el).attr('href')?.trim();
       if (!href) return;
-      if ((href.includes('.docx') || href.includes('.doc')) && !docxUrl) {
+      if ((href.endsWith('.docx') || href.endsWith('.doc')) && !docxUrl) {
         docxUrl = href;
-        return false; // stop at first DOCX hit
+        return false; // first match only
       }
     });
-    // Fallback: if no docbox DOCX found but we have a published PDF URL,
-    // derive the candidate .docx path (may return 404 — verified on download).
-    if (!docxUrl && downloadUrl && downloadType === 'pdf' && downloadUrl.includes('www.etsi.org/deliver')) {
-      docxUrl = downloadUrl.replace(/\.pdf$/i, '.docx');
-    }
   }
+  // NOTE: No URL-derive fallback (deliver/ .pdf → .docx).
+  // That URL never exists — removed to avoid misleading 404 attempts.
 
+  // ── Fallback sources for PDF ────────────────────────────────────────────
   if (!downloadUrl) $('a[href*="pda.etsi.org"]').each((_, el) => {
     const href = $(el).attr('href');
     if (href) { downloadUrl = href; downloadType = 'pda'; }
   });
   if (!downloadUrl) $('a').each((_, el) => {
     const href = $(el).attr('href') || '';
-    if (!downloadUrl && href.includes('.pdf') && href.includes('etsi'))  { downloadUrl = href; downloadType = 'pdf'; }
+    if (!downloadUrl && href.includes('.pdf') && href.includes('etsi')) { downloadUrl = href; downloadType = 'pdf'; }
     else if (!downloadUrl && href.includes('.zip') && href.includes('etsi')) { downloadUrl = href; downloadType = 'zip'; }
   });
-  // Draft fallback: docbox PDF/DOCX only when no other source found
+  // Draft fallback: docbox PDF only when no other source found (not DOCX here)
   if (!downloadUrl) $('a[href*="docbox.etsi.org"]').each((_, el) => {
     const href = $(el).attr('href')?.trim();
     if (!href) return;
-    if (href.includes('.docx') || href.includes('.doc'))  { downloadUrl = href; downloadType = 'draft-docx'; return false; }
-    if (href.includes('.pdf'))                             { downloadUrl = href; downloadType = 'draft-pdf';  return false; }
-    if (href.includes('.zip'))                             { downloadUrl = href; downloadType = 'zip'; }
+    if (href.endsWith('.pdf'))  { downloadUrl = href; downloadType = 'draft-pdf'; return false; }
+    if (href.endsWith('.zip'))  { downloadUrl = href; downloadType = 'zip'; }
   });
 
   return { url: downloadUrl ?? null, type: downloadType, docxUrl, $, html, responseHeaders, status, wkiId, usedLogin };
@@ -649,17 +677,57 @@ async function saveResponseHeaders(filePath, headerSnapshot) {
   await fs.writeFile(headerCachePath(filePath), JSON.stringify(headerSnapshot, null, 2));
 }
 
-// ── Format comparison sidecar ─────────────────────────────────────────────────
-// Written alongside the PDF when both formats were successfully downloaded.
-// The ingestor reads this to decide which source to use (or to cross-validate).
+// ── WorkItem sidecar helpers ───────────────────────────────────────────────────
+
+async function maybeUpdateWorkitemSidecar(info, item) {
+  if (!info?.html) return;
+  const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+  const wiDir   = path.join(DOWNLOAD_PATH, '_workitems');
+  const wiPath  = path.join(wiDir, `${safe}.workitem.html`);
+  await fs.mkdir(wiDir, { recursive: true });
+
+  const wiExists = await fs.stat(wiPath).then(() => true).catch(() => false);
+  const fresh    = wiExists && !FORCE_UPDATE_CHECK && !FORCE_DOWNLOAD
+                   ? await isSidecarFresh(wiPath) : false;
+
+  if (fresh) {
+    console.log(`    ⏭️  WorkItem sidecar fresh`);
+  } else if (FORCE_UPDATE_CHECK && wiExists) {
+    const wiUrl = publicReportUrl(info.wkiId);
+    if (wiUrl) {
+      const check = await checkRemoteChanged(wiUrl, wiPath).catch(() => ({ changed: null }));
+      if (check.changed === true) {
+        console.log(`    🔄 WorkItem changed — refreshing sidecar`);
+        await writeWorkitemSidecar(wiPath, info.html, info.wkiId, item);
+        await saveResponseHeaders(wiPath, info.responseHeaders);
+      } else {
+        await touchSidecarHeaders(wiPath);
+      }
+    }
+  } else if (FORCE_DOWNLOAD || !wiExists) {
+    await writeWorkitemSidecar(wiPath, info.html, info.wkiId, item);
+    await saveResponseHeaders(wiPath, info.responseHeaders);
+  } else {
+    if (!wiExists) {
+      await writeWorkitemSidecar(wiPath, info.html, info.wkiId, item);
+      await saveResponseHeaders(wiPath, info.responseHeaders);
+    }
+  }
+}
+
+async function writeWorkitemSidecar(outPath, html, wkiId, item) {
+  await fs.writeFile(outPath, [
+    `<!-- etsiNumber: ${item.etsiNumber} -->`,
+    `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
+    `<!-- savedAt: ${new Date().toISOString()} -->`,
+    '', html,
+  ].join('\n'), 'utf-8');
+}
+
+// ── Format comparison sidecar ────────────────────────────────────────────────────
 //
-// Schema:
-//   { etsiNumber, pdfPath, docxPath, pdfBytes, docxBytes, downloadedAt,
-//     recommendation: "docx" | "pdf" | "unknown" }
-//
-// Recommendation logic (heuristic, can be overridden by ingestor):
-//   - If DOCX is present and ≥ 20 KB  → prefer DOCX (structured tables)
-//   - If DOCX is < 20 KB or absent    → prefer PDF  (render-only fallback)
+// Written next to the PDF when both formats downloaded successfully.
+// Recommendation heuristic: DOCX if ≥ 20 KB, else PDF.
 
 async function saveFormatComparisonSidecar(pdfPath, docxPath, item) {
   try {
@@ -681,47 +749,15 @@ async function saveFormatComparisonSidecar(pdfPath, docxPath, item) {
       recommendation,
     };
 
-    // Sidecar lives next to the PDF: <name>.format-comparison.json
     const sidecarPath = pdfPath.replace(/\.[^.]+$/, '.format-comparison.json');
     await fs.writeFile(sidecarPath, JSON.stringify(payload, null, 2));
-    console.log(`    📊 Format comparison: ${recommendation === 'docx' ? '✅ DOCX preferred' : '⚠️  PDF fallback'} (DOCX ${formatBytes(docxBytes)} / PDF ${formatBytes(pdfBytes)})`);
+    console.log(`    📊 Format: ${recommendation === 'docx' ? '✅ DOCX preferred' : '⚠️  PDF fallback'} (DOCX ${formatBytes(docxBytes)} / PDF ${formatBytes(pdfBytes)})`);
   } catch (err) {
-    console.log(`    ⚠️  Could not write format comparison sidecar: ${err.message}`);
+    console.log(`    ⚠️  Could not write format-comparison sidecar: ${err.message}`);
   }
 }
 
-// ── Sidecar writers ───────────────────────────────────────────────────────────
-
-async function saveWorkitemSidecar(html, wkiId, item) {
-  if (!html) return null;
-  try {
-    const dir     = path.join(DOWNLOAD_PATH, '_workitems');
-    await fs.mkdir(dir, { recursive: true });
-    const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-    const outPath = path.join(dir, `${safe}.workitem.html`);
-    if (await fs.stat(outPath).then(() => true).catch(() => false)) return outPath;
-    await fs.writeFile(outPath, [
-      `<!-- etsiNumber: ${item.etsiNumber} -->`,
-      `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
-      `<!-- savedAt: ${new Date().toISOString()} -->`,
-      '', html,
-    ].join('\n'), 'utf-8');
-    return outPath;
-  } catch (err) {
-    console.log(`    \u26A0\uFE0F  Could not save workitem sidecar: ${err.message}`);
-    return null;
-  }
-}
-
-async function saveWorkitemSidecarForced(html, wkiId, item, outPath) {
-  if (!html) return;
-  await fs.writeFile(outPath, [
-    `<!-- etsiNumber: ${item.etsiNumber} -->`,
-    `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
-    `<!-- savedAt: ${new Date().toISOString()} -->`,
-    '', html,
-  ].join('\n'), 'utf-8');
-}
+// ── Schedule sidecar ────────────────────────────────────────────────────────────────
 
 async function saveScheduleSidecar($, wkiId, item) {
   if (!$) return null;
@@ -743,6 +779,7 @@ async function saveScheduleSidecar($, wkiId, item) {
       const txt = $(el).children().length === 0 ? $(el).text().trim() : '';
       if (txt.toUpperCase().includes('STOPPED')) stoppedCtx.push($(el).parent().html()?.trim() ?? txt);
     });
+
     const tableHtml = scheduleTable ? scheduleTable.html() : null;
     const payload = [
       `<!-- etsiNumber: ${item.etsiNumber} -->`,
@@ -757,21 +794,22 @@ async function saveScheduleSidecar($, wkiId, item) {
     await fs.writeFile(outPath, payload, 'utf-8');
     return outPath;
   } catch (err) {
-    console.log(`    \u26A0\uFE0F  Could not save schedule sidecar: ${err.message}`);
+    console.log(`    ⚠️  Could not save schedule sidecar: ${err.message}`);
     return null;
   }
 }
 
-// ── File download ─────────────────────────────────────────────────────────────
+// ── File download ───────────────────────────────────────────────────────────────────
 
 async function downloadFile(client, info, item) {
   try {
-    const isPublic = info.url.includes('www.etsi.org/deliver');
-    const fetchFn  = isPublic ? fetch : client.fetch.bind(client);
+    // deliver/ PDFs are public; docbox requires the authenticated session
+    const isPublicDelivery = info.url.includes('www.etsi.org/deliver');
+    const fetchFn = isPublicDelivery ? fetch : client.fetch.bind(client);
     const response = await fetchFn(info.url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-        'Accept':     'application/pdf,application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/octet-stream,*/*',
+        'Accept':     'application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/octet-stream,*/*',
       },
     });
     if (!response.ok) return null;
@@ -788,7 +826,7 @@ async function downloadFile(client, info, item) {
     filename = filename.replace(/[<>:"/\\|?*]/g, '_');
 
     const buffer = Buffer.from(await response.arrayBuffer());
-    if (buffer.length < 1000) { console.log(`    \u26A0\uFE0F File too small (${buffer.length} bytes) \u2014 skipping`); return null; }
+    if (buffer.length < 1000) { console.log(`    ⚠️ File too small (${buffer.length} bytes) — skipping`); return null; }
 
     const typeMatch = item.etsiNumber?.match(/^(EN|TS|TR|ES|EG)/i);
     const subDir    = typeMatch ? typeMatch[1].toUpperCase() : 'Other';
@@ -817,7 +855,7 @@ async function saveUrlSidecar(filePath, url, type) {
   );
 }
 
-// ── Entry point ───────────────────────────────────────────────────────────────
+// ── Entry point ────────────────────────────────────────────────────────────────────
 
 if (REPAIR_WKI_IDS) {
   repairWkiIds().catch(console.error);
