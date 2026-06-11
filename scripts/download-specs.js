@@ -20,7 +20,10 @@ const RESULTS_FILE   = path.join(DOWNLOAD_PATH, '_download_results.json');
 const BASE_URL       = 'https://portal.etsi.org';
 const PUBLIC_REPORT_BASE = 'https://portal.etsi.org/webapp/WorkProgram/Report_WorkItem.asp';
 
-const SIDECAR_TTL_MS = 8 * 60 * 60 * 1000;
+// Public sidecar TTL: 8h (content rarely changes)
+// Auth sidecar TTL: 24h (docbox links are stable once published)
+const SIDECAR_TTL_MS      = 8  * 60 * 60 * 1000;
+const AUTH_SIDECAR_TTL_MS = 24 * 60 * 60 * 1000;
 
 // ── Auth detection ─────────────────────────────────────────────────────────────────
 const HAS_AUTH = Boolean(process.env.ETSI_USERNAME && process.env.ETSI_PASSWORD);
@@ -35,9 +38,11 @@ const FORCE_UPDATE_CHECK = args.includes('--force-update-check');
 const FORCE_DOWNLOAD     = args.includes('--force-download');
 const REPAIR_WKI_IDS     = args.includes('--repair-wki-ids');
 const YES_FLAG           = args.includes('--yes');
-// When set: download DOCX from docbox for docs already cached as PDF.
-// Only works with HAS_AUTH. Skips PDF download entirely.
+// --docx-only: fetch/refresh auth portal sidecars and download DOCX from docbox.
+// Does NOT re-download PDFs. Requires HAS_AUTH.
 const DOCX_ONLY          = args.includes('--docx-only');
+// --refresh-auth-sidecars: re-fetch all .workitem-auth.html sidecars (ignores TTL).
+const REFRESH_AUTH_SIDECARS = args.includes('--refresh-auth-sidecars');
 
 // ── Usage / Copyright gate ───────────────────────────────────────────────────────
 async function showUsageGate() {
@@ -61,10 +66,10 @@ async function showUsageGate() {
   if (HAS_AUTH) {
     if (DOCX_ONLY) {
       console.log(' 🔐 ETSI credentials detected → --docx-only mode');
-      console.log('     DOCX fetched from docbox.etsi.org WorkItem pages only.');
-      console.log('     PDF is NOT re-downloaded.');
+      console.log('     Fetches/refreshes .workitem-auth.html sidecars (portal)');
+      console.log('     and downloads DOCX from docbox. PDF is NOT re-downloaded.');
     } else {
-      console.log(' 🔐 ETSI credentials detected → PDF (deliver/) + DOCX (docbox, if linked in WorkItem)');
+      console.log(' 🔐 ETSI credentials detected → PDF (deliver/) + DOCX (docbox, if linked)');
     }
   } else {
     console.log(' 🔓 No ETSI credentials → public PDFs only (deliver/)');
@@ -102,6 +107,18 @@ async function showUsageGate() {
   console.log('');
 }
 
+// ── Sidecar paths ────────────────────────────────────────────────────────────────
+
+function workitemSidecarPath(etsiNumber) {
+  const safe = etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+  return path.join(DOWNLOAD_PATH, '_workitems', `${safe}.workitem.html`);
+}
+
+function workitemAuthSidecarPath(etsiNumber) {
+  const safe = etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+  return path.join(DOWNLOAD_PATH, '_workitems', `${safe}.workitem-auth.html`);
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────────────────
 
 function publicReportUrl(wkiId) {
@@ -127,12 +144,12 @@ function extractWkiId(url) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function isSidecarFresh(sidecarPath) {
+async function isSidecarFresh(sidecarPath, ttlMs) {
   try {
     const raw        = JSON.parse(await fs.readFile(headerCachePath(sidecarPath), 'utf-8'));
     const downloaded = raw['x-downloaded-at'] ?? raw['x-checked-at'];
     if (!downloaded) return false;
-    return (Date.now() - new Date(downloaded).getTime()) < SIDECAR_TTL_MS;
+    return (Date.now() - new Date(downloaded).getTime()) < ttlMs;
   } catch { return false; }
 }
 
@@ -215,10 +232,11 @@ async function downloadLatestSpecs() {
   console.log('📥 ETSI Specification Downloader');
   console.log('================================\n');
 
-  if (DOCX_ONLY)            console.log('📝 Mode: --docx-only (fetch DOCX from docbox WorkItem pages, skip PDF)\n');
+  if (DOCX_ONLY)            console.log('📝 Mode: --docx-only (refresh auth sidecars + fetch DOCX from docbox)\n');
   else if (FORCE_DOWNLOAD)  console.log('⚡ Mode: --force-download (full GET, ignores ETag/TTL)\n');
   else if (FORCE_UPDATE_CHECK) console.log('🔍 Mode: --force-update-check\n');
   else if (HEADERS_ONLY)    console.log('👁️  Mode: --headers-only\n');
+  if (REFRESH_AUTH_SIDECARS && !DOCX_ONLY) console.log('🔄 --refresh-auth-sidecars: will re-fetch all .workitem-auth.html\n');
 
   const workItems      = JSON.parse(await fs.readFile(OVERVIEW_FILE, 'utf-8'));
   const activeItems    = workItems.activeWorkItems;
@@ -227,7 +245,6 @@ async function downloadLatestSpecs() {
 
   const client = new ETSIClient();
 
-  // Auth is required for DOCX (docbox.etsi.org is always authenticated)
   if (HAS_AUTH) {
     console.log('🔐 Logging in...');
     const loggedIn = await client.login(process.env.ETSI_USERNAME, process.env.ETSI_PASSWORD);
@@ -262,14 +279,14 @@ async function downloadLatestSpecs() {
     const progress = `[${i + 1}/${uniqueItems.length}]`;
     console.log(`${progress} ${item.etsiNumber}`);
 
-    // ── --docx-only mode: skip PDF logic entirely, just fetch DOCX ────────────
+    // ── --docx-only mode ──────────────────────────────────────────────────────────
     if (DOCX_ONLY) {
       await fetchDocxOnly(client, item, results);
       await sleep(400);
       continue;
     }
 
-    // ── Normal mode: PDF from deliver/ (idempotent) ──────────────────────
+    // ── Normal mode: PDF from deliver/ ───────────────────────────────────────────
     let existingPath = cachedByNumber.get(item.etsiNumber) ?? null;
     if (!existingPath) existingPath = findInDiskIndex(diskIndex, item.etsiNumber);
 
@@ -309,11 +326,10 @@ async function downloadLatestSpecs() {
       const info = await fetchDetailPage(client, item);
 
       if (info) {
-        // ── WorkItem sidecar (always save for all modes) ──────────────────
-        await maybeUpdateWorkitemSidecar(info, item);
+        await saveWorkitemSidecar(info, item, false);  // public sidecar
+        if (HAS_AUTH && info.usedLogin) await saveWorkitemSidecar(info, item, true); // auth sidecar
         const scPath = await saveScheduleSidecar(info.$, info.wkiId, item);
         if (scPath) await saveResponseHeaders(scPath, info.responseHeaders);
-
         if (info.status)    console.log(`    📌 Status: ${info.status}`);
         if (info.usedLogin) console.log(`    🔐 Used authenticated session`);
       }
@@ -328,13 +344,8 @@ async function downloadLatestSpecs() {
       }
 
       if (info?.url) {
-        // ── PDF from deliver/ (always via public URL) ──────────────────
         const pdfResult = await downloadFile(client, info, item);
 
-        // ── DOCX from docbox (only if link found in WorkItem HTML + auth) ────
-        // Key rule: DOCX is NEVER derived from the deliver/ PDF URL.
-        // It must be an explicit <a href="...docbox.etsi.org/..."> link
-        // in the WorkItem page. If no such link exists → no DOCX.
         let docxResult = null;
         if (HAS_AUTH && info.docxUrl) {
           docxResult = await downloadFile(client, { ...info, url: info.docxUrl, type: 'docx' }, item);
@@ -356,8 +367,6 @@ async function downloadLatestSpecs() {
             console.log(`    📝 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
             await saveFormatComparisonSidecar(pdfResult.filePath, docxResult.filePath, item);
           } else if (HAS_AUTH) {
-            // Auth present but no docbox link found in WorkItem — that's fine,
-            // not all documents have a DOCX on docbox.
             console.log(`    ℹ️  No DOCX link in WorkItem (docbox) — PDF only`);
           }
         } else {
@@ -394,67 +403,266 @@ async function downloadLatestSpecs() {
   console.log(`\n💾 Results saved to ${RESULTS_FILE}`);
 }
 
-// ── --docx-only mode: fetch missing DOCXs for already-cached documents ────────
+// ── --docx-only mode ──────────────────────────────────────────────────────────────
 //
-// This mode is designed to be run AFTER a normal download pass.
-// It reads existing WorkItem sidecars (or fetches fresh ones) to find
-// docbox DOCX links, then downloads only the DOCX — no PDF re-fetch.
+// Strategy per item:
+//   1. Check if DOCX already present via .format-comparison.json → skip if fresh
+//   2. Check .workitem-auth.html sidecar for cached docbox link (TTL: 24h)
+//      → NEVER reads from .workitem.html (public) — that page has no docbox links
+//   3. If stale / missing → fetch authenticated portal page → save as .workitem-auth.html
+//   4. Parse docboxUrl and download
+//
+// The two sidecar files are kept strictly separate:
+//   .workitem.html      — public Report_WorkItem.asp (deliver/ link)
+//   .workitem-auth.html — authenticated portal page  (docbox link)
 
 async function fetchDocxOnly(client, item, results) {
-  // Check if DOCX already present (skip if .format-comparison.json says docx exists)
+  // Step 1: skip if DOCX already on disk
   const pdfPath = await findPdfPath(item);
   if (pdfPath) {
-    const sidecarPath = pdfPath.replace(/\.[^.]+$/, '.format-comparison.json');
+    const cmpPath = pdfPath.replace(/\.[^.]+$/, '.format-comparison.json');
     try {
-      const cmp = JSON.parse(await fs.readFile(sidecarPath, 'utf-8'));
+      const cmp = JSON.parse(await fs.readFile(cmpPath, 'utf-8'));
       if (cmp.docxPath) {
-        const docxAbs = path.join(PROJECT_ROOT, cmp.docxPath);
-        const exists  = await fs.stat(docxAbs).then(() => true).catch(() => false);
+        const abs    = path.join(PROJECT_ROOT, cmp.docxPath);
+        const exists = await fs.stat(abs).then(() => true).catch(() => false);
         if (exists && !FORCE_DOWNLOAD) {
           console.log(`    ⏭️  DOCX already present: ${cmp.docxPath}`);
           results.skipped.push({ etsiNumber: item.etsiNumber });
           return;
         }
       }
-    } catch { /* no sidecar yet — proceed */ }
+    } catch { /* proceed */ }
   }
 
-  // Fetch WorkItem page to get docbox DOCX link
-  let info;
-  try {
-    info = await fetchDetailPage(client, item);
-  } catch (err) {
-    console.log(`    ❌ WorkItem fetch error: ${err.message}`);
-    results.failed.push({ etsiNumber: item.etsiNumber, reason: err.message });
-    return;
+  // Step 2: try existing .workitem-auth.html sidecar (TTL 24h)
+  // IMPORTANT: we never look at .workitem.html here — it's the public page without docbox links.
+  const authSidecar = workitemAuthSidecarPath(item.etsiNumber);
+  let docxUrl = null;
+
+  const authSidecarExists = await fs.stat(authSidecar).then(() => true).catch(() => false);
+  const authSidecarFresh  = authSidecarExists && !REFRESH_AUTH_SIDECARS && !FORCE_DOWNLOAD
+                            ? await isSidecarFresh(authSidecar, AUTH_SIDECAR_TTL_MS)
+                            : false;
+
+  if (authSidecarFresh) {
+    const cachedHtml = await fs.readFile(authSidecar, 'utf-8');
+    docxUrl = extractDocxUrlFromHtml(cachedHtml);
+    if (docxUrl) {
+      console.log(`    📋 Auth sidecar cached — docbox link found`);
+    } else {
+      console.log(`    ⏭️  Auth sidecar cached — no DOCX link (docbox)`);
+      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No docbox DOCX link (auth sidecar, cached)' });
+      return;
+    }
+  } else {
+    // Step 3: fetch authenticated portal page fresh
+    if (!item.detailUrl) {
+      console.log(`    ⚠️  No portal detailUrl — cannot fetch auth page`);
+      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No detailUrl for auth portal fetch' });
+      return;
+    }
+
+    let info;
+    try {
+      info = await fetchAuthDetailPage(client, item);
+    } catch (err) {
+      console.log(`    ❌ Auth portal fetch error: ${err.message}`);
+      results.failed.push({ etsiNumber: item.etsiNumber, reason: err.message });
+      return;
+    }
+
+    // Save as .workitem-auth.html (never touches public .workitem.html)
+    await saveWorkitemSidecar(info, item, true);
+
+    docxUrl = info.docxUrl ?? null;
+
+    if (!docxUrl) {
+      console.log(`    ℹ️  No DOCX link in WorkItem auth page (docbox)`);
+      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No docbox DOCX link in auth WorkItem page' });
+      return;
+    }
+    console.log(`    🔐 Auth portal fetched — docbox link found`);
   }
 
-  if (!info?.docxUrl) {
-    console.log(`    ℹ️  No DOCX link in WorkItem (docbox) — skipping`);
-    results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No docbox DOCX link in WorkItem' });
-    return;
-  }
-
-  // Always update WorkItem sidecar in this mode (we just fetched it)
-  await maybeUpdateWorkitemSidecar(info, item);
-
-  const docxResult = await downloadFile(client, { ...info, url: info.docxUrl, type: 'docx' }, item);
+  // Step 4: download DOCX
+  const docxResult = await downloadFile(client, { url: docxUrl, type: 'docx' }, item);
   if (!docxResult) {
     console.log(`    ❌ DOCX download failed`);
-    results.failed.push({ etsiNumber: item.etsiNumber, reason: 'DOCX download returned no data', url: info.docxUrl });
+    results.failed.push({ etsiNumber: item.etsiNumber, reason: 'DOCX download returned no data', url: docxUrl });
     return;
   }
 
   console.log(`    📝 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
 
-  // Update / create format-comparison sidecar
   if (pdfPath) {
     await saveFormatComparisonSidecar(pdfPath, docxResult.filePath, item);
   } else {
-    console.log(`    ⚠️  No paired PDF found on disk — format-comparison sidecar not written`);
+    console.log(`    ⚠️  No paired PDF on disk — format-comparison sidecar not written`);
   }
 
-  results.success.push({ etsiNumber: item.etsiNumber, docxPath: docxResult.filePath, docxUrl: info.docxUrl });
+  results.success.push({ etsiNumber: item.etsiNumber, docxPath: docxResult.filePath, docxUrl });
+}
+
+// ── Fetch helpers ─────────────────────────────────────────────────────────────────
+
+/**
+ * fetchDetailPage: public page first, falls back to auth portal when HAS_AUTH and no docxUrl.
+ * Used in normal (PDF) mode only.
+ */
+async function fetchDetailPage(client, item) {
+  const wkiId     = extractWkiId(item.detailUrl) ?? extractWkiId(item.wkiId);
+  const publicUrl = publicReportUrl(wkiId);
+  const portalUrl = item.detailUrl ? cleanUrl(item.detailUrl) : null;
+
+  if (publicUrl) {
+    try {
+      const res = await fetch(publicUrl, { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' }, redirect: 'follow' });
+      if (res.ok) {
+        const responseHeaders = snapshotHeaders(res);
+        const html   = await res.text();
+        const parsed = parseDetailHtml(html, wkiId, responseHeaders, false);
+        if (parsed.url || parsed.stopped) {
+          // No auth needed for PDF; but if we have auth, also try to grab docbox link
+          if (!HAS_AUTH || parsed.docxUrl) return parsed;
+          // Has auth + no docbox link in public page → fall through to portal
+        }
+      }
+    } catch { /* fall through */ }
+  }
+
+  if (!portalUrl) return null;
+  return fetchAuthDetailPage(client, item);
+}
+
+/**
+ * fetchAuthDetailPage: always fetches the authenticated ETSI portal page.
+ * Used in --docx-only mode and as fallback in normal mode when HAS_AUTH.
+ */
+async function fetchAuthDetailPage(client, item) {
+  const portalUrl = item.detailUrl ? cleanUrl(item.detailUrl) : null;
+  if (!portalUrl) throw new Error('No detailUrl available');
+
+  const res = await client.fetch(portalUrl, { headers: client.getDefaultHeaders() });
+  if (!res.ok) throw new Error(`HTTP ${res.status} from auth portal`);
+  const responseHeaders = snapshotHeaders(res);
+  const html = await res.text();
+  const wkiId = extractWkiId(item.detailUrl) ?? extractWkiId(item.wkiId);
+  return parseDetailHtml(html, wkiId, responseHeaders, true);
+}
+
+function extractDocxUrlFromHtml(html) {
+  const $ = cheerio.load(html);
+  let found = null;
+  $('a[href*="docbox.etsi.org"]').each((_, el) => {
+    const href = $(el).attr('href')?.trim();
+    if (href && (href.endsWith('.docx') || href.endsWith('.doc') || href.endsWith('.zip')) && !found) {
+      found = href;
+      return false;
+    }
+  });
+  return found;
+}
+
+function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
+  const $      = cheerio.load(html);
+  const status = extractStatus(html);
+
+  if (/\bSTOPPED\b/.test(html)) return { stopped: true, $, html, responseHeaders, status, wkiId, usedLogin };
+
+  let downloadUrl = null, downloadType = null, docxUrl = null;
+
+  // Primary: published PDF from deliver/ (always public)
+  $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
+    const href = $(el).attr('href');
+    if (href?.includes('.pdf')) { downloadUrl = href; downloadType = 'pdf'; }
+  });
+
+  // DOCX: only from docbox.etsi.org, only when authenticated, explicit link only.
+  // NEVER derived from the deliver/ PDF URL — that path does not exist on ETSI servers.
+  if (usedLogin || HAS_AUTH) {
+    docxUrl = extractDocxUrlFromHtml(html);
+  }
+
+  // PDF fallbacks
+  if (!downloadUrl) $('a[href*="pda.etsi.org"]').each((_, el) => {
+    const href = $(el).attr('href');
+    if (href) { downloadUrl = href; downloadType = 'pda'; }
+  });
+  if (!downloadUrl) $('a').each((_, el) => {
+    const href = $(el).attr('href') || '';
+    if (!downloadUrl && href.includes('.pdf') && href.includes('etsi')) { downloadUrl = href; downloadType = 'pdf'; }
+    else if (!downloadUrl && href.includes('.zip') && href.includes('etsi')) { downloadUrl = href; downloadType = 'zip'; }
+  });
+  if (!downloadUrl) $('a[href*="docbox.etsi.org"]').each((_, el) => {
+    const href = $(el).attr('href')?.trim();
+    if (!href) return;
+    if (href.endsWith('.pdf'))  { downloadUrl = href; downloadType = 'draft-pdf'; return false; }
+    if (href.endsWith('.zip'))  { downloadUrl = href; downloadType = 'zip'; }
+  });
+
+  return { url: downloadUrl ?? null, type: downloadType, docxUrl, $, html, responseHeaders, status, wkiId, usedLogin };
+}
+
+function extractStatus(html) {
+  const after = html.split('<!-- Status Last Update -->')[1];
+  if (!after) return null;
+  const win = after.slice(0, 500);
+  const m   = win.match(/<(?:b|nobr)[^>]*>([^<]+)<\/(?:b|nobr)>/);
+  if (m) return m[1].trim();
+  const a   = win.match(/<a[^>]*>[\s\S]*?<b[^>]*><nobr>([^<]+)<\/nobr>/);
+  if (a) return a[1].trim();
+  return null;
+}
+
+function snapshotHeaders(response) {
+  const tracked = ['etag', 'last-modified', 'content-length', 'content-type', 'cache-control'];
+  const snap    = { 'x-downloaded-at': new Date().toISOString() };
+  for (const h of tracked) { const v = response.headers.get(h); if (v) snap[h] = v; }
+  return snap;
+}
+
+async function saveResponseHeaders(filePath, headerSnapshot) {
+  if (!headerSnapshot) return;
+  await fs.writeFile(headerCachePath(filePath), JSON.stringify(headerSnapshot, null, 2));
+}
+
+// ── WorkItem sidecar helpers ──────────────────────────────────────────────────────
+//
+// Two strictly separate sidecars:
+//   .workitem.html      — public Report_WorkItem.asp (no auth, deliver/ link)
+//   .workitem-auth.html — authenticated portal page  (auth, docbox link)
+//
+// The auth sidecar is the only reliable source for docbox DOCX links.
+
+async function saveWorkitemSidecar(info, item, isAuth) {
+  if (!info?.html) return;
+  const wiDir  = path.join(DOWNLOAD_PATH, '_workitems');
+  const wiPath = isAuth ? workitemAuthSidecarPath(item.etsiNumber) : workitemSidecarPath(item.etsiNumber);
+  await fs.mkdir(wiDir, { recursive: true });
+
+  const wiExists = await fs.stat(wiPath).then(() => true).catch(() => false);
+
+  if (isAuth) {
+    const fresh = wiExists && !REFRESH_AUTH_SIDECARS && !FORCE_DOWNLOAD
+                  ? await isSidecarFresh(wiPath, AUTH_SIDECAR_TTL_MS) : false;
+    if (fresh) { console.log(`    ⏭️  Auth WorkItem sidecar fresh`); return; }
+    console.log(`    🔐 Saving auth WorkItem sidecar`);
+  } else {
+    const fresh = wiExists && !FORCE_UPDATE_CHECK && !FORCE_DOWNLOAD
+                  ? await isSidecarFresh(wiPath, SIDECAR_TTL_MS) : false;
+    if (fresh) { console.log(`    ⏭️  WorkItem sidecar fresh`); return; }
+  }
+
+  const tag = isAuth ? 'auth' : 'public';
+  await fs.writeFile(wiPath, [
+    `<!-- etsiNumber: ${item.etsiNumber} -->`,
+    `<!-- wkiId: ${info.wkiId ?? 'unknown'} -->`,
+    `<!-- source: ${tag} -->`,
+    `<!-- savedAt: ${new Date().toISOString()} -->`,
+    '', info.html,
+  ].join('\n'), 'utf-8');
+  await saveResponseHeaders(wiPath, info.responseHeaders);
 }
 
 async function findPdfPath(item) {
@@ -462,7 +670,76 @@ async function findPdfPath(item) {
   return findInDiskIndex(diskIndex, item.etsiNumber) ?? null;
 }
 
-// ── Cache index helpers ────────────────────────────────────────────────────────
+// ── Format comparison sidecar ─────────────────────────────────────────────────────
+
+async function saveFormatComparisonSidecar(pdfPath, docxPath, item) {
+  try {
+    const [pdfStat, docxStat] = await Promise.all([
+      fs.stat(pdfPath).catch(() => null),
+      fs.stat(docxPath).catch(() => null),
+    ]);
+    const pdfBytes  = pdfStat?.size  ?? 0;
+    const docxBytes = docxStat?.size ?? 0;
+    const recommendation = docxBytes >= 20_000 ? 'docx' : pdfBytes > 0 ? 'pdf' : 'unknown';
+    const payload = {
+      etsiNumber:   item.etsiNumber,
+      pdfPath:      path.relative(PROJECT_ROOT, pdfPath),
+      docxPath:     path.relative(PROJECT_ROOT, docxPath),
+      pdfBytes, docxBytes,
+      downloadedAt: new Date().toISOString(),
+      recommendation,
+    };
+    const sidecarPath = pdfPath.replace(/\.[^.]+$/, '.format-comparison.json');
+    await fs.writeFile(sidecarPath, JSON.stringify(payload, null, 2));
+    console.log(`    📊 Format: ${recommendation === 'docx' ? '✅ DOCX preferred' : '⚠️  PDF fallback'} (DOCX ${formatBytes(docxBytes)} / PDF ${formatBytes(pdfBytes)})`);
+  } catch (err) {
+    console.log(`    ⚠️  Could not write format-comparison sidecar: ${err.message}`);
+  }
+}
+
+// ── Schedule sidecar ──────────────────────────────────────────────────────────────
+
+async function saveScheduleSidecar($, wkiId, item) {
+  if (!$) return null;
+  try {
+    const dir     = path.join(DOWNLOAD_PATH, '_schedules');
+    await fs.mkdir(dir, { recursive: true });
+    const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+    const outPath = path.join(dir, `${safe}.schedule.html`);
+    if (await fs.stat(outPath).then(() => true).catch(() => false)) return outPath;
+
+    let scheduleTable = null;
+    $('table').each((_, tbl) => {
+      const text = $(tbl).text().toLowerCase();
+      if (text.includes('milestone') || text.includes('stage') || text.includes('target'))
+        scheduleTable = $(tbl);
+    });
+    const stoppedCtx = [];
+    $('*').each((_, el) => {
+      const txt = $(el).children().length === 0 ? $(el).text().trim() : '';
+      if (txt.toUpperCase().includes('STOPPED')) stoppedCtx.push($(el).parent().html()?.trim() ?? txt);
+    });
+
+    const tableHtml = scheduleTable ? scheduleTable.html() : null;
+    const payload = [
+      `<!-- etsiNumber: ${item.etsiNumber} -->`,
+      `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
+      `<!-- detailUrl: ${item.detailUrl ?? ''} -->`,
+      `<!-- savedAt: ${new Date().toISOString()} -->`,
+      '',
+      ...(stoppedCtx.length ? ['<!-- === STOPPED CONTEXT === -->', stoppedCtx.map(s => `<div class="stopped-ctx">${s}</div>`).join('\n'), ''] : []),
+      '<!-- === SCHEDULE TABLE === -->',
+      tableHtml ? `<table class="schedule-table">${tableHtml}</table>` : '<!-- no schedule table found -->',
+    ].join('\n');
+    await fs.writeFile(outPath, payload, 'utf-8');
+    return outPath;
+  } catch (err) {
+    console.log(`    ⚠️  Could not save schedule sidecar: ${err.message}`);
+    return null;
+  }
+}
+
+// ── Cache index helpers ───────────────────────────────────────────────────────────
 
 async function loadCachedIndex() {
   const index = new Map();
@@ -542,7 +819,7 @@ async function saveResults(newResults) {
   await fs.writeFile(RESULTS_FILE, JSON.stringify(existing, null, 2));
 }
 
-// ── Headers-only / force-update-check ───────────────────────────────────────────
+// ── Headers-only / force-update-check ─────────────────────────────────────────────
 
 async function headersOnlyCheck(client, item, existingPath, cache, integrity, results) {
   const info    = await fetchDetailPage(client, item).catch(() => null);
@@ -568,242 +845,10 @@ async function headersOnlyCheck(client, item, existingPath, cache, integrity, re
   console.log(`    📄 ${relPath}`);
 }
 
-// ── Network helpers ──────────────────────────────────────────────────────────────────
-
-async function fetchDetailPage(client, item) {
-  const wkiId     = extractWkiId(item.detailUrl) ?? extractWkiId(item.wkiId);
-  const publicUrl = publicReportUrl(wkiId);
-  const portalUrl = item.detailUrl ? cleanUrl(item.detailUrl) : null;
-
-  // Try public WorkItem report first (no auth needed for PDF link discovery)
-  if (publicUrl) {
-    try {
-      const res = await fetch(publicUrl, { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' }, redirect: 'follow' });
-      if (res.ok) {
-        const responseHeaders = snapshotHeaders(res);
-        const html   = await res.text();
-        const parsed = parseDetailHtml(html, wkiId, responseHeaders, false);
-        // For docbox links we need the authenticated portal page, not the public report.
-        // If we don't need DOCX (no auth) or already found a docbox link, we're done.
-        if (parsed.url || parsed.stopped) {
-          if (!HAS_AUTH || parsed.docxUrl) return parsed;
-          // Has auth + no docbox link in public report → fall through to portal
-        }
-      }
-    } catch { /* fall through */ }
-  }
-
-  if (!portalUrl) return null;
-  // Authenticated portal page: used for docbox DOCX link discovery
-  const res = await client.fetch(portalUrl, { headers: client.getDefaultHeaders() });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const responseHeaders = snapshotHeaders(res);
-  const html = await res.text();
-  return parseDetailHtml(html, wkiId, responseHeaders, true);
-}
-
-function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
-  const $      = cheerio.load(html);
-  const status = extractStatus(html);
-
-  if (/\bSTOPPED\b/.test(html)) return { stopped: true, $, html, responseHeaders, status, wkiId, usedLogin };
-
-  let downloadUrl = null, downloadType = null, docxUrl = null;
-
-  // ── Primary: published PDF from www.etsi.org/deliver (always public) ──────
-  $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
-    const href = $(el).attr('href');
-    if (href?.includes('.pdf')) { downloadUrl = href; downloadType = 'pdf'; }
-  });
-
-  // ── DOCX: only from docbox.etsi.org (authenticated, explicit link) ────────
-  // IMPORTANT: DOCX is NEVER derived from the deliver/ PDF URL.
-  // It must be an explicit <a href="docbox.etsi.org/..."> in the WorkItem page.
-  // The docbox link format is: https://docbox.etsi.org/ESI/.../...v010101.docx
-  if (HAS_AUTH) {
-    $('a[href*="docbox.etsi.org"]').each((_, el) => {
-      const href = $(el).attr('href')?.trim();
-      if (!href) return;
-      if ((href.endsWith('.docx') || href.endsWith('.doc')) && !docxUrl) {
-        docxUrl = href;
-        return false; // first match only
-      }
-    });
-  }
-  // NOTE: No URL-derive fallback (deliver/ .pdf → .docx).
-  // That URL never exists — removed to avoid misleading 404 attempts.
-
-  // ── Fallback sources for PDF ────────────────────────────────────────────
-  if (!downloadUrl) $('a[href*="pda.etsi.org"]').each((_, el) => {
-    const href = $(el).attr('href');
-    if (href) { downloadUrl = href; downloadType = 'pda'; }
-  });
-  if (!downloadUrl) $('a').each((_, el) => {
-    const href = $(el).attr('href') || '';
-    if (!downloadUrl && href.includes('.pdf') && href.includes('etsi')) { downloadUrl = href; downloadType = 'pdf'; }
-    else if (!downloadUrl && href.includes('.zip') && href.includes('etsi')) { downloadUrl = href; downloadType = 'zip'; }
-  });
-  // Draft fallback: docbox PDF only when no other source found (not DOCX here)
-  if (!downloadUrl) $('a[href*="docbox.etsi.org"]').each((_, el) => {
-    const href = $(el).attr('href')?.trim();
-    if (!href) return;
-    if (href.endsWith('.pdf'))  { downloadUrl = href; downloadType = 'draft-pdf'; return false; }
-    if (href.endsWith('.zip'))  { downloadUrl = href; downloadType = 'zip'; }
-  });
-
-  return { url: downloadUrl ?? null, type: downloadType, docxUrl, $, html, responseHeaders, status, wkiId, usedLogin };
-}
-
-function extractStatus(html) {
-  const after = html.split('<!-- Status Last Update -->')[1];
-  if (!after) return null;
-  const win = after.slice(0, 500);
-  const m   = win.match(/<(?:b|nobr)[^>]*>([^<]+)<\/(?:b|nobr)>/);
-  if (m) return m[1].trim();
-  const a   = win.match(/<a[^>]*>[\s\S]*?<b[^>]*><nobr>([^<]+)<\/nobr>/);
-  if (a) return a[1].trim();
-  return null;
-}
-
-function snapshotHeaders(response) {
-  const tracked = ['etag', 'last-modified', 'content-length', 'content-type', 'cache-control'];
-  const snap    = { 'x-downloaded-at': new Date().toISOString() };
-  for (const h of tracked) { const v = response.headers.get(h); if (v) snap[h] = v; }
-  return snap;
-}
-
-async function saveResponseHeaders(filePath, headerSnapshot) {
-  if (!headerSnapshot) return;
-  await fs.writeFile(headerCachePath(filePath), JSON.stringify(headerSnapshot, null, 2));
-}
-
-// ── WorkItem sidecar helpers ───────────────────────────────────────────────────
-
-async function maybeUpdateWorkitemSidecar(info, item) {
-  if (!info?.html) return;
-  const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-  const wiDir   = path.join(DOWNLOAD_PATH, '_workitems');
-  const wiPath  = path.join(wiDir, `${safe}.workitem.html`);
-  await fs.mkdir(wiDir, { recursive: true });
-
-  const wiExists = await fs.stat(wiPath).then(() => true).catch(() => false);
-  const fresh    = wiExists && !FORCE_UPDATE_CHECK && !FORCE_DOWNLOAD
-                   ? await isSidecarFresh(wiPath) : false;
-
-  if (fresh) {
-    console.log(`    ⏭️  WorkItem sidecar fresh`);
-  } else if (FORCE_UPDATE_CHECK && wiExists) {
-    const wiUrl = publicReportUrl(info.wkiId);
-    if (wiUrl) {
-      const check = await checkRemoteChanged(wiUrl, wiPath).catch(() => ({ changed: null }));
-      if (check.changed === true) {
-        console.log(`    🔄 WorkItem changed — refreshing sidecar`);
-        await writeWorkitemSidecar(wiPath, info.html, info.wkiId, item);
-        await saveResponseHeaders(wiPath, info.responseHeaders);
-      } else {
-        await touchSidecarHeaders(wiPath);
-      }
-    }
-  } else if (FORCE_DOWNLOAD || !wiExists) {
-    await writeWorkitemSidecar(wiPath, info.html, info.wkiId, item);
-    await saveResponseHeaders(wiPath, info.responseHeaders);
-  } else {
-    if (!wiExists) {
-      await writeWorkitemSidecar(wiPath, info.html, info.wkiId, item);
-      await saveResponseHeaders(wiPath, info.responseHeaders);
-    }
-  }
-}
-
-async function writeWorkitemSidecar(outPath, html, wkiId, item) {
-  await fs.writeFile(outPath, [
-    `<!-- etsiNumber: ${item.etsiNumber} -->`,
-    `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
-    `<!-- savedAt: ${new Date().toISOString()} -->`,
-    '', html,
-  ].join('\n'), 'utf-8');
-}
-
-// ── Format comparison sidecar ────────────────────────────────────────────────────
-//
-// Written next to the PDF when both formats downloaded successfully.
-// Recommendation heuristic: DOCX if ≥ 20 KB, else PDF.
-
-async function saveFormatComparisonSidecar(pdfPath, docxPath, item) {
-  try {
-    const [pdfStat, docxStat] = await Promise.all([
-      fs.stat(pdfPath).catch(() => null),
-      fs.stat(docxPath).catch(() => null),
-    ]);
-    const pdfBytes  = pdfStat?.size  ?? 0;
-    const docxBytes = docxStat?.size ?? 0;
-    const recommendation = docxBytes >= 20_000 ? 'docx' : pdfBytes > 0 ? 'pdf' : 'unknown';
-
-    const payload = {
-      etsiNumber:     item.etsiNumber,
-      pdfPath:        path.relative(PROJECT_ROOT, pdfPath),
-      docxPath:       path.relative(PROJECT_ROOT, docxPath),
-      pdfBytes,
-      docxBytes,
-      downloadedAt:   new Date().toISOString(),
-      recommendation,
-    };
-
-    const sidecarPath = pdfPath.replace(/\.[^.]+$/, '.format-comparison.json');
-    await fs.writeFile(sidecarPath, JSON.stringify(payload, null, 2));
-    console.log(`    📊 Format: ${recommendation === 'docx' ? '✅ DOCX preferred' : '⚠️  PDF fallback'} (DOCX ${formatBytes(docxBytes)} / PDF ${formatBytes(pdfBytes)})`);
-  } catch (err) {
-    console.log(`    ⚠️  Could not write format-comparison sidecar: ${err.message}`);
-  }
-}
-
-// ── Schedule sidecar ────────────────────────────────────────────────────────────────
-
-async function saveScheduleSidecar($, wkiId, item) {
-  if (!$) return null;
-  try {
-    const dir     = path.join(DOWNLOAD_PATH, '_schedules');
-    await fs.mkdir(dir, { recursive: true });
-    const safe    = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-    const outPath = path.join(dir, `${safe}.schedule.html`);
-    if (await fs.stat(outPath).then(() => true).catch(() => false)) return outPath;
-
-    let scheduleTable = null;
-    $('table').each((_, tbl) => {
-      const text = $(tbl).text().toLowerCase();
-      if (text.includes('milestone') || text.includes('stage') || text.includes('target'))
-        scheduleTable = $(tbl);
-    });
-    const stoppedCtx = [];
-    $('*').each((_, el) => {
-      const txt = $(el).children().length === 0 ? $(el).text().trim() : '';
-      if (txt.toUpperCase().includes('STOPPED')) stoppedCtx.push($(el).parent().html()?.trim() ?? txt);
-    });
-
-    const tableHtml = scheduleTable ? scheduleTable.html() : null;
-    const payload = [
-      `<!-- etsiNumber: ${item.etsiNumber} -->`,
-      `<!-- wkiId: ${wkiId ?? 'unknown'} -->`,
-      `<!-- detailUrl: ${item.detailUrl ?? ''} -->`,
-      `<!-- savedAt: ${new Date().toISOString()} -->`,
-      '',
-      ...(stoppedCtx.length ? ['<!-- === STOPPED CONTEXT === -->', stoppedCtx.map(s => `<div class="stopped-ctx">${s}</div>`).join('\n'), ''] : []),
-      '<!-- === SCHEDULE TABLE === -->',
-      tableHtml ? `<table class="schedule-table">${tableHtml}</table>` : '<!-- no schedule table found -->',
-    ].join('\n');
-    await fs.writeFile(outPath, payload, 'utf-8');
-    return outPath;
-  } catch (err) {
-    console.log(`    ⚠️  Could not save schedule sidecar: ${err.message}`);
-    return null;
-  }
-}
-
-// ── File download ───────────────────────────────────────────────────────────────────
+// ── File download ─────────────────────────────────────────────────────────────────
 
 async function downloadFile(client, info, item) {
   try {
-    // deliver/ PDFs are public; docbox requires the authenticated session
     const isPublicDelivery = info.url.includes('www.etsi.org/deliver');
     const fetchFn = isPublicDelivery ? fetch : client.fetch.bind(client);
     const response = await fetchFn(info.url, {
@@ -816,10 +861,10 @@ async function downloadFile(client, info, item) {
 
     let filename = null;
     const cd = response.headers.get('content-disposition');
-    if (cd) { const m = cd.match(/filename[^;=\n]*=((['"']).*?\2|[^;\n]*)/); if (m) filename = m[1].replace(/["']/g, ''); }
+    if (cd) { const m = cd.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/); if (m) filename = m[1].replace(/["']/g, ''); }
     if (!filename) filename = path.basename(new URL(info.url).pathname);
     if (!filename || filename === '' || filename === '/') {
-      const safe = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
+      const safe = item?.etsiNumber?.replace(/[^a-zA-Z0-9-_]/g, '_') ?? 'unknown';
       const ext  = { pdf: '.pdf', zip: '.zip', 'draft-docx': '.docx', docx: '.docx', 'draft-pdf': '.pdf', pda: '.pdf' }[info.type] || '.bin';
       filename   = `${safe}${ext}`;
     }
@@ -828,7 +873,7 @@ async function downloadFile(client, info, item) {
     const buffer = Buffer.from(await response.arrayBuffer());
     if (buffer.length < 1000) { console.log(`    ⚠️ File too small (${buffer.length} bytes) — skipping`); return null; }
 
-    const typeMatch = item.etsiNumber?.match(/^(EN|TS|TR|ES|EG)/i);
+    const typeMatch = item?.etsiNumber?.match(/^(EN|TS|TR|ES|EG)/i);
     const subDir    = typeMatch ? typeMatch[1].toUpperCase() : 'Other';
     const targetDir = path.join(DOWNLOAD_PATH, subDir);
     await fs.mkdir(targetDir, { recursive: true });
@@ -855,7 +900,7 @@ async function saveUrlSidecar(filePath, url, type) {
   );
 }
 
-// ── Entry point ────────────────────────────────────────────────────────────────────
+// ── Entry point ───────────────────────────────────────────────────────────────────
 
 if (REPAIR_WKI_IDS) {
   repairWkiIds().catch(console.error);
