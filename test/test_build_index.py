@@ -7,10 +7,10 @@ Unit tests for scripts/build-index.py
 Run:
   pytest test/test_build_index.py -v
   pytest test/test_build_index.py -v -k "not embedding"  # skip LM Studio tests
+  pytest test/test_build_index.py -v --run-embedding      # include LM Studio tests
 
 The tests are fully offline by default — embedding tests are marked
-@pytest.mark.embedding and skipped unless LM Studio is reachable or
---run-embedding is passed on the CLI.
+@pytest.mark.embedding and skipped unless --run-embedding is passed.
 """
 from __future__ import annotations
 
@@ -27,7 +27,6 @@ import pytest
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import importlib
 import importlib.util
 
 def _load_build_index():
@@ -41,18 +40,12 @@ def _load_build_index():
 build_index = _load_build_index()
 
 
-# ── pytest custom marker ──────────────────────────────────────────────────
+# ── pytest custom option ──────────────────────────────────────────────────
 
 def pytest_addoption(parser):
     parser.addoption(
         "--run-embedding", action="store_true", default=False,
         help="Run tests that require a live LM Studio embedding endpoint",
-    )
-
-
-def pytest_configure(config):
-    config.addinivalue_line(
-        "markers", "embedding: requires live LM Studio /v1/embeddings"
     )
 
 
@@ -137,7 +130,6 @@ MINIMAL_SEGMENTS_FILE = {
 def tmp_segments_dir(tmp_path: Path) -> Path:
     seg_dir = tmp_path / "corpus" / "specs" / "_segments"
     seg_dir.mkdir(parents=True)
-    # Write minimal segments file
     seg_file = seg_dir / "en319401v020201p.segments.json"
     seg_file.write_text(json.dumps(MINIMAL_SEGMENTS_FILE), encoding="utf-8")
     return seg_dir
@@ -150,13 +142,13 @@ def tmp_db(tmp_path: Path) -> Path:
 
 @pytest.fixture
 def populated_db(tmp_segments_dir: Path, tmp_db: Path) -> sqlite3.Connection:
-    """DB with schema created and minimal segments inserted (no embeddings)."""
+    """DB with schema + minimal segments inserted (no embeddings)."""
     con = build_index._open_db(tmp_db)
-    build_index.create_schema(con, dims=4)  # tiny dims for tests
+    build_index.create_schema(con, dims=4)
     build_index.index_segments_file(
         list(tmp_segments_dir.glob("*.segments.json"))[0],
         con,
-        client=None,  # no embedding
+        client=None,
         dry_run=False,
         verbose=False,
     )
@@ -219,7 +211,7 @@ class TestDBSchema:
     def test_create_schema_idempotent(self, tmp_db: Path):
         con = build_index._open_db(tmp_db)
         build_index.create_schema(con, dims=768)
-        build_index.create_schema(con, dims=768)  # second call must not raise
+        build_index.create_schema(con, dims=768)
         tables = {row[0] for row in con.execute(
             "SELECT name FROM sqlite_master WHERE type='table'"
         )}
@@ -297,8 +289,7 @@ class TestIndexing:
         build_index.index_segments_file(seg_file, con, None, verbose=False)
         build_index.index_segments_file(seg_file, con, None, verbose=False)
         count = con.execute("SELECT COUNT(*) FROM segments").fetchone()[0]
-        # 2 NORM + 1 INFORM + 1 SECTION = 4 indexed (HEADER skipped)
-        assert count == 4
+        assert count == 4  # 2 NORM + 1 INFORM + 1 SECTION
         con.close()
 
     def test_already_indexed_flag(self, tmp_segments_dir: Path, tmp_db: Path):
@@ -319,12 +310,12 @@ class TestIndexing:
             seg_file, con, None, dry_run=True, verbose=False
         )
         count = con.execute("SELECT COUNT(*) FROM segments").fetchone()[0]
-        assert count == 0          # nothing written
-        assert stats["inserted"] == 4  # but parsed correctly
+        assert count == 0
+        assert stats["inserted"] == 4
         con.close()
 
 
-# ── Integration: FTS search ─────────────────────────────────────────────
+# ── Integration: FTS search ────────────────────────────────────────────
 
 class TestFTSSearch:
     def test_fts_finds_shall_keyword(self, populated_db: sqlite3.Connection):
@@ -373,7 +364,7 @@ class TestVectorTable:
         assert count == 0
 
     def test_manual_vector_insert_and_query(self, tmp_db: Path):
-        """Smoke test: insert a known vector and retrieve by cosine distance."""
+        """Smoke test: insert a known vector, retrieve with k=1 knn query."""
         con = build_index._open_db(tmp_db)
         build_index.create_schema(con, dims=4)
         v = [1.0, 0.0, 0.0, 0.0]
@@ -383,20 +374,20 @@ class TestVectorTable:
             ("test_seg", blob),
         )
         con.commit()
-        # Cosine query: same vector should be closest
+        # sqlite-vec knn requires k = ? constraint
         rows = con.execute(
             """
             SELECT segment_id, distance
             FROM segments_vec
             WHERE embedding MATCH ?
+              AND k = 1
             ORDER BY distance
-            LIMIT 1
             """,
             (blob,),
         ).fetchall()
         assert len(rows) == 1
         assert rows[0][0] == "test_seg"
-        assert rows[0][1] < 0.01  # cosine distance ≈ 0 for identical vectors
+        assert rows[0][1] < 0.01
         con.close()
 
 
@@ -417,7 +408,6 @@ class TestWithLMStudio:
         )
         assert stats["embedded"] == 3   # 2 NORM + 1 INFORM
         assert stats["errors"] == 0
-        # Verify vector table has entries
         vec_count = con.execute(
             "SELECT COUNT(*) FROM segments_vec"
         ).fetchone()[0]
@@ -429,7 +419,7 @@ class TestWithLMStudio:
     def test_cosine_search_finds_relevant_segment(
         self, tmp_segments_dir: Path, tmp_db: Path
     ):
-        """End-to-end: embed query, search, top result contains 'shall'."""
+        """End-to-end: embed query, knn search, top result contains 'shall'."""
         client = build_index.EmbeddingClient()
         assert client.ping(), "LM Studio not reachable"
         con = build_index._open_db(tmp_db)
@@ -438,17 +428,17 @@ class TestWithLMStudio:
         build_index.index_segments_file(
             seg_file, con, client, dry_run=False, verbose=False
         )
-        # Embed the query
         q_vec = client.embed_batch(["TSP audit log requirements"])[0]
         blob  = build_index.floats_to_blob(q_vec)
-        rows  = con.execute(
+        # k = ? is required by sqlite-vec for knn queries
+        rows = con.execute(
             """
             SELECT v.segment_id, v.distance, s.text
             FROM segments_vec v
             JOIN segments s ON s.id = v.segment_id
             WHERE v.embedding MATCH ?
+              AND k = 3
             ORDER BY v.distance
-            LIMIT 3
             """,
             (blob,),
         ).fetchall()
