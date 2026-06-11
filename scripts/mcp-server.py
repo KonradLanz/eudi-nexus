@@ -2,7 +2,7 @@
 """
 mcp-server.py  —  EUDI-Nexus MCP Server (stdio transport)
 
-Exposes the eudi-nexus SQLite corpus as MCP tools for Claude / LM Studio.
+Exposes the eudi-nexus SQLite corpus as MCP tools for Claude / LM Studio / Ollama.
 All tools are read-only. No writes to the database.
 
 Tools:
@@ -11,30 +11,62 @@ Tools:
   list_norms      —  List all indexed norms with stats
   get_section     —  All segments of a section in a specific norm
 
-Transport: stdio (compatible with Claude Desktop, LM Studio, mcp-cli)
+Transport: stdio (compatible with LM Studio, Ollama, Claude Desktop, mcp-cli)
 
 Usage:
   python3 scripts/mcp-server.py
   python3 scripts/mcp-server.py --db corpus/eudi-nexus.db
-  python3 scripts/mcp-server.py --no-embed   # BM25-only, no LM Studio needed
+  python3 scripts/mcp-server.py --no-embed   # BM25-only, no embedding endpoint needed
 
-ClaudeDesktop config (~/.config/claude/claude_desktop_config.json):
+──────────────────────────────────────────────────────────────────────────────
+  Embedding backend auto-detection (priority order):
+
+  1. EMBEDDING_BACKEND env var ("lmstudio" | "ollama") — explicit override
+  2. LM Studio  http://localhost:1234/v1/embeddings     — checked first
+  3. Ollama     http://localhost:11434/api/embeddings   — fallback
+  4. BM25-only  — if neither is reachable
+
+  Environment variables:
+    MCP_DB_PATH            corpus/eudi-nexus.db
+    EMBEDDING_BACKEND      auto | lmstudio | ollama  (default: auto)
+    LMSTUDIO_BASE_URL      http://localhost:1234
+    LMSTUDIO_EMBED_MODEL   nomic-embed-text-v1.5
+    OLLAMA_BASE_URL        http://localhost:11434
+    OLLAMA_EMBED_MODEL     nomic-embed-text   (or mxbai-embed-large)
+    EMBEDDING_DIMENSIONS   768
+    HYBRID_ALPHA           0.5  (1.0=BM25-only, 0.0=cosine-only)
+──────────────────────────────────────────────────────────────────────────────
+
+  LM Studio config  (~/.lmstudio/mcp-config.json or LM Studio GUI → Developer → MCP):
   {
     "mcpServers": {
       "eudi-nexus": {
-        "command": "python3",
+        "command": "/path/to/eudi-nexus/.venv/bin/python3",
         "args": ["/path/to/eudi-nexus/scripts/mcp-server.py"],
-        "env": { "MCP_DB_PATH": "/path/to/eudi-nexus/corpus/eudi-nexus.db" }
+        "env": {
+          "MCP_DB_PATH": "/path/to/eudi-nexus/corpus/eudi-nexus.db",
+          "EMBEDDING_BACKEND": "lmstudio",
+          "LMSTUDIO_BASE_URL": "http://localhost:1234"
+        }
       }
     }
   }
 
-Environment:
-  MCP_DB_PATH           corpus/eudi-nexus.db
-  LMSTUDIO_BASE_URL     http://localhost:1234
-  EMBEDDING_MODEL       nomic-embed-text-v1.5
-  EMBEDDING_DIMENSIONS  768
-  HYBRID_ALPHA          0.5   (BM25 weight; 1.0 = BM25-only, 0.0 = cosine-only)
+  Ollama config  (same structure, different env):
+  {
+    "mcpServers": {
+      "eudi-nexus": {
+        "command": "/path/to/eudi-nexus/.venv/bin/python3",
+        "args": ["/path/to/eudi-nexus/scripts/mcp-server.py"],
+        "env": {
+          "MCP_DB_PATH": "/path/to/eudi-nexus/corpus/eudi-nexus.db",
+          "EMBEDDING_BACKEND": "ollama",
+          "OLLAMA_BASE_URL": "http://localhost:11434",
+          "OLLAMA_EMBED_MODEL": "nomic-embed-text"
+        }
+      }
+    }
+  }
 """
 from __future__ import annotations
 
@@ -82,16 +114,23 @@ def _load_dotenv(path: Path = Path(".env")) -> None:
 
 _load_dotenv()
 
-DB_PATH      = Path(os.environ.get("MCP_DB_PATH",          "corpus/eudi-nexus.db"))
-BASE_URL     = os.environ.get("LMSTUDIO_BASE_URL",          "http://localhost:1234")
-EMBED_MODEL  = os.environ.get("EMBEDDING_MODEL",            "nomic-embed-text-v1.5")
-DEFAULT_DIMS = int(os.environ.get("EMBEDDING_DIMENSIONS",   "768"))
-HYBRID_ALPHA = float(os.environ.get("HYBRID_ALPHA",         "0.5"))
+DB_PATH      = Path(os.environ.get("MCP_DB_PATH",             "corpus/eudi-nexus.db"))
+HYBRID_ALPHA = float(os.environ.get("HYBRID_ALPHA",           "0.5"))
+DEFAULT_DIMS = int(os.environ.get("EMBEDDING_DIMENSIONS",     "768"))
 
-# Max results returned by search_norm
-MAX_RESULTS = 20
-# Default top-k for vector search
-DEFAULT_K   = 20
+# Embedding backend config
+BACKEND      = os.environ.get("EMBEDDING_BACKEND", "auto").lower()  # auto | lmstudio | ollama
+
+# LM Studio
+LMSTUDIO_URL        = os.environ.get("LMSTUDIO_BASE_URL",    "http://localhost:1234")
+LMSTUDIO_MODEL      = os.environ.get("LMSTUDIO_EMBED_MODEL", "nomic-embed-text-v1.5")
+
+# Ollama
+OLLAMA_URL          = os.environ.get("OLLAMA_BASE_URL",      "http://localhost:11434")
+OLLAMA_MODEL        = os.environ.get("OLLAMA_EMBED_MODEL",   "nomic-embed-text")
+
+MAX_RESULTS  = 20
+DEFAULT_K    = 20
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -110,7 +149,7 @@ def _open_db() -> sqlite3.Connection:
     sqlite_vec.load(con)
     con.enable_load_extension(False)
     con.execute("PRAGMA journal_mode=WAL")
-    con.execute("PRAGMA query_only=ON")  # read-only guard
+    con.execute("PRAGMA query_only=ON")
     return con
 
 
@@ -125,7 +164,6 @@ def _row_to_dict(row: sqlite3.Row) -> dict:
 
 
 def _norm_filter_clause(norm: str | None, version: str | None) -> tuple[str, list]:
-    """Build WHERE clause fragment + params for norm/version filtering."""
     clauses, params = [], []
     if norm:
         clauses.append("s.norm LIKE ?")
@@ -137,18 +175,15 @@ def _norm_filter_clause(norm: str | None, version: str | None) -> tuple[str, lis
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# Embedding client (thin, sync)
+# Embedding backends
 # ──────────────────────────────────────────────────────────────────────────────
 
-def _embed(text: str) -> list[float] | None:
-    """
-    Embed a single text via LM Studio. Returns None on any error
-    so the caller can gracefully fall back to BM25-only.
-    """
+def _embed_lmstudio(text: str) -> list[float] | None:
+    """OpenAI-compatible endpoint (LM Studio)."""
     try:
         resp = httpx.post(
-            f"{BASE_URL}/v1/embeddings",
-            json={"model": EMBED_MODEL, "input": [text]},
+            f"{LMSTUDIO_URL}/v1/embeddings",
+            json={"model": LMSTUDIO_MODEL, "input": [text]},
             headers={"Content-Type": "application/json"},
             timeout=10.0,
         )
@@ -156,6 +191,80 @@ def _embed(text: str) -> list[float] | None:
         return resp.json()["data"][0]["embedding"]
     except Exception:
         return None
+
+
+def _embed_ollama(text: str) -> list[float] | None:
+    """Ollama native /api/embeddings endpoint."""
+    try:
+        resp = httpx.post(
+            f"{OLLAMA_URL}/api/embeddings",
+            json={"model": OLLAMA_MODEL, "prompt": text},
+            headers={"Content-Type": "application/json"},
+            timeout=10.0,
+        )
+        resp.raise_for_status()
+        return resp.json()["embedding"]
+    except Exception:
+        return None
+
+
+# Resolved at first embed call; cached for the lifetime of the process
+_resolved_backend: str | None = None   # "lmstudio" | "ollama" | "none"
+
+
+def _embed(text: str) -> list[float] | None:
+    """
+    Embed text using the configured or auto-detected backend.
+    Priority: explicit EMBEDDING_BACKEND env > LM Studio probe > Ollama probe > None
+    Result is cached in _resolved_backend so we only probe once per process.
+    """
+    global _resolved_backend
+
+    if _resolved_backend is None:
+        _resolved_backend = _detect_backend()
+        _log_backend(_resolved_backend)
+
+    if _resolved_backend == "lmstudio":
+        return _embed_lmstudio(text)
+    if _resolved_backend == "ollama":
+        return _embed_ollama(text)
+    return None  # BM25-only mode
+
+
+def _detect_backend() -> str:
+    """Probe available backends. Returns 'lmstudio' | 'ollama' | 'none'."""
+    if BACKEND == "lmstudio":
+        return "lmstudio"
+    if BACKEND == "ollama":
+        return "ollama"
+
+    # BACKEND == "auto" — probe in priority order
+    # 1. LM Studio
+    try:
+        r = httpx.get(f"{LMSTUDIO_URL}/v1/models", timeout=2.0)
+        if r.status_code < 500:
+            return "lmstudio"
+    except Exception:
+        pass
+
+    # 2. Ollama
+    try:
+        r = httpx.get(f"{OLLAMA_URL}/api/tags", timeout=2.0)
+        if r.status_code < 500:
+            return "ollama"
+    except Exception:
+        pass
+
+    return "none"
+
+
+def _log_backend(backend: str) -> None:
+    label = {
+        "lmstudio": f"LM Studio  ({LMSTUDIO_URL})  model={LMSTUDIO_MODEL}",
+        "ollama":   f"Ollama     ({OLLAMA_URL})  model={OLLAMA_MODEL}",
+        "none":     "No embedding backend found — BM25-only mode",
+    }.get(backend, backend)
+    print(f"[eudi-nexus] Embedding backend: {label}", file=sys.stderr)
 
 
 def _floats_to_blob(v: list[float]) -> bytes:
@@ -173,21 +282,6 @@ def _bm25_search(
     norm_params: list,
     limit: int,
 ) -> dict[str, float]:
-    """
-    BM25 via FTS5. Returns {segment_id: normalised_score} (higher = better).
-    FTS5 rank is negative (more negative = better match) — we invert + normalise.
-    """
-    sql = f"""
-        SELECT s.id, fts.rank
-        FROM segments_fts fts
-        JOIN segments s ON s.rowid = fts.rowid
-        WHERE segments_fts MATCH ?
-        {norm_clause.replace('s.norm', 'fts.norm').replace('s.version', 's.version')}
-        ORDER BY fts.rank
-        LIMIT ?
-    """
-    # norm_clause uses s.norm / s.version — for FTS join we keep s.* via JOIN
-    # Rebuild simpler: filter on segments table via JOIN
     sql = f"""
         SELECT s.id, fts.rank
         FROM segments_fts fts
@@ -200,8 +294,7 @@ def _bm25_search(
     rows = con.execute(sql, [query] + norm_params + [limit]).fetchall()
     if not rows:
         return {}
-    # ranks are negative floats; most negative = best
-    raw = {r["id"]: -r["rank"] for r in rows}   # flip to positive
+    raw = {r["id"]: -r["rank"] for r in rows}
     max_score = max(raw.values()) or 1.0
     return {k: v / max_score for k, v in raw.items()}
 
@@ -213,13 +306,7 @@ def _cosine_search(
     norm_params: list,
     k: int,
 ) -> dict[str, float]:
-    """
-    Cosine via sqlite-vec knn. Returns {segment_id: similarity} (higher = better).
-    sqlite-vec distance is cosine distance [0,2]; similarity = 1 - distance/2.
-    """
     blob = _floats_to_blob(query_vec)
-    # sqlite-vec knn: WHERE embedding MATCH ? AND k = ?
-    # Then JOIN to apply norm filter
     sql = f"""
         SELECT v.segment_id, v.distance
         FROM segments_vec v
@@ -244,24 +331,17 @@ def _hybrid_search(
     limit: int,
     alpha: float,
 ) -> list[dict]:
-    """
-    Hybrid BM25 + cosine search.
-    alpha=1.0 → BM25-only, alpha=0.0 → cosine-only, alpha=0.5 → equal weight.
-    Returns list of segment dicts with hybrid_score, bm25_score, cosine_score.
-    """
     norm_clause, norm_params = _norm_filter_clause(norm, version)
 
     bm25_scores:   dict[str, float] = {}
     cosine_scores: dict[str, float] = {}
 
-    # BM25
     if alpha > 0:
         try:
             bm25_scores = _bm25_search(con, query, norm_clause, norm_params, limit * 2)
         except Exception:
             bm25_scores = {}
 
-    # Cosine (only if LM Studio available)
     if alpha < 1.0:
         vec = _embed(query)
         if vec:
@@ -272,12 +352,10 @@ def _hybrid_search(
             except Exception:
                 cosine_scores = {}
 
-    # Merge candidate IDs
     all_ids = set(bm25_scores) | set(cosine_scores)
     if not all_ids:
         return []
 
-    # Compute hybrid scores
     scored: list[tuple[str, float, float, float]] = []
     for seg_id in all_ids:
         b = bm25_scores.get(seg_id, 0.0)
@@ -289,14 +367,12 @@ def _hybrid_search(
     top_ids = [s[0] for s in scored[:limit]]
     score_map = {s[0]: (s[1], s[2], s[3]) for s in scored[:limit]}
 
-    # Fetch full segment rows
     placeholders = ",".join(["?"] * len(top_ids))
     rows = con.execute(
         f"SELECT * FROM segments WHERE id IN ({placeholders})",
         top_ids,
     ).fetchall()
 
-    # Preserve score order
     row_map = {r["id"]: r for r in rows}
     results = []
     for seg_id in top_ids:
@@ -326,7 +402,6 @@ mcp = FastMCP(
     ),
 )
 
-# Lazy DB connection (opened once on first tool call)
 _db: sqlite3.Connection | None = None
 
 
@@ -371,7 +446,8 @@ def search_norm(
         dict with:
           query         — echoed query
           result_count  — number of results
-          mode          — "hybrid" | "bm25_only" (if LM Studio unavailable)
+          mode          — "hybrid" | "bm25_only"
+          embedding_backend — "lmstudio" | "ollama" | "none"
           results       — list of segments, each with:
             id, norm, version, type, section, section_title,
             text, anchor, page, normative_keywords,
@@ -383,20 +459,18 @@ def search_norm(
 
     con = _get_db()
     results = _hybrid_search(con, query, norm, version, limit * 2, alpha)
-
-    # Post-filter by type
     results = [r for r in results if r.get("type") in allowed_types]
     results = results[:limit]
 
-    mode = "bm25_only" if alpha == 1.0 or all(
-        r["cosine_score"] == 0 for r in results
-    ) else "hybrid"
+    has_cosine = any(r["cosine_score"] > 0 for r in results)
+    mode = "hybrid" if (alpha < 1.0 and has_cosine) else "bm25_only"
 
     return {
-        "query":        query,
-        "result_count": len(results),
-        "mode":         mode,
-        "results":      results,
+        "query":             query,
+        "result_count":      len(results),
+        "mode":              mode,
+        "embedding_backend": _resolved_backend or "none",
+        "results":           results,
     }
 
 
@@ -409,16 +483,11 @@ def get_segment(segment_id: str) -> dict[str, Any]:
     """
     Retrieve a single normative segment by its exact ID.
 
-    Use this to fetch the full text of a segment found via search_norm,
-    or to resolve a known requirement ID (e.g. from a cross-reference).
-
     Args:
         segment_id: Exact segment ID, e.g. "en319401_p5_b2"
 
     Returns:
-        Segment dict with all fields, or {"error": "not found"} if missing.
-        Fields: id, norm, version, type, section, section_title, text,
-                anchor, page, normative_keywords, profile, has_embedding.
+        Segment dict or {"error": "not found"}.
     """
     con = _get_db()
     row = con.execute(
@@ -436,19 +505,10 @@ def get_segment(segment_id: str) -> dict[str, Any]:
 @mcp.tool()
 def list_norms() -> dict[str, Any]:
     """
-    List all norms currently indexed in the database.
-
-    Returns a summary per norm/version with segment counts.
-    Use this to discover what is available before calling search_norm.
+    List all norms currently indexed in the database with segment counts.
 
     Returns:
-        dict with:
-          total_norms   — number of distinct norm/version pairs
-          total_segments — total segments across all norms
-          norms         — list of norm summaries:
-            norm, version, total_segments,
-            norm_count (NORM type), inform_count (INFORM type),
-            section_count, embedded_count (have vector)
+        dict with total_norms, total_segments, norms list.
     """
     con = _get_db()
     rows = con.execute(
@@ -467,11 +527,9 @@ def list_norms() -> dict[str, Any]:
     ).fetchall()
 
     norms = [dict(r) for r in rows]
-    total_segments = sum(n["total_segments"] for n in norms)
-
     return {
         "total_norms":    len(norms),
-        "total_segments": total_segments,
+        "total_segments": sum(n["total_segments"] for n in norms),
         "norms":          norms,
     }
 
@@ -488,23 +546,16 @@ def get_section(
     types: list[str] | None = None,
 ) -> dict[str, Any]:
     """
-    Retrieve all segments of a specific section in a norm.
-
-    Use this when you need the full context of a section, not just
-    the top search hits. Results are ordered by page number.
+    Retrieve all segments of a section (prefix match: "5" → 5, 5.1, 5.1.1, ...).
 
     Args:
-        norm:    Norm name (partial match). Example: "319 401", "319 421"
-        section: Section number. Example: "5", "5.1", "6.3.2"
-                 Prefix match: "5" returns 5, 5.1, 5.2, 5.1.1, etc.
-        version: Optional exact version. Example: "v2.2.1"
+        norm:    Norm name (partial match). Example: "319 401"
+        section: Section number. Example: "5", "5.1"
+        version: Optional exact version.
         types:   Segment types to include. Default: all types.
 
     Returns:
-        dict with:
-          norm, version, section, segment_count, segments
-          Each segment: id, type, section, section_title,
-                        text, anchor, page, normative_keywords
+        dict with norm, version, section, segment_count, segments.
     """
     con = _get_db()
 
@@ -531,14 +582,12 @@ def get_section(
         params,
     ).fetchall()
 
-    segments = [_row_to_dict(r) for r in rows]
-
     return {
-        "norm":           norm,
-        "version":        version,
-        "section":        section,
-        "segment_count":  len(segments),
-        "segments":       segments,
+        "norm":          norm,
+        "version":       version,
+        "section":       section,
+        "segment_count": len(rows),
+        "segments":      [_row_to_dict(r) for r in rows],
     }
 
 
@@ -550,14 +599,19 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="EUDI-Nexus MCP Server")
     parser.add_argument("--db",       default=None, help="Override DB path")
-    parser.add_argument("--no-embed", action="store_true", help="BM25-only mode")
+    parser.add_argument("--no-embed", action="store_true", help="BM25-only mode (skip embedding backend)")
+    parser.add_argument("--backend",  default=None, choices=["lmstudio", "ollama", "auto"],
+                        help="Embedding backend (overrides EMBEDDING_BACKEND env)")
     args = parser.parse_args()
 
     if args.db:
-        import os
         os.environ["MCP_DB_PATH"] = args.db
         DB_PATH = Path(args.db)
     if args.no_embed:
         HYBRID_ALPHA = 1.0
+        _resolved_backend = "none"
+    if args.backend:
+        os.environ["EMBEDDING_BACKEND"] = args.backend
+        BACKEND = args.backend
 
     mcp.run(transport="stdio")
