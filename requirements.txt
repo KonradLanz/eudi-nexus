@@ -1,4 +1,10 @@
 # Python dependencies for eudi-nexus scripts
 # Install with:  pip install -r requirements.txt
 
-pdfplumber>=0.11.0   # pdf-ingest.py: page-by-page PDF text extraction
+# ── PDF ingestion ──────────────────────────────────────────────────────
+pdfplumber>=0.11.0   # pdf-ingest.py, pdf-segment.py: PDF text + geometry extraction
+
+# ── MCP server + indexing ──────────────────────────────────────────────
+fastmcp>=2.0.0       # mcp-server.py: MCP server framework (stdio transport)
+sqlite-vec>=0.1.0    # build-index.py: vector search inside SQLite (no Qdrant needed)
+httpx>=0.27.0        # build-index.py, mcp-server.py: async HTTP for LM Studio /v1/embeddings
