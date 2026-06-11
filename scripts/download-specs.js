@@ -435,7 +435,7 @@ async function downloadLatestSpecs() {
 
         let docxResult = null;
         if (HAS_AUTH && info.docxUrl) {
-          docxResult = await downloadFile(client, { ...info, url: info.docxUrl, type: 'docx' }, item);
+          docxResult = await downloadFile(client, { ...info, url: info.docxUrl, type: 'zip' }, item);
         }
 
         if (pdfResult) {
@@ -473,21 +473,87 @@ async function downloadLatestSpecs() {
   }
 
   await saveResults(results);
-
-  console.log('\n📊 Download Summary:');
-  if (HEADERS_ONLY || FORCE_UPDATE_CHECK) {
-    console.log(`   ✅ Up-to-date:            ${results.skipped.length}`);
-    console.log(`   🔄 Changed on remote:     ${results.changed.length}`);
-    console.log(`   ⚠️  No download:           ${results.noDownload.length}`);
-  } else {
-    console.log(`   ✅ Downloaded (new):      ${results.success.length}`);
-    console.log(`   🔄 Re-downloaded:         ${results.redownloaded.length}`);
-    console.log(`   ⏭️  Skipped (cached):      ${results.skipped.length}`);
-    console.log(`   🛑 Stopped work items:    ${results.stopped.length}`);
-    console.log(`   ❌ Failed:                ${results.failed.length}`);
-    console.log(`   ⚠️  No download link:      ${results.noDownload.length}`);
-  }
+  await printSummary(results);
   console.log(`\n💾 Results saved to ${RESULTS_FILE}`);
+}
+
+// ── Summary printer ───────────────────────────────────────────────────────────────
+//
+// Reads the full merged _download_results.json so the per-run numbers AND the
+// cumulative disk-state are both visible.
+
+async function printSummary(runResults) {
+  console.log('\n📊 Download Summary:');
+
+  if (HEADERS_ONLY || FORCE_UPDATE_CHECK) {
+    console.log(`   ✅ Up-to-date:            ${runResults.skipped.length}`);
+    console.log(`   🔄 Changed on remote:     ${runResults.changed.length}`);
+    console.log(`   ⚠️  No download:           ${runResults.noDownload.length}`);
+    return;
+  }
+
+  // ── Per-run counts ────────────────────────────────────────────────────────────
+  const runDocxNew  = runResults.success.filter(e => e.docxPath).length;
+  const runPdfOnly  = runResults.success.filter(e => !e.docxPath).length;
+  const runDocxOnlyMode = DOCX_ONLY ? runResults.success.length : 0;
+
+  console.log(`   ✅ Downloaded (new):      ${runResults.success.length}`);
+  if (HAS_AUTH && !DOCX_ONLY && runResults.success.length) {
+    console.log(`      ├─ 📝 With DOCX:       ${runDocxNew}`);
+    console.log(`      └─ 📄 PDF only:        ${runPdfOnly}`);
+  }
+  if (DOCX_ONLY && runDocxOnlyMode) {
+    console.log(`      └─ 📝 DOCX fetched:    ${runDocxOnlyMode}`);
+  }
+  console.log(`   🔄 Re-downloaded:         ${runResults.redownloaded.length}`);
+  console.log(`   ⏭️  Skipped (cached):      ${runResults.skipped.length}`);
+  console.log(`   🛑 Stopped work items:    ${runResults.stopped.length}`);
+  console.log(`   ❌ Failed:                ${runResults.failed.length}`);
+  console.log(`   ⚠️  No download link:      ${runResults.noDownload.length}`);
+
+  // ── Cumulative disk state (from merged results file) ──────────────────────────
+  let merged;
+  try { merged = JSON.parse(await fs.readFile(RESULTS_FILE, 'utf-8')); }
+  catch { return; } // file not written yet — nothing to show
+
+  const allSuccess = [...(merged.success ?? []), ...(merged.redownloaded ?? [])];
+
+  const withDocx    = allSuccess.filter(e => e.docxPath);
+  const pdfOnly     = allSuccess.filter(e => !e.docxPath);
+  const noLink      = merged.noDownload ?? [];
+
+  // Format-comparison sidecars: DOCX preferred vs PDF fallback
+  let docxPreferred = 0, pdfFallback = 0, docxOnlyOnDisk = 0;
+  for (const e of withDocx) {
+    const cmpPath = path.join(PROJECT_ROOT, e.filePath.replace(/\.[^.]+$/, '.format-comparison.json'));
+    try {
+      const cmp = JSON.parse(await fs.readFile(cmpPath, 'utf-8'));
+      if (cmp.recommendation === 'docx') docxPreferred++;
+      else pdfFallback++;
+    } catch { /* sidecar missing — count as unknown */ }
+  }
+
+  // DOCX-only items (downloaded via --docx-only, no PDF pair)
+  for (const e of allSuccess) {
+    if (e.docxPath && !e.filePath?.toLowerCase().endsWith('.pdf')) docxOnlyOnDisk++;
+  }
+
+  console.log('\n📦 Cumulative Disk State:');
+  console.log(`   📁 Total specs on disk:  ${allSuccess.length}`);
+  console.log(`   📝 With DOCX:            ${withDocx.length}`);
+  if (withDocx.length) {
+    console.log(`      ├─ ✅ DOCX preferred:  ${docxPreferred}  (DOCX richer / larger)`);
+    console.log(`      └─ ⚠️  PDF fallback:    ${pdfFallback}  (DOCX stub / tiny)`);
+  }
+  console.log(`   📄 PDF only (no DOCX):   ${pdfOnly.length}`);
+  console.log(`   ⚠️  No download link:     ${noLink.length}`);
+
+  // ── Auth gating insight ───────────────────────────────────────────────────────
+  if (!HAS_AUTH) {
+    console.log('');
+    console.log('   💡 Tip: set ETSI_USERNAME + ETSI_PASSWORD in .env and re-run with');
+    console.log('           --docx-only to fetch DOCX for specs that have one.');
+  }
 }
 
 // ── --docx-only mode ──────────────────────────────────────────────────────────────
@@ -563,11 +629,11 @@ async function fetchDocxOnly(client, item, results) {
     docxUrl = info.docxUrl ?? null;
 
     if (!docxUrl) {
-      console.log(`    ℹ️  No deliver/ ZIP link in WorkItem auth page`);
-      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No deliver/ ZIP link in auth WorkItem page' });
+      console.log(`    ℹ️  No DOCX link in WorkItem auth page (docbox)`);
+      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No DOCX link in auth WorkItem page' });
       return;
     }
-    console.log(`    🔐 Auth portal fetched — deliver/ ZIP link found`);
+    console.log(`    🔐 Auth portal fetched — docbox link found`);
   }
 
   // Step 4: download ZIP and extract DOCX
@@ -898,7 +964,7 @@ async function buildDiskIndex(basePath) {
  * to ESI-0019142-1v131v125.docx (the first part on disk).
  */
 function findInDiskIndex(diskIndex, etsiNumber) {
-  const esiMatch = etsiNumber.match(/ESI-0*(\d{5,7})(-\d+)?/);
+  const esiMatch = etsiNumber.match(/ESI-0*(\\d{5,7})(-\\d+)?/);
   if (esiMatch) {
     const num  = esiMatch[1].replace(/^0+/, '');
     const part = esiMatch[2] ?? '';   // e.g. '-3' or ''
