@@ -41,17 +41,6 @@ except ImportError:
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Sidecar detection
-#
-# The downloads/specs/ tree contains hidden sidecar files that look like PDFs
-# but are metadata stubs created by the download scripts.  They share the
-# same stem as the real PDF but carry a leading dot-prefixed extension segment:
-#
-#   .headers.tr_119600v010201p.pdf   ← HTTP-header cache
-#   .url.tr_119600v010201p.pdf       ← source-URL cache
-#
-# Pattern: filename starts with "." OR contains a dot-separated prefix before
-# the stem (i.e. the stem itself starts with a dot when resolved via Path.name).
-# We simply skip any file whose name starts with ".".
 # ──────────────────────────────────────────────────────────────────────────────
 
 def _is_sidecar(path: Path) -> bool:
@@ -61,43 +50,71 @@ def _is_sidecar(path: Path) -> bool:
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Regexes
+#
+# Bug history:
+#  v1: _TOC_LINE_RE used [^\n]{2,80?}  — the ? makes {2,80} lazy-bounded which
+#      breaks matching on long dot-leader lines like
+#      "7.2.7 Life cycle management of cryptographic hardware ......... 20".
+#      Fixed: use [^\n]{2,80} (greedy, capped at 80).
+#
+#  v1: char class [\.\\ ]{3,} matched backslash but not mixed dot+space leaders.
+#      Fixed: [.\s]{3,} — matches any run of dots and/or whitespace before page.
+#
+#  v1: _page_text() collapsed ALL runs of 3+ spaces including the spaces that
+#      represent dot-leaders in some PDFs.  Fixed: lines containing a dot-leader
+#      pattern are kept verbatim; only plain-text lines get space-collapsed.
+#
+#  v1: Boilerplate TOC entries ("Intellectual Property Rights", "Foreword",
+#      "History") have no section number → _TOC_LINE_RE skipped them.
+#      Added _TOC_BOILERPLATE_RE to capture them.
 # ──────────────────────────────────────────────────────────────────────────────
 
-# TOC entry: "5.3  General requirements ......... 42"
+# TOC entry with dot-leader: "5.3  General requirements ......... 42"
+# FIX: {2,80} not {2,80?}; char class [.\s] not [\.\\ ]
 _TOC_LINE_RE = re.compile(
-    r"^(?P<num>[A-Z]?\.?(?:\d+\.)*\d+\.?)\s{1,6}(?P<title>[^\n]{2,80?}?)"
-    r"[\.\ ]{3,}\s*(?P<page>\d{1,4})\s*$"
+    r"^(?P<num>[A-Z]?\.?(?:\d+\.)*\d+\.?)\s{1,6}(?P<title>[^\n]{2,80})"
+    r"[.\s]{3,}(?P<page>\d{1,4})\s*$"
 )
 
-# Looser TOC line (no dots, just section + title + trailing number)
+# Looser: section number + spaces + title + spaces + page (no dot-leader)
 _TOC_LOOSE_RE = re.compile(
     r"^(?P<num>[A-Z]?\.?(?:\d+\.)*\d+\.?)\s{2,}(?P<title>.{2,60}?)\s{2,}(?P<page>\d{1,4})\s*$"
 )
 
-# Annex entry in TOC: "Annex A (normative):  ... 55"
+# Annex entry: "Annex A (normative):  Title ......... 55"
 _TOC_ANNEX_RE = re.compile(
     r"^Annex\s+(?P<letter>[A-Z])\s*\((?P<type>normative|informative)\)[:\s]*"
-    r"(?P<title>.{0,80}?)[\.\ ]{0,20}\s*(?P<page>\d{1,4})\s*$",
+    r"(?P<title>.{0,120}?)[.\s]{0,30}(?P<page>\d{1,4})\s*$",
     re.IGNORECASE,
 )
 
-# Cover page fields
-_REF_RE     = re.compile(r"^Reference\s*$", re.MULTILINE)
-_KW_RE      = re.compile(r"^Keywords\s*$", re.MULTILINE)
-_DATE_RE    = re.compile(r"\b(January|February|March|April|May|June|July|August|"
-                          r"September|October|November|December)\s+\d{4}\b")
+# Boilerplate entries in TOC without a section number:
+# "Intellectual Property Rights.....5", "Foreword.....5", "History.....51"
+_TOC_BOILERPLATE_RE = re.compile(
+    r"^(?P<title>Intellectual Property Rights|Foreword|Introduction|History"
+    r"|Modal verbs terminology)[.\s]{3,}(?P<page>\d{1,4})\s*$",
+    re.IGNORECASE,
+)
+
+# Cover page date
+_DATE_RE = re.compile(
+    r"\b(January|February|March|April|May|June|July|August|"
+    r"September|October|November|December)\s+\d{4}\b"
+)
 
 # Known boilerplate section titles (appear after TOC, before real content)
 _BOILERPLATE_HEADINGS = {
     "intellectual property rights",
     "foreword",
     "modal verbs terminology",
-    "null",
-    "introduction",  # sometimes intro is before scope — keep as marker
+    "introduction",
 }
 
-# The first "real" normative section is typically "1 Scope" or "1. Scope"
+# First real normative section
 _SCOPE_RE = re.compile(r"^1\.?\s+Scope\b", re.IGNORECASE)
+
+# Dot-leader detector used in _page_text
+_DOT_LEADER_RE = re.compile(r"[.]{3,}|(?:[. ]{2}){2,}")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -105,37 +122,68 @@ _SCOPE_RE = re.compile(r"^1\.?\s+Scope\b", re.IGNORECASE)
 # ──────────────────────────────────────────────────────────────────────────────
 
 def _page_text(page) -> str:
-    """Extract raw text from a pdfplumber page, collapsed whitespace per line."""
+    """
+    Extract text from a pdfplumber page.
+
+    Lines that contain a dot-leader are kept verbatim so that _TOC_LINE_RE
+    can match them.  All other lines have runs of 3+ spaces collapsed to 2
+    spaces to reduce noise while preserving _TOC_LOOSE_RE separators.
+    """
     text = page.extract_text(x_tolerance=3, y_tolerance=3) or ""
     lines = []
     for line in text.splitlines():
         line = line.strip()
-        # collapse internal runs of spaces > 2 (keep TOC dot leaders)
-        if not re.search(r"[.\s]{4,}", line):
-            line = re.sub(r" {3,}", "  ", line)
-        if line:
+        if not line:
+            continue
+        if _DOT_LEADER_RE.search(line):
             lines.append(line)
+        else:
+            lines.append(re.sub(r" {3,}", "  ", line))
     return "\n".join(lines)
 
 
 def _is_toc_line(line: str) -> dict | None:
     """Return parsed TOC entry dict or None."""
+    # Numbered section with dot-leader
     m = _TOC_LINE_RE.match(line)
     if m:
-        return {"num": m.group("num").rstrip("."), "title": m.group("title").strip(), "page": int(m.group("page"))}
+        return {
+            "num":   m.group("num").rstrip("."),
+            "title": m.group("title").strip().rstrip(". "),
+            "page":  int(m.group("page")),
+        }
+    # Annex with type tag
     m = _TOC_ANNEX_RE.match(line)
     if m:
-        return {"num": f"Annex {m.group('letter')}", "title": m.group("title").strip(),
-                "page": int(m.group("page")), "annex_type": m.group("type").lower()}
+        return {
+            "num":        f"Annex {m.group('letter')}",
+            "title":      m.group("title").strip().rstrip(". "),
+            "page":       int(m.group("page")),
+            "annex_type": m.group("type").lower(),
+        }
+    # Boilerplate heading in TOC (no section number)
+    m = _TOC_BOILERPLATE_RE.match(line)
+    if m:
+        return {
+            "num":        "",
+            "title":      m.group("title").strip(),
+            "page":       int(m.group("page")),
+            "boilerplate": True,
+        }
+    # Loose: section number + spaces only (no dot-leader)
     m = _TOC_LOOSE_RE.match(line)
     if m:
-        return {"num": m.group("num").rstrip("."), "title": m.group("title").strip(), "page": int(m.group("page"))}
+        return {
+            "num":   m.group("num").rstrip("."),
+            "title": m.group("title").strip(),
+            "page":  int(m.group("page")),
+        }
     return None
 
 
-def _looks_like_toc_page(lines: list[str], threshold: int = 4) -> bool:
+def _looks_like_toc_page(lines: list[str], threshold: int = 3) -> bool:
     """Return True if the page has enough TOC-style lines."""
-    return sum(1 for l in lines if _is_toc_line(l)) >= threshold
+    return sum(1 for ln in lines if _is_toc_line(ln)) >= threshold
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -145,37 +193,31 @@ def _looks_like_toc_page(lines: list[str], threshold: int = 4) -> bool:
 def extract_toc(pdf_path: Path) -> dict:
     stem = pdf_path.stem
     result = {
-        "stem":          stem,
-        "pdf":           str(pdf_path),
-        "title":         "",
-        "reference":     stem,
-        "keywords":      [],
-        "date":          "",
-        "toc":           [],       # list of {num, title, page}
-        "boilerplate":   [],       # section titles found between TOC and body
-        "body_starts_page": None,  # page where section "1 Scope" begins
-        "total_pages":   0,
-        "toc_pages":     [],
+        "stem":             stem,
+        "pdf":              str(pdf_path),
+        "title":            "",
+        "reference":        stem,
+        "keywords":         [],
+        "date":             "",
+        "toc":              [],   # list of {num, title, page[, annex_type][, boilerplate]}
+        "boilerplate":      [],   # section titles found between TOC and body
+        "body_starts_page": None,
+        "total_pages":      0,
+        "toc_pages":        [],
     }
 
     with pdfplumber.open(str(pdf_path)) as pdf:
         result["total_pages"] = len(pdf.pages)
-        pages_text = []
-
-        for page in pdf.pages:
-            pages_text.append((page.page_number, _page_text(page)))
+        pages_text = [(p.page_number, _page_text(p)) for p in pdf.pages]
 
         # ── Cover page (page 1) ─────────────────────────────────────
         if pages_text:
             cover_lines = pages_text[0][1].splitlines()
-            # Title: first non-empty line that's not "ETSI" or a spec number
             for line in cover_lines:
                 if line and not re.match(r"^(ETSI|Draft|Final|V\d|EN\s|TS\s|TR\s)", line):
                     result["title"] = line
                     break
-            # Date
-            cover_text = pages_text[0][1]
-            dm = _DATE_RE.search(cover_text)
+            dm = _DATE_RE.search(pages_text[0][1])
             if dm:
                 result["date"] = dm.group(0)
 
@@ -196,15 +238,13 @@ def extract_toc(pdf_path: Path) -> dict:
                     if entry:
                         toc_entries.append(entry)
             elif in_toc:
-                # TOC ended — one grace page (some TOCs end mid-page)
-                # check if any entries on this page
-                grace = [_is_toc_line(l) for l in lines]
-                grace_entries = [e for e in grace if e]
+                # grace page: one page past the last TOC page
+                grace_entries = [e for e in (_is_toc_line(l) for l in lines) if e]
                 if grace_entries:
                     toc_page_nums.append(page_nr)
                     toc_entries.extend(grace_entries)
                 else:
-                    break  # TOC is done
+                    break
 
         result["toc"] = toc_entries
         result["toc_pages"] = toc_page_nums
@@ -216,14 +256,11 @@ def extract_toc(pdf_path: Path) -> dict:
         for page_nr, text in pages_text:
             if page_nr < post_toc_start:
                 continue
-            lines = text.splitlines()
-            for line in lines:
-                # Check for known boilerplate headings
+            for line in text.splitlines():
                 lower = line.lower().strip()
                 if lower in _BOILERPLATE_HEADINGS:
                     if lower not in [b.lower() for b in boilerplate_found]:
                         boilerplate_found.append(line.strip())
-                # Check for "1 Scope" — body starts here
                 if _SCOPE_RE.match(line.strip()):
                     result["body_starts_page"] = page_nr
                     break
@@ -247,12 +284,10 @@ def build_report(all_tocs: list[dict]) -> str:
         "",
     ]
 
-    # ── Top-level section inventory across all docs ─────────────────
     top_sections: dict[str, int] = defaultdict(int)
     for doc in all_tocs:
         for entry in doc["toc"]:
             num = entry["num"]
-            # Only top-level: single digit or "Annex X"
             if re.match(r"^\d+$", num) or re.match(r"^Annex\s+[A-Z]$", num, re.I):
                 top_sections[entry["title"]] += 1
 
@@ -261,7 +296,6 @@ def build_report(all_tocs: list[dict]) -> str:
         lines.append(f"  {count:4d}×  {title}")
     lines.append("")
 
-    # ── Boilerplate sections found ──────────────────────────────────
     bp_counts: dict[str, int] = defaultdict(int)
     for doc in all_tocs:
         for bp in doc["boilerplate"]:
@@ -272,7 +306,6 @@ def build_report(all_tocs: list[dict]) -> str:
         lines.append(f"  {count:4d}×  {title}")
     lines.append("")
 
-    # ── Body start page distribution ───────────────────────────────
     starts = [d["body_starts_page"] for d in all_tocs if d["body_starts_page"]]
     if starts:
         lines += ["## Body start page distribution", ""]
@@ -281,11 +314,12 @@ def build_report(all_tocs: list[dict]) -> str:
             lines.append(f"  page {page:3d}:  {count:3d} documents")
         lines.append("")
 
-    # ── Per-document TOC summary ────────────────────────────────────
     lines += ["## Per-document TOC (top-level only)", ""]
     for doc in sorted(all_tocs, key=lambda d: d["stem"]):
-        top = [e for e in doc["toc"] if re.match(r"^\d+$", e["num"]) or
-               re.match(r"^Annex\s+[A-Z]$", e["num"], re.I)]
+        top = [
+            e for e in doc["toc"]
+            if re.match(r"^\d+$", e["num"]) or re.match(r"^Annex\s+[A-Z]$", e["num"], re.I)
+        ]
         body_p = doc["body_starts_page"] or "?"
         lines.append(f"### {doc['stem']}  (body p.{body_p}, {doc['total_pages']} pp.)")
         for e in top:
@@ -316,7 +350,7 @@ def main() -> None:
     parser.add_argument("--output", default="corpus/toc",
                         help="Output dir (default: corpus/toc)")
     parser.add_argument("--report", action="store_true",
-                        help="Print structure report to stdout and exit")
+                        help="Only regenerate + print the structure report")
     parser.add_argument("--limit",  type=int, default=0,
                         help="Process only first N PDFs")
     parser.add_argument("--force",  action="store_true",
@@ -337,9 +371,15 @@ def main() -> None:
         out_path = out_dir / f"{pdf_path.stem}.toc.json"
         out_path.write_text(json.dumps(result, indent=2, ensure_ascii=False))
         print(f"✓ {pdf_path.name}  →  {out_path}")
-        print(f"  TOC entries: {len(result['toc'])}")
-        print(f"  Body starts: page {result['body_starts_page']}")
-        print(f"  Boilerplate: {result['boilerplate']}")
+        print(f"  TOC entries:  {len(result['toc'])}")
+        print(f"  Body starts:  page {result['body_starts_page']}")
+        print(f"  Boilerplate:  {result['boilerplate']}")
+        top = [e for e in result["toc"] if re.match(r"^\d+$", e["num"]) or
+               re.match(r"^Annex\s+[A-Z]$", e["num"], re.I)]
+        if top:
+            print("  Top-level sections:")
+            for e in top:
+                print(f"    {e['num']:8}  {e['title']}  → p.{e['page']}")
         return
 
     # ── Batch mode ──────────────────────────────────────────────────
@@ -358,7 +398,6 @@ def main() -> None:
     for pdf_path in pdfs:
         out_path = out_dir / f"{pdf_path.stem}.toc.json"
         if not args.force and out_path.exists():
-            # Load existing for report
             try:
                 all_tocs.append(json.loads(out_path.read_text()))
                 skipped += 1
@@ -377,7 +416,6 @@ def main() -> None:
             print(f"  ✗ {pdf_path.name}: {exc}", file=sys.stderr)
             errors += 1
 
-    # ── Summary JSON ────────────────────────────────────────────────
     summary_path = out_dir / "_summary.json"
     summary_path.write_text(
         json.dumps({"generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -385,7 +423,6 @@ def main() -> None:
                    indent=2, ensure_ascii=False)
     )
 
-    # ── Markdown report ─────────────────────────────────────────────
     report = build_report(all_tocs)
     report_path = out_dir / "_structure-report.md"
     report_path.write_text(report, encoding="utf-8")
