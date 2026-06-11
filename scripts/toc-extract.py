@@ -18,6 +18,7 @@ Usage:
   python3 scripts/toc-extract.py --pdf downloads/specs/EN/en_319403v020202p.pdf
   python3 scripts/toc-extract.py --report           # only print summary report
   python3 scripts/toc-extract.py --limit 5          # first 5 PDFs only
+  python3 scripts/toc-extract.py --timeout 60       # seconds per PDF (default 30)
 
 npm:
   "toc":        ".venv/bin/python3 scripts/toc-extract.py",
@@ -27,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import multiprocessing
 import re
 import sys
 from pathlib import Path
@@ -50,27 +52,9 @@ def _is_sidecar(path: Path) -> bool:
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Regexes
-#
-# Bug history:
-#  v1: _TOC_LINE_RE used [^\n]{2,80?}  — the ? makes {2,80} lazy-bounded which
-#      breaks matching on long dot-leader lines like
-#      "7.2.7 Life cycle management of cryptographic hardware ......... 20".
-#      Fixed: use [^\n]{2,80} (greedy, capped at 80).
-#
-#  v1: char class [\.\\ ]{3,} matched backslash but not mixed dot+space leaders.
-#      Fixed: [.\s]{3,} — matches any run of dots and/or whitespace before page.
-#
-#  v1: _page_text() collapsed ALL runs of 3+ spaces including the spaces that
-#      represent dot-leaders in some PDFs.  Fixed: lines containing a dot-leader
-#      pattern are kept verbatim; only plain-text lines get space-collapsed.
-#
-#  v1: Boilerplate TOC entries ("Intellectual Property Rights", "Foreword",
-#      "History") have no section number → _TOC_LINE_RE skipped them.
-#      Added _TOC_BOILERPLATE_RE to capture them.
 # ──────────────────────────────────────────────────────────────────────────────
 
 # TOC entry with dot-leader: "5.3  General requirements ......... 42"
-# FIX: {2,80} not {2,80?}; char class [.\s] not [\.\\ ]
 _TOC_LINE_RE = re.compile(
     r"^(?P<num>[A-Z]?\.?(?:\d+\.)*\d+\.?)\s{1,6}(?P<title>[^\n]{2,80})"
     r"[.\s]{3,}(?P<page>\d{1,4})\s*$"
@@ -125,9 +109,8 @@ def _page_text(page) -> str:
     """
     Extract text from a pdfplumber page.
 
-    Lines that contain a dot-leader are kept verbatim so that _TOC_LINE_RE
-    can match them.  All other lines have runs of 3+ spaces collapsed to 2
-    spaces to reduce noise while preserving _TOC_LOOSE_RE separators.
+    Lines containing a dot-leader are kept verbatim so _TOC_LINE_RE can match.
+    All other lines have runs of 3+ spaces collapsed to 2 spaces.
     """
     text = page.extract_text(x_tolerance=3, y_tolerance=3) or ""
     lines = []
@@ -144,7 +127,6 @@ def _page_text(page) -> str:
 
 def _is_toc_line(line: str) -> dict | None:
     """Return parsed TOC entry dict or None."""
-    # Numbered section with dot-leader
     m = _TOC_LINE_RE.match(line)
     if m:
         return {
@@ -152,7 +134,6 @@ def _is_toc_line(line: str) -> dict | None:
             "title": m.group("title").strip().rstrip(". "),
             "page":  int(m.group("page")),
         }
-    # Annex with type tag
     m = _TOC_ANNEX_RE.match(line)
     if m:
         return {
@@ -161,7 +142,6 @@ def _is_toc_line(line: str) -> dict | None:
             "page":       int(m.group("page")),
             "annex_type": m.group("type").lower(),
         }
-    # Boilerplate heading in TOC (no section number)
     m = _TOC_BOILERPLATE_RE.match(line)
     if m:
         return {
@@ -170,7 +150,6 @@ def _is_toc_line(line: str) -> dict | None:
             "page":       int(m.group("page")),
             "boilerplate": True,
         }
-    # Loose: section number + spaces only (no dot-leader)
     m = _TOC_LOOSE_RE.match(line)
     if m:
         return {
@@ -199,8 +178,8 @@ def extract_toc(pdf_path: Path) -> dict:
         "reference":        stem,
         "keywords":         [],
         "date":             "",
-        "toc":              [],   # list of {num, title, page[, annex_type][, boilerplate]}
-        "boilerplate":      [],   # section titles found between TOC and body
+        "toc":              [],
+        "boilerplate":      [],
         "body_starts_page": None,
         "total_pages":      0,
         "toc_pages":        [],
@@ -210,7 +189,7 @@ def extract_toc(pdf_path: Path) -> dict:
         result["total_pages"] = len(pdf.pages)
         pages_text = [(p.page_number, _page_text(p)) for p in pdf.pages]
 
-        # ── Cover page (page 1) ─────────────────────────────────────
+        # ── Cover page ────────────────────────────────────────────
         if pages_text:
             cover_lines = pages_text[0][1].splitlines()
             for line in cover_lines:
@@ -221,7 +200,7 @@ def extract_toc(pdf_path: Path) -> dict:
             if dm:
                 result["date"] = dm.group(0)
 
-        # ── Find TOC pages ──────────────────────────────────────────
+        # ── Find TOC pages ───────────────────────────────────────
         toc_entries: list[dict] = []
         toc_page_nums: list[int] = []
         in_toc = False
@@ -238,7 +217,6 @@ def extract_toc(pdf_path: Path) -> dict:
                     if entry:
                         toc_entries.append(entry)
             elif in_toc:
-                # grace page: one page past the last TOC page
                 grace_entries = [e for e in (_is_toc_line(l) for l in lines) if e]
                 if grace_entries:
                     toc_page_nums.append(page_nr)
@@ -249,7 +227,7 @@ def extract_toc(pdf_path: Path) -> dict:
         result["toc"] = toc_entries
         result["toc_pages"] = toc_page_nums
 
-        # ── Scan post-TOC pages for boilerplate + body start ────────
+        # ── Boilerplate + body start ─────────────────────────────
         post_toc_start = max(toc_page_nums) + 1 if toc_page_nums else 4
         boilerplate_found: list[str] = []
 
@@ -270,6 +248,52 @@ def extract_toc(pdf_path: Path) -> dict:
         result["boilerplate"] = boilerplate_found
 
     return result
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Timeout wrapper (multiprocessing)
+#
+# pdfplumber can hang indefinitely on certain corrupt or encrypted PDFs.
+# We run extract_toc() in a child process and kill it if it exceeds the
+# timeout.  The child writes the result to a shared Queue; the parent reads
+# it with a timeout.  On timeout the child process is terminated and the
+# batch loop records a "timed out" error instead of hanging forever.
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _worker(pdf_path_str: str, queue: multiprocessing.Queue) -> None:
+    """Child process: run extract_toc and put result (or exception) on queue."""
+    try:
+        result = extract_toc(Path(pdf_path_str))
+        queue.put(("ok", result))
+    except Exception as exc:  # noqa: BLE001
+        queue.put(("err", str(exc)))
+
+
+def extract_toc_with_timeout(pdf_path: Path, timeout: int) -> dict:
+    """
+    Run extract_toc() in a subprocess with a hard wall-clock timeout.
+    Raises TimeoutError if the PDF takes longer than `timeout` seconds.
+    """
+    ctx = multiprocessing.get_context("fork")  # faster on macOS/Linux
+    queue: multiprocessing.Queue = ctx.Queue()
+    proc = ctx.Process(target=_worker, args=(str(pdf_path), queue), daemon=True)
+    proc.start()
+    proc.join(timeout)
+
+    if proc.is_alive():
+        proc.terminate()
+        proc.join(2)
+        if proc.is_alive():
+            proc.kill()
+        raise TimeoutError(f"timed out after {timeout}s")
+
+    if queue.empty():
+        raise RuntimeError("worker exited without result (crash or OOM)")
+
+    status, payload = queue.get_nowait()
+    if status == "err":
+        raise RuntimeError(payload)
+    return payload
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -344,23 +368,25 @@ def main() -> None:
         description="Extract TOC structure from ETSI PDFs",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument("--pdf",    help="Single PDF to process")
-    parser.add_argument("--input",  default="downloads/specs",
+    parser.add_argument("--pdf",     help="Single PDF to process")
+    parser.add_argument("--input",   default="downloads/specs",
                         help="Root dir with PDFs (default: downloads/specs)")
-    parser.add_argument("--output", default="corpus/toc",
+    parser.add_argument("--output",  default="corpus/toc",
                         help="Output dir (default: corpus/toc)")
-    parser.add_argument("--report", action="store_true",
+    parser.add_argument("--report",  action="store_true",
                         help="Only regenerate + print the structure report")
-    parser.add_argument("--limit",  type=int, default=0,
+    parser.add_argument("--limit",   type=int, default=0,
                         help="Process only first N PDFs")
-    parser.add_argument("--force",  action="store_true",
+    parser.add_argument("--force",   action="store_true",
                         help="Overwrite existing JSON files")
+    parser.add_argument("--timeout", type=int, default=30,
+                        help="Seconds before a single PDF is killed (default: 30)")
     args = parser.parse_args()
 
     out_dir = Path(args.output)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    # ── Single PDF mode ─────────────────────────────────────────────
+    # ── Single PDF mode (no timeout — interactive) ───────────────────
     if args.pdf:
         pdf_path = Path(args.pdf)
         if not pdf_path.is_file():
@@ -390,7 +416,7 @@ def main() -> None:
     if not pdfs:
         sys.exit(f"[ERROR] No PDFs found in {args.input}")
 
-    print(f"[INFO] Processing {len(pdfs)} PDFs → {out_dir}/")
+    print(f"[INFO] Processing {len(pdfs)} PDFs → {out_dir}/  (timeout={args.timeout}s/PDF)")
 
     all_tocs: list[dict] = []
     done = skipped = errors = 0
@@ -405,7 +431,7 @@ def main() -> None:
             except Exception:
                 pass
         try:
-            result = extract_toc(pdf_path)
+            result = extract_toc_with_timeout(pdf_path, args.timeout)
             out_path.write_text(json.dumps(result, indent=2, ensure_ascii=False))
             all_tocs.append(result)
             toc_n = len(result["toc"])
