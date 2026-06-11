@@ -3,14 +3,19 @@
 ingest.py  —  Smart orchestrator: chooses DOCX or PDF per document.
 
 Logic per document:
-  1. If a .format-comparison.json sidecar exists alongside the PDF:
+  Priority 1 — .format-comparison.json sidecar exists:
        recommendation == 'docx'  AND docxPath exists  →  ingest DOCX
        otherwise                                       →  ingest PDF
-  2. No sidecar → ingest PDF as before (full backward compat)
+
+  Priority 2 — standalone DOCX (no paired PDF on disk, i.e. draft-only from docbox):
+       ingest DOCX directly
+
+  Priority 3 — no sidecar, no standalone DOCX → ingest PDF
 
 This means:
   - Users WITHOUT ETSI credentials  →  all PDFs, same as before
   - Users WITH credentials          →  DOCX where available, PDF as fallback
+  - Draft DOCX with no PDF at all   →  ingested as DOCX-only entry
 
 Idempotency:
   - Skips documents whose corpus JSON is already up-to-date (mtime check)
@@ -53,12 +58,32 @@ def load_comparison(pdf_path: Path) -> dict | None:
     return None
 
 
-def resolve_source(pdf_path: Path, force_format: str | None) -> tuple[Path, str]:
+def resolve_source(entry: Path, force_format: str | None) -> tuple[Path, str]:
     """
-    Return (source_path, format) — either the PDF or its paired DOCX.
+    Given either a PDF or a DOCX entry path, return (source_path, format).
 
-    format_format: None | 'pdf' | 'docx'
+    Entry may be:
+      - a .pdf  → classic path: check sidecar for paired DOCX
+      - a .docx → standalone DOCX (no paired PDF), use directly
+
+    force_format: None | 'pdf' | 'docx'
     """
+    suffix = entry.suffix.lower()
+
+    # ── Standalone DOCX (no PDF sibling) ──────────────────────────────────
+    if suffix == ".docx":
+        if force_format == "pdf":
+            # Try to find a sibling PDF with the same stem
+            candidate = entry.with_suffix(".pdf")
+            if candidate.exists():
+                return candidate, "pdf"
+            # No PDF available — skip this entry in pdf-only mode
+            return entry, "skip"
+        return entry, "docx"
+
+    # ── PDF entry ─────────────────────────────────────────────────────────
+    pdf_path = entry
+
     if force_format == "pdf":
         return pdf_path, "pdf"
 
@@ -69,7 +94,7 @@ def resolve_source(pdf_path: Path, force_format: str | None) -> tuple[Path, str]
             candidate = PROJECT_ROOT / cmp["docxPath"]
             if candidate.exists():
                 return candidate, "docx"
-        # Try sibling .docx
+        # Try sibling .docx (same stem)
         candidate = pdf_path.with_suffix(".docx")
         if candidate.exists():
             return candidate, "docx"
@@ -101,20 +126,52 @@ def is_up_to_date(source: Path, corpus_root: Path) -> bool:
     return out.stat().st_mtime >= source.stat().st_mtime
 
 
-# ─── Collect PDFs (entry points) ─────────────────────────────────────────────
+# ─── Collect documents (entry points) ────────────────────────────────────────
 
-def collect_pdfs(inputs: list[str]) -> list[Path]:
-    result: list[Path] = []
+def collect_docs(inputs: list[str], force_format: str | None) -> list[Path]:
+    """
+    Collect all documents to process.
+
+    Strategy:
+      - Always collect *.pdf as primary entry points.
+      - Also collect *.docx that have NO sibling *.pdf with the same stem
+        (i.e. standalone DOCX-only documents — draft specs from docbox).
+      - In --pdf-only mode: skip standalone DOCX entries entirely.
+      - Skip files starting with '.' or '_' (sidecars, system files).
+
+    This ensures docs downloaded exclusively as DOCX (no PDF on deliver/)
+    are never silently dropped from the ingest pipeline.
+    """
+    result:  list[Path] = []
+    seen_stems: set[str] = set()
+
+    def _scan(directory: Path) -> None:
+        # First pass: collect all PDF files
+        for f in sorted(directory.rglob("*.pdf")):
+            if f.name.startswith((".", "_")):
+                continue
+            result.append(f)
+            seen_stems.add(f.stem.lower())
+
+        # Second pass: standalone DOCX (no paired PDF)
+        if force_format == "pdf":
+            return  # pdf-only mode: don't bother with DOCX-only entries
+        for f in sorted(directory.rglob("*.docx")):
+            if f.name.startswith((".", "_")):
+                continue
+            if f.stem.lower() in seen_stems:
+                continue  # paired PDF already collected — sidecar will handle format choice
+            result.append(f)
+
     for inp in inputs:
         p = Path(inp)
         if p.is_dir():
-            for f in sorted(p.rglob("*.pdf")):
-                if not f.name.startswith((".", "_")):
-                    result.append(f)
-        elif p.is_file() and p.suffix.lower() == ".pdf":
+            _scan(p)
+        elif p.is_file() and p.suffix.lower() in (".pdf", ".docx"):
             result.append(p)
         else:
-            print(f"[WARN] {inp} is not a PDF or directory — skipped.", file=sys.stderr)
+            print(f"[WARN] {inp} is not a PDF/DOCX or directory — skipped.",
+                  file=sys.stderr)
     return result
 
 
@@ -155,7 +212,7 @@ Examples:
     parser.add_argument(
         "input", nargs="*",
         default=[str(SPECS_DIR)],
-        help=f"PDF files or directories to scan (default: {SPECS_DIR})",
+        help=f"PDF/DOCX files or directories to scan (default: {SPECS_DIR})",
     )
     parser.add_argument("--corpus", default=str(CORPUS_ROOT))
     parser.add_argument("--titles", default=str(TITLES_DIR))
@@ -178,20 +235,27 @@ Examples:
     if args.pdf_only:  force_format = "pdf"
     if args.docx_only: force_format = "docx"
 
-    pdf_files = collect_pdfs(args.input)
-    if not pdf_files:
-        sys.exit("[ERROR] No PDF files found.")
+    docs = collect_docs(args.input, force_format)
+    if not docs:
+        sys.exit("[ERROR] No documents found.")
 
     if verbose:
         mode = "--force" if args.force else "idempotent (mtime)"
         fmt  = force_format or "smart (DOCX preferred when available)"
-        print(f"[INFO] {len(pdf_files)} documents found | mode: {mode} | format: {fmt}")
+        print(f"[INFO] {len(docs)} documents found | mode: {mode} | format: {fmt}")
         print()
 
     ok = skipped = errors = docx_used = pdf_used = 0
 
-    for pdf in pdf_files:
-        source, fmt = resolve_source(pdf, force_format)
+    for entry in docs:
+        source, fmt = resolve_source(entry, force_format)
+
+        if fmt == "skip":
+            # --pdf-only mode, standalone DOCX with no PDF partner
+            if verbose:
+                print(f"[SKIP-DOCX-ONLY] {entry.name} (no PDF available, --pdf-only)")
+            skipped += 1
+            continue
 
         # Skip if corpus JSON is newer than source (idempotency)
         if not args.force and is_up_to_date(source, corpus_root):
@@ -221,7 +285,7 @@ Examples:
     if verbose:
         print()
         print(f"[DONE] {ok} ingested ({docx_used} DOCX / {pdf_used} PDF) | "
-              f"{skipped} skipped | {errors} errors  (of {len(pdf_files)} total)")
+              f"{skipped} skipped | {errors} errors  (of {len(docs)} total)")
 
 
 if __name__ == "__main__":
