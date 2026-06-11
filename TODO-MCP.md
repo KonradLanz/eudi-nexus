@@ -6,109 +6,90 @@ Embedding-Modell-Entscheidung: [`docs/architecture/embedding-models.md`](docs/ar
 
 ---
 
-## TODO 1 — `scripts/build-index.py`
+## ✅ TODO 1 — `scripts/build-index.py` — ERLEDIGT
 
-**Zweck:** Liest alle `corpus/specs/_segments/*.segments.json` und baut
-einen SQLite-Index mit FTS5 (BM25) + sqlite-vec (Embeddings).
-
-**Abhängigkeiten:**
-```
-pip install sqlite-vec httpx
-```
-
-**Was das Script tun soll:**
-- [ ] Alle `_segments/*.segments.json` einlesen
-- [ ] SQLite-DB `corpus/eudi-nexus.db` anlegen (Schema: segments + vec-Tabelle)
-- [ ] FTS5-Index über `text`-Spalte anlegen (BM25 out-of-the-box)
-- [ ] Für jeden Segment-Chunk: Embedding via `LMSTUDIO_BASE_URL/v1/embeddings` abrufen
-- [ ] Embeddings in `sqlite-vec` virtual table speichern
-- [ ] Idempotent: bereits indizierte Segmente (by `id`) überspringen
-- [ ] `--rebuild` Flag: DB komplett neu aufbauen
-- [ ] `--model` Flag: Embedding-Modell überschreiben (default aus `.env`)
-- [ ] Progress-Output: Chunks/s, geschätzte Restzeit
-
-**Chunk-Strategie:**
-- NORM/INFORM-Segmente: direkt als Chunk (sind bereits ~300–600 Token)
-- SECTION-Segmente: als Metadaten-Chunk (kein Embedding nötig, nur FTS)
-- HEADER/FOOTER/TOC/OTHER: werden nicht indiziert
-
-**npm-Script:**
-```json
-"index": "python3 scripts/build-index.py",
-"index:rebuild": "python3 scripts/build-index.py --rebuild"
-```
+- [x] Alle `_segments/*.segments.json` einlesen
+- [x] SQLite-DB `corpus/eudi-nexus.db` anlegen (Schema: segments + vec-Tabelle)
+- [x] FTS5-Index über `text`-Spalte anlegen (BM25 out-of-the-box)
+- [x] Embeddings via `LMSTUDIO_BASE_URL/v1/embeddings` oder Ollama abrufen
+- [x] Embeddings in `sqlite-vec` virtual table speichern
+- [x] Idempotent: bereits indizierte Segmente (by `id`) überspringen
+- [x] `--rebuild` Flag: DB komplett neu aufbauen
+- [x] Progress-Output
 
 ---
 
-## TODO 2 — `scripts/mcp-server.py`
+## ✅ TODO 2 — `scripts/mcp-server.py` — ERLEDIGT
 
-**Zweck:** FastMCP-Server der `corpus/eudi-nexus.db` als MCP-Tools exponiert.
+- [x] `search_norm(query, norm?, types?, limit?, alpha?)` — hybrid BM25+cosine
+- [x] `get_segment(segment_id)` — Segment by ID
+- [x] `get_section(norm, section, types?)` — alle Segmente einer Section
+- [x] `list_norms()` — alle indizierten Normen
+- [x] LM Studio + Ollama auto-detect (Fallback auf BM25-only)
+- [x] 33 Tests, vollständig offline lauffähig (`pytest test/test_mcp_server.py`)
 
-**Abhängigkeiten:**
+---
+
+## ✅ TODO 3 — `.env.example` erweitern — ERLEDIGT
+
+- [x] `EMBEDDING_MODEL=nomic-embed-text-v1.5`
+- [x] `EMBEDDING_DIMENSIONS=768`
+- [x] `MCP_DB_PATH=corpus/eudi-nexus.db`
+
+---
+
+## ✅ TODO 4 — `requirements.txt` erweitern — ERLEDIGT
+
+- [x] `fastmcp`
+- [x] `sqlite-vec`
+- [x] `httpx`
+
+---
+
+## ✅ TODO 5 — `corpus/eudi-nexus.db` zu `.gitignore` — ERLEDIGT
+
+- [x] `corpus/*.db` in `.gitignore`
+
+---
+
+## ✅ TODO 6 — `scripts/install-lmstudio-mcp.sh` — ERLEDIGT
+
+Installscript für LM Studio MCP-Integration:
+
+```bash
+bash scripts/install-lmstudio-mcp.sh           # registrieren
+bash scripts/install-lmstudio-mcp.sh --dry-run  # preview
+bash scripts/install-lmstudio-mcp.sh --remove   # rückgängig
 ```
-pip install fastmcp sqlite-vec httpx
+
+Was das Script tut:
+- [x] Pre-flight checks: Python, fastmcp, sqlite_vec, DB vorhanden?
+- [x] Schreibt `~/Library/Application Support/LM-Studio/mcp-servers/eudi-nexus.json`
+- [x] 2-Sekunden Smoke-Test: Server startet fehlerfrei
+- [x] Klare Ausgabe mit ✔ / ⚠ / ✘
+- [x] `--dry-run` zeigt Config ohne zu schreiben
+- [x] `--remove` löscht die Registrierung wieder
+
+---
+
+## Offene Punkte
+
+### Nächster Schritt: Live-Test mit echten Daten
+
+```bash
+# 1. DB aufbauen (falls noch nicht vorhanden)
+python scripts/build-index.py
+
+# 2. MCP in LM Studio registrieren
+bash scripts/install-lmstudio-mcp.sh
+
+# 3. LM Studio neu starten
+# 4. Chat öffnen → Tools-Icon → eudi-nexus Tools sollten erscheinen
 ```
 
-**Tools zu implementieren:**
+### Zukünftige Erweiterungen (optional)
 
-### `search_norm(query, norm?, section?, type?, top_k?)`
-- [ ] Query embedden via LM Studio
-- [ ] Hybrid-Search: `0.6 × BM25 + 0.4 × cosine`
-- [ ] Filter: `norm`, `section`, `type` (NORM/INFORM/SECTION)
-- [ ] Response: Liste von Segment-Objekten mit `anchor` (PDF-Backref)
-- [ ] Default `top_k=5`
-
-### `get_requirements(norm, section?)`
-- [ ] Alle Segmente mit `type=NORM` für gegebene Norm
-- [ ] Optional: gefiltert nach `section` prefix
-- [ ] Sortiert nach `section` → `page`
-- [ ] Response: Segmente mit `normative_keywords` hervorgehoben
-
-### `cite_clause(segment_id)`
-- [ ] Einzelnen Segment-Eintrag by `id` laden
-- [ ] Response: Volltext + alle Metadaten + `anchor` für PDF-Link
-- [ ] Normname + Version als Zitationsformat mitgeben
-
-**Resource:**
-
-### `norms://list`
-- [ ] Alle indizierten Normen aus DB lesen
-- [ ] Pro Norm: `norm`, `version`, `segment_count`, `norm_count` (NORM-type)
-
-**npm-Script:**
-```json
-"mcp": "python3 scripts/mcp-server.py"
-```
-
-**Client-Konfiguration** → siehe `docs/architecture/mcp-server.md`
-
----
-
-## TODO 3 — `.env.example` erweitern
-
-- [ ] `EMBEDDING_MODEL=nomic-embed-text-v1.5` ergänzen
-- [ ] `EMBEDDING_DIMENSIONS=768` ergänzen
-- [ ] `MCP_DB_PATH=corpus/eudi-nexus.db` ergänzen
-
----
-
-## TODO 4 — `requirements.txt` erweitern
-
-- [ ] `fastmcp` ergänzen
-- [ ] `sqlite-vec` ergänzen
-- [ ] `httpx` ergänzen
-
----
-
-## TODO 5 — `corpus/eudi-nexus.db` zu `.gitignore`
-
-- [ ] `corpus/*.db` in `.gitignore` eintragen
-  (DB wird lokal gebaut, nicht committed)
-
----
-
-## Reihenfolge
-
-1. `TODO 3` + `TODO 4` + `TODO 5` — Setup (5 min)
-2. `TODO 1` — `build-index.py` implementieren und testen
-3. `TODO 2` — `mcp-server.py` implementieren und in Claude Desktop einbinden
+- [ ] `get_requirements(norm, section?)` — nur NORM-Segmente, sortiert nach Section
+- [ ] `cite_clause(segment_id)` — Zitationsformat (Normname + Version + Anchor)
+- [ ] Claude Desktop Konfiguration analog zu LM Studio
+- [ ] GitHub Actions CI: `pytest -m "not embedding"` bei jedem Push
