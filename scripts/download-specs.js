@@ -14,7 +14,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.join(__dirname, '..');
 dotenv.config({ path: path.join(PROJECT_ROOT, '.env') });
 
-// All paths relative to __dirname so the script works regardless of CWD
 const DOWNLOAD_PATH  = path.join(PROJECT_ROOT, 'downloads', 'specs');
 const OVERVIEW_FILE  = path.join(PROJECT_ROOT, 'downloads', 'esi_overview.json');
 const RESULTS_FILE   = path.join(DOWNLOAD_PATH, '_download_results.json');
@@ -24,8 +23,8 @@ const PUBLIC_REPORT_BASE = 'https://portal.etsi.org/webapp/WorkProgram/Report_Wo
 const SIDECAR_TTL_MS = 8 * 60 * 60 * 1000;
 
 // ── Auth detection ─────────────────────────────────────────────────────────────
-// If ETSI credentials are present in .env, both PDF and DOCX are fetched.
-// Without credentials, only publicly accessible PDFs are downloaded.
+// Without credentials → public PDFs only.
+// With credentials    → PDF + DOCX fetched in parallel; comparison sidecar written.
 
 const HAS_AUTH = Boolean(process.env.ETSI_USERNAME && process.env.ETSI_PASSWORD);
 
@@ -42,10 +41,6 @@ const REPAIR_WKI_IDS     = args.includes('--repair-wki-ids');
 const YES_FLAG           = args.includes('--yes');  // skip interactive gate
 
 // ── Usage / Copyright gate ────────────────────────────────────────────────────
-//
-// Displayed once before any network activity starts.
-// Users without ETSI credentials may only download public PDFs.
-// Intended use: STF 705 / EUDIW standards gap analysis.
 //
 // Legal basis: Art. 3, Directive (EU) 2019/790 (DSM Directive) —
 // TDM exception for scientific/technical research.
@@ -71,7 +66,7 @@ async function showUsageGate() {
   console.log(' Auth credentials are never stored in the repository.');
   console.log('');
   if (HAS_AUTH) {
-    console.log(' 🔐 ETSI credentials detected → PDF + DOCX will be fetched');
+    console.log(' 🔐 ETSI credentials detected → PDF + DOCX (parallel, with comparison)');
   } else {
     console.log(' 🔓 No ETSI credentials → public PDFs only');
     console.log('    (Set ETSI_USERNAME + ETSI_PASSWORD in .env for full access)');
@@ -147,13 +142,7 @@ async function touchSidecarHeaders(sidecarPath) {
   } catch { /* non-fatal */ }
 }
 
-// ── Repair mode: fix wkiId: unknown in existing sidecars ─────────────────────
-//
-// Source-of-truth priority:
-//   1. Header already has a digit  → skip (already OK)
-//   2. esi_overview.json detailUrl → primary source, no warning
-//   3. HTML body WKI_ID=…         → fallback, emit warning (ETSI HTML is untrusted)
-//   4. Nothing found               → warning, skip
+// ── Repair mode ───────────────────────────────────────────────────────────────
 
 async function repairWkiIds() {
   console.log('\uD83D\uDCE5 ETSI Specification Downloader');
@@ -165,7 +154,6 @@ async function repairWkiIds() {
   try { files = (await fs.readdir(wiDir)).filter(f => f.endsWith('.workitem.html')); }
   catch { console.log('\u26A0\uFE0F  No _workitems directory found.'); process.exit(0); }
 
-  // Build etsiNumber → detailUrl lookup from esi_overview.json (our source of truth)
   const overviewIndex = new Map();
   try {
     const ov = JSON.parse(await fs.readFile(OVERVIEW_FILE, 'utf-8'));
@@ -183,15 +171,12 @@ async function repairWkiIds() {
     const filePath = path.join(wiDir, file);
     const raw = await fs.readFile(filePath, 'utf-8');
 
-    // 1. Already has a valid digit → skip
     const headerMatch = raw.match(/<!-- wkiId: (\d+|unknown) -->/);
     const currentId   = headerMatch?.[1];
     if (currentId && currentId !== 'unknown') { alreadyOk++; continue; }
 
-    // Derive etsiNumber from filename: DMI_ESI-0019103.workitem.html → DMI/ESI-0019103
     const etsiNumber = file.replace('.workitem.html', '').replace(/_/g, '/');
 
-    // 2. Primary: detailUrl from esi_overview.json
     let foundId   = null;
     let source    = null;
     const detailUrl = overviewIndex.get(etsiNumber);
@@ -200,7 +185,6 @@ async function repairWkiIds() {
       if (foundId) source = 'detailUrl';
     }
 
-    // 3. Fallback: HTML body (untrusted, emit warning)
     if (!foundId) {
       const bodyMatch = raw.match(/WKI_ID=(\d+)/i);
       if (bodyMatch) {
@@ -211,7 +195,6 @@ async function repairWkiIds() {
       }
     }
 
-    // 4. Nothing found
     if (!foundId) {
       console.log(`  \u2753 ${file} — no WKI_ID found in overview or HTML body, skipping`);
       noIdFound++;
@@ -238,7 +221,6 @@ async function repairWkiIds() {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function downloadLatestSpecs() {
-  // Show usage/copyright gate before any network activity
   await showUsageGate();
 
   console.log('\uD83D\uDCE5 ETSI Specification Downloader');
@@ -259,7 +241,7 @@ async function downloadLatestSpecs() {
     console.log('\uD83D\uDD10 Logging in...');
     const loggedIn = await client.login(process.env.ETSI_USERNAME, process.env.ETSI_PASSWORD);
     if (!loggedIn) { console.error('\u274C Login failed'); process.exit(1); }
-    console.log('\u2705 Login successful! (PDF + DOCX mode)\n');
+    console.log('\u2705 Login successful! (PDF + DOCX parallel mode)\n');
   } else {
     console.log('\uD83D\uDD13 No credentials — public PDF-only mode\n');
   }
@@ -269,7 +251,7 @@ async function downloadLatestSpecs() {
   const cachedByNumber = await loadCachedIndex();
   const diskIndex      = await buildDiskIndex(DOWNLOAD_PATH);
 
-  console.log(`\uD83D\uDDC2\uFE0F  Already downloaded: ${cachedByNumber.size} files (${diskIndex.size} on disk)\n`);
+  console.log(`\uD83D\uDDD2\uFE0F  Already downloaded: ${cachedByNumber.size} files (${diskIndex.size} on disk)\n`);
 
   const results = {
     success: [], redownloaded: [], skipped: [], stopped: [],
@@ -388,17 +370,36 @@ async function downloadLatestSpecs() {
       }
 
       if (info?.url) {
-        const result = await downloadFile(client, info, item);
-        if (result) {
-          const entry = { etsiNumber: item.etsiNumber, filePath: result.filePath, url: result.url, status: info.status ?? null };
-          if (isRedownload) { results.redownloaded.push(entry); console.log(`    \uD83D\uDD04 Re-downloaded: ${result.label}`); }
-          else              { results.success.push(entry);      console.log(`    \u2705 Downloaded: ${result.label}`); }
-          console.log(`    \uD83D\uDCC4 ${path.relative(PROJECT_ROOT, result.filePath)}`);
+        // ── PDF download (always, primary pipeline) ────────────────────────
+        const pdfResult = await downloadFile(client, info, item);
 
-          // ── DOCX parallel fetch (authenticated only) ─────────────────────
-          if (HAS_AUTH && result.docxUrl) {
-            const docxResult = await downloadFile(client, { ...info, url: result.docxUrl, type: 'docx' }, item);
-            if (docxResult) console.log(`    📄 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
+        // ── DOCX download (parallel, authenticated + docxUrl from workitem) ─
+        // docxUrl is extracted directly from docbox.etsi.org links in the
+        // workitem HTML — more reliable than deriving from the PDF URL.
+        // Falls back to URL-derived candidate if no docbox link was found.
+        let docxResult = null;
+        if (HAS_AUTH && info.docxUrl) {
+          docxResult = await downloadFile(client, { ...info, url: info.docxUrl, type: 'docx' }, item);
+        }
+
+        if (pdfResult) {
+          const entry = {
+            etsiNumber: item.etsiNumber,
+            filePath:   pdfResult.filePath,
+            url:        pdfResult.url,
+            status:     info.status ?? null,
+            ...(docxResult ? { docxPath: docxResult.filePath, docxUrl: info.docxUrl } : {}),
+          };
+          if (isRedownload) { results.redownloaded.push(entry); console.log(`    \uD83D\uDD04 Re-downloaded: ${pdfResult.label}`); }
+          else              { results.success.push(entry);      console.log(`    \u2705 Downloaded: ${pdfResult.label}`); }
+          console.log(`    \uD83D\uDCC4 ${path.relative(PROJECT_ROOT, pdfResult.filePath)}`);
+
+          if (docxResult) {
+            console.log(`    📄 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
+            // Write a lightweight comparison sidecar so ingestor can pick the better source
+            await saveFormatComparisonSidecar(pdfResult.filePath, docxResult.filePath, item);
+          } else if (HAS_AUTH && info.docxUrl) {
+            console.log(`    ⚠️  DOCX not available (URL tried: ${info.docxUrl})`);
           }
         } else {
           results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download returned no data', url: info.url });
@@ -577,10 +578,33 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
 
   let downloadUrl = null, downloadType = null, docxUrl = null;
 
+  // ── Primary: published PDF from www.etsi.org/deliver ──────────────────────
   $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
     const href = $(el).attr('href');
     if (href?.includes('.pdf')) { downloadUrl = href; downloadType = 'pdf'; }
   });
+
+  // ── Parallel DOCX: collect docbox.etsi.org DOCX link independently ────────
+  // This runs regardless of whether a PDF was already found, so both can be
+  // fetched in parallel. The docbox link is the authoritative DOCX source —
+  // it comes directly from the workitem page and is more reliable than
+  // deriving a .docx URL from the PDF delivery path.
+  if (HAS_AUTH) {
+    $('a[href*="docbox.etsi.org"]').each((_, el) => {
+      const href = $(el).attr('href')?.trim();
+      if (!href) return;
+      if ((href.includes('.docx') || href.includes('.doc')) && !docxUrl) {
+        docxUrl = href;
+        return false; // stop at first DOCX hit
+      }
+    });
+    // Fallback: if no docbox DOCX found but we have a published PDF URL,
+    // derive the candidate .docx path (may return 404 — verified on download).
+    if (!docxUrl && downloadUrl && downloadType === 'pdf' && downloadUrl.includes('www.etsi.org/deliver')) {
+      docxUrl = downloadUrl.replace(/\.pdf$/i, '.docx');
+    }
+  }
+
   if (!downloadUrl) $('a[href*="pda.etsi.org"]').each((_, el) => {
     const href = $(el).attr('href');
     if (href) { downloadUrl = href; downloadType = 'pda'; }
@@ -590,6 +614,7 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
     if (!downloadUrl && href.includes('.pdf') && href.includes('etsi'))  { downloadUrl = href; downloadType = 'pdf'; }
     else if (!downloadUrl && href.includes('.zip') && href.includes('etsi')) { downloadUrl = href; downloadType = 'zip'; }
   });
+  // Draft fallback: docbox PDF/DOCX only when no other source found
   if (!downloadUrl) $('a[href*="docbox.etsi.org"]').each((_, el) => {
     const href = $(el).attr('href')?.trim();
     if (!href) return;
@@ -597,13 +622,6 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
     if (href.includes('.pdf'))                             { downloadUrl = href; downloadType = 'draft-pdf';  return false; }
     if (href.includes('.zip'))                             { downloadUrl = href; downloadType = 'zip'; }
   });
-
-  // ── Parallel DOCX: derive .docx URL from PDF URL when authenticated ────────
-  // For ETSI delivery URLs like .../en_319411v020101p.pdf → .../en_319411v020101p.docx
-  if (HAS_AUTH && downloadUrl && downloadType === 'pdf' && downloadUrl.includes('www.etsi.org/deliver')) {
-    const candidateDocx = downloadUrl.replace(/\.pdf$/i, '.docx');
-    docxUrl = candidateDocx; // will be verified during actual download
-  }
 
   return { url: downloadUrl ?? null, type: downloadType, docxUrl, $, html, responseHeaders, status, wkiId, usedLogin };
 }
@@ -629,6 +647,47 @@ function snapshotHeaders(response) {
 async function saveResponseHeaders(filePath, headerSnapshot) {
   if (!headerSnapshot) return;
   await fs.writeFile(headerCachePath(filePath), JSON.stringify(headerSnapshot, null, 2));
+}
+
+// ── Format comparison sidecar ─────────────────────────────────────────────────
+// Written alongside the PDF when both formats were successfully downloaded.
+// The ingestor reads this to decide which source to use (or to cross-validate).
+//
+// Schema:
+//   { etsiNumber, pdfPath, docxPath, pdfBytes, docxBytes, downloadedAt,
+//     recommendation: "docx" | "pdf" | "unknown" }
+//
+// Recommendation logic (heuristic, can be overridden by ingestor):
+//   - If DOCX is present and ≥ 20 KB  → prefer DOCX (structured tables)
+//   - If DOCX is < 20 KB or absent    → prefer PDF  (render-only fallback)
+
+async function saveFormatComparisonSidecar(pdfPath, docxPath, item) {
+  try {
+    const [pdfStat, docxStat] = await Promise.all([
+      fs.stat(pdfPath).catch(() => null),
+      fs.stat(docxPath).catch(() => null),
+    ]);
+    const pdfBytes  = pdfStat?.size  ?? 0;
+    const docxBytes = docxStat?.size ?? 0;
+    const recommendation = docxBytes >= 20_000 ? 'docx' : pdfBytes > 0 ? 'pdf' : 'unknown';
+
+    const payload = {
+      etsiNumber:     item.etsiNumber,
+      pdfPath:        path.relative(PROJECT_ROOT, pdfPath),
+      docxPath:       path.relative(PROJECT_ROOT, docxPath),
+      pdfBytes,
+      docxBytes,
+      downloadedAt:   new Date().toISOString(),
+      recommendation,
+    };
+
+    // Sidecar lives next to the PDF: <name>.format-comparison.json
+    const sidecarPath = pdfPath.replace(/\.[^.]+$/, '.format-comparison.json');
+    await fs.writeFile(sidecarPath, JSON.stringify(payload, null, 2));
+    console.log(`    📊 Format comparison: ${recommendation === 'docx' ? '✅ DOCX preferred' : '⚠️  PDF fallback'} (DOCX ${formatBytes(docxBytes)} / PDF ${formatBytes(pdfBytes)})`);
+  } catch (err) {
+    console.log(`    ⚠️  Could not write format comparison sidecar: ${err.message}`);
+  }
 }
 
 // ── Sidecar writers ───────────────────────────────────────────────────────────
@@ -719,7 +778,7 @@ async function downloadFile(client, info, item) {
 
     let filename = null;
     const cd = response.headers.get('content-disposition');
-    if (cd) { const m = cd.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/); if (m) filename = m[1].replace(/["']/g, ''); }
+    if (cd) { const m = cd.match(/filename[^;=\n]*=((['"']).*?\2|[^;\n]*)/); if (m) filename = m[1].replace(/["']/g, ''); }
     if (!filename) filename = path.basename(new URL(info.url).pathname);
     if (!filename || filename === '' || filename === '/') {
       const safe = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
