@@ -23,6 +23,9 @@
  *   --no-ai                  extract titles only, skip AI
  *   --no-corpus-write        skip patching corpus/specs JSON files
  *   --limit=N                process first N sidecars
+ *   --id=<etsiNumber>        process only the item matching this ETSI number
+ *                            (e.g. --id="DMI ESI-0019204", --id="EN 319 403")
+ *                            combine with --force to re-enrich a single item
  */
 
 import fs   from 'fs/promises';
@@ -40,7 +43,7 @@ const TITLES_DIR   = path.join(SPECS_ROOT, '_titles');
 const CORPUS_DIR   = path.join(PROJECT_ROOT, 'corpus', 'specs');
 const RESULTS_JSON = path.join(SPECS_ROOT, '_download_results.json');
 
-// ── CLI flags ─────────────────────────────────────────────────────────────────
+// ── CLI flags ───────────────────────────────────────────────────────────────────
 
 const args               = process.argv.slice(2);
 const FORCE              = args.includes('--force');
@@ -49,8 +52,10 @@ const NO_AI              = args.includes('--no-ai');
 const NO_CORPUS_WRITE    = args.includes('--no-corpus-write');
 const limitArg           = args.find(a => a.startsWith('--limit='));
 const LIMIT              = limitArg ? parseInt(limitArg.split('=')[1]) : null;
+const idArg              = args.find(a => a.startsWith('--id='));
+const ID_FILTER          = idArg ? idArg.slice('--id='.length).trim() : null;
 
-// ── STOPPED items ─────────────────────────────────────────────────────────────
+// ── STOPPED items ────────────────────────────────────────────────────────────────
 
 /**
  * Returns a Set of etsiNumber strings that are listed under "stopped" in
@@ -67,7 +72,7 @@ async function loadStoppedEtsiNumbers() {
   }
 }
 
-// ── Corpus patching ───────────────────────────────────────────────────────────
+// ── Corpus patching ───────────────────────────────────────────────────────────────
 
 /**
  * Find the corpus/specs JSON whose "norm" field matches etsiNumber.
@@ -148,7 +153,7 @@ async function patchCorpusJson(etsiNumber, titleRecord) {
   return true;
 }
 
-// ── Title extraction ──────────────────────────────────────────────────────────
+// ── Title extraction ────────────────────────────────────────────────────────────────
 
 // Dummy-title guard: values that are not real titles
 const DUMMY_TITLE_RE = /^(title\s*\d+\s*)+$/i;
@@ -224,7 +229,7 @@ function extractWorkitemTitles(html) {
   return { fullTitle, etsiShortTitle };
 }
 
-// ── PDF title extraction ──────────────────────────────────────────────────────
+// ── PDF title extraction ────────────────────────────────────────────────────────────
 
 async function extractPdfTitle(etsiNumber) {
   let urlSidecar = null;
@@ -266,7 +271,19 @@ async function extractPdfTitle(etsiNumber) {
   return null;
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// ── ID normaliser (for --id matching) ─────────────────────────────────────────────
+
+/**
+ * Normalise an ETSI number for loose matching:
+ * strip spaces, hyphens, underscores; lowercase.
+ * "DMI ESI-0019204" → "dmisi0019204"
+ * "EN_319_403"      → "en319403"
+ */
+function normaliseId(s) {
+  return s.replace(/[\s\-_]/g, '').toLowerCase();
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────────
 
 async function enrichTitles() {
   console.log('\uD83C\uDFF7\uFE0F  ETSI Title Enrichment');
@@ -285,6 +302,7 @@ async function enrichTitles() {
   if (FORCE)               console.log('\u26A1 --force: re-running everything');
   else if (FORCE_SHORT_TITLES) console.log('\uD83E\uDD16 --force-new-short-titles: AI only, extracted data preserved');
   if (NO_CORPUS_WRITE)     console.log('\uD83D\uDEAB --no-corpus-write: skipping corpus JSON patches');
+  if (ID_FILTER)           console.log(`\uD83D\uDD0D --id filter: "${ID_FILTER}" (processing this item only)`);
   console.log();
 
   // Load STOPPED etsiNumbers — these are abandoned work items, no AI title needed
@@ -310,8 +328,27 @@ async function enrichTitles() {
     process.exit(1);
   }
 
-  if (LIMIT) sidecarFiles = sidecarFiles.slice(0, LIMIT);
-  console.log(`\uD83D\uDCCB  Found ${sidecarFiles.length} workitem sidecars${LIMIT ? ` (limited to ${LIMIT})` : ''}\n`);
+  // Apply --id filter: keep only the sidecar whose etsiNumber matches
+  if (ID_FILTER) {
+    const needle = normaliseId(ID_FILTER);
+    // Read each sidecar header comment to extract etsiNumber, then filter
+    const filtered = [];
+    for (const f of sidecarFiles) {
+      const html  = await fs.readFile(path.join(WORKITEM_DIR, f), 'utf-8');
+      const numM  = html.match(/<!--\s*etsiNumber:\s*([^-][^-]*?)\s*-->/);
+      const etsiN = numM ? numM[1].trim() : f.replace(/\.workitem\.html$/, '').replace(/_/g, ' ');
+      if (normaliseId(etsiN) === needle) { filtered.push(f); break; }
+    }
+    if (!filtered.length) {
+      console.error(`\u274C  No workitem sidecar found for --id="${ID_FILTER}"`);
+      console.error('    Check the exact ETSI number with: ls downloads/specs/_workitems/');
+      process.exit(1);
+    }
+    sidecarFiles = filtered;
+  }
+
+  if (LIMIT && !ID_FILTER) sidecarFiles = sidecarFiles.slice(0, LIMIT);
+  console.log(`\uD83D\uDCCB  Found ${sidecarFiles.length} workitem sidecar${sidecarFiles.length !== 1 ? 's' : ''}${LIMIT && !ID_FILTER ? ` (limited to ${LIMIT})` : ID_FILTER ? ' (--id filter)' : ''}\n`);
 
   const stats = {
     new: 0, skipped: 0, skippedStopped: 0, noTitle: 0, withPdf: 0,
@@ -331,7 +368,7 @@ async function enrichTitles() {
     const etsiNumber = numM ? numM[1].trim() : stem.replace(/_/g, ' ');
     const wkiId      = wkiM ? wkiM[1] : null;
 
-    // ── Skip STOPPED work items ───────────────────────────────────────────────
+    // ── Skip STOPPED work items ───────────────────────────────────────────────────────────
     if (stoppedNumbers.has(etsiNumber)) {
       console.log(`${progress} ${etsiNumber}  \u23F9\uFE0F  STOPPED \u2014 skipping`);
       stats.skippedStopped++;
@@ -340,7 +377,7 @@ async function enrichTitles() {
 
     console.log(`${progress} ${etsiNumber}`);
 
-    // ── --force-new-short-titles: AI only, keep existing extraction ───────────
+    // ── --force-new-short-titles: AI only, keep existing extraction ───────────────
     if (FORCE_SHORT_TITLES && !FORCE) {
       const existingRecord = await fs.readFile(outPath, 'utf-8')
         .then(JSON.parse).catch(() => null);
@@ -375,7 +412,7 @@ async function enrichTitles() {
       }
     }
 
-    // ── Skip if already complete (no --force) ─────────────────────────────────
+    // ── Skip if already complete (no --force) ───────────────────────────────────
     if (!FORCE && !FORCE_SHORT_TITLES) {
       const existing = await fs.readFile(outPath, 'utf-8').then(JSON.parse).catch(() => null);
       if (existing?.shortTitle) {
@@ -385,7 +422,7 @@ async function enrichTitles() {
       }
     }
 
-    // ── Full extraction ───────────────────────────────────────────────────────
+    // ── Full extraction ───────────────────────────────────────────────────────────────
     const { fullTitle, etsiShortTitle } = extractWorkitemTitles(html);
 
     if (!fullTitle) { console.log('    \u26A0\uFE0F  Could not extract title'); stats.noTitle++; }
@@ -418,7 +455,6 @@ async function enrichTitles() {
     const titleRecord = {
       etsiNumber,
       wkiId,
-      // shortTitle = AI suggestion only — NOT promoted to shortname automatically
       shortTitle,
       shortTitleSource,
       etsiShortTitle:    etsiShortTitle ?? null,
@@ -433,7 +469,7 @@ async function enrichTitles() {
     await fs.writeFile(outPath, JSON.stringify(titleRecord, null, 2) + '\n', 'utf-8');
     stats.new++;
 
-    // ── Patch matching corpus/specs JSON ──────────────────────────────────────
+    // ── Patch matching corpus/specs JSON ───────────────────────────────────────────
     if (!NO_CORPUS_WRITE) {
       const patched = await patchCorpusJson(etsiNumber, titleRecord);
       if (patched) { console.log('    \uD83D\uDCDD  Corpus patched'); stats.corpusPatched++; }
