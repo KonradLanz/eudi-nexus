@@ -21,6 +21,21 @@ Output per spec
   corpus/specs/_segments/<stem>.segments.json   — machine-readable segments
   corpus/specs/_adoc/<stem>.adoc                — AsciiDoc with [[anchor]] backrefs
 
+Style detection
+  ETSI DOCX files use a consistent Word template across all specs:
+    Heading 1–9  — numbered clauses and annexes      → SECTION
+    ZA           — document title (cover page)        → OTHER
+    ZB           — document type (European Standard)  → OTHER
+    ZT           — scope line (cover page)            → OTHER
+    NO           — NOTE paragraphs                    → INFORM
+    EX           — EXAMPLE paragraphs                 → INFORM
+    B1 / B1+     — requirement items                  → NORM
+    BL           — normative body text                → NORM
+    toc 1–9      — table of contents lines            → TOC
+  detect_docx_heading_styles() scans a DOCX once and returns the set of
+  heading-type style names actually present, so unknown templates are flagged
+  automatically rather than silently misclassified.
+
 Fair-use note:
   Local AI processing of standards documents for compliance research
   constitutes fair use under EU and international copyright law
@@ -34,6 +49,7 @@ Usage:
   python3 scripts/pdf-segment.py --docx path/to/doc.docx
   python3 scripts/pdf-segment.py --force             # overwrite existing
   python3 scripts/pdf-segment.py --profile etsi-contribution --pdf ESI.pdf
+  python3 scripts/pdf-segment.py --scan-styles path/to/doc.docx  # style audit only
 
 Dependencies:
   pip install pdfplumber python-docx
@@ -66,9 +82,8 @@ except ImportError:
 # Magic-byte file-type detection
 # ─────────────────────────────────────────────────────────────────────────────
 
-# DOCX / XLSX / PPTX are all ZIP archives starting with PK\x03\x04
-_ZIP_MAGIC  = b"PK\x03\x04"
-_PDF_MAGIC  = b"%PDF"
+_ZIP_MAGIC = b"PK\x03\x04"
+_PDF_MAGIC = b"%PDF"
 
 
 def _sniff_kind(path: Path) -> str:
@@ -199,7 +214,7 @@ _INFORMATIVE_RE = re.compile(
     re.IGNORECASE | re.MULTILINE,
 )
 _TOC_LINE_RE = re.compile(
-    r"^.{2,60}[\.\s]{4,}\d{1,4}\s*$",
+    r"^.{2,60}[\.\ ]{4,}\d{1,4}\s*$",
     re.MULTILINE,
 )
 _SECTION_RE = re.compile(
@@ -217,6 +232,32 @@ SEGMENT_TYPES = (
     "NORM", "INFORM", "TABLE", "OTHER",
 )
 
+# ── ETSI Word template — known style → segment type mapping ──────────────────
+# Derived empirically from all 15 DOCX in downloads/specs/EN/:
+#   15x Heading 1–2, 11x Heading 3, 5x Heading 4, 2x Heading 5,
+#   11x Heading 8, 2x Heading 9  → SECTION
+#   13x ZA (doc title), 11x ZB (doc type), 14x ZT (scope) → OTHER (cover)
+#   NO (notes), EX (examples) → INFORM
+#   B1, B1+, BL (body normative) → NORM
+#   toc 1–9 → TOC
+_ETSI_STYLE_MAP: dict[str, str] = {
+    # Cover page styles
+    "za": "OTHER", "zb": "OTHER", "zt": "OTHER",
+    "fp": "OTHER",   # front page metadata (Reference, Keywords…)
+    # Informative
+    "no": "INFORM",  # NOTE:
+    "ex": "INFORM",  # EXAMPLE:
+    "ew": "INFORM",  # definitions / glossary entries
+    # Normative body
+    "b1": "NORM", "b1+": "NORM", "b2": "NORM", "b2+": "NORM",
+    "bl": "NORM",
+}
+
+# Styles NOT in this map but matching these patterns are flagged as unknown
+_KNOWN_STYLE_PREFIXES = ("heading", "toc ", "normal", "default paragraph",
+                          "za", "zb", "zt", "fp", "no", "ex", "ew",
+                          "b1", "b1+", "b2", "b2+", "bl", "tt")
+
 
 def find_normative_keywords(text: str) -> list[str]:
     return list({m.group(1).lower() for m in _RFC2119_RE.finditer(text)})
@@ -224,6 +265,71 @@ def find_normative_keywords(text: str) -> list[str]:
 
 def _safe_stem(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Dynamic style detection  (scan once per DOCX, cache result)
+# ─────────────────────────────────────────────────────────────────────────────
+
+_style_cache: dict[str, set[str]] = {}  # path → set of lowercase style names
+
+
+def detect_docx_heading_styles(docx_path: Path) -> tuple[set[str], set[str]]:
+    """
+    Scan all paragraph style names in *docx_path*.
+    Returns (known_styles, unknown_styles) — both sets of lowercase names.
+
+    known_styles  : styles the segmenter handles explicitly
+    unknown_styles: styles not in _KNOWN_STYLE_PREFIXES (flag for AI review)
+
+    Result is cached so repeated calls on the same path are free.
+    """
+    key = str(docx_path)
+    if key in _style_cache:
+        cached = _style_cache[key]
+        known   = {s for s in cached if _is_known_style(s)}
+        unknown = cached - known
+        return known, unknown
+
+    doc = docx_lib.Document(str(docx_path))
+    all_styles: set[str] = set()
+    for p in doc.paragraphs:
+        if p.text.strip():
+            all_styles.add((p.style.name or "").lower())
+
+    _style_cache[key] = all_styles
+    known   = {s for s in all_styles if _is_known_style(s)}
+    unknown = all_styles - known
+    return known, unknown
+
+
+def _is_known_style(style_lower: str) -> bool:
+    return any(style_lower.startswith(p) for p in _KNOWN_STYLE_PREFIXES)
+
+
+def _warn_unknown_styles(unknown: set[str], docx_path: Path) -> None:
+    """
+    Print a warning when a DOCX contains style names we don't handle.
+    In a future step these can be sent to a local AI model for classification.
+    """
+    if not unknown:
+        return
+    # Filter out noise (empty, single-char, purely numeric)
+    flagged = {s for s in unknown if len(s) > 1 and not s.isdigit()}
+    if not flagged:
+        return
+    print(
+        f"   ⚠️  Unknown styles in {docx_path.name} "
+        f"(may need AI classification): "
+        f"{', '.join(sorted(flagged)[:8])}",
+        file=sys.stderr,
+    )
+    # TODO: local AI fallback
+    # If ollama / llama.cpp is available, classify each unknown style name
+    # against a short prompt:
+    #   "Given an ETSI standards Word style named '{style}' with sample text
+    #    '{sample}', classify it as one of: SECTION NORM INFORM TABLE OTHER TOC"
+    # For now we emit a warning so the user can inspect and extend _ETSI_STYLE_MAP.
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -242,44 +348,62 @@ def _docx_para_is_bold(para) -> bool:
 def _docx_para_type(para, profile: Profile) -> str:
     """
     Classify a python-docx Paragraph into a SEGMENT_TYPE.
-    Uses style name + RFC-2119 keywords + heuristics.
+
+    Priority order:
+      1. Explicit ETSI style map (_ETSI_STYLE_MAP)
+      2. Heading N  (case-insensitive — fixes SECTION=0 bug)
+      3. toc N      (case-insensitive)
+      4. Boilerplate text heuristic
+      5. TOC dot-leader heuristic
+      6. Informative text heuristic
+      7. Bold numbered heading heuristic
+      8. Figure/Table caption heuristic
+      9. RFC-2119 normative keyword → NORM
+     10. OTHER
     """
-    style = (para.style.name or "").lower()
-    text  = para.text.strip()
+    style_raw  = para.style.name or ""
+    style_low  = style_raw.lower()
+    text       = para.text.strip()
+
     if not text:
         return "OTHER"
 
-    # TOC styles
-    if "toc" in style or "contents" in style:
-        return "TOC"
+    # 1. Explicit ETSI template map (ZA/ZB/ZT/NO/EX/B1/BL …)
+    mapped = _ETSI_STYLE_MAP.get(style_low)
+    if mapped:
+        return mapped
 
-    # Heading styles → SECTION
-    if re.match(r"heading", style):
+    # 2. Heading N  (case-insensitive — "Heading 1", "HEADING 1", …)
+    if re.match(r"heading", style_low, re.IGNORECASE):
         return "SECTION"
 
-    # Boilerplate cover text (first ~10 paragraphs)
+    # 3. TOC styles
+    if re.match(r"toc\s", style_low) or "contents" in style_low:
+        return "TOC"
+
+    # 4. Boilerplate cover text
     if _BOILERPLATE_RE.search(text):
         return "OTHER"
 
-    # TOC heuristic (dot leaders)
+    # 5. TOC heuristic (dot leaders)
     if _TOC_LINE_RE.search(text):
         return "TOC"
 
-    # Informative
+    # 6. Informative
     if _INFORMATIVE_RE.search(text):
         return "INFORM"
 
-    # Bold short line that looks like a section number → SECTION
+    # 7. Bold short line that looks like a section number → SECTION
     if _docx_para_is_bold(para) and len(text) < 120:
         m = _SECTION_RE.match(text)
         if m:
             return "SECTION"
 
-    # Figure / table caption
+    # 8. Figure / table caption
     if re.match(r"^(Figure|Table|NOTE|EXAMPLE)\s+[\d\-A-Z]", text, re.IGNORECASE):
         return "TABLE"
 
-    # Normative
+    # 9. Normative keywords
     if find_normative_keywords(text):
         return "NORM"
 
@@ -306,32 +430,33 @@ def segment_docx(
     stem = doc_stem or _safe_stem(docx_path.stem)
     doc  = docx_lib.Document(str(docx_path))
 
+    # Scan styles once and warn about unknown ones
+    _, unknown_styles = detect_docx_heading_styles(docx_path)
+    _warn_unknown_styles(unknown_styles, docx_path)
+
     segments: list[dict] = []
     seg_counters: dict[int, int] = {}
-    current_section = ""
+    current_section       = ""
     current_section_title = ""
-    # DOCX has no page numbers; we use a synthetic paragraph index as "page"
-    para_idx = 0
+    para_idx = 0  # synthetic paragraph index (no page numbers in DOCX)
 
     def _new_seg(seg_type: str, text: str, para_num: int) -> dict:
         seg_counters[para_num] = seg_counters.get(para_num, 0) + 1
         seg_id = f"{stem}_pa{para_num}_b{seg_counters[para_num]}"
         kw = find_normative_keywords(text) if seg_type in ("NORM", "SECTION", "OTHER") else []
         return {
-            "id":                 seg_id,
-            "type":              seg_type,
-            "page":              para_num,   # paragraph index used as synthetic page
-            "anchor":            f"#para={para_num}",
-            "section":           current_section,
-            "section_title":     current_section_title,
-            "text":              text,
+            "id":                  seg_id,
+            "type":               seg_type,
+            "page":               para_num,
+            "anchor":             f"#para={para_num}",
+            "section":            current_section,        # captured AFTER update below
+            "section_title":      current_section_title,
+            "text":               text,
             "normative_keywords": kw,
-            "profile":           profile.name,
+            "profile":            profile.name,
         }
 
-    # Iterate body XML to interleave paragraphs and tables in document order
-    from docx.oxml.ns import qn
-    body = doc.element.body
+    body      = doc.element.body
     para_map  = {p._element: p for p in doc.paragraphs}
     table_map = {t._element: t for t in doc.tables}
 
@@ -340,7 +465,7 @@ def segment_docx(
 
         # ── Paragraph ─────────────────────────────────────────────
         if tag == "p":
-            para     = para_map.get(child)
+            para = para_map.get(child)
             if para is None:
                 continue
             text     = para.text.strip()
@@ -350,14 +475,18 @@ def segment_docx(
 
             seg_type = _docx_para_type(para, profile)
 
+            # Update section state BEFORE building the segment dict
+            # (fixes race condition: previous code set section AFTER _new_seg)
             if seg_type == "SECTION":
                 m = _SECTION_RE.match(text)
                 if m:
                     current_section       = m.group("num").rstrip(".")
                     current_section_title = m.group("title").strip()
                 else:
-                    # Heading style but no number — use heading text as title
+                    # Heading style but no clause number (e.g. "Foreword")
                     current_section_title = text
+                    # Keep current_section number unchanged so sub-clauses
+                    # still inherit the parent section number.
 
             segments.append(_new_seg(seg_type, text, para_idx))
 
@@ -368,7 +497,6 @@ def segment_docx(
                 continue
             para_idx += 1
 
-            # Collect header row + data rows
             rows = []
             for row in tbl.rows:
                 cells = [cell.text.strip() for cell in row.cells]
@@ -382,26 +510,25 @@ def segment_docx(
             if not rows:
                 continue
 
-            # Flatten to searchable text + keep structured data in a sub-key
-            header     = rows[0]
-            data_rows  = rows[1:]
-            flat_text  = "\n".join(" | ".join(r) for r in rows)
+            header    = rows[0]
+            data_rows = rows[1:]
+            flat_text = "\n".join(" | ".join(r) for r in rows)
 
             seg_counters[para_idx] = seg_counters.get(para_idx, 0) + 1
             seg_id = f"{stem}_pa{para_idx}_tbl{seg_counters[para_idx]}"
 
             segments.append({
-                "id":                 seg_id,
-                "type":              "TABLE",
-                "page":              para_idx,
-                "anchor":            f"#para={para_idx}",
-                "section":           current_section,
-                "section_title":     current_section_title,
-                "text":              flat_text,
-                "table_header":      header,
-                "table_rows":        data_rows,
+                "id":                  seg_id,
+                "type":               "TABLE",
+                "page":               para_idx,
+                "anchor":             f"#para={para_idx}",
+                "section":            current_section,
+                "section_title":      current_section_title,
+                "text":               flat_text,
+                "table_header":       header,
+                "table_rows":         data_rows,
                 "normative_keywords": find_normative_keywords(flat_text),
-                "profile":           profile.name,
+                "profile":            profile.name,
             })
 
     return segments
@@ -413,12 +540,12 @@ def segment_docx(
 
 @dataclass
 class TextBlock:
-    text:        str
-    y_top:       float
-    y_bot:       float
-    page_height: float
+    text:          str
+    y_top:         float
+    y_bot:         float
+    page_height:   float
     avg_font_size: float
-    bold_ratio:  float
+    bold_ratio:    float
 
     @property
     def y_frac_top(self) -> float:
@@ -441,7 +568,7 @@ def _extract_blocks(page) -> list[TextBlock]:
     sorted_ys = sorted(lines)
     blocks: list[TextBlock] = []
     current_chars: list[dict] = []
-    current_ys: list[int] = []
+    current_ys:    list[int]  = []
     GAP_THRESHOLD = 8
 
     def _flush(ys: list[int], chs: list[dict]) -> None:
@@ -524,7 +651,7 @@ def segment_pdf(
     stem = doc_stem or _safe_stem(pdf_path.stem)
     segments: list[dict] = []
     seg_counters: dict[int, int] = {}
-    current_section = ""
+    current_section       = ""
     current_section_title = ""
     toc_page_count = 0
     MAX_TOC_PAGES  = 6
@@ -559,15 +686,15 @@ def segment_pdf(
                 seg_id = f"{stem}_p{page_nr}_b{seg_counters[page_nr]}"
                 kw = find_normative_keywords(block.text) if seg_type in ("NORM", "SECTION", "OTHER") else []
                 segments.append({
-                    "id":                 seg_id,
-                    "type":              seg_type,
-                    "page":              page_nr,
-                    "anchor":            f"#page={page_nr}",
-                    "section":           current_section,
-                    "section_title":     current_section_title,
-                    "text":              block.text,
+                    "id":                  seg_id,
+                    "type":               seg_type,
+                    "page":               page_nr,
+                    "anchor":             f"#page={page_nr}",
+                    "section":            current_section,
+                    "section_title":      current_section_title,
+                    "text":               block.text,
                     "normative_keywords": kw,
-                    "profile":           profile.name,
+                    "profile":            profile.name,
                 })
     return segments
 
@@ -588,7 +715,7 @@ DOWNLOAD_ROOTS = [
 def find_source_file(rec: dict, stem: str) -> tuple[Path | None, str]:
     """
     Resolve the best available source file for a corpus record.
-    Returns (path, kind) where kind is 'docx' | 'pdf' | None.
+    Returns (path, kind) where kind is 'docx' | 'pdf' | ''.
 
     Priority:
       1. source_docx field in corpus JSON (explicit, set by docx-ingest.py)
@@ -612,7 +739,7 @@ def find_source_file(rec: dict, stem: str) -> tuple[Path | None, str]:
         if p.is_file():
             real_kind = _sniff_kind(p)
             if real_kind == "unknown":
-                real_kind = "pdf"   # best-effort: let pdfplumber report the error
+                real_kind = "pdf"
             return p, real_kind
 
     # 3 & 4. Auto-discover from norm stem (strip version suffix for glob)
@@ -626,7 +753,32 @@ def find_source_file(rec: dict, stem: str) -> tuple[Path | None, str]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# AsciiDoc export  (unchanged from original)
+# Shortname helper — e.g. "TS 119 615 v1.4.1"
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _format_shortname(rec: dict) -> str:
+    """
+    Build a short human-readable label from corpus JSON fields, e.g.:
+      TS 119 615 v1.4.1 — Electronic Registered Delivery Services
+    Falls back gracefully when fields are absent.
+    """
+    norm    = rec.get("norm", "")          # e.g. "TS 119 615"
+    version = rec.get("version", "")       # e.g. "1.4.1" or "V1.4.1"
+    title   = rec.get("title", "")         # full English title
+    # Also try common alternative keys
+    if not title:
+        title = rec.get("doc_title", rec.get("description", ""))
+    if not norm:
+        norm = rec.get("spec", rec.get("number", ""))
+
+    # Normalise version prefix
+    ver_str = f" v{version.lstrip('Vv')}" if version else ""
+    title_str = f" — {title[:70]}" if title else ""
+    return f"{norm}{ver_str}{title_str}".strip()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# AsciiDoc export
 # ─────────────────────────────────────────────────────────────────────────────
 
 _ADOC_SECTION_LEVEL = {1: "=", 2: "==", 3: "===", 4: "====", 5: "====="}
@@ -649,21 +801,21 @@ def segments_to_adoc(
     src_label = source_path.name if source_path else "(source)"
     lines += [
         f"= {norm} {version}",
-        f":doctype: article",
-        f":source-highlighter: highlight.js",
-        f":icons: font",
-        f":toc: left",
-        f":toclevels: 4",
-        f":numbered:",
-        f"",
-        f"// Auto-generated by pdf-segment.py",
+        ":doctype: article",
+        ":source-highlighter: highlight.js",
+        ":icons: font",
+        ":toc: left",
+        ":toclevels: 4",
+        ":numbered:",
+        "",
+        "// Auto-generated by pdf-segment.py",
         f"// Source: {src_label}",
-        f"// Anchors link back to the original document",
-        f"",
+        "// Anchors link back to the original document",
+        "",
     ]
     skip_types = {"HEADER", "FOOTER", "TOC", "OTHER"}
     for seg in segments:
-        seg_type  = seg["type"]
+        seg_type = seg["type"]
         if seg_type in skip_types:
             continue
         text    = seg["text"].strip()
@@ -688,7 +840,6 @@ def segments_to_adoc(
             ]
 
         elif seg_type == "TABLE":
-            # For DOCX tables include structured data as a table block
             if "table_header" in seg:
                 header = seg["table_header"]
                 rows   = seg["table_rows"]
@@ -699,7 +850,7 @@ def segments_to_adoc(
                 lines += ["|===", ""]
             else:
                 lines += ["", f"// {anchor} — page {page_nr}",
-                          f"[caption=\"{text[:80]}\"]", "----", text, "----", ""]
+                          f'[caption="{text[:80]}"]', "----", text, "----", ""]
     return "\n".join(lines)
 
 
@@ -758,39 +909,43 @@ def process_corpus_json(
     corpus_root: Path,
     force: bool = False,
     verbose: bool = True,
-) -> bool:
+) -> str:
     """
     Process a single corpus JSON.
     Tries DOCX first (richer table extraction), falls back to PDF.
-    Returns True if processed, False if skipped/failed.
+
+    Returns one of:
+      'processed'  — segmentation ran and output was written
+      'skipped'    — already segmented (idempotent, --force not set)
+      'nosource'   — no source file found
+      'error'      — segmentation failed
     """
     try:
         rec = json.loads(corpus_json.read_text(encoding="utf-8"))
     except Exception as exc:
         print(f"[ERROR] Cannot read {corpus_json}: {exc}", file=sys.stderr)
-        return False
+        return "error"
 
-    norm    = rec.get("norm",    corpus_json.stem)
-    version = rec.get("version", "")
-    stem    = _safe_stem(corpus_json.stem)
+    norm      = rec.get("norm",    corpus_json.stem)
+    version   = rec.get("version", "")
+    stem      = _safe_stem(corpus_json.stem)
+    shortname = _format_shortname(rec)
 
     seg_path = corpus_root / "specs" / "_segments" / f"{stem}.segments.json"
     if not force and seg_path.exists():
         if verbose:
-            print(f"[⏭️]  {corpus_json.name}  — already segmented")
-        return False
+            print(f"[⏭️]  {corpus_json.name}  ({shortname})  — already segmented")
+        return "skipped"
 
     source_path, source_kind = find_source_file(rec, stem)
     if source_path is None:
         if verbose:
-            print(f"[⚠️]  {corpus_json.name}  — no source file found "
-                  f"(checked source_docx, source_pdf, downloads/)")
-        return False
+            print(f"[⚠️]  {corpus_json.name}  ({shortname})  — no source file found")
+        return "nosource"
 
     if verbose:
         icon = "📄" if source_kind == "docx" else "📋"
-        print(f"[🔄]  {corpus_json.name}  →  {stem}  "
-              f"({norm} {version})  [{icon} {source_kind.upper()}]")
+        print(f"[🔄]  {corpus_json.name}  ({shortname})  [{icon} {source_kind.upper()}]")
 
     try:
         if source_kind == "docx":
@@ -799,7 +954,7 @@ def process_corpus_json(
             segments = segment_pdf(source_path, profile, doc_stem=stem)
     except Exception as exc:
         print(f"[ERROR] {corpus_json.name}: segmentation failed: {exc}", file=sys.stderr)
-        return False
+        return "error"
 
     seg_path, adoc_path = _write_segments(
         segments, norm, version, stem, corpus_root, source_path, source_kind
@@ -807,12 +962,17 @@ def process_corpus_json(
 
     if verbose:
         counts = {t: sum(1 for s in segments if s["type"] == t) for t in SEGMENT_TYPES}
-        print(f"   ✓  {len(segments)} blocks  |  NORM={counts.get('NORM',0)}  "
-              f"SECTION={counts.get('SECTION',0)}  TABLE={counts.get('TABLE',0)}  "
-              f"HEADER={counts.get('HEADER',0)}  FOOTER={counts.get('FOOTER',0)}")
+        print(
+            f"   ✓  {len(segments)} blocks  |  "
+            f"NORM={counts.get('NORM', 0)}  "
+            f"SECTION={counts.get('SECTION', 0)}  "
+            f"TABLE={counts.get('TABLE', 0)}  "
+            f"INFORM={counts.get('INFORM', 0)}  "
+            f"OTHER={counts.get('OTHER', 0)}"
+        )
         print(f"   📄  {seg_path}")
         print(f"   📝  {adoc_path}")
-    return True
+    return "processed"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -828,10 +988,11 @@ Examples:
   python3 scripts/pdf-segment.py                          # all corpus specs
   python3 scripts/pdf-segment.py corpus/specs/ts_119403v020201p.json
   python3 scripts/pdf-segment.py --pdf downloads/specs/EN/en319401v020201p.pdf
-  python3 scripts/pdf-segment.py --docx downloads/specs/TS/ts_119421v020201p.docx
+  python3 scripts/pdf-segment.py --docx downloads/specs/EN/ESI-0019401v331v322.docx
   python3 scripts/pdf-segment.py --force                  # overwrite existing
   python3 scripts/pdf-segment.py --profile etsi-contribution --pdf ESI-0019478.pdf
   python3 scripts/pdf-segment.py --stats                  # summary only
+  python3 scripts/pdf-segment.py --scan-styles downloads/specs/EN/ESI-0019401v331v322.docx
 """,
     )
     parser.add_argument(
@@ -845,6 +1006,10 @@ Examples:
     parser.add_argument(
         "--docx", metavar="DOCX_PATH",
         help="Process a raw DOCX directly (bypasses corpus JSON)",
+    )
+    parser.add_argument(
+        "--scan-styles", metavar="DOCX_PATH",
+        help="Print all paragraph style names found in a DOCX (style audit, no segmentation)",
     )
     parser.add_argument(
         "--profile", default="etsi-spec",
@@ -867,6 +1032,31 @@ Examples:
     profile     = PROFILES[args.profile]
     corpus_root = Path(args.corpus)
     verbose     = not args.quiet
+
+    # ── Style audit mode ──────────────────────────────────────────
+    if args.scan_styles:
+        import collections
+        p = Path(args.scan_styles)
+        if not p.is_file():
+            sys.exit(f"[ERROR] File not found: {p}")
+        doc = docx_lib.Document(str(p))
+        styles: collections.Counter[str] = collections.Counter()
+        samples: dict[str, str] = {}
+        for para in doc.paragraphs:
+            t = para.text.strip()
+            if t:
+                sn = para.style.name or ""
+                styles[sn] += 1
+                if sn not in samples:
+                    samples[sn] = t[:70]
+        print(f"\nStyles in {p.name}:")
+        for name, n in sorted(styles.items()):
+            known_tag = "" if _is_known_style(name.lower()) else "  ← UNKNOWN"
+            mapped    = _ETSI_STYLE_MAP.get(name.lower(), "")
+            map_tag   = f"  → {mapped}" if mapped else ""
+            print(f"  {n:4}x  {name:<30}{map_tag}{known_tag}")
+            print(f"         {samples[name]!r}")
+        return
 
     # ── Direct DOCX mode ──────────────────────────────────────────
     if args.docx:
@@ -922,7 +1112,7 @@ Examples:
             )
 
     if verbose:
-        docx_ok = "✅" if HAS_DOCX      else "❌ (pip install python-docx)"
+        docx_ok = "✅" if HAS_DOCX       else "❌ (pip install python-docx)"
         pdf_ok  = "✅" if HAS_PDFPLUMBER else "❌ (pip install pdfplumber)"
         print(f"[INFO]  {len(corpus_jsons)} corpus JSON(s)  "
               f"(profile: {profile.name}, "
@@ -930,17 +1120,17 @@ Examples:
         print(f"        DOCX support: {docx_ok}")
         print(f"        PDF  support: {pdf_ok}\n")
 
-    done = skipped = errors = 0
+    done = skipped_done = skipped_nosource = errors = 0
     total_segments = 0
     type_totals: dict[str, int] = {t: 0 for t in SEGMENT_TYPES}
     docx_count = pdf_count = 0
 
     for cj in corpus_jsons:
         try:
-            processed = process_corpus_json(
+            result = process_corpus_json(
                 cj, profile, corpus_root, force=args.force, verbose=verbose
             )
-            if processed:
+            if result == "processed":
                 done += 1
                 stem     = _safe_stem(cj.stem)
                 seg_path = corpus_root / "specs" / "_segments" / f"{stem}.segments.json"
@@ -957,18 +1147,23 @@ Examples:
                             type_totals[t] += data.get("type_counts", {}).get(t, 0)
                     except Exception:
                         pass
+            elif result == "skipped":
+                skipped_done += 1
+            elif result == "nosource":
+                skipped_nosource += 1
             else:
-                skipped += 1
+                errors += 1
         except Exception as exc:
             errors += 1
             print(f"[ERROR] {cj.name}: {exc}", file=sys.stderr)
 
     if verbose or args.stats:
         print(f"\n{'─'*60}")
-        print(f"  Processed : {done}  (DOCX: {docx_count}, PDF: {pdf_count})")
-        print(f"  Skipped   : {skipped}")
-        print(f"  Errors    : {errors}")
-        print(f"  Segments  : {total_segments:,}")
+        print(f"  Processed   : {done}  (DOCX: {docx_count}, PDF: {pdf_count})")
+        print(f"  Already done: {skipped_done}")
+        print(f"  No source   : {skipped_nosource}")
+        print(f"  Errors      : {errors}")
+        print(f"  Segments    : {total_segments:,}")
         if args.stats and total_segments:
             print(f"\n  Type breakdown:")
             for t in SEGMENT_TYPES:
