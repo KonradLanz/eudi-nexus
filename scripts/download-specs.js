@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import readline from 'readline';
 import { fileURLToPath } from 'url';
 import * as cheerio from 'cheerio';
 import { ETSIClient } from '../src/etsi-client.js';
@@ -22,6 +23,12 @@ const PUBLIC_REPORT_BASE = 'https://portal.etsi.org/webapp/WorkProgram/Report_Wo
 
 const SIDECAR_TTL_MS = 8 * 60 * 60 * 1000;
 
+// ── Auth detection ─────────────────────────────────────────────────────────────
+// If ETSI credentials are present in .env, both PDF and DOCX are fetched.
+// Without credentials, only publicly accessible PDFs are downloaded.
+
+const HAS_AUTH = Boolean(process.env.ETSI_USERNAME && process.env.ETSI_PASSWORD);
+
 // ── CLI flags ─────────────────────────────────────────────────────────────────
 
 const args               = process.argv.slice(2);
@@ -32,6 +39,69 @@ const HEADERS_ONLY       = args.includes('--headers-only');
 const FORCE_UPDATE_CHECK = args.includes('--force-update-check');
 const FORCE_DOWNLOAD     = args.includes('--force-download');
 const REPAIR_WKI_IDS     = args.includes('--repair-wki-ids');
+const YES_FLAG           = args.includes('--yes');  // skip interactive gate
+
+// ── Usage / Copyright gate ────────────────────────────────────────────────────
+//
+// Displayed once before any network activity starts.
+// Users without ETSI credentials may only download public PDFs.
+// Intended use: STF 705 / EUDIW standards gap analysis.
+//
+// Legal basis: Art. 3, Directive (EU) 2019/790 (DSM Directive) —
+// TDM exception for scientific/technical research.
+// Other users may need to contact ETSI for appropriate licensing:
+// https://www.etsi.org/terms-of-use
+
+async function showUsageGate() {
+  console.log('');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log(' 📥  ETSI Standards Downloader — Usage & Copyright Notice');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('');
+  console.log(' This tool downloads ETSI standards for local AI-assisted');
+  console.log(' compliance research (Art. 3, Directive (EU) 2019/790 —');
+  console.log(' TDM exception for scientific/technical research).');
+  console.log('');
+  console.log(' Intended use: STF 705 / EUDIW standards gap analysis.');
+  console.log('');
+  console.log(' ⚠️  Other users may need to contact ETSI for appropriate');
+  console.log('     licensing before use: https://www.etsi.org/terms-of-use');
+  console.log('');
+  console.log(' No document content is redistributed by this tool.');
+  console.log(' Auth credentials are never stored in the repository.');
+  console.log('');
+  if (HAS_AUTH) {
+    console.log(' 🔐 ETSI credentials detected → PDF + DOCX will be fetched');
+  } else {
+    console.log(' 🔓 No ETSI credentials → public PDFs only');
+    console.log('    (Set ETSI_USERNAME + ETSI_PASSWORD in .env for full access)');
+  }
+  console.log('');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('');
+
+  if (YES_FLAG) {
+    console.log(' --yes flag detected, skipping confirmation.');
+    console.log('');
+    return;
+  }
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const answer = await new Promise(resolve => {
+    rl.question(' Do you confirm this intended use? [y/N]: ', ans => {
+      rl.close();
+      resolve(ans.trim().toLowerCase());
+    });
+  });
+
+  if (answer !== 'y' && answer !== 'yes') {
+    console.log('');
+    console.log(' ❌ Aborted. No files were downloaded.');
+    console.log('');
+    process.exit(0);
+  }
+  console.log('');
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -168,6 +238,9 @@ async function repairWkiIds() {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function downloadLatestSpecs() {
+  // Show usage/copyright gate before any network activity
+  await showUsageGate();
+
   console.log('\uD83D\uDCE5 ETSI Specification Downloader');
   console.log('================================\n');
 
@@ -181,10 +254,15 @@ async function downloadLatestSpecs() {
   console.log(`\uD83D\uDCCB Found ${activeItems.length} active + ${publishedItems.length} published items\n`);
 
   const client = new ETSIClient();
-  console.log('\uD83D\uDD10 Logging in...');
-  const loggedIn = await client.login(process.env.ETSI_USERNAME, process.env.ETSI_PASSWORD);
-  if (!loggedIn) { console.error('\u274C Login failed'); process.exit(1); }
-  console.log('\u2705 Login successful!\n');
+
+  if (HAS_AUTH) {
+    console.log('\uD83D\uDD10 Logging in...');
+    const loggedIn = await client.login(process.env.ETSI_USERNAME, process.env.ETSI_PASSWORD);
+    if (!loggedIn) { console.error('\u274C Login failed'); process.exit(1); }
+    console.log('\u2705 Login successful! (PDF + DOCX mode)\n');
+  } else {
+    console.log('\uD83D\uDD13 No credentials — public PDF-only mode\n');
+  }
 
   await fs.mkdir(DOWNLOAD_PATH, { recursive: true });
 
@@ -316,6 +394,12 @@ async function downloadLatestSpecs() {
           if (isRedownload) { results.redownloaded.push(entry); console.log(`    \uD83D\uDD04 Re-downloaded: ${result.label}`); }
           else              { results.success.push(entry);      console.log(`    \u2705 Downloaded: ${result.label}`); }
           console.log(`    \uD83D\uDCC4 ${path.relative(PROJECT_ROOT, result.filePath)}`);
+
+          // ── DOCX parallel fetch (authenticated only) ─────────────────────
+          if (HAS_AUTH && result.docxUrl) {
+            const docxResult = await downloadFile(client, { ...info, url: result.docxUrl, type: 'docx' }, item);
+            if (docxResult) console.log(`    📄 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
+          }
         } else {
           results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download returned no data', url: info.url });
           console.log(`    \u274C Download failed`);
@@ -491,7 +575,7 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
 
   if (/\bSTOPPED\b/.test(html)) return { stopped: true, $, html, responseHeaders, status, wkiId, usedLogin };
 
-  let downloadUrl = null, downloadType = null;
+  let downloadUrl = null, downloadType = null, docxUrl = null;
 
   $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
     const href = $(el).attr('href');
@@ -514,7 +598,14 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
     if (href.includes('.zip'))                             { downloadUrl = href; downloadType = 'zip'; }
   });
 
-  return { url: downloadUrl ?? null, type: downloadType, $, html, responseHeaders, status, wkiId, usedLogin };
+  // ── Parallel DOCX: derive .docx URL from PDF URL when authenticated ────────
+  // For ETSI delivery URLs like .../en_319411v020101p.pdf → .../en_319411v020101p.docx
+  if (HAS_AUTH && downloadUrl && downloadType === 'pdf' && downloadUrl.includes('www.etsi.org/deliver')) {
+    const candidateDocx = downloadUrl.replace(/\.pdf$/i, '.docx');
+    docxUrl = candidateDocx; // will be verified during actual download
+  }
+
+  return { url: downloadUrl ?? null, type: downloadType, docxUrl, $, html, responseHeaders, status, wkiId, usedLogin };
 }
 
 function extractStatus(html) {
@@ -621,7 +712,7 @@ async function downloadFile(client, info, item) {
     const response = await fetchFn(info.url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-        'Accept':     'application/pdf,application/zip,application/octet-stream,*/*',
+        'Accept':     'application/pdf,application/zip,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/octet-stream,*/*',
       },
     });
     if (!response.ok) return null;
@@ -632,7 +723,7 @@ async function downloadFile(client, info, item) {
     if (!filename) filename = path.basename(new URL(info.url).pathname);
     if (!filename || filename === '' || filename === '/') {
       const safe = item.etsiNumber.replace(/[^a-zA-Z0-9-_]/g, '_');
-      const ext  = { pdf: '.pdf', zip: '.zip', 'draft-docx': '.docx', 'draft-pdf': '.pdf', pda: '.pdf' }[info.type] || '.bin';
+      const ext  = { pdf: '.pdf', zip: '.zip', 'draft-docx': '.docx', docx: '.docx', 'draft-pdf': '.pdf', pda: '.pdf' }[info.type] || '.bin';
       filename   = `${safe}${ext}`;
     }
     filename = filename.replace(/[<>:"/\\|?*]/g, '_');
