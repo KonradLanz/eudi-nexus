@@ -7,13 +7,17 @@
     "scrape": "node src/work-program-scraper.js",
     "analyze": "cd scripts && node analyze.js",
     "markdown": "cd scripts && node generate-markdown.js",
-    "download": "cd scripts && node download-specs.js",
-    "download:test": "cd scripts && node download-specs.js --limit=5 --published-only",
-    "download:check": "cd scripts && node download-specs.js --headers-only",
-    "download:check:test": "cd scripts && node download-specs.js --headers-only --limit=10",
-    "download:oidf": "cd scripts && node download-oidf-specs.js",
+
+    "download": "node scripts/download-specs.js --yes",
+    "download:test": "node scripts/download-specs.js --limit=5 --published-only --yes",
+    "download:check": "node scripts/download-specs.js --headers-only --yes",
+    "download:check:test": "node scripts/download-specs.js --headers-only --limit=10 --yes",
+    "download:force": "node scripts/download-specs.js --force-download --yes",
+    "download:oidf": "node scripts/download-oidf-specs.js",
+
     "backfill-headers": "node scripts/backfill-headers.js",
     "backfill-headers:dry": "node scripts/backfill-headers.js --dry-run",
+
     "references": "cd scripts && node extract-references.js",
     "references:all": "cd scripts && node extract-references.js --all",
     "references:drafts": "cd scripts && node extract-references.js --include-drafts",
@@ -23,33 +27,48 @@
     "crawl:verbose": "cd scripts && node crawl-references.js --verbose",
     "build": "cd scripts && node extract-references.js --include-drafts",
     "build:full": "cd scripts && node crawl-references.js",
+
     "enrich-titles": "node scripts/enrich-titles.js",
     "enrich-titles:force": "node scripts/enrich-titles.js --force",
     "enrich-titles:no-ai": "node scripts/enrich-titles.js --no-ai",
     "enrich-titles:test": "node scripts/enrich-titles.js --limit=5",
+
     "retry-failed": "cd scripts && node retry-failed.js",
     "serve": "cd downloads && python3 -m http.server 9999",
     "all": "npm run scrape && npm run analyze && npm run markdown && npm run download:oidf",
-    "setup:venv": "python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && echo '\\n✅ Done. Activate with: source .venv/bin/activate'",
+
+    "setup:venv": "python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && echo '\n✅ Done. Activate with: source .venv/bin/activate'",
     "setup:py": "npm run setup:venv",
-    "ingest": ".venv/bin/python3 scripts/pdf-ingest.py downloads/specs/",
-    "ingest:force": ".venv/bin/python3 scripts/pdf-ingest.py downloads/specs/ --force",
+
+    "ingest": ".venv/bin/python3 scripts/ingest.py",
+    "ingest:force": ".venv/bin/python3 scripts/ingest.py --force",
+    "ingest:pdf": ".venv/bin/python3 scripts/ingest.py --pdf-only",
+    "ingest:docx": ".venv/bin/python3 scripts/ingest.py --docx-only",
     "ingest:one": ".venv/bin/python3 scripts/pdf-ingest.py",
+    "ingest:one:docx": ".venv/bin/python3 scripts/docx-ingest.py",
+
     "toc": ".venv/bin/python3 scripts/toc-extract.py",
     "toc:one": ".venv/bin/python3 scripts/toc-extract.py --pdf",
     "toc:report": ".venv/bin/python3 scripts/toc-extract.py --report",
     "toc:test": ".venv/bin/python3 scripts/toc-extract.py --limit 5",
+
     "segment": ".venv/bin/python3 scripts/pdf-segment.py",
     "segment:force": ".venv/bin/python3 scripts/pdf-segment.py --force",
     "segment:stats": ".venv/bin/python3 scripts/pdf-segment.py --stats",
+
     "index": ".venv/bin/python3 scripts/build-index.py",
     "index:rebuild": ".venv/bin/python3 scripts/build-index.py --rebuild",
     "index:stats": ".venv/bin/python3 scripts/build-index.py --stats",
+
     "mcp:install": "bash scripts/install-lmstudio-mcp.sh",
     "mcp:install:dry": "bash scripts/install-lmstudio-mcp.sh --dry-run",
     "mcp:remove": "bash scripts/install-lmstudio-mcp.sh --remove",
+
     "pipeline": "npm run ingest && npm run toc && npm run segment && npm run index",
     "pipeline:rebuild": "npm run ingest:force && npm run segment:force && npm run index:rebuild",
+    "pipeline:full": "npm run download && npm run ingest && npm run toc && npm run segment && npm run index",
+    "pipeline:full:rebuild": "npm run download:force && npm run ingest:force && npm run segment:force && npm run index:rebuild",
+
     "search": ".venv/bin/python3 scripts/spec-search.py",
     "qa": ".venv/bin/python3 scripts/ingest-qa.py",
     "qa:verbose": ".venv/bin/python3 scripts/ingest-qa.py --verbose",
