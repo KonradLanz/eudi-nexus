@@ -21,7 +21,7 @@ const BASE_URL       = 'https://portal.etsi.org';
 const PUBLIC_REPORT_BASE = 'https://portal.etsi.org/webapp/WorkProgram/Report_WorkItem.asp';
 
 // Public sidecar TTL: 8h (content rarely changes)
-// Auth sidecar TTL: 24h (docbox links are stable once published)
+// Auth sidecar TTL: 24h (deliver/ links are stable once published)
 const SIDECAR_TTL_MS      = 8  * 60 * 60 * 1000;
 const AUTH_SIDECAR_TTL_MS = 24 * 60 * 60 * 1000;
 
@@ -38,7 +38,7 @@ const FORCE_UPDATE_CHECK = args.includes('--force-update-check');
 const FORCE_DOWNLOAD     = args.includes('--force-download');
 const REPAIR_WKI_IDS     = args.includes('--repair-wki-ids');
 const YES_FLAG           = args.includes('--yes');
-// --docx-only: fetch/refresh auth portal sidecars and download DOCX from docbox.
+// --docx-only: fetch/refresh auth portal sidecars and download DOCX from deliver/.
 // Does NOT re-download PDFs. Requires HAS_AUTH.
 const DOCX_ONLY          = args.includes('--docx-only');
 // --refresh-auth-sidecars: re-fetch all .workitem-auth.html sidecars (ignores TTL).
@@ -67,9 +67,9 @@ async function showUsageGate() {
     if (DOCX_ONLY) {
       console.log(' 🔐 ETSI credentials detected → --docx-only mode');
       console.log('     Fetches/refreshes .workitem-auth.html sidecars (portal)');
-      console.log('     and downloads DOCX from docbox. PDF is NOT re-downloaded.');
+      console.log('     and downloads DOCX from deliver/ ZIP. PDF is NOT re-downloaded.');
     } else {
-      console.log(' 🔐 ETSI credentials detected → PDF (deliver/) + DOCX (docbox, if linked)');
+      console.log(' 🔐 ETSI credentials detected → PDF (deliver/) + DOCX (deliver/ ZIP, if linked)');
     }
   } else {
     console.log(' 🔓 No ETSI credentials → public PDFs only (deliver/)');
@@ -163,6 +163,93 @@ async function touchSidecarHeaders(sidecarPath) {
   } catch { /* non-fatal */ }
 }
 
+// ── ZIP unpacking (pure Node built-ins, no extra dependency) ──────────────────────
+//
+// ETSI deliver/ ZIPs typically contain one DOCX (and sometimes a PDF).
+// We parse the ZIP Central Directory from the buffer end, find the largest
+// .docx entry, decompress it with DecompressionStream (Node 18+), and return
+// the raw DOCX bytes.  Falls back to returning null so the caller can keep
+// the raw ZIP if needed.
+
+async function extractDocxFromZipBuffer(zipBuffer) {
+  // Locate End-of-Central-Directory record (EOCD) — search from end
+  const EOCD_SIG = 0x06054b50;
+  let eocdOffset = -1;
+  for (let i = zipBuffer.length - 22; i >= 0; i--) {
+    if (zipBuffer.readUInt32LE(i) === EOCD_SIG) { eocdOffset = i; break; }
+  }
+  if (eocdOffset < 0) return null;
+
+  const cdCount  = zipBuffer.readUInt16LE(eocdOffset + 10);
+  const cdSize   = zipBuffer.readUInt32LE(eocdOffset + 12);
+  const cdOffset = zipBuffer.readUInt32LE(eocdOffset + 16);
+
+  // Parse Central Directory entries
+  const entries = [];
+  let pos = cdOffset;
+  const CD_SIG = 0x02014b50;
+  for (let i = 0; i < cdCount; i++) {
+    if (pos + 46 > zipBuffer.length) break;
+    if (zipBuffer.readUInt32LE(pos) !== CD_SIG) break;
+    const compression    = zipBuffer.readUInt16LE(pos + 10);
+    const compSize       = zipBuffer.readUInt32LE(pos + 20);
+    const uncompSize     = zipBuffer.readUInt32LE(pos + 24);
+    const fnLen          = zipBuffer.readUInt16LE(pos + 28);
+    const extraLen       = zipBuffer.readUInt16LE(pos + 30);
+    const commentLen     = zipBuffer.readUInt16LE(pos + 32);
+    const localOffset    = zipBuffer.readUInt32LE(pos + 42);
+    const filename       = zipBuffer.slice(pos + 46, pos + 46 + fnLen).toString('utf-8');
+    entries.push({ filename, compression, compSize, uncompSize, localOffset });
+    pos += 46 + fnLen + extraLen + commentLen;
+  }
+
+  // Find largest .docx entry (prefer .docx, skip __MACOSX)
+  const docxEntries = entries
+    .filter(e => e.filename.toLowerCase().endsWith('.docx') && !e.filename.startsWith('__'))
+    .sort((a, b) => b.uncompSize - a.uncompSize);
+
+  if (docxEntries.length === 0) return null;
+
+  const entry = docxEntries[0];
+
+  // Read local file header to find actual data offset
+  const lh = entry.localOffset;
+  if (zipBuffer.readUInt32LE(lh) !== 0x04034b50) return null;
+  const lfnLen   = zipBuffer.readUInt16LE(lh + 26);
+  const lextraLen = zipBuffer.readUInt16LE(lh + 28);
+  const dataStart = lh + 30 + lfnLen + lextraLen;
+  const compData  = zipBuffer.slice(dataStart, dataStart + entry.compSize);
+
+  // Decompress
+  if (entry.compression === 0) {
+    // Stored (no compression)
+    return compData;
+  }
+  if (entry.compression === 8) {
+    // DEFLATE — use DecompressionStream (Node 18+)
+    try {
+      const ds     = new DecompressionStream('deflate-raw');
+      const writer = ds.writable.getWriter();
+      const reader = ds.readable.getReader();
+      writer.write(compData);
+      writer.close();
+      const chunks = [];
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+      }
+      const total = chunks.reduce((s, c) => s + c.length, 0);
+      const out   = Buffer.allocUnsafe(total);
+      let off = 0;
+      for (const c of chunks) { out.set(c, off); off += c.length; }
+      return out;
+    } catch { return null; }
+  }
+
+  return null; // unsupported compression
+}
+
 // ── Repair mode ───────────────────────────────────────────────────────────────────
 
 async function repairWkiIds() {
@@ -232,7 +319,7 @@ async function downloadLatestSpecs() {
   console.log('📥 ETSI Specification Downloader');
   console.log('================================\n');
 
-  if (DOCX_ONLY)            console.log('📝 Mode: --docx-only (refresh auth sidecars + fetch DOCX from docbox)\n');
+  if (DOCX_ONLY)            console.log('📝 Mode: --docx-only (refresh auth sidecars + fetch DOCX from deliver/ ZIP)\n');
   else if (FORCE_DOWNLOAD)  console.log('⚡ Mode: --force-download (full GET, ignores ETag/TTL)\n');
   else if (FORCE_UPDATE_CHECK) console.log('🔍 Mode: --force-update-check\n');
   else if (HEADERS_ONLY)    console.log('👁️  Mode: --headers-only\n');
@@ -367,7 +454,7 @@ async function downloadLatestSpecs() {
             console.log(`    📝 DOCX: ${path.relative(PROJECT_ROOT, docxResult.filePath)}`);
             await saveFormatComparisonSidecar(pdfResult.filePath, docxResult.filePath, item);
           } else if (HAS_AUTH) {
-            console.log(`    ℹ️  No DOCX link in WorkItem (docbox) — PDF only`);
+            console.log(`    ℹ️  No DOCX link in WorkItem (deliver/ ZIP) — PDF only`);
           }
         } else {
           results.failed.push({ etsiNumber: item.etsiNumber, reason: 'Download returned no data', url: info.url });
@@ -407,23 +494,22 @@ async function downloadLatestSpecs() {
 //
 // Strategy per item:
 //   1. Check if DOCX already present via .format-comparison.json → skip if fresh
-//   2. Check .workitem-auth.html sidecar for cached docbox link (TTL: 24h)
-//      → NEVER reads from .workitem.html (public) — that page has no docbox links
+//      BUT: only skip if the DOCX etsiNumber matches this item exactly (not a sibling).
+//   2. Check .workitem-auth.html sidecar for cached deliver/ link (TTL: 24h)
 //   3. If stale / missing → fetch authenticated portal page → save as .workitem-auth.html
-//   4. Parse docboxUrl and download
+//   4. Parse deliver/ ZIP URL, download, extract DOCX from ZIP
 //
-// The two sidecar files are kept strictly separate:
-//   .workitem.html      — public Report_WorkItem.asp (deliver/ link)
-//   .workitem-auth.html — authenticated portal page  (docbox link)
+// DOCX source: deliver/*.zip (same public deliver/ endpoint as PDF, just ZIP format)
+// The ZIP contains the editable DOCX. No docbox.etsi.org involvement.
 
 async function fetchDocxOnly(client, item, results) {
-  // Step 1: skip if DOCX already on disk
+  // Step 1: skip if DOCX already on disk — but only for THIS item, not a sibling
   const pdfPath = await findPdfPath(item);
   if (pdfPath) {
     const cmpPath = pdfPath.replace(/\.[^.]+$/, '.format-comparison.json');
     try {
       const cmp = JSON.parse(await fs.readFile(cmpPath, 'utf-8'));
-      if (cmp.docxPath) {
+      if (cmp.docxPath && cmp.etsiNumber === item.etsiNumber) {
         const abs    = path.join(PROJECT_ROOT, cmp.docxPath);
         const exists = await fs.stat(abs).then(() => true).catch(() => false);
         if (exists && !FORCE_DOWNLOAD) {
@@ -436,7 +522,6 @@ async function fetchDocxOnly(client, item, results) {
   }
 
   // Step 2: try existing .workitem-auth.html sidecar (TTL 24h)
-  // IMPORTANT: we never look at .workitem.html here — it's the public page without docbox links.
   const authSidecar = workitemAuthSidecarPath(item.etsiNumber);
   let docxUrl = null;
 
@@ -449,10 +534,10 @@ async function fetchDocxOnly(client, item, results) {
     const cachedHtml = await fs.readFile(authSidecar, 'utf-8');
     docxUrl = extractDocxUrlFromHtml(cachedHtml);
     if (docxUrl) {
-      console.log(`    📋 Auth sidecar cached — docbox link found`);
+      console.log(`    📋 Auth sidecar cached — deliver/ ZIP link found`);
     } else {
-      console.log(`    ⏭️  Auth sidecar cached — no DOCX link (docbox)`);
-      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No docbox DOCX link (auth sidecar, cached)' });
+      console.log(`    ⏭️  Auth sidecar cached — no deliver/ ZIP link`);
+      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No deliver/ ZIP link (auth sidecar, cached)' });
       return;
     }
   } else {
@@ -478,17 +563,17 @@ async function fetchDocxOnly(client, item, results) {
     docxUrl = info.docxUrl ?? null;
 
     if (!docxUrl) {
-      console.log(`    ℹ️  No DOCX link in WorkItem auth page (docbox)`);
-      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No docbox DOCX link in auth WorkItem page' });
+      console.log(`    ℹ️  No deliver/ ZIP link in WorkItem auth page`);
+      results.noDownload.push({ etsiNumber: item.etsiNumber, reason: 'No deliver/ ZIP link in auth WorkItem page' });
       return;
     }
-    console.log(`    🔐 Auth portal fetched — docbox link found`);
+    console.log(`    🔐 Auth portal fetched — deliver/ ZIP link found`);
   }
 
-  // Step 4: download DOCX
-  const docxResult = await downloadFile(client, { url: docxUrl, type: 'docx' }, item);
+  // Step 4: download ZIP and extract DOCX
+  const docxResult = await downloadFile(client, { url: docxUrl, type: 'zip' }, item);
   if (!docxResult) {
-    console.log(`    ❌ DOCX download failed`);
+    console.log(`    ❌ DOCX download/extraction failed`);
     results.failed.push({ etsiNumber: item.etsiNumber, reason: 'DOCX download returned no data', url: docxUrl });
     return;
   }
@@ -523,9 +608,7 @@ async function fetchDetailPage(client, item) {
         const html   = await res.text();
         const parsed = parseDetailHtml(html, wkiId, responseHeaders, false);
         if (parsed.url || parsed.stopped) {
-          // No auth needed for PDF; but if we have auth, also try to grab docbox link
           if (!HAS_AUTH || parsed.docxUrl) return parsed;
-          // Has auth + no docbox link in public page → fall through to portal
         }
       }
     } catch { /* fall through */ }
@@ -551,16 +634,54 @@ async function fetchAuthDetailPage(client, item) {
   return parseDetailHtml(html, wkiId, responseHeaders, true);
 }
 
+/**
+ * extractDocxUrlFromHtml — extract a DOCX/ZIP download URL from a WorkItem page.
+ *
+ * Priority:
+ *   1. Direct .docx link (any host)
+ *   2. Direct .doc link (any host, skip eApproval resolution meeting docs)
+ *   3. deliver/*.zip link (www.etsi.org/deliver — contains the DOCX)
+ *   4. Any .zip link on etsi.org (last resort)
+ *
+ * eApproval links (MR*.doc) are resolution meeting documents, not standards — skip them.
+ */
 function extractDocxUrlFromHtml(html) {
   const $ = cheerio.load(html);
+
+  // 1. Direct .docx (any host)
   let found = null;
-  $('a[href*="docbox.etsi.org"]').each((_, el) => {
+  $('a[href]').each((_, el) => {
     const href = $(el).attr('href')?.trim();
-    if (href && (href.endsWith('.docx') || href.endsWith('.doc') || href.endsWith('.zip')) && !found) {
-      found = href;
-      return false;
+    if (!href || found) return;
+    if (href.toLowerCase().endsWith('.docx')) { found = href; return false; }
+  });
+  if (found) return found;
+
+  // 2. Direct .doc — but skip eApproval resolution meeting docs
+  $('a[href]').each((_, el) => {
+    const href = $(el).attr('href')?.trim();
+    if (!href || found) return;
+    if (href.toLowerCase().endsWith('.doc') && !href.includes('eApproval')) {
+      found = href; return false;
     }
   });
+  if (found) return found;
+
+  // 3. deliver/*.zip (these contain the editable DOCX)
+  $('a[href*="www.etsi.org/deliver"]').each((_, el) => {
+    const href = $(el).attr('href')?.trim();
+    if (!href || found) return;
+    if (href.toLowerCase().endsWith('.zip')) { found = href; return false; }
+  });
+  if (found) return found;
+
+  // 4. Any .zip on etsi.org (last resort)
+  $('a[href*="etsi.org"]').each((_, el) => {
+    const href = $(el).attr('href')?.trim();
+    if (!href || found) return;
+    if (href.toLowerCase().endsWith('.zip')) { found = href; return false; }
+  });
+
   return found;
 }
 
@@ -578,10 +699,11 @@ function parseDetailHtml(html, wkiId, responseHeaders, usedLogin) {
     if (href?.includes('.pdf')) { downloadUrl = href; downloadType = 'pdf'; }
   });
 
-  // DOCX: only from docbox.etsi.org, only when authenticated, explicit link only.
-  // NEVER derived from the deliver/ PDF URL — that path does not exist on ETSI servers.
+  // DOCX/ZIP: only when authenticated — from deliver/ ZIP or direct docx link
   if (usedLogin || HAS_AUTH) {
     docxUrl = extractDocxUrlFromHtml(html);
+    // Don't use the same URL for both PDF and DOCX
+    if (docxUrl === downloadUrl) docxUrl = null;
   }
 
   // PDF fallbacks
@@ -628,12 +750,6 @@ async function saveResponseHeaders(filePath, headerSnapshot) {
 }
 
 // ── WorkItem sidecar helpers ──────────────────────────────────────────────────────
-//
-// Two strictly separate sidecars:
-//   .workitem.html      — public Report_WorkItem.asp (no auth, deliver/ link)
-//   .workitem-auth.html — authenticated portal page  (auth, docbox link)
-//
-// The auth sidecar is the only reliable source for docbox DOCX links.
 
 async function saveWorkitemSidecar(info, item, isAuth) {
   if (!info?.html) return;
@@ -773,18 +889,39 @@ async function buildDiskIndex(basePath) {
   return index;
 }
 
+/**
+ * findInDiskIndex — map an etsiNumber to a file on disk.
+ *
+ * Fix: when the etsiNumber has a part suffix (e.g. ESI-0019142-3),
+ * require the part (-3) to match exactly. Previously the regex matched
+ * any file containing the base digits, so ESI-0019142-3..8 all resolved
+ * to ESI-0019142-1v131v125.docx (the first part on disk).
+ */
 function findInDiskIndex(diskIndex, etsiNumber) {
   const esiMatch = etsiNumber.match(/ESI-0*(\d{5,7})(-\d+)?/);
   if (esiMatch) {
     const num  = esiMatch[1].replace(/^0+/, '');
-    const part = esiMatch[2] ?? '';
-    const re   = new RegExp(`(?<![0-9])0*${num}${part ? part.replace('-', '-0*') : ''}(?![0-9])`);
-    for (const [name, filePath] of diskIndex) { if (re.test(name)) return filePath; }
+    const part = esiMatch[2] ?? '';   // e.g. '-3' or ''
+
     if (part) {
-      const reFb = new RegExp(`(?<![0-9])0*${num}(?![0-9])`);
-      for (const [name, filePath] of diskIndex) { if (reFb.test(name)) return filePath; }
+      // Exact-part match: the file must contain both the base number AND the part
+      const partNum = part.replace('-', '');
+      const re = new RegExp(
+        `(?<![0-9])0*${num}[^0-9]*(?:v|-)0*${partNum}(?![0-9])|` +
+        `(?<![0-9])0*${num}-0*${partNum}(?![0-9])`
+      );
+      for (const [name, filePath] of diskIndex) {
+        if (re.test(name)) return filePath;
+      }
+      // No part-specific file → no match (don't fall back to a sibling part)
+      return null;
     }
+
+    // No part in etsiNumber — original loose match is fine
+    const re = new RegExp(`(?<![0-9])0*${num}(?![0-9])`);
+    for (const [name, filePath] of diskIndex) { if (re.test(name)) return filePath; }
   }
+
   const allDigits = etsiNumber.replace(/[^0-9]/g, '');
   for (const len of [7, 6]) {
     const digits = allDigits.slice(0, len);
@@ -854,7 +991,7 @@ async function downloadFile(client, info, item) {
     const response = await fetchFn(info.url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-        'Accept':     'application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/octet-stream,*/*',
+        'Accept':     'application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/zip,application/pdf,application/octet-stream,*/*',
       },
     });
     if (!response.ok) return null;
@@ -870,8 +1007,26 @@ async function downloadFile(client, info, item) {
     }
     filename = filename.replace(/[<>:"/\\|?*]/g, '_');
 
-    const buffer = Buffer.from(await response.arrayBuffer());
+    let buffer = Buffer.from(await response.arrayBuffer());
     if (buffer.length < 1000) { console.log(`    ⚠️ File too small (${buffer.length} bytes) — skipping`); return null; }
+
+    // ── ZIP → DOCX extraction ────────────────────────────────────────────────────
+    // When the downloaded file is a ZIP (deliver/*.zip), unpack it in-memory and
+    // extract the largest .docx entry. If extraction succeeds, rename accordingly.
+    const looksLikeZip = filename.toLowerCase().endsWith('.zip') ||
+                         (response.headers.get('content-type') ?? '').includes('zip');
+    if (looksLikeZip) {
+      const docxBytes = await extractDocxFromZipBuffer(buffer);
+      if (docxBytes && docxBytes.length > 1000) {
+        // Derive DOCX filename from ZIP name (replace .zip → .docx)
+        filename = filename.replace(/\.zip$/i, '.docx');
+        buffer   = docxBytes;
+        console.log(`    📦 ZIP → DOCX extracted (${formatBytes(docxBytes.length)})`);
+      } else {
+        console.log(`    ⚠️  ZIP contained no usable DOCX — keeping raw ZIP`);
+        // Keep as ZIP; type stays 'zip'
+      }
+    }
 
     const typeMatch = item?.etsiNumber?.match(/^(EN|TS|TR|ES|EG)/i);
     const subDir    = typeMatch ? typeMatch[1].toUpperCase() : 'Other';
@@ -880,7 +1035,7 @@ async function downloadFile(client, info, item) {
     const filePath = path.join(targetDir, filename);
     await fs.writeFile(filePath, buffer);
     await saveHeaders(filePath, response);
-    await saveUrlSidecar(filePath, info.url, info.type);
+    await saveUrlSidecar(filePath, info.url, filename.endsWith('.docx') ? 'docx' : info.type);
 
     return { label: `${subDir}/${filename} (${formatBytes(buffer.length)})`, filePath, url: info.url };
   } catch (error) {
