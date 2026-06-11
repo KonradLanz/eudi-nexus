@@ -60,11 +60,13 @@ Rules:
 - Never include the ETSI number, version, or "Part N" in the short title.
 - Respond with ONLY the short title — no punctuation, no explanation, no quotes.
 - Do not start with "A", "An", "The".
+- If the title is a list of format names or acronyms, summarise their common theme instead of listing them (e.g. "ASiC, CAdES, XAdES Conformance" → "AdES Conformance Checkers").
 
 Examples:
   "Electronic Signatures and Infrastructures (ESI); Certificate Profiles" → Certificate Profiles ESI
   "Electronic Signatures and Infrastructures (ESI); Trust Service Provider (TSP) — Part 1" → TSP Conformity Assessment
-  "Quantum-Safe Cryptography; Hybrid Key Exchange Mechanisms" → Quantum-Safe Hybrid KEM`;
+  "Quantum-Safe Cryptography; Hybrid Key Exchange Mechanisms" → Quantum-Safe Hybrid KEM
+  "ASiC, CAdES, JAdES, PAdES, XAdES Conformance Checkers Maintenance" → AdES Conformance Checkers`;
 
 // ── state ─────────────────────────────────────────────────────────────────────
 
