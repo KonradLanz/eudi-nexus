@@ -36,37 +36,6 @@ Usage:
     EMBEDDING_DIMENSIONS   768
     HYBRID_ALPHA           0.5  (1.0=BM25-only, 0.0=cosine-only)
 ──────────────────────────────────────────────────────────────────────────────
-
-  LM Studio config  (~/.lmstudio/mcp-config.json or LM Studio GUI → Developer → MCP):
-  {
-    "mcpServers": {
-      "eudi-nexus": {
-        "command": "/path/to/eudi-nexus/.venv/bin/python3",
-        "args": ["/path/to/eudi-nexus/scripts/mcp-server.py"],
-        "env": {
-          "MCP_DB_PATH": "/path/to/eudi-nexus/corpus/eudi-nexus.db",
-          "EMBEDDING_BACKEND": "lmstudio",
-          "LMSTUDIO_BASE_URL": "http://localhost:1234"
-        }
-      }
-    }
-  }
-
-  Ollama config  (same structure, different env):
-  {
-    "mcpServers": {
-      "eudi-nexus": {
-        "command": "/path/to/eudi-nexus/.venv/bin/python3",
-        "args": ["/path/to/eudi-nexus/scripts/mcp-server.py"],
-        "env": {
-          "MCP_DB_PATH": "/path/to/eudi-nexus/corpus/eudi-nexus.db",
-          "EMBEDDING_BACKEND": "ollama",
-          "OLLAMA_BASE_URL": "http://localhost:11434",
-          "OLLAMA_EMBED_MODEL": "nomic-embed-text"
-        }
-      }
-    }
-  }
 """
 from __future__ import annotations
 
@@ -213,11 +182,6 @@ _resolved_backend: str | None = None   # "lmstudio" | "ollama" | "none"
 
 
 def _embed(text: str) -> list[float] | None:
-    """
-    Embed text using the configured or auto-detected backend.
-    Priority: explicit EMBEDDING_BACKEND env > LM Studio probe > Ollama probe > None
-    Result is cached in _resolved_backend so we only probe once per process.
-    """
     global _resolved_backend
 
     if _resolved_backend is None:
@@ -239,7 +203,6 @@ def _detect_backend() -> str:
         return "ollama"
 
     # BACKEND == "auto" — probe in priority order
-    # 1. LM Studio
     try:
         r = httpx.get(f"{LMSTUDIO_URL}/v1/models", timeout=2.0)
         if r.status_code < 500:
@@ -247,7 +210,6 @@ def _detect_backend() -> str:
     except Exception:
         pass
 
-    # 2. Ollama
     try:
         r = httpx.get(f"{OLLAMA_URL}/api/tags", timeout=2.0)
         if r.status_code < 500:
@@ -396,9 +358,12 @@ mcp = FastMCP(
     name="eudi-nexus",
     instructions=(
         "Search and retrieve EUDI / eIDAS normative segments from ETSI, CEN, and IETF specs. "
-        "Use search_norm for semantic + keyword search. Use get_segment to fetch a specific "
-        "requirement by ID. Use list_norms to see what is indexed. Use get_section for all "
-        "requirements in a specific section of a norm."
+        "Use search_norm for semantic + keyword search. "
+        "Use get_segment to fetch a specific requirement by its segment_id string. "
+        "Use list_norms to see what is indexed (no arguments needed). "
+        "Use get_section to retrieve all requirements in a specific section of a norm. "
+        "IMPORTANT: Never pass extra keys like 'results', 'data', or 'output' to any tool. "
+        "Only pass the parameters listed in each tool's description."
     ),
 )
 
@@ -422,36 +387,22 @@ def search_norm(
     norm: str | None = None,
     version: str | None = None,
     limit: int = 10,
-    alpha: float = HYBRID_ALPHA,
+    alpha: float = 0.5,
     types: list[str] | None = None,
 ) -> dict[str, Any]:
     """
-    Hybrid BM25 + cosine search over EUDI normative segments.
+    Search EUDI normative segments using hybrid BM25 + semantic search.
 
-    Args:
-        query:   Natural language or keyword query.
-                 Examples: "TSP audit log requirements"
-                           "private key activation shall"
-                           "QSCD certificate issuance"
-        norm:    Optional norm filter (partial match).
-                 Examples: "319 401", "319 411", "319 421", "eIDAS"
-        version: Optional exact version filter. Example: "v2.2.1"
-        limit:   Maximum results to return (1–20, default 10).
-        alpha:   BM25 weight (0.0–1.0). Default 0.5 (equal hybrid).
-                 Use 1.0 for pure keyword, 0.0 for pure semantic.
-        types:   Filter segment types. Options: NORM, INFORM, SECTION.
-                 Default: ["NORM", "INFORM"] (excludes section headers).
+    PARAMETERS (pass only these, no others):
+      query   (required) Search text. Example: "TSP audit log requirements"
+      norm    (optional) Partial norm name filter. Example: "319 401"
+      version (optional) Exact version string. Example: "v2.2.1"
+      limit   (optional) Integer 1-20. Default: 10.
+      alpha   (optional) Float 0.0-1.0. BM25 weight. Default: 0.5.
+      types   (optional) List of strings: ["NORM"], ["INFORM"], or ["NORM","INFORM"].
 
-    Returns:
-        dict with:
-          query         — echoed query
-          result_count  — number of results
-          mode          — "hybrid" | "bm25_only"
-          embedding_backend — "lmstudio" | "ollama" | "none"
-          results       — list of segments, each with:
-            id, norm, version, type, section, section_title,
-            text, anchor, page, normative_keywords,
-            hybrid_score, bm25_score, cosine_score
+    RETURNS dict with keys: query, result_count, mode, embedding_backend, results.
+    results is a list of segment dicts — do NOT pass results as input.
     """
     limit = max(1, min(limit, MAX_RESULTS))
     alpha = max(0.0, min(alpha, 1.0))
@@ -481,13 +432,12 @@ def search_norm(
 @mcp.tool()
 def get_segment(segment_id: str) -> dict[str, Any]:
     """
-    Retrieve a single normative segment by its exact ID.
+    Fetch one segment by its exact ID string.
 
-    Args:
-        segment_id: Exact segment ID, e.g. "en319401_p5_b2"
+    PARAMETERS (pass only these, no others):
+      segment_id (required) Exact ID string. Example: "en319401_p5_b2"
 
-    Returns:
-        Segment dict or {"error": "not found"}.
+    RETURNS the segment dict, or {"error": "not found"} if the ID does not exist.
     """
     con = _get_db()
     row = con.execute(
@@ -505,10 +455,11 @@ def get_segment(segment_id: str) -> dict[str, Any]:
 @mcp.tool()
 def list_norms() -> dict[str, Any]:
     """
-    List all norms currently indexed in the database with segment counts.
+    List all norms indexed in the database with segment counts.
 
-    Returns:
-        dict with total_norms, total_segments, norms list.
+    PARAMETERS: none — call with no arguments.
+
+    RETURNS dict with keys: total_norms, total_segments, norms (list).
     """
     con = _get_db()
     rows = con.execute(
@@ -541,26 +492,31 @@ def list_norms() -> dict[str, Any]:
 @mcp.tool()
 def get_section(
     norm: str,
-    section: str,
+    section: str = "",
     version: str | None = None,
     types: list[str] | None = None,
 ) -> dict[str, Any]:
     """
-    Retrieve all segments of a section (prefix match: "5" → 5, 5.1, 5.1.1, ...).
+    Retrieve all segments in a section of a norm. Section uses prefix match:
+    "5" returns section 5, 5.1, 5.1.1, etc. Omit section to get the full norm.
 
-    Args:
-        norm:    Norm name (partial match). Example: "319 401"
-        section: Section number. Example: "5", "5.1"
-        version: Optional exact version.
-        types:   Segment types to include. Default: all types.
+    PARAMETERS (pass only these, no others):
+      norm    (required) Partial norm name. Example: "319 401"
+      section (optional) Section number string. Example: "5" or "5.1". Default: "" (all).
+      version (optional) Exact version string. Example: "v2.2.1"
+      types   (optional) List of strings to filter types: ["NORM"], ["INFORM"], ["SECTION"].
 
-    Returns:
-        dict with norm, version, section, segment_count, segments.
+    RETURNS dict with keys: norm, version, section, segment_count, segments.
+    Do NOT pass keys like "results" or "data" — they are not valid parameters.
     """
     con = _get_db()
 
-    clauses = ["s.norm LIKE ?", "(s.section = ? OR s.section LIKE ?)"]
-    params: list[Any] = [f"%{norm}%", section, f"{section}.%"]
+    clauses: list[str] = ["s.norm LIKE ?"]
+    params: list[Any] = [f"%{norm}%"]
+
+    if section:
+        clauses.append("(s.section = ? OR s.section LIKE ?)")
+        params.extend([section, f"{section}.%"])
 
     if version:
         clauses.append("s.version = ?")
@@ -599,7 +555,7 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="EUDI-Nexus MCP Server")
     parser.add_argument("--db",       default=None, help="Override DB path")
-    parser.add_argument("--no-embed", action="store_true", help="BM25-only mode (skip embedding backend)")
+    parser.add_argument("--no-embed", action="store_true", help="BM25-only mode")
     parser.add_argument("--backend",  default=None, choices=["lmstudio", "ollama", "auto"],
                         help="Embedding backend (overrides EMBEDDING_BACKEND env)")
     args = parser.parse_args()
