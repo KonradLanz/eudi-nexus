@@ -146,7 +146,7 @@ PROFILES: dict[str, Profile] = {
     "etsi-contribution": Profile(
         name="etsi-contribution",
         header_zone=0.12, footer_zone=0.10,
-tml       heading_min_size=11.0, heading_bold_ratio=0.50,
+        heading_min_size=11.0, heading_bold_ratio=0.50,
         toc_run_threshold=3,
         header_re=[
             r"ETSI TC ESI",
