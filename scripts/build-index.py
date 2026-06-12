@@ -81,14 +81,98 @@ DEFAULT_DB_PATH    = os.environ.get("MCP_DB_PATH", "corpus/eudi-nexus.db")
 SEGMENTS_DIR       = Path("corpus/specs/_segments")
 
 # Segment types to embed (full vector search)
-EMBED_TYPES   = {"NORM", "INFORM"}
+EMBED_TYPES    = {"NORM", "INFORM"}
 # Segment types to index FTS-only (no vector)
 FTS_ONLY_TYPES = {"SECTION"}
 # Segment types to skip entirely
-SKIP_TYPES    = {"HEADER", "FOOTER", "TOC", "OTHER"}
+SKIP_TYPES     = {"HEADER", "FOOTER", "TOC", "OTHER"}
 
 # Batch size for embedding API calls
 EMBED_BATCH = 16
+
+# Segment merger thresholds
+MERGE_MIN_CHARS = 200   # keep merging until segment is at least this long
+MERGE_MAX_CHARS = 1200  # never exceed this (avoids embedding truncation)
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Segment merger
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _merge_short_segments(segments: list[dict]) -> list[dict]:
+    """
+    Merge consecutive NORM/INFORM fragments within the same section
+    into coherent requirement sentences.
+
+    Rules:
+    - Only merges segments of the same type within the same section.
+    - Keeps merging until MERGE_MIN_CHARS is reached or a sentence ends (. ; :)
+    - Never produces a segment longer than MERGE_MAX_CHARS.
+    - Non-NORM/INFORM segments (SECTION etc.) act as hard flush boundaries.
+    - The merged segment inherits the ID, page, and anchor of the FIRST fragment.
+    - normative_keywords is the union of all merged fragments.
+    """
+    merged: list[dict] = []
+    buf: dict | None = None
+
+    def _flush(b: dict) -> dict:
+        """Normalise buffer before appending."""
+        b["text"] = b["text"].strip()
+        kw = b.get("normative_keywords")
+        if isinstance(kw, list):
+            b["normative_keywords"] = list(dict.fromkeys(kw))  # dedup, preserve order
+        return b
+
+    def _sentence_end(text: str) -> bool:
+        t = text.rstrip()
+        return t.endswith((".", ";", ":"))
+
+    def _can_merge(buf: dict, seg: dict) -> bool:
+        return (
+            buf["type"] == seg.get("type")
+            and buf.get("section") == seg.get("section")
+            and len(buf["text"]) < MERGE_MIN_CHARS
+            and len(buf["text"]) + 1 + len(seg.get("text", "")) <= MERGE_MAX_CHARS
+        )
+
+    for seg in segments:
+        seg_type = seg.get("type", "OTHER")
+
+        # Non-mergeable types flush the buffer immediately
+        if seg_type not in EMBED_TYPES:
+            if buf is not None:
+                merged.append(_flush(buf))
+                buf = None
+            merged.append(seg)
+            continue
+
+        if buf is None:
+            buf = dict(seg)
+            buf["normative_keywords"] = list(seg.get("normative_keywords") or [])
+        elif _can_merge(buf, seg):
+            # Append text with a space separator
+            buf["text"] = buf["text"].rstrip() + " " + seg["text"].strip()
+            # Union of keywords
+            existing = set(buf["normative_keywords"])
+            for kw in (seg.get("normative_keywords") or []):
+                if kw not in existing:
+                    buf["normative_keywords"].append(kw)
+                    existing.add(kw)
+        else:
+            # Cannot merge — flush buf, start new
+            merged.append(_flush(buf))
+            buf = dict(seg)
+            buf["normative_keywords"] = list(seg.get("normative_keywords") or [])
+
+        # Flush if we have a complete sentence and are long enough
+        if buf and len(buf["text"]) >= MERGE_MIN_CHARS and _sentence_end(buf["text"]):
+            merged.append(_flush(buf))
+            buf = None
+
+    if buf is not None:
+        merged.append(_flush(buf))
+
+    return merged
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -264,13 +348,14 @@ def iter_segment_files(segments_dir: Path) -> Iterator[Path]:
 
 def load_segments_file(path: Path) -> tuple[str, str, list[dict]]:
     """
-    Parse a .segments.json file.
-    Returns (norm, version, segments_list).
+    Parse a .segments.json file and apply segment merging.
+    Returns (norm, version, merged_segments_list).
     """
     data = json.loads(path.read_text(encoding="utf-8"))
     norm    = data.get("norm", path.stem)
     version = data.get("version", "")
     segs    = data.get("segments", [])
+    segs    = _merge_short_segments(segs)   # ← merge fragments into full sentences
     return norm, version, segs
 
 
@@ -483,7 +568,7 @@ Examples:
     model        = args.model or DEFAULT_MODEL
     verbose      = not args.quiet
 
-    # ── Stats-only mode ────────────────────────────────────────────
+    # ── Stats-only mode ──────────────────────────────────────────────────
     if args.stats:
         if not db_path.is_file():
             sys.exit(f"[ERROR] DB not found: {db_path}\n        Run: python3 scripts/build-index.py")
@@ -492,7 +577,7 @@ Examples:
         con.close()
         return
 
-    # ── Discover segment files ────────────────────────────────────────
+    # ── Discover segment files ──────────────────────────────────────────────
     seg_files = list(iter_segment_files(segments_dir))
     if not seg_files:
         sys.exit(
@@ -506,7 +591,7 @@ Examples:
         print(f"[INFO]  Model: {model}")
         print(f"[INFO]  Mode: {'--rebuild' if args.rebuild else '--dry-run' if args.dry_run else 'idempotent'}\n")
 
-    # ── Open / reset DB ────────────────────────────────────────────
+    # ── Open / reset DB ──────────────────────────────────────────────────
     con = _open_db(db_path)
 
     if args.rebuild:
@@ -514,7 +599,7 @@ Examples:
             print("[⚠️]  --rebuild: dropping existing data")
         drop_all(con)
 
-    # ── Embedding client ───────────────────────────────────────────
+    # ── Embedding client ──────────────────────────────────────────────────
     client: EmbeddingClient | None = None
     if not args.no_embed and not args.dry_run:
         client = EmbeddingClient(base_url=DEFAULT_BASE_URL, model=model)
@@ -532,7 +617,7 @@ Examples:
     else:
         create_schema(con, DEFAULT_DIMS)
 
-    # ── Index each file ────────────────────────────────────────────
+    # ── Index each file ──────────────────────────────────────────────────
     total_stats = {"inserted": 0, "embedded": 0, "skipped": 0, "errors": 0}
     t0 = time.monotonic()
 
