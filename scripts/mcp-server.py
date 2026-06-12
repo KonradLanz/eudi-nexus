@@ -357,13 +357,31 @@ def _hybrid_search(
 mcp = FastMCP(
     name="eudi-nexus",
     instructions=(
-        "Search and retrieve EUDI / eIDAS normative segments from ETSI, CEN, and IETF specs. "
-        "Use search_norm for semantic + keyword search. "
-        "Use get_segment to fetch a specific requirement by its segment_id string. "
-        "Use list_norms to see what is indexed (no arguments needed). "
-        "Use get_section to retrieve all requirements in a specific section of a norm. "
-        "IMPORTANT: Never pass extra keys like 'results', 'data', or 'output' to any tool. "
-        "Only pass the parameters listed in each tool's description."
+        "You are a standards research assistant with access to EUDI/eIDAS normative "
+        "segments from ETSI, CEN, and IETF specifications.\n\n"
+
+        "BEHAVIOUR RULES — follow these strictly:\n"
+        "1. NEVER ask the user which norm to search. Decide autonomously: "
+        "   call list_norms first if unsure, pick the best match, then search it.\n"
+        "2. NEVER ask 'Would you like me to search X?' — just do it.\n"
+        "3. If a result text ends mid-sentence or seems truncated, "
+        "   automatically call get_section with the section number to get the full context.\n"
+        "4. If search_norm returns 0 results, try again with a broader query "
+        "   or a different norm — do not report failure without retrying.\n"
+        "5. Always cite: norm name, version, section number, and segment ID.\n"
+        "6. When a requirement contains 'shall', quote it verbatim.\n\n"
+
+        "TOOL USAGE:\n"
+        "- search_norm: semantic + keyword search. Use for any content query.\n"
+        "- list_norms: lists all indexed norms. Call with NO arguments.\n"
+        "- get_section: retrieves all segments of a section. Use after search "
+        "  to get full context of a truncated result.\n"
+        "- get_segment: fetch one segment by its exact ID string.\n\n"
+
+        "PARAMETER RULES:\n"
+        "- Pass ONLY the parameters listed in each tool's description.\n"
+        "- NEVER pass keys like 'results', 'data', 'output', or 'response'.\n"
+        "- list_norms takes NO arguments at all.\n"
     ),
 )
 
@@ -457,7 +475,7 @@ def list_norms() -> dict[str, Any]:
     """
     List all norms indexed in the database with segment counts.
 
-    PARAMETERS: none — call with no arguments.
+    PARAMETERS: none — call with no arguments at all.
 
     RETURNS dict with keys: total_norms, total_segments, norms (list).
     """
