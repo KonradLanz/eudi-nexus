@@ -17,6 +17,7 @@ Usage:
   python3 scripts/mcp-server.py
   python3 scripts/mcp-server.py --db corpus/eudi-nexus.db
   python3 scripts/mcp-server.py --no-embed   # BM25-only, no embedding endpoint needed
+  python3 scripts/mcp-server.py --log logs/mcp.log
 
 ──────────────────────────────────────────────────────────────────────────────
   Embedding backend auto-detection (priority order):
@@ -28,6 +29,8 @@ Usage:
 
   Environment variables:
     MCP_DB_PATH            corpus/eudi-nexus.db
+    MCP_LOG_PATH           (empty = stderr only, set to enable file logging)
+    MCP_LOG_LEVEL          INFO  (DEBUG | INFO | WARNING)
     EMBEDDING_BACKEND      auto | lmstudio | ollama  (default: auto)
     LMSTUDIO_BASE_URL      http://localhost:1234
     LMSTUDIO_EMBED_MODEL   nomic-embed-text-v1.5
@@ -40,10 +43,12 @@ Usage:
 from __future__ import annotations
 
 import json
+import logging
 import os
 import sqlite3
 import struct
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -100,6 +105,49 @@ OLLAMA_MODEL        = os.environ.get("OLLAMA_EMBED_MODEL",   "nomic-embed-text")
 
 MAX_RESULTS  = 20
 DEFAULT_K    = 20
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Logging
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _setup_logging(log_path: str = "", level: str = "INFO") -> logging.Logger:
+    """
+    Configure structured logging to stderr (always) and optionally to a file.
+
+    log_path: file path for persistent log (empty = stderr only)
+    level:    DEBUG | INFO | WARNING
+    """
+    numeric_level = getattr(logging, level.upper(), logging.INFO)
+    fmt = "%(asctime)s [%(levelname)-5s] %(message)s"
+    datefmt = "%Y-%m-%dT%H:%M:%S"
+
+    handlers: list[logging.Handler] = [logging.StreamHandler(sys.stderr)]
+
+    if log_path:
+        log_file = Path(log_path)
+        log_file.parent.mkdir(parents=True, exist_ok=True)
+        file_handler = logging.FileHandler(log_file, encoding="utf-8")
+        file_handler.setFormatter(logging.Formatter(fmt, datefmt=datefmt))
+        handlers.append(file_handler)
+
+    logging.basicConfig(
+        level=numeric_level,
+        format=fmt,
+        datefmt=datefmt,
+        handlers=handlers,
+        force=True,
+    )
+
+    logger = logging.getLogger("eudi-nexus")
+    logger.info("eudi-nexus MCP server starting  db=%s  log=%s",
+                DB_PATH, log_path or "stderr only")
+    return logger
+
+
+# Initialised later in main() once CLI args are parsed;
+# tools use module-level `log` so we provide a safe default.
+log: logging.Logger = logging.getLogger("eudi-nexus")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -226,7 +274,7 @@ def _log_backend(backend: str) -> None:
         "ollama":   f"Ollama     ({OLLAMA_URL})  model={OLLAMA_MODEL}",
         "none":     "No embedding backend found — BM25-only mode",
     }.get(backend, backend)
-    print(f"[eudi-nexus] Embedding backend: {label}", file=sys.stderr)
+    log.info("Embedding backend: %s", label)
 
 
 def _floats_to_blob(v: list[float]) -> bytes:
@@ -422,6 +470,7 @@ def search_norm(
     RETURNS dict with keys: query, result_count, mode, embedding_backend, results.
     results is a list of segment dicts — do NOT pass results as input.
     """
+    t0 = time.monotonic()
     limit = max(1, min(limit, MAX_RESULTS))
     alpha = max(0.0, min(alpha, 1.0))
     allowed_types = set(types) if types else {"NORM", "INFORM"}
@@ -433,6 +482,10 @@ def search_norm(
 
     has_cosine = any(r["cosine_score"] > 0 for r in results)
     mode = "hybrid" if (alpha < 1.0 and has_cosine) else "bm25_only"
+
+    elapsed_ms = (time.monotonic() - t0) * 1000
+    log.info("search_norm  query=%r  norm=%r  results=%d  mode=%s  %.0fms",
+             query, norm, len(results), mode, elapsed_ms)
 
     return {
         "query":             query,
@@ -457,11 +510,15 @@ def get_segment(segment_id: str) -> dict[str, Any]:
 
     RETURNS the segment dict, or {"error": "not found"} if the ID does not exist.
     """
+    t0 = time.monotonic()
     con = _get_db()
     row = con.execute(
         "SELECT * FROM segments WHERE id = ?", (segment_id,)
     ).fetchone()
-    if row is None:
+    found = row is not None
+    log.info("get_segment  id=%r  found=%s  %.0fms",
+             segment_id, found, (time.monotonic() - t0) * 1000)
+    if not found:
         return {"error": "not found", "segment_id": segment_id}
     return _row_to_dict(row)
 
@@ -479,6 +536,7 @@ def list_norms() -> dict[str, Any]:
 
     RETURNS dict with keys: total_norms, total_segments, norms (list).
     """
+    t0 = time.monotonic()
     con = _get_db()
     rows = con.execute(
         """
@@ -496,6 +554,9 @@ def list_norms() -> dict[str, Any]:
     ).fetchall()
 
     norms = [dict(r) for r in rows]
+    log.info("list_norms  total_norms=%d  total_segments=%d  %.0fms",
+             len(norms), sum(n["total_segments"] for n in norms),
+             (time.monotonic() - t0) * 1000)
     return {
         "total_norms":    len(norms),
         "total_segments": sum(n["total_segments"] for n in norms),
@@ -527,6 +588,7 @@ def get_section(
     RETURNS dict with keys: norm, version, section, segment_count, segments.
     Do NOT pass keys like "results" or "data" — they are not valid parameters.
     """
+    t0 = time.monotonic()
     con = _get_db()
 
     clauses: list[str] = ["s.norm LIKE ?"]
@@ -556,6 +618,9 @@ def get_section(
         params,
     ).fetchall()
 
+    log.info("get_section  norm=%r  section=%r  segments=%d  %.0fms",
+             norm, section, len(rows), (time.monotonic() - t0) * 1000)
+
     return {
         "norm":          norm,
         "version":       version,
@@ -572,10 +637,14 @@ def get_section(
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="EUDI-Nexus MCP Server")
-    parser.add_argument("--db",       default=None, help="Override DB path")
-    parser.add_argument("--no-embed", action="store_true", help="BM25-only mode")
-    parser.add_argument("--backend",  default=None, choices=["lmstudio", "ollama", "auto"],
+    parser.add_argument("--db",        default=None, help="Override DB path")
+    parser.add_argument("--no-embed",  action="store_true", help="BM25-only mode")
+    parser.add_argument("--backend",   default=None, choices=["lmstudio", "ollama", "auto"],
                         help="Embedding backend (overrides EMBEDDING_BACKEND env)")
+    parser.add_argument("--log",       default=None,
+                        help="Log file path (default: stderr only). Env: MCP_LOG_PATH")
+    parser.add_argument("--log-level", default=None,
+                        help="Log level DEBUG|INFO|WARNING (default: INFO). Env: MCP_LOG_LEVEL")
     args = parser.parse_args()
 
     if args.db:
@@ -587,5 +656,10 @@ if __name__ == "__main__":
     if args.backend:
         os.environ["EMBEDDING_BACKEND"] = args.backend
         BACKEND = args.backend
+
+    # Resolve log config: CLI flag > env var > default
+    log_path  = args.log       or os.environ.get("MCP_LOG_PATH",  "")
+    log_level = args.log_level or os.environ.get("MCP_LOG_LEVEL", "INFO")
+    log = _setup_logging(log_path, log_level)
 
     mcp.run(transport="stdio")
