@@ -123,6 +123,9 @@ def _merge_short_segments(segments: list[dict]) -> list[dict]:
 
     Rules:
     - Only merges segments of the same type within the same section.
+    - section='' (anonymous/preamble zone) merges freely with other '' segments.
+    - Numbered sections (e.g. '5.1') only merge within the same clause.
+    - Any section change ('' → '5.1', '5.1' → '5.2') is a hard flush boundary.
     - Accumulates text until MERGE_MAX_CHARS would be exceeded.
     - Flushes eagerly once buf >= MERGE_MIN_CHARS AND a sentence ends (. ; :).
     - Hard-flushes when the next segment would push buf over MERGE_MAX_CHARS.
@@ -146,9 +149,10 @@ def _merge_short_segments(segments: list[dict]) -> list[dict]:
         return t.endswith((".", ";", ":"))
 
     def _can_merge(buf: dict, seg: dict) -> bool:
-        # KEY FIX: gate on MERGE_MAX_CHARS, not MERGE_MIN_CHARS.
-        # MERGE_MIN_CHARS is only used as the flush threshold below —
-        # it must NOT prevent accumulation before that threshold is reached.
+        # Section equality is the key gate:
+        #   '' == ''     → same anonymous zone, allowed
+        #   '5.1'=='5.1' → same clause, allowed
+        #   anything else → different section, hard boundary
         return (
             buf["type"] == seg.get("type")
             and buf.get("section") == seg.get("section")
@@ -179,7 +183,7 @@ def _merge_short_segments(segments: list[dict]) -> list[dict]:
                     buf["normative_keywords"].append(kw)
                     existing.add(kw)
         else:
-            # Next segment would exceed MERGE_MAX_CHARS — flush and start new
+            # Section changed or would exceed MERGE_MAX_CHARS — flush and start new
             merged.append(_flush(buf))
             buf = dict(seg)
             buf["normative_keywords"] = list(seg.get("normative_keywords") or [])
@@ -629,7 +633,7 @@ def cmd_check_index(segments_dir: Path, db_path: Path) -> int:
     """
     Verify that every *.segments.json file was fully indexed into the DB.
 
-    Per-file checks (in order — first failure wins for the status flag):
+    Per-file checks:
       1. meta    — source_file appears in index_meta (file was processed)
       2. rows    — at least one segment row exists for that source_file
       3. count   — NORM/INFORM rows in DB >= expected after-merge count
@@ -656,16 +660,12 @@ def cmd_check_index(segments_dir: Path, db_path: Path) -> int:
         print(f"[ERROR] No segment files found in {segments_dir}")
         return 1
 
-    # Column headers
-    col_meta   = "meta"
-    col_rows   = "rows"
-    col_count  = "count"
     col_embed  = f"emb≥{EMBED_MIN_COVERAGE:.0%}"
     print()
     print(
-        f"  {'':1} {'File':<45} {col_rows:>6} {col_count:>6}"
+        f"  {'':1} {'File':<45} {'rows':>6} {'count':>6}"
         + (f"  {col_embed:>8}" if check_embeds else "")
-        + f"  {col_meta}"
+        + "  meta"
     )
     print("─" * (85 + (11 if check_embeds else 0)))
 
@@ -674,7 +674,7 @@ def cmd_check_index(segments_dir: Path, db_path: Path) -> int:
     for f in seg_files:
         stem = f.stem
 
-        # ─ expected counts from JSON (after merge) ────────────────────────
+        # expected counts from JSON (after merge)
         raw_data = json.loads(f.read_text(encoding="utf-8"))
         raw_segs = raw_data.get("segments", [])
         merged   = _merge_short_segments(raw_segs)
@@ -683,7 +683,7 @@ def cmd_check_index(segments_dir: Path, db_path: Path) -> int:
             if s.get("type") in EMBED_TYPES and s.get("text", "").strip()
         )
 
-        # ─ DB queries ─────────────────────────────────────────────
+        # DB queries
         in_meta = con.execute(
             "SELECT 1 FROM index_meta WHERE key = ?",
             (f"indexed:{stem}",),
@@ -694,50 +694,36 @@ def cmd_check_index(segments_dir: Path, db_path: Path) -> int:
         ).fetchone()[0]
 
         db_embed_count = con.execute(
-            """
-            SELECT COUNT(*) FROM segments
-            WHERE source_file = ?
-              AND type IN ('NORM','INFORM')
-            """,
+            "SELECT COUNT(*) FROM segments WHERE source_file = ? AND type IN ('NORM','INFORM')",
             (stem,),
         ).fetchone()[0]
 
         db_has_embed = con.execute(
-            """
-            SELECT COUNT(*) FROM segments
-            WHERE source_file = ?
-              AND has_embedding = 1
-            """,
+            "SELECT COUNT(*) FROM segments WHERE source_file = ? AND has_embedding = 1",
             (stem,),
         ).fetchone()[0]
 
-        # ─ evaluate checks ─────────────────────────────────────────
+        # evaluate checks
         ok_rows  = db_total > 0
-        ok_count = db_embed_count >= expected_embed  # must have at least as many
+        ok_count = db_embed_count >= expected_embed
         ok_embed = True
         if check_embeds and db_embed_count > 0:
-            coverage = db_has_embed / db_embed_count
-            ok_embed = coverage >= EMBED_MIN_COVERAGE
+            ok_embed = (db_has_embed / db_embed_count) >= EMBED_MIN_COVERAGE
         elif check_embeds:
-            ok_embed = False   # expected embeddings but none at all for this file
+            ok_embed = False
 
-        file_ok = ok_rows and ok_count and ok_meta and ok_embed
         if not (in_meta and ok_rows and ok_count and ok_embed):
             failures.append(stem)
 
         # status icon
-        if not in_meta:
-            icon = "✖"   # not processed at all
-        elif not ok_rows:
-            icon = "✖"   # processed but zero rows
+        if not in_meta or not ok_rows:
+            icon = "✖"
         elif not ok_count or not ok_embed:
-            icon = "⚠"   # partial
+            icon = "⚠"
         else:
             icon = "✓"
 
-        emb_pct = (
-            f"{db_has_embed / db_embed_count:.0%}" if db_embed_count else "n/a"
-        )
+        emb_pct   = f"{db_has_embed / db_embed_count:.0%}" if db_embed_count else "n/a"
         count_str = f"{db_embed_count}/{expected_embed}"
         embed_col = f"  {emb_pct:>8}" if check_embeds else ""
         meta_col  = f"  {'yes' if in_meta else 'NO'}"
@@ -752,7 +738,7 @@ def cmd_check_index(segments_dir: Path, db_path: Path) -> int:
     con.close()
 
     print("─" * (85 + (11 if check_embeds else 0)))
-    total = len(seg_files)
+    total  = len(seg_files)
     passed = total - len(failures)
 
     if failures:
@@ -837,15 +823,12 @@ Examples:
     model        = args.model or DEFAULT_MODEL
     verbose      = not args.quiet
 
-    # ── Check-merge mode ─────────────────────────────────────────────────
     if args.check_merge:
         sys.exit(cmd_check_merge(segments_dir))
 
-    # ── Check-index mode ─────────────────────────────────────────────────
     if args.check_index:
         sys.exit(cmd_check_index(segments_dir, db_path))
 
-    # ── Stats-only mode ──────────────────────────────────────────────────
     if args.stats:
         if not db_path.is_file():
             sys.exit(f"[ERROR] DB not found: {db_path}\n        Run: python3 scripts/build-index.py")
@@ -854,7 +837,6 @@ Examples:
         con.close()
         return
 
-    # ── Discover segment files ──────────────────────────────────────────────
     seg_files = list(iter_segment_files(segments_dir))
     if not seg_files:
         sys.exit(
@@ -868,7 +850,6 @@ Examples:
         print(f"[INFO]  Model: {model}")
         print(f"[INFO]  Mode: {'--rebuild' if args.rebuild else '--dry-run' if args.dry_run else 'idempotent'}\n")
 
-    # ── Open / reset DB ──────────────────────────────────────────────────
     con = _open_db(db_path)
 
     if args.rebuild:
@@ -876,7 +857,6 @@ Examples:
             print("[⚠️]  --rebuild: dropping existing data")
         drop_all(con)
 
-    # ── Embedding client ──────────────────────────────────────────────────
     client: EmbeddingClient | None = None
     if not args.no_embed and not args.dry_run:
         client = EmbeddingClient(base_url=DEFAULT_BASE_URL, model=model)
@@ -894,7 +874,6 @@ Examples:
     else:
         create_schema(con, DEFAULT_DIMS)
 
-    # ── Index each file ──────────────────────────────────────────────────
     total_stats = {"inserted": 0, "embedded": 0, "skipped": 0, "errors": 0}
     t0 = time.monotonic()
 
