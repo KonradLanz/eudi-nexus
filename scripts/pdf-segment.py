@@ -501,6 +501,15 @@ _GAP_THRESHOLD = 20
 _PAGE_BOTTOM_ZONE = 0.85   # table ending below this y-fraction → may continue
 _PAGE_TOP_ZONE    = 0.15   # table starting above this y-fraction on next page
 
+# ── Table quality guards ──────────────────────────────────────────────────────
+# ETSI PDFs often render NOTE/EXAMPLE blocks inside invisible single-cell
+# frames.  pdfplumber's find_tables() detects these as 1×1 tables.
+# These constants define the minimum size a detected table must have to be
+# accepted as a real data table (not a framed prose block).
+_MIN_TABLE_COLS     = 2     # at least 2 columns
+_MIN_TABLE_ROWS     = 2     # at least 1 header row + 1 data row
+_MIN_TABLE_TEXT_LEN = 80    # total cell text must be longer than a single NOTE
+
 
 @dataclass
 class TextBlock:
@@ -558,7 +567,7 @@ def _table_to_markdown(rows: list[list[str]]) -> str:
 
 def _extract_tables(page) -> list[dict]:
     """
-    Extract all tables from a pdfplumber page object.
+    Extract all *real* tables from a pdfplumber page object.
 
     Returns a list of dicts, each with:
       bbox          — (x0, top, x1, bottom) in page coordinates
@@ -568,6 +577,11 @@ def _extract_tables(page) -> list[dict]:
       markdown_text — GFM Markdown string
       y_frac_top    — normalised vertical position (0=top, 1=bottom)
       y_frac_bot    — normalised vertical position
+
+    Quality guards (constants at top of section):
+      _MIN_TABLE_COLS     — rejects single-column NOTE/EXAMPLE frames
+      _MIN_TABLE_ROWS     — rejects single-row caption boxes
+      _MIN_TABLE_TEXT_LEN — rejects very short framed text blocks
     """
     height = float(page.height)
     result = []
@@ -584,15 +598,28 @@ def _extract_tables(page) -> list[dict]:
         if not raw:
             continue
 
-        # Normalise: replace None with "", strip whitespace
+        # Normalise: replace None with "", strip whitespace, drop empty rows
         rows: list[list[str]] = []
         for raw_row in raw:
             cleaned = [(c or "").strip() for c in raw_row]
-            # Skip completely empty rows
             if any(cleaned):
                 rows.append(cleaned)
 
         if not rows:
+            continue
+
+        # ── Quality guard 1: minimum column count ─────────────────
+        n_cols = max(len(r) for r in rows)
+        if n_cols < _MIN_TABLE_COLS:
+            continue
+
+        # ── Quality guard 2: minimum row count ────────────────────
+        if len(rows) < _MIN_TABLE_ROWS:
+            continue
+
+        # ── Quality guard 3: total text length ────────────────────
+        total_text = " ".join(c for row in rows for c in row)
+        if len(total_text) < _MIN_TABLE_TEXT_LEN:
             continue
 
         bbox = tbl.bbox  # (x0, top, x1, bottom)
