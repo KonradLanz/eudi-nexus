@@ -17,8 +17,9 @@ Usage:
   python3 scripts/build-index.py --rebuild    # drop & recreate db
   python3 scripts/build-index.py --stats      # print index stats and exit
   python3 scripts/build-index.py --dry-run    # parse + embed, no db write
+  python3 scripts/build-index.py --check-merge   # simulate merge quality gate, exit
+  python3 scripts/build-index.py --check-index   # verify every doc landed in DB, exit
   python3 scripts/build-index.py --model nomic-embed-text-v1.5
-  python3 scripts/build-index.py --check-merge   # simulate merge, print stats, exit
 
 Environment (from .env):
   LMSTUDIO_BASE_URL     http://localhost:1234
@@ -105,6 +106,10 @@ MERGE_MAX_CHARS = 1800  # hard cap (raised from 1200 — nomic supports ~512 tok
 
 # Pipeline gate: if post-merge median stays below this, build-index exits 1
 MERGE_TARGET_MEDIAN = 150
+
+# check-index: minimum fraction of NORM/INFORM segments that must have embeddings
+# (only enforced when the DB actually contains any embeddings at all)
+EMBED_MIN_COVERAGE = 0.95   # 95 %
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -200,7 +205,7 @@ def _merge_stats(segments: list[dict]) -> dict:
     after  = [s for s in merged if s.get("type") in EMBED_TYPES]
     after_lens = [len(s["text"]) for s in after]
 
-    # flush-reason simulation on the already-merged list (for diagnostics)
+    # flush-reason simulation
     flush = {"sentence_end": 0, "max_chars": 0, "final": 0}
     buf_text = None
     for s in embed:
@@ -617,6 +622,154 @@ def cmd_check_merge(segments_dir: Path) -> int:
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Check-index mode  (--check-index)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def cmd_check_index(segments_dir: Path, db_path: Path) -> int:
+    """
+    Verify that every *.segments.json file was fully indexed into the DB.
+
+    Per-file checks (in order — first failure wins for the status flag):
+      1. meta    — source_file appears in index_meta (file was processed)
+      2. rows    — at least one segment row exists for that source_file
+      3. count   — NORM/INFORM rows in DB >= expected after-merge count
+      4. embeds  — embedding coverage >= EMBED_MIN_COVERAGE
+                   (only checked when the DB has any embeddings at all)
+
+    Exits 0 when every file passes, 1 otherwise.
+    """
+    if not db_path.is_file():
+        print(f"[ERROR] DB not found: {db_path}")
+        print(f"        Run: python3 scripts/build-index.py --rebuild")
+        return 1
+
+    con = _open_db(db_path)
+
+    # Does the DB hold any embeddings at all?
+    total_embedded = con.execute(
+        "SELECT COUNT(*) FROM segments WHERE has_embedding = 1"
+    ).fetchone()[0]
+    check_embeds = total_embedded > 0
+
+    seg_files = sorted(segments_dir.glob("*.segments.json"))
+    if not seg_files:
+        print(f"[ERROR] No segment files found in {segments_dir}")
+        return 1
+
+    # Column headers
+    col_meta   = "meta"
+    col_rows   = "rows"
+    col_count  = "count"
+    col_embed  = f"emb≥{EMBED_MIN_COVERAGE:.0%}"
+    print()
+    print(
+        f"  {'':1} {'File':<45} {col_rows:>6} {col_count:>6}"
+        + (f"  {col_embed:>8}" if check_embeds else "")
+        + f"  {col_meta}"
+    )
+    print("─" * (85 + (11 if check_embeds else 0)))
+
+    failures: list[str] = []
+
+    for f in seg_files:
+        stem = f.stem
+
+        # ─ expected counts from JSON (after merge) ────────────────────────
+        raw_data = json.loads(f.read_text(encoding="utf-8"))
+        raw_segs = raw_data.get("segments", [])
+        merged   = _merge_short_segments(raw_segs)
+        expected_embed = sum(
+            1 for s in merged
+            if s.get("type") in EMBED_TYPES and s.get("text", "").strip()
+        )
+
+        # ─ DB queries ─────────────────────────────────────────────
+        in_meta = con.execute(
+            "SELECT 1 FROM index_meta WHERE key = ?",
+            (f"indexed:{stem}",),
+        ).fetchone() is not None
+
+        db_total = con.execute(
+            "SELECT COUNT(*) FROM segments WHERE source_file = ?", (stem,)
+        ).fetchone()[0]
+
+        db_embed_count = con.execute(
+            """
+            SELECT COUNT(*) FROM segments
+            WHERE source_file = ?
+              AND type IN ('NORM','INFORM')
+            """,
+            (stem,),
+        ).fetchone()[0]
+
+        db_has_embed = con.execute(
+            """
+            SELECT COUNT(*) FROM segments
+            WHERE source_file = ?
+              AND has_embedding = 1
+            """,
+            (stem,),
+        ).fetchone()[0]
+
+        # ─ evaluate checks ─────────────────────────────────────────
+        ok_rows  = db_total > 0
+        ok_count = db_embed_count >= expected_embed  # must have at least as many
+        ok_embed = True
+        if check_embeds and db_embed_count > 0:
+            coverage = db_has_embed / db_embed_count
+            ok_embed = coverage >= EMBED_MIN_COVERAGE
+        elif check_embeds:
+            ok_embed = False   # expected embeddings but none at all for this file
+
+        file_ok = ok_rows and ok_count and ok_meta and ok_embed
+        if not (in_meta and ok_rows and ok_count and ok_embed):
+            failures.append(stem)
+
+        # status icon
+        if not in_meta:
+            icon = "✖"   # not processed at all
+        elif not ok_rows:
+            icon = "✖"   # processed but zero rows
+        elif not ok_count or not ok_embed:
+            icon = "⚠"   # partial
+        else:
+            icon = "✓"
+
+        emb_pct = (
+            f"{db_has_embed / db_embed_count:.0%}" if db_embed_count else "n/a"
+        )
+        count_str = f"{db_embed_count}/{expected_embed}"
+        embed_col = f"  {emb_pct:>8}" if check_embeds else ""
+        meta_col  = f"  {'yes' if in_meta else 'NO'}"
+
+        print(
+            f"  {icon} {stem[:45]:<45} "
+            f"{db_total:>6} {count_str:>6}"
+            + embed_col
+            + meta_col
+        )
+
+    con.close()
+
+    print("─" * (85 + (11 if check_embeds else 0)))
+    total = len(seg_files)
+    passed = total - len(failures)
+
+    if failures:
+        print(f"\n[✗] {len(failures)}/{total} file(s) FAILED index check:")
+        for name in failures:
+            print(f"     • {name}")
+        print(
+            f"\n    Fix: python3 scripts/build-index.py --rebuild\n"
+            f"    Then re-run: python3 scripts/build-index.py --check-index\n"
+        )
+        return 1
+
+    print(f"\n[✓] All {total} file(s) fully indexed.\n")
+    return 0
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Stats
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -657,12 +810,13 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python3 scripts/build-index.py                  # idempotent
-  python3 scripts/build-index.py --rebuild        # drop & rebuild
-  python3 scripts/build-index.py --stats          # show index stats
-  python3 scripts/build-index.py --dry-run        # no db writes
-  python3 scripts/build-index.py --check-merge    # simulate merge quality gate
-  python3 scripts/build-index.py --no-embed       # FTS-only (no LM Studio needed)
+  python3 scripts/build-index.py                   # idempotent
+  python3 scripts/build-index.py --rebuild         # drop & rebuild
+  python3 scripts/build-index.py --stats           # show index stats
+  python3 scripts/build-index.py --dry-run         # no db writes
+  python3 scripts/build-index.py --check-merge     # simulate merge quality gate
+  python3 scripts/build-index.py --check-index     # verify every doc is in DB
+  python3 scripts/build-index.py --no-embed        # FTS-only (no LM Studio needed)
   python3 scripts/build-index.py --model mxbai-embed-large
 """,
     )
@@ -671,6 +825,7 @@ Examples:
     parser.add_argument("--dry-run",      action="store_true", help="Parse and embed but do not write to db")
     parser.add_argument("--no-embed",     action="store_true", help="Skip embedding (FTS / BM25 only)")
     parser.add_argument("--check-merge",  action="store_true", help="Simulate merge, print quality gate, exit")
+    parser.add_argument("--check-index",  action="store_true", help="Verify every segment file is fully in DB, exit")
     parser.add_argument("--model",        default=None,        help=f"Embedding model (default: {DEFAULT_MODEL})")
     parser.add_argument("--db",           default=None,        help=f"DB path (default: {DEFAULT_DB_PATH})")
     parser.add_argument("--segments",     default=None,        help=f"Segments dir (default: {SEGMENTS_DIR})")
@@ -685,6 +840,10 @@ Examples:
     # ── Check-merge mode ─────────────────────────────────────────────────
     if args.check_merge:
         sys.exit(cmd_check_merge(segments_dir))
+
+    # ── Check-index mode ─────────────────────────────────────────────────
+    if args.check_index:
+        sys.exit(cmd_check_index(segments_dir, db_path))
 
     # ── Stats-only mode ──────────────────────────────────────────────────
     if args.stats:
