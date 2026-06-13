@@ -503,6 +503,26 @@ def segment_docx(
 # ─────────────────────────────────────────────────────────────────────────────
 
 _GAP_THRESHOLD = 20
+RULES_PATH = Path("corpus/para-tune/learned-rules.json")
+
+
+def _get_rule_for_stem(stem: str) -> dict:
+    """
+    Load learned para-tune overrides directly from JSON.
+
+    Returns an empty dict if the rules file is missing, invalid, or the stem
+    has no entry. A shallow copy is returned so callers/tests cannot mutate the
+    cached on-disk data through the returned object.
+    """
+    if not RULES_PATH.exists():
+        return {}
+    try:
+        rules = json.loads(RULES_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    rule = rules.get(stem, {})
+    return dict(rule) if isinstance(rule, dict) else {}
+
 
 # Fraction of page height — tables touching these zones are candidates for
 # cross-page continuation detection.
