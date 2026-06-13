@@ -33,8 +33,14 @@ Table masking
   Before gap-based line grouping, chars whose midpoint falls inside a
   detected table bounding-box are excluded.  This prevents table-cell gaps
   (typically 16-22pt) from biasing the gap calibration.
-  Table detection tries the "lines" strategy first (bordered tables), then
-  falls back to a "text" strategy (borderless / ruled-only ETSI tables).
+
+  Only the "lines" strategy is used (bordered tables, ruled grids).  The
+  "text" strategy is intentionally omitted: it treats column-aligned body
+  text as a table, masking the entire page and producing n=1 for all gaps.
+
+  An additional area guard (MAX_TABLE_AREA_FRAC = 0.30) drops any bbox
+  that covers more than 30 % of the page — belt-and-suspenders protection
+  against false positives from decorative lines or unusual renderers.
 
 Ollama fallback
 ---------------
@@ -112,24 +118,20 @@ GAP_GRID = [8, 12, 16, 20, 24, 28, 32, 40]  # candidate thresholds to try
 OLLAMA_URL   = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "llama3"
 
-# Table-detection settings for pdfplumber.find_tables().
-# "lines" works for bordered ETSI tables (most common).
-# "text" is the fallback for borderless / lightly-ruled tables.
+# Table-detection: "lines" strategy only.
+# "text" strategy is intentionally omitted — it misclassifies column-aligned
+# body text as tables, masking all chars and producing n=1 for every gap.
 _TABLE_SETTINGS_LINES = {
     "vertical_strategy":   "lines",
     "horizontal_strategy": "lines",
     "snap_tolerance":  3,
     "join_tolerance":  3,
-    "edge_min_length": 3,
+    "edge_min_length": 10,   # ≥10pt: ignore decorative rules / header lines
 }
-_TABLE_SETTINGS_TEXT = {
-    "vertical_strategy":   "text",
-    "horizontal_strategy": "text",
-    "snap_tolerance":  3,
-    "join_tolerance":  3,
-    "min_words_vertical":   3,
-    "min_words_horizontal": 1,
-}
+
+# Area guard: discard any detected table bbox covering more than this fraction
+# of the page.  Belt-and-suspenders against false positives on unusual PDFs.
+MAX_TABLE_AREA_FRAC = 0.30
 
 _RFC2119_RE = re.compile(
     r"\b(shall\s+not|shall|should\s+not|should|must\s+not|must"
@@ -138,10 +140,10 @@ _RFC2119_RE = re.compile(
 )
 _SENTENCE_END_RE  = re.compile(r"[.!?:]\s*$")
 _NEW_ITEM_RE = re.compile(
-    r"^(\d+[\.\)]\s|\([a-z]\)\s|[-–•]\s|NOTE\b|EXAMPLE\b)",
+    r"^(\d+[\.]\s|\([a-z]\)\s|[-–•]\s|NOTE\b|EXAMPLE\b)",
     re.IGNORECASE,
 )
-_TOC_LINE_RE = re.compile(r"^.{2,60}[\.\s]{4,}\d{1,4}\s*$", re.MULTILINE)
+_TOC_LINE_RE = re.compile(r"^.{2,60}[\.\ ]{4,}\d{1,4}\s*$", re.MULTILINE)
 _SECTION_RE  = re.compile(
     r"^(?P<num>[A-Z]?\.?(?:\d+\.)+\d*|\.?\d+)\s+(?P<title>[A-Z][^\n]{2,80})$"
 )
@@ -173,23 +175,27 @@ def save_rules(rules: dict) -> None:
 
 def _get_table_bboxes(page) -> list[tuple[float, float, float, float]]:
     """
-    Return a list of (x0, top, x1, bottom) bounding boxes for all tables
-    detected on *page*.
+    Return (x0, top, x1, bottom) bounding boxes for bordered tables on *page*.
 
-    Strategy cascade (canonical pdfplumber pattern):
-      1. "lines"  — works for bordered tables (most ETSI specs use ruled grids)
-      2. "text"   — fallback for borderless / lightly-ruled tables
+    Uses only the "lines" strategy (real PDF vector edges ≥ 10pt).
+    The "text" strategy is excluded: it treats column-aligned body text as a
+    table, masking the entire page.
 
-    References:
-      https://stackoverflow.com/a/69408424
-      https://github.com/jsvine/pdfplumber/discussions/1005
+    Any bbox covering > MAX_TABLE_AREA_FRAC of the page is dropped as a
+    false positive.
     """
     try:
         tables = page.find_tables(table_settings=_TABLE_SETTINGS_LINES)
         if not tables:
-            # Borderless tables: derive cell boundaries from text alignment.
-            tables = page.find_tables(table_settings=_TABLE_SETTINGS_TEXT)
-        return [t.bbox for t in tables]
+            return []
+        page_area = page.width * page.height
+        result = []
+        for t in tables:
+            x0, top, x1, bot = t.bbox
+            area_frac = ((x1 - x0) * (bot - top)) / page_area
+            if area_frac <= MAX_TABLE_AREA_FRAC:
+                result.append(t.bbox)
+        return result
     except Exception:
         return []
 
@@ -200,8 +206,7 @@ def _char_in_table(
 ) -> bool:
     """
     Return True if the midpoint of char *ch* falls inside any of *bboxes*.
-    Uses midpoint (not full extent) so chars that straddle a table border
-    are not incorrectly excluded.
+    Uses midpoint so chars straddling a table border are not excluded.
     """
     if not bboxes:
         return False
@@ -225,13 +230,11 @@ def _extract_raw_lines(
     Return [(y_mid, chars)] sorted by y_mid, excluding chars inside *table_bboxes*.
 
     When *table_bboxes* is None or empty, all chars are included (legacy behaviour).
-    Passing the result of _get_table_bboxes(page) masks table regions so that
-    cell-to-cell gaps do not interfere with paragraph-gap calibration.
     """
     lines: dict[int, list[dict]] = {}
     for ch in (page.chars or []):
         if table_bboxes and _char_in_table(ch, table_bboxes):
-            continue   # skip chars inside detected table regions
+            continue
         y_mid = int((ch["top"] + ch["bottom"]) / 2)
         lines.setdefault(y_mid, []).append(ch)
     return sorted(lines.items())
@@ -311,7 +314,7 @@ def _merge_body_blocks(blocks: list[dict], types: list[str],
         if extra_endings:
             for e in extra_endings:
                 if text.rstrip().endswith(e):
-                    return False   # treat as non-ending → allow merge
+                    return False
         return False
 
     out_b: list[dict] = []
@@ -343,10 +346,10 @@ class SegQuality:
     stem:        str
     n_segs:      int
     median_len:  float
-    short_frac:  float   # fraction < 100 chars
-    tiny_frac:   float   # fraction < 50 chars
+    short_frac:  float
+    tiny_frac:   float
     gap_used:    int
-    baseline_n:  int = 0  # n_segs at gap=20; set by grid_search for collapse detection
+    baseline_n:  int = 0
 
     @property
     def ok(self) -> bool:
@@ -354,7 +357,6 @@ class SegQuality:
 
     @property
     def collapsed(self) -> bool:
-        """True when this result looks like table-row merging rather than para merging."""
         if self.baseline_n > 0 and self.n_segs < self.baseline_n * MIN_SEGS_RATIO:
             return True
         if self.median_len > MAX_SEG_MEDIAN:
@@ -382,14 +384,12 @@ def _measure_pdf(
     """
     Run extraction + merge with *gap* and return quality metrics.
 
-    When *mask_tables* is True (default), chars inside detected table regions
-    are excluded from block assembly so that inter-cell gaps do not pollute
-    the gap calibration.  Set to False only for debugging.
+    mask_tables=True (default): chars inside bordered table regions are excluded.
+    Set to False only for debugging.
     """
     all_texts: list[str] = []
     with pdfplumber.open(str(pdf_path)) as pdf:
         for page in pdf.pages:
-            # Detect table regions once per page; pass bboxes to extractor.
             table_bboxes = _get_table_bboxes(page) if mask_tables else []
             raw_lines = _extract_raw_lines(page, table_bboxes)
             blocks    = _lines_to_blocks(raw_lines, gap, float(page.height))
@@ -423,13 +423,10 @@ def grid_search(pdf_path: Path, verbose: bool = True) -> tuple[int, SegQuality]:
     Try each GAP in GAP_GRID.  Return (best_gap, best_quality).
 
     Selection logic (in priority order):
-      1. Exclude any candidate where collapsed==True (table-merge guard):
-           n_segs < baseline_n * MIN_SEGS_RATIO  OR  median > MAX_SEG_MEDIAN
-      2. Among non-collapsed candidates that meet the quality target (ok==True),
-         prefer the SMALLEST gap (most conservative; least table-merge risk).
-      3. If no non-collapsed candidate meets the target, choose the non-collapsed
-         candidate with the highest median_len.
-      4. If all candidates are collapsed (degenerate doc), fall back to gap=20.
+      1. Exclude collapsed candidates (n < 25% baseline OR median > 1200).
+      2. Among passing non-collapsed candidates, prefer the SMALLEST gap.
+      3. If none pass, pick non-collapsed with highest median.
+      4. If all collapsed, fall back to gap=20.
     """
     baseline_gap = 20
     baseline_q   = _measure_pdf(pdf_path, baseline_gap)
