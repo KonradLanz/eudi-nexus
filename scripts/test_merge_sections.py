@@ -16,7 +16,10 @@ Usage:
   python3 scripts/test_merge_sections.py -v
 """
 from __future__ import annotations
-import sys, pathlib, importlib
+import sys
+import pathlib
+import importlib
+import importlib.util  # must be explicit
 
 # Support both 'build_index.py' and 'build-index.py' filenames
 try:
