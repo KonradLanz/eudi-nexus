@@ -22,6 +22,14 @@ Quality target
   median segment length  >= MIN_MEDIAN_CHARS  (default 150)
   fraction of segs < 100 chars  <= MAX_SHORT_FRAC  (default 0.25)
 
+Collapse guard
+--------------
+  If a gap value causes n_segs to drop below MIN_SEGS_RATIO * baseline_n
+  (baseline = gap=20) OR the median exceeds MAX_SEG_MEDIAN, that gap is
+  treated as collapsed (table rows merged) and excluded from selection.
+  This prevents picking gap=28 (n=8) over gap=20 (n=102) for documents
+  where inter-cell spacing is smaller than the gap window.
+
 Ollama fallback
 ---------------
 Requires `ollama` running locally (http://localhost:11434).
@@ -88,6 +96,13 @@ DOWNLOAD_ROOTS = [
 
 MIN_MEDIAN_CHARS = 150   # quality target: median segment ≥ this
 MAX_SHORT_FRAC   = 0.25  # quality target: fraction <100 chars ≤ this
+
+# Collapse-guard constants — prevent table rows being merged into giant blocks.
+# A gap candidate is considered "collapsed" when:
+#   n_segs  <  baseline_n  *  MIN_SEGS_RATIO     (too few segments → rows merged)
+#   median  >  MAX_SEG_MEDIAN                     (blocks too long → multi-clause blobs)
+MIN_SEGS_RATIO  = 0.25   # candidate must keep ≥ 25 % of baseline segment count
+MAX_SEG_MEDIAN  = 1200   # median > 1200 chars almost certainly means table collapse
 
 GAP_GRID = [8, 12, 16, 20, 24, 28, 32, 40]  # candidate thresholds to try
 
@@ -252,17 +267,29 @@ class SegQuality:
     short_frac:  float   # fraction < 100 chars
     tiny_frac:   float   # fraction < 50 chars
     gap_used:    int
+    baseline_n:  int = 0  # n_segs at gap=20; set by grid_search for collapse detection
 
     @property
     def ok(self) -> bool:
         return self.median_len >= MIN_MEDIAN_CHARS and self.short_frac <= MAX_SHORT_FRAC
 
+    @property
+    def collapsed(self) -> bool:
+        """True when this result looks like table-row merging rather than para merging."""
+        if self.baseline_n > 0 and self.n_segs < self.baseline_n * MIN_SEGS_RATIO:
+            return True
+        if self.median_len > MAX_SEG_MEDIAN:
+            return True
+        return False
+
     def __str__(self) -> str:
         flag = "✓" if self.ok else "✗"
+        collapse_tag = "  [⚠️ collapsed]" if self.collapsed else ""
         return (
             f"{flag} {self.stem[:45]:45}  "
             f"n={self.n_segs:4}  med={self.median_len:>6.0f}  "
             f"<100={self.short_frac*100:4.1f}%  gap={self.gap_used}"
+            f"{collapse_tag}"
         )
 
 
@@ -303,21 +330,49 @@ def _measure_pdf(pdf_path: Path, gap: int,
 def grid_search(pdf_path: Path, verbose: bool = True) -> tuple[int, SegQuality]:
     """
     Try each GAP in GAP_GRID.  Return (best_gap, best_quality).
-    'Best' = highest median_len among runs that meet the quality target;
-    falls back to the run with highest median if none meet the target.
+
+    Selection logic (in priority order):
+      1. Exclude any candidate where collapsed==True (table-merge guard):
+           n_segs < baseline_n * MIN_SEGS_RATIO  OR  median > MAX_SEG_MEDIAN
+      2. Among non-collapsed candidates that meet the quality target (ok==True),
+         prefer the SMALLEST gap (most conservative; least table-merge risk).
+      3. If no non-collapsed candidate meets the target, choose the non-collapsed
+         candidate with the highest median_len.
+      4. If all candidates are collapsed (degenerate doc), fall back to gap=20.
     """
+    # Establish baseline: always measure gap=20 first (used for collapse ratio).
+    baseline_gap = 20
+    baseline_q   = _measure_pdf(pdf_path, baseline_gap)
+    baseline_n   = baseline_q.n_segs or 1  # avoid div-by-zero
+
     results: list[tuple[int, SegQuality]] = []
     for gap in GAP_GRID:
         q = _measure_pdf(pdf_path, gap)
+        q.baseline_n = baseline_n  # attach baseline for collapse check
         results.append((gap, q))
         if verbose:
-            print(f"     gap={gap:2d}  {q}")
+            collapse_marker = "  ⚠️ collapsed" if q.collapsed else ""
+            print(f"     gap={gap:2d}  {q}{collapse_marker}")
 
-    passing = [(g, q) for g, q in results if q.ok]
+    # Filter out collapsed candidates.
+    sane = [(g, q) for g, q in results if not q.collapsed]
+
+    if not sane:
+        # All candidates collapsed — degenerate document (e.g. scanned image PDF).
+        # Return the baseline gap=20 result as best-effort.
+        if verbose:
+            print("   ⚠️  All grid candidates collapsed — keeping gap=20 (best-effort)")
+        baseline_q.baseline_n = baseline_n
+        return baseline_gap, baseline_q
+
+    # Among sane candidates, prefer those meeting the quality target;
+    # within those, prefer the smallest gap.
+    passing = [(g, q) for g, q in sane if q.ok]
     if passing:
-        best_gap, best_q = max(passing, key=lambda x: x[1].median_len)
+        best_gap, best_q = min(passing, key=lambda x: x[0])  # smallest passing gap
     else:
-        best_gap, best_q = max(results, key=lambda x: x[1].median_len)
+        # No candidate meets target — pick sane candidate with highest median.
+        best_gap, best_q = max(sane, key=lambda x: x[1].median_len)
 
     return best_gap, best_q
 
