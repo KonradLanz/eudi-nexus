@@ -216,6 +216,9 @@ _BOILERPLATE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Sentence-ending punctuation — used by the paragraph-merge heuristic
+_SENTENCE_END_RE = re.compile(r"[.!?:]\s*$")
+
 SEGMENT_TYPES = (
     "HEADER", "FOOTER", "TOC", "SECTION",
     "NORM", "INFORM", "TABLE", "OTHER",
@@ -566,6 +569,13 @@ def segment_docx(
 # PDF segmentation  (fallback — pdfplumber)
 # ─────────────────────────────────────────────────────────────────────────────
 
+# Minimum vertical gap (in PDF points) that separates two distinct text blocks.
+# ETSI PDFs use a 10pt body font with ~14pt leading; real paragraph breaks are
+# ≥ 20 pt, so 20 is the sweet spot between joining wrapped lines and splitting
+# genuine paragraphs. The old value of 8 caused single sentences to be split
+# across multiple blocks at every line break.
+_GAP_THRESHOLD = 20
+
 @dataclass
 class TextBlock:
     text:          str
@@ -597,7 +607,6 @@ def _extract_blocks(page) -> list[TextBlock]:
     blocks: list[TextBlock] = []
     current_chars: list[dict] = []
     current_ys:    list[int]  = []
-    GAP_THRESHOLD = 8
 
     def _flush(ys: list[int], chs: list[dict]) -> None:
         if not chs:
@@ -620,7 +629,7 @@ def _extract_blocks(page) -> list[TextBlock]:
                                 bold_ratio=bold_ratio))
 
     for y in sorted_ys:
-        if current_ys and (y - current_ys[-1]) > GAP_THRESHOLD:
+        if current_ys and (y - current_ys[-1]) > _GAP_THRESHOLD:
             _flush(current_ys, current_chars)
             current_chars = []
             current_ys    = []
@@ -628,6 +637,88 @@ def _extract_blocks(page) -> list[TextBlock]:
         current_ys.append(y)
     _flush(current_ys, current_chars)
     return sorted(blocks, key=lambda b: b.y_top)
+
+
+def _dedup_blocks(blocks: list[TextBlock]) -> list[TextBlock]:
+    """
+    Remove duplicate adjacent text blocks on the same page.
+
+    PDF text layers sometimes emit the same visual text twice (e.g. for
+    simulated bold/shadow effects or repeated table cell content). A block is
+    considered a duplicate if its text is identical to the immediately preceding
+    block and they share the same approximate vertical position (±5 pt).
+    """
+    if not blocks:
+        return blocks
+    out: list[TextBlock] = [blocks[0]]
+    for b in blocks[1:]:
+        prev = out[-1]
+        if b.text == prev.text and abs(b.y_top - prev.y_top) < 5:
+            continue
+        out.append(b)
+    return out
+
+
+def _merge_paragraph_blocks(
+    blocks: list[TextBlock],
+    seg_types: list[str],
+) -> tuple[list[TextBlock], list[str]]:
+    """
+    Join adjacent text blocks that are continuations of the same paragraph.
+
+    A block is merged into its predecessor when ALL of the following hold:
+      • both blocks have the same classified segment type
+      • the type is NORM or INFORM (body text — not headings, TOC, headers…)
+      • the predecessor block does NOT end with sentence-terminating punctuation
+        (period, exclamation mark, question mark, or colon)
+      • the successor block does NOT look like a new list item or clause number
+        (i.e. does not start with a digit/bullet that signals a new requirement)
+
+    This fixes the most common PDF fragmentation pattern in ETSI specs where a
+    single normative sentence is split across two or three visual lines because
+    pdfplumber's gap threshold coincides with the inter-line spacing.
+    """
+    if not blocks:
+        return blocks, seg_types
+
+    _MERGEABLE_TYPES = {"NORM", "INFORM"}
+    # A block starting with these patterns is a new logical item, never merge
+    _NEW_ITEM_RE = re.compile(
+        r"^(\d+[\.\)]\s"          # numbered list: "1. " or "1) "
+        r"|\([a-z]\)\s"           # letter list: "(a) "
+        r"|[-–•]\s"               # bullet
+        r"|NOTE\b"                # NOTE:
+        r"|EXAMPLE\b)",           # EXAMPLE:
+        re.IGNORECASE,
+    )
+
+    merged_blocks: list[TextBlock] = []
+    merged_types:  list[str]       = []
+
+    for blk, stype in zip(blocks, seg_types):
+        if (
+            merged_blocks
+            and stype in _MERGEABLE_TYPES
+            and merged_types[-1] == stype
+            and not _SENTENCE_END_RE.search(merged_blocks[-1].text)
+            and not _NEW_ITEM_RE.match(blk.text)
+        ):
+            prev = merged_blocks[-1]
+            # Join with a single space; preserve geometry span
+            merged_text = prev.text.rstrip() + " " + blk.text.lstrip()
+            merged_blocks[-1] = TextBlock(
+                text=merged_text,
+                y_top=prev.y_top,
+                y_bot=blk.y_bot,
+                page_height=prev.page_height,
+                avg_font_size=prev.avg_font_size,
+                bold_ratio=prev.bold_ratio,
+            )
+        else:
+            merged_blocks.append(blk)
+            merged_types.append(stype)
+
+    return merged_blocks, merged_types
 
 
 def classify_block(
@@ -687,7 +778,12 @@ def segment_pdf(
     with pdfplumber.open(str(pdf_path)) as pdf:
         for page in pdf.pages:
             page_nr = page.page_number
-            blocks  = _extract_blocks(page)
+            raw_blocks = _extract_blocks(page)
+
+            # ── Pass 1: remove duplicate adjacent blocks ──────────
+            blocks = _dedup_blocks(raw_blocks)
+
+            # ── Pass 2: classify all blocks on this page ──────────
             toc_lines = sum(
                 1 for b in blocks
                 if len(_TOC_LINE_RE.findall(b.text)) >= 1
@@ -698,13 +794,19 @@ def segment_pdf(
             elif toc_page_count > 0 and toc_page_count < MAX_TOC_PAGES:
                 toc_page_count = 0
 
-            for block in blocks:
+            toc_mode = toc_page_count > 0 and toc_page_count < MAX_TOC_PAGES
+            classified = [
+                classify_block(b, profile, page_nr, toc_mode)
+                for b in blocks
+            ]
+
+            # ── Pass 3: merge split paragraph blocks ──────────────
+            blocks, classified = _merge_paragraph_blocks(blocks, classified)
+
+            # ── Emit segments ─────────────────────────────────────
+            for block, seg_type in zip(blocks, classified):
                 if not block.text.strip():
                     continue
-                seg_type = classify_block(
-                    block, profile, page_nr,
-                    toc_mode=(toc_page_count > 0 and toc_page_count < MAX_TOC_PAGES),
-                )
                 if seg_type == "SECTION":
                     m = _SECTION_RE.match(block.text.strip())
                     if m:
