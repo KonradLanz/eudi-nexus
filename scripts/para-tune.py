@@ -38,9 +38,13 @@ Table masking
   "text" strategy is intentionally omitted: it treats column-aligned body
   text as a table, masking the entire page and producing n=1 for all gaps.
 
-  An additional area guard (MAX_TABLE_AREA_FRAC = 0.30) drops any bbox
-  that covers more than 30 % of the page — belt-and-suspenders protection
-  against false positives from decorative lines or unusual renderers.
+  edge_min_length=20pt filters decorative rules and thin section-heading
+  underlines that span less than ~1.5 cm.  Real table borders are always
+  longer.  This also prevents single-page-height decorative lines from
+  being detected as table edges and producing "p13: masked 58 chars" noise.
+
+  No area guard is applied: ETSI Requirement-tables and Capability-matrices
+  legitimately cover a full page and must not be excluded.
 
 Ollama fallback
 ---------------
@@ -121,17 +125,22 @@ OLLAMA_MODEL = "llama3"
 # Table-detection: "lines" strategy only.
 # "text" strategy is intentionally omitted — it misclassifies column-aligned
 # body text as tables, masking all chars and producing n=1 for every gap.
+#
+# edge_min_length=20pt: real table borders are always longer than 1.5 cm.
+# This filters decorative rules, thin underlines under section headings, and
+# other short vector segments that are not table edges.  A value of 10pt was
+# too permissive and caused "p13: masked 58 chars" false-positive masking.
+#
+# No area guard (MAX_TABLE_AREA_FRAC was removed): full-page ETSI tables
+# (Capability-matrices, Requirement tables) are legitimate and must not be
+# excluded just because they cover most of the page.
 _TABLE_SETTINGS_LINES = {
     "vertical_strategy":   "lines",
     "horizontal_strategy": "lines",
     "snap_tolerance":  3,
     "join_tolerance":  3,
-    "edge_min_length": 10,   # ≥10pt: ignore decorative rules / header lines
+    "edge_min_length": 20,   # ≥20pt — filters decorative rules / underlines
 }
-
-# Area guard: discard any detected table bbox covering more than this fraction
-# of the page.  Belt-and-suspenders against false positives on unusual PDFs.
-MAX_TABLE_AREA_FRAC = 0.30
 
 _RFC2119_RE = re.compile(
     r"\b(shall\s+not|shall|should\s+not|should|must\s+not|must"
@@ -177,25 +186,17 @@ def _get_table_bboxes(page) -> list[tuple[float, float, float, float]]:
     """
     Return (x0, top, x1, bottom) bounding boxes for bordered tables on *page*.
 
-    Uses only the "lines" strategy (real PDF vector edges ≥ 10pt).
+    Uses only the "lines" strategy (real PDF vector edges ≥ 20pt).
     The "text" strategy is excluded: it treats column-aligned body text as a
     table, masking the entire page.
 
-    Any bbox covering > MAX_TABLE_AREA_FRAC of the page is dropped as a
-    false positive.
+    No area guard is applied — full-page ETSI tables are legitimate.
     """
     try:
         tables = page.find_tables(table_settings=_TABLE_SETTINGS_LINES)
         if not tables:
             return []
-        page_area = page.width * page.height
-        result = []
-        for t in tables:
-            x0, top, x1, bot = t.bbox
-            area_frac = ((x1 - x0) * (bot - top)) / page_area
-            if area_frac <= MAX_TABLE_AREA_FRAC:
-                result.append(t.bbox)
-        return result
+        return [t.bbox for t in tables]
     except Exception:
         return []
 
