@@ -18,6 +18,7 @@ Usage:
   python3 scripts/build-index.py --stats      # print index stats and exit
   python3 scripts/build-index.py --dry-run    # parse + embed, no db write
   python3 scripts/build-index.py --model nomic-embed-text-v1.5
+  python3 scripts/build-index.py --check-merge   # simulate merge, print stats, exit
 
 Environment (from .env):
   LMSTUDIO_BASE_URL     http://localhost:1234
@@ -36,6 +37,7 @@ import argparse
 import json
 import os
 import sqlite3
+import statistics
 import struct
 import sys
 import time
@@ -91,8 +93,18 @@ SKIP_TYPES     = {"HEADER", "FOOTER", "TOC", "OTHER"}
 EMBED_BATCH = 16
 
 # Segment merger thresholds
-MERGE_MIN_CHARS = 200   # keep merging until segment is at least this long
-MERGE_MAX_CHARS = 1200  # never exceed this (avoids embedding truncation)
+# MERGE_MIN_CHARS : flush threshold — only flush when buf is at least this long
+#                   AND a sentence boundary is present (. ; :)
+# MERGE_MAX_CHARS : hard cap — never produce a segment longer than this
+#                   (avoids embedding model truncation at ~512 tokens ≈ 2000 chars)
+# NOTE: _can_merge() must check against MERGE_MAX_CHARS, not MERGE_MIN_CHARS.
+#       Using MERGE_MIN_CHARS as the merge-stop caused 64% of segments to be
+#       hard-cut at MERGE_MAX_CHARS without a sentence boundary (median ~93 ch).
+MERGE_MIN_CHARS = 200   # min length before we allow a sentence-end flush
+MERGE_MAX_CHARS = 1800  # hard cap (raised from 1200 — nomic supports ~512 tok)
+
+# Pipeline gate: if post-merge median stays below this, build-index exits 1
+MERGE_TARGET_MEDIAN = 150
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -106,8 +118,9 @@ def _merge_short_segments(segments: list[dict]) -> list[dict]:
 
     Rules:
     - Only merges segments of the same type within the same section.
-    - Keeps merging until MERGE_MIN_CHARS is reached or a sentence ends (. ; :)
-    - Never produces a segment longer than MERGE_MAX_CHARS.
+    - Accumulates text until MERGE_MAX_CHARS would be exceeded.
+    - Flushes eagerly once buf >= MERGE_MIN_CHARS AND a sentence ends (. ; :).
+    - Hard-flushes when the next segment would push buf over MERGE_MAX_CHARS.
     - Non-NORM/INFORM segments (SECTION etc.) act as hard flush boundaries.
     - The merged segment inherits the ID, page, and anchor of the FIRST fragment.
     - normative_keywords is the union of all merged fragments.
@@ -128,10 +141,12 @@ def _merge_short_segments(segments: list[dict]) -> list[dict]:
         return t.endswith((".", ";", ":"))
 
     def _can_merge(buf: dict, seg: dict) -> bool:
+        # KEY FIX: gate on MERGE_MAX_CHARS, not MERGE_MIN_CHARS.
+        # MERGE_MIN_CHARS is only used as the flush threshold below —
+        # it must NOT prevent accumulation before that threshold is reached.
         return (
             buf["type"] == seg.get("type")
             and buf.get("section") == seg.get("section")
-            and len(buf["text"]) < MERGE_MIN_CHARS
             and len(buf["text"]) + 1 + len(seg.get("text", "")) <= MERGE_MAX_CHARS
         )
 
@@ -159,12 +174,12 @@ def _merge_short_segments(segments: list[dict]) -> list[dict]:
                     buf["normative_keywords"].append(kw)
                     existing.add(kw)
         else:
-            # Cannot merge — flush buf, start new
+            # Next segment would exceed MERGE_MAX_CHARS — flush and start new
             merged.append(_flush(buf))
             buf = dict(seg)
             buf["normative_keywords"] = list(seg.get("normative_keywords") or [])
 
-        # Flush if we have a complete sentence and are long enough
+        # Eager flush: long enough AND sentence boundary present
         if buf and len(buf["text"]) >= MERGE_MIN_CHARS and _sentence_end(buf["text"]):
             merged.append(_flush(buf))
             buf = None
@@ -173,6 +188,44 @@ def _merge_short_segments(segments: list[dict]) -> list[dict]:
         merged.append(_flush(buf))
 
     return merged
+
+
+def _merge_stats(segments: list[dict]) -> dict:
+    """Return before/after median and flush-reason breakdown for a segment list."""
+    embed = [s for s in segments if s.get("type") in EMBED_TYPES]
+    if not embed:
+        return {}
+    before_lens = [len(s["text"]) for s in embed]
+    merged = _merge_short_segments(segments)
+    after  = [s for s in merged if s.get("type") in EMBED_TYPES]
+    after_lens = [len(s["text"]) for s in after]
+
+    # flush-reason simulation on the already-merged list (for diagnostics)
+    flush = {"sentence_end": 0, "max_chars": 0, "final": 0}
+    buf_text = None
+    for s in embed:
+        t = s["text"]
+        if buf_text is None:
+            buf_text = t
+        elif len(buf_text) + 1 + len(t) <= MERGE_MAX_CHARS:
+            buf_text = buf_text.rstrip() + " " + t.strip()
+        else:
+            flush["max_chars"] += 1
+            buf_text = t
+        if buf_text and len(buf_text) >= MERGE_MIN_CHARS and buf_text.rstrip()[-1:] in ".;:":
+            flush["sentence_end"] += 1
+            buf_text = None
+    if buf_text:
+        flush["final"] += 1
+
+    return {
+        "before_n":      len(before_lens),
+        "after_n":       len(after_lens),
+        "before_median": statistics.median(before_lens),
+        "after_median":  statistics.median(after_lens),
+        "flush_sentence_end_pct": flush["sentence_end"] / max(sum(flush.values()), 1) * 100,
+        "flush_max_chars_pct":    flush["max_chars"]    / max(sum(flush.values()), 1) * 100,
+    }
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -505,6 +558,65 @@ def index_segments_file(
 
 
 # ──────────────────────────────────────────────────────────────────────────────
+# Check-merge mode  (--check-merge)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def cmd_check_merge(segments_dir: Path) -> int:
+    """
+    Simulate _merge_short_segments() across all files without touching the DB.
+    Prints per-file before/after medians and a corpus-wide summary.
+    Exits 1 if corpus median after merge is below MERGE_TARGET_MEDIAN.
+    """
+    all_before: list[float] = []
+    all_after:  list[float] = []
+
+    print(f"\n{'File':<45} {'before':>7} {'after':>7}  {'Δ':>6}  flush%  max%")
+    print("─" * 85)
+
+    for f in sorted(segments_dir.glob("*.segments.json")):
+        data = json.loads(f.read_text(encoding="utf-8"))
+        segs = data.get("segments", [])
+        st   = _merge_stats(segs)
+        if not st:
+            continue
+        delta = st["after_median"] - st["before_median"]
+        all_before.append(st["before_median"])
+        all_after.append(st["after_median"])
+        flag = "✓" if st["after_median"] >= MERGE_TARGET_MEDIAN else "⚠"
+        print(
+            f"  {flag} {f.stem[:43]:<43} "
+            f"{st['before_median']:>7.0f} {st['after_median']:>7.0f} "
+            f"  {delta:>+6.0f}  "
+            f"{st['flush_sentence_end_pct']:>5.0f}%  "
+            f"{st['flush_max_chars_pct']:>4.0f}%"
+        )
+
+    if not all_after:
+        print("[ERROR] No segment files found.")
+        return 1
+
+    corpus_before = statistics.median(all_before)
+    corpus_after  = statistics.median(all_after)
+    ok = corpus_after >= MERGE_TARGET_MEDIAN
+
+    print("─" * 85)
+    print(
+        f"  {'✓' if ok else '✗'} CORPUS  "
+        f"before={corpus_before:.0f}  after={corpus_after:.0f}  "
+        f"target≥{MERGE_TARGET_MEDIAN}"
+    )
+    if not ok:
+        print(
+            f"\n[FAIL] Post-merge median {corpus_after:.0f} < {MERGE_TARGET_MEDIAN}.\n"
+            f"       Segments are too short — check pdf-segment.py output or\n"
+            f"       lower MERGE_MIN_CHARS / raise MERGE_MAX_CHARS.\n"
+        )
+        return 1
+    print(f"\n[OK]  Merge quality gate passed.\n")
+    return 0
+
+
+# ──────────────────────────────────────────────────────────────────────────────
 # Stats
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -549,24 +661,30 @@ Examples:
   python3 scripts/build-index.py --rebuild        # drop & rebuild
   python3 scripts/build-index.py --stats          # show index stats
   python3 scripts/build-index.py --dry-run        # no db writes
+  python3 scripts/build-index.py --check-merge    # simulate merge quality gate
   python3 scripts/build-index.py --no-embed       # FTS-only (no LM Studio needed)
   python3 scripts/build-index.py --model mxbai-embed-large
 """,
     )
-    parser.add_argument("--rebuild",  action="store_true", help="Drop and recreate the database")
-    parser.add_argument("--stats",    action="store_true", help="Print index statistics and exit")
-    parser.add_argument("--dry-run",  action="store_true", help="Parse and embed but do not write to db")
-    parser.add_argument("--no-embed", action="store_true", help="Skip embedding (FTS / BM25 only)")
-    parser.add_argument("--model",    default=None,        help=f"Embedding model (default: {DEFAULT_MODEL})")
-    parser.add_argument("--db",       default=None,        help=f"DB path (default: {DEFAULT_DB_PATH})")
-    parser.add_argument("--segments", default=None,        help=f"Segments dir (default: {SEGMENTS_DIR})")
-    parser.add_argument("--quiet", "-q", action="store_true")
+    parser.add_argument("--rebuild",      action="store_true", help="Drop and recreate the database")
+    parser.add_argument("--stats",        action="store_true", help="Print index statistics and exit")
+    parser.add_argument("--dry-run",      action="store_true", help="Parse and embed but do not write to db")
+    parser.add_argument("--no-embed",     action="store_true", help="Skip embedding (FTS / BM25 only)")
+    parser.add_argument("--check-merge",  action="store_true", help="Simulate merge, print quality gate, exit")
+    parser.add_argument("--model",        default=None,        help=f"Embedding model (default: {DEFAULT_MODEL})")
+    parser.add_argument("--db",           default=None,        help=f"DB path (default: {DEFAULT_DB_PATH})")
+    parser.add_argument("--segments",     default=None,        help=f"Segments dir (default: {SEGMENTS_DIR})")
+    parser.add_argument("--quiet", "-q",  action="store_true")
     args = parser.parse_args()
 
     db_path      = Path(args.db or DEFAULT_DB_PATH)
     segments_dir = Path(args.segments or SEGMENTS_DIR)
     model        = args.model or DEFAULT_MODEL
     verbose      = not args.quiet
+
+    # ── Check-merge mode ─────────────────────────────────────────────────
+    if args.check_merge:
+        sys.exit(cmd_check_merge(segments_dir))
 
     # ── Stats-only mode ──────────────────────────────────────────────────
     if args.stats:
