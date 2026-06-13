@@ -27,8 +27,14 @@ Collapse guard
   If a gap value causes n_segs to drop below MIN_SEGS_RATIO * baseline_n
   (baseline = gap=20) OR the median exceeds MAX_SEG_MEDIAN, that gap is
   treated as collapsed (table rows merged) and excluded from selection.
-  This prevents picking gap=28 (n=8) over gap=20 (n=102) for documents
-  where inter-cell spacing is smaller than the gap window.
+
+Table masking
+-------------
+  Before gap-based line grouping, chars whose midpoint falls inside a
+  detected table bounding-box are excluded.  This prevents table-cell gaps
+  (typically 16-22pt) from biasing the gap calibration.
+  Table detection tries the "lines" strategy first (bordered tables), then
+  falls back to a "text" strategy (borderless / ruled-only ETSI tables).
 
 Ollama fallback
 ---------------
@@ -98,9 +104,6 @@ MIN_MEDIAN_CHARS = 150   # quality target: median segment ≥ this
 MAX_SHORT_FRAC   = 0.25  # quality target: fraction <100 chars ≤ this
 
 # Collapse-guard constants — prevent table rows being merged into giant blocks.
-# A gap candidate is considered "collapsed" when:
-#   n_segs  <  baseline_n  *  MIN_SEGS_RATIO     (too few segments → rows merged)
-#   median  >  MAX_SEG_MEDIAN                     (blocks too long → multi-clause blobs)
 MIN_SEGS_RATIO  = 0.25   # candidate must keep ≥ 25 % of baseline segment count
 MAX_SEG_MEDIAN  = 1200   # median > 1200 chars almost certainly means table collapse
 
@@ -108,6 +111,25 @@ GAP_GRID = [8, 12, 16, 20, 24, 28, 32, 40]  # candidate thresholds to try
 
 OLLAMA_URL   = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "llama3"
+
+# Table-detection settings for pdfplumber.find_tables().
+# "lines" works for bordered ETSI tables (most common).
+# "text" is the fallback for borderless / lightly-ruled tables.
+_TABLE_SETTINGS_LINES = {
+    "vertical_strategy":   "lines",
+    "horizontal_strategy": "lines",
+    "snap_tolerance":  3,
+    "join_tolerance":  3,
+    "edge_min_length": 3,
+}
+_TABLE_SETTINGS_TEXT = {
+    "vertical_strategy":   "text",
+    "horizontal_strategy": "text",
+    "snap_tolerance":  3,
+    "join_tolerance":  3,
+    "min_words_vertical":   3,
+    "min_words_horizontal": 1,
+}
 
 _RFC2119_RE = re.compile(
     r"\b(shall\s+not|shall|should\s+not|should|must\s+not|must"
@@ -146,13 +168,70 @@ def save_rules(rules: dict) -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Table-region detection + char masking
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _get_table_bboxes(page) -> list[tuple[float, float, float, float]]:
+    """
+    Return a list of (x0, top, x1, bottom) bounding boxes for all tables
+    detected on *page*.
+
+    Strategy cascade (canonical pdfplumber pattern):
+      1. "lines"  — works for bordered tables (most ETSI specs use ruled grids)
+      2. "text"   — fallback for borderless / lightly-ruled tables
+
+    References:
+      https://stackoverflow.com/a/69408424
+      https://github.com/jsvine/pdfplumber/discussions/1005
+    """
+    try:
+        tables = page.find_tables(table_settings=_TABLE_SETTINGS_LINES)
+        if not tables:
+            # Borderless tables: derive cell boundaries from text alignment.
+            tables = page.find_tables(table_settings=_TABLE_SETTINGS_TEXT)
+        return [t.bbox for t in tables]
+    except Exception:
+        return []
+
+
+def _char_in_table(
+    ch: dict,
+    bboxes: list[tuple[float, float, float, float]],
+) -> bool:
+    """
+    Return True if the midpoint of char *ch* falls inside any of *bboxes*.
+    Uses midpoint (not full extent) so chars that straddle a table border
+    are not incorrectly excluded.
+    """
+    if not bboxes:
+        return False
+    mid_x = (ch["x0"] + ch["x1"]) / 2
+    mid_y = (ch["top"] + ch["bottom"]) / 2
+    return any(
+        x0 <= mid_x < x1 and top <= mid_y < bottom
+        for (x0, top, x1, bottom) in bboxes
+    )
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Minimal PDF block extractor (mirrors pdf-segment.py logic, gap-parameterised)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _extract_raw_lines(page) -> list[tuple[int, list[dict]]]:
-    """Return [(y_mid, chars)] sorted by y_mid."""
+def _extract_raw_lines(
+    page,
+    table_bboxes: list[tuple[float, float, float, float]] | None = None,
+) -> list[tuple[int, list[dict]]]:
+    """
+    Return [(y_mid, chars)] sorted by y_mid, excluding chars inside *table_bboxes*.
+
+    When *table_bboxes* is None or empty, all chars are included (legacy behaviour).
+    Passing the result of _get_table_bboxes(page) masks table regions so that
+    cell-to-cell gaps do not interfere with paragraph-gap calibration.
+    """
     lines: dict[int, list[dict]] = {}
     for ch in (page.chars or []):
+        if table_bboxes and _char_in_table(ch, table_bboxes):
+            continue   # skip chars inside detected table regions
         y_mid = int((ch["top"] + ch["bottom"]) / 2)
         lines.setdefault(y_mid, []).append(ch)
     return sorted(lines.items())
@@ -293,14 +372,26 @@ class SegQuality:
         )
 
 
-def _measure_pdf(pdf_path: Path, gap: int,
-                 extra_endings: list[str] | None = None,
-                 extra_no_starts: list[str] | None = None) -> SegQuality:
-    """Run extraction + merge with *gap* and return quality metrics."""
+def _measure_pdf(
+    pdf_path: Path,
+    gap: int,
+    extra_endings: list[str] | None = None,
+    extra_no_starts: list[str] | None = None,
+    mask_tables: bool = True,
+) -> SegQuality:
+    """
+    Run extraction + merge with *gap* and return quality metrics.
+
+    When *mask_tables* is True (default), chars inside detected table regions
+    are excluded from block assembly so that inter-cell gaps do not pollute
+    the gap calibration.  Set to False only for debugging.
+    """
     all_texts: list[str] = []
     with pdfplumber.open(str(pdf_path)) as pdf:
         for page in pdf.pages:
-            raw_lines = _extract_raw_lines(page)
+            # Detect table regions once per page; pass bboxes to extractor.
+            table_bboxes = _get_table_bboxes(page) if mask_tables else []
+            raw_lines = _extract_raw_lines(page, table_bboxes)
             blocks    = _lines_to_blocks(raw_lines, gap, float(page.height))
             types     = [_quick_classify(b, page.page_number, float(page.height))
                          for b in blocks]
@@ -340,38 +431,31 @@ def grid_search(pdf_path: Path, verbose: bool = True) -> tuple[int, SegQuality]:
          candidate with the highest median_len.
       4. If all candidates are collapsed (degenerate doc), fall back to gap=20.
     """
-    # Establish baseline: always measure gap=20 first (used for collapse ratio).
     baseline_gap = 20
     baseline_q   = _measure_pdf(pdf_path, baseline_gap)
-    baseline_n   = baseline_q.n_segs or 1  # avoid div-by-zero
+    baseline_n   = baseline_q.n_segs or 1
 
     results: list[tuple[int, SegQuality]] = []
     for gap in GAP_GRID:
         q = _measure_pdf(pdf_path, gap)
-        q.baseline_n = baseline_n  # attach baseline for collapse check
+        q.baseline_n = baseline_n
         results.append((gap, q))
         if verbose:
             collapse_marker = "  ⚠️ collapsed" if q.collapsed else ""
             print(f"     gap={gap:2d}  {q}{collapse_marker}")
 
-    # Filter out collapsed candidates.
     sane = [(g, q) for g, q in results if not q.collapsed]
 
     if not sane:
-        # All candidates collapsed — degenerate document (e.g. scanned image PDF).
-        # Return the baseline gap=20 result as best-effort.
         if verbose:
             print("   ⚠️  All grid candidates collapsed — keeping gap=20 (best-effort)")
         baseline_q.baseline_n = baseline_n
         return baseline_gap, baseline_q
 
-    # Among sane candidates, prefer those meeting the quality target;
-    # within those, prefer the smallest gap.
     passing = [(g, q) for g, q in sane if q.ok]
     if passing:
-        best_gap, best_q = min(passing, key=lambda x: x[0])  # smallest passing gap
+        best_gap, best_q = min(passing, key=lambda x: x[0])
     else:
-        # No candidate meets target — pick sane candidate with highest median.
         best_gap, best_q = max(sane, key=lambda x: x[1].median_len)
 
     return best_gap, best_q
@@ -400,11 +484,6 @@ def _ollama_classify_boundary(
     text_after:  str,
     model: str = OLLAMA_MODEL,
 ) -> str:
-    """
-    Ask Ollama whether the gap between *text_before* and *text_after* is a
-    paragraph break or a line-wrap within the same paragraph.
-    Returns 'BREAK' or 'WRAP'.
-    """
     prompt = (
         "You are analysing extracted text from a PDF standards document (ETSI).\n"
         "Given two adjacent text fragments, decide whether there is a paragraph "
@@ -432,7 +511,7 @@ def _ollama_classify_boundary(
             answer = result.get("response", "").strip().upper()
             return "BREAK" if "BREAK" in answer else "WRAP"
     except Exception:
-        return "BREAK"   # safe default
+        return "BREAK"
 
 
 def ollama_tune(
@@ -442,23 +521,14 @@ def ollama_tune(
     n_samples:  int = 40,
     verbose:    bool = True,
 ) -> dict:
-    """
-    Sample boundary candidates from the PDF (blocks that would be merged by the
-    heuristic but are near short-segment hotspots) and classify them via Ollama.
-    Derive an improved merge rule from the answers.
-
-    Returns a partial rule dict with keys: gap_threshold, learned_endings,
-    learned_no_starts, method="ollama".
-    """
     if verbose:
         print(f"   🤖  Ollama fallback ({model}) — sampling {n_samples} boundaries...")
 
-    # Collect candidate boundary pairs: consecutive blocks where the first
-    # does NOT end a sentence (heuristic would merge them) but both are short.
     candidates: list[tuple[str, str]] = []
     with pdfplumber.open(str(pdf_path)) as pdf:
         for page in pdf.pages:
-            raw_lines = _extract_raw_lines(page)
+            table_bboxes = _get_table_bboxes(page)
+            raw_lines = _extract_raw_lines(page, table_bboxes)
             blocks    = _lines_to_blocks(raw_lines, best_gap, float(page.height))
             types     = [_quick_classify(b, page.page_number, float(page.height))
                          for b in blocks]
@@ -472,14 +542,13 @@ def ollama_tune(
     if not candidates:
         return {"gap_threshold": best_gap, "method": "grid"}
 
-    # Sample evenly
     step = max(1, len(candidates) // n_samples)
     sample = candidates[::step][:n_samples]
 
     wraps  = 0
     breaks = 0
-    wrap_endings:    list[str] = []
-    break_endings:   list[str] = []
+    wrap_endings:  list[str] = []
+    break_endings: list[str] = []
 
     for before, after in sample:
         verdict = _ollama_classify_boundary(before, after, model)
@@ -498,8 +567,6 @@ def ollama_tune(
         print(f"        wrap-endings:  {wrap_endings[:10]}")
         print(f"        break-endings: {break_endings[:10]}")
 
-    # Characters that consistently appear before WRAPs but not BREAKs
-    # → safe to merge on
     learned_endings = [
         e for e in wrap_endings
         if e not in break_endings and e not in ".!?:"
@@ -528,16 +595,11 @@ def tune_pdf(
     model:     str  = OLLAMA_MODEL,
     verbose:   bool = True,
 ) -> dict | None:
-    """
-    Tune a single PDF.  Returns the new rule dict (or None if already good).
-    Updates *rules* in-place.
-    """
     stem = pdf_path.stem
     if verbose:
         print(f"\n{'─'*60}")
         print(f"  {stem}")
 
-    # Check current quality with existing rule (or default gap=20)
     existing   = rules.get(stem, {})
     cur_gap    = existing.get("gap_threshold", 20)
     cur_extra  = existing.get("merge_endings", [])
@@ -552,14 +614,12 @@ def tune_pdf(
             print("  → already meets quality target, skipping")
         return None
 
-    # Grid search
     if verbose:
         print("  Grid search:")
     best_gap, best_q = grid_search(pdf_path, verbose=verbose)
     if verbose:
         print(f"  Best gap: {best_gap}  →  {best_q}")
 
-    # If grid search alone solves it
     if best_q.ok:
         rule = {
             "gap_threshold":   best_gap,
@@ -576,10 +636,8 @@ def tune_pdf(
         rules[stem] = rule
         return rule
 
-    # Ollama fallback
     if use_ai and _ollama_available(model):
         rule = ollama_tune(pdf_path, best_gap, model=model, verbose=verbose)
-        # Validate the AI-derived rule
         q_ai = _measure_pdf(
             pdf_path, rule["gap_threshold"],
             rule.get("merge_endings"),
@@ -599,7 +657,6 @@ def tune_pdf(
         if verbose:
             print("  ⚠️  Ollama not available — using best grid result")
 
-    # Best-effort: keep grid winner even if below target
     rule = {
         "gap_threshold":   best_gap,
         "merge_endings":   [],
@@ -629,7 +686,6 @@ def _find_pdf(stem: str) -> Path | None:
 
 
 def iter_pdf_corpus() -> Iterator[Path]:
-    """Yield PDF source paths for all corpus specs that were segmented from PDF."""
     for seg_file in sorted(CORPUS_SEG_DIR.glob("*.segments.json")):
         try:
             data = json.loads(seg_file.read_text(encoding="utf-8"))
@@ -641,7 +697,6 @@ def iter_pdf_corpus() -> Iterator[Path]:
         if pdf_path.is_file():
             yield pdf_path
             continue
-        # Fallback: locate by stem
         stem = seg_file.stem.replace(".segments", "")
         found = _find_pdf(stem)
         if found:
@@ -653,7 +708,6 @@ def iter_pdf_corpus() -> Iterator[Path]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def print_stats(rules: dict, verbose: bool = True) -> None:
-    """Print quality metrics for all PDFs using current rules."""
     if not HAS_PDFPLUMBER:
         print("[ERROR] pdfplumber not installed", file=sys.stderr)
         return
@@ -685,10 +739,6 @@ def print_stats(rules: dict, verbose: bool = True) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def apply_rules(verbose: bool = True) -> None:
-    """
-    For each stem that has a learned rule, re-run pdf-segment.py --force
-    so the improved segmentation is written to corpus/specs/_segments/.
-    """
     import subprocess
     rules = load_rules()
     if not rules:
@@ -807,7 +857,7 @@ Examples:
         )
         if result is not None:
             changed += 1
-            save_rules(rules)   # save after each file so progress is not lost
+            save_rules(rules)
 
     if verbose:
         print(f"\n{'─'*60}")
