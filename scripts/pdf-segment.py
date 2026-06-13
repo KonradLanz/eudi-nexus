@@ -216,6 +216,14 @@ _BOILERPLATE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Matches real table/figure captions — NOT NOTE/EXAMPLE prose blocks.
+# NOTE and EXAMPLE are informative text; they must be caught by
+# _INFORMATIVE_RE → INFORM, not classified as TABLE.
+_FIGURE_TABLE_CAPTION_RE = re.compile(
+    r"^(Figure|Table)\s+[\d\-A-Z]",
+    re.IGNORECASE,
+)
+
 # Sentence-ending punctuation — used by the paragraph-merge heuristic
 _SENTENCE_END_RE = re.compile(r"[.!?:]\s*$")
 
@@ -372,7 +380,7 @@ def _docx_para_type(para, profile: Profile) -> str:
         if m:
             return "SECTION"
 
-    if re.match(r"^(Figure|Table|NOTE|EXAMPLE)\s+[\d\-A-Z]", text, re.IGNORECASE):
+    if _FIGURE_TABLE_CAPTION_RE.match(text):
         return "TABLE"
 
     if find_normative_keywords(text):
@@ -871,10 +879,14 @@ def classify_block(
         m = _SECTION_RE.match(text.strip())
         if m:
             return "SECTION"
-    if re.match(r"^(Figure|Table|NOTE|EXAMPLE)\s+\d", text, re.IGNORECASE):
-        return "TABLE"
+    # NOTE/EXAMPLE blocks are informative prose — check BEFORE the caption regex
+    # so they are never mis-classified as TABLE.
     if _INFORMATIVE_RE.search(text):
         return "INFORM"
+    # Only real Figure/Table captions become TABLE segments via the text path.
+    # NOTE and EXAMPLE are already handled above.
+    if _FIGURE_TABLE_CAPTION_RE.match(text):
+        return "TABLE"
     if find_normative_keywords(text):
         return "NORM"
     return "OTHER"
