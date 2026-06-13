@@ -21,12 +21,16 @@ Quality target
 --------------
   median segment length  >= MIN_MEDIAN_CHARS  (default 150)
   fraction of segs < 100 chars  <= MAX_SHORT_FRAC  (default 0.25)
+  absolute segment count >= MIN_SEGS_ABSOLUTE (default 10)
 
 Collapse guard
 --------------
-  If a gap value causes n_segs to drop below MIN_SEGS_RATIO * baseline_n
-  (baseline = gap=20) OR the median exceeds MAX_SEG_MEDIAN, that gap is
-  treated as collapsed (table rows merged) and excluded from selection.
+  A result is considered collapsed if ANY of the following:
+    - n_segs < MIN_SEGS_ABSOLUTE (absolute floor, catches n=5 cases)
+    - n_segs < MIN_SEGS_RATIO * baseline_n (relative floor vs gap=20 baseline)
+    - median > MAX_SEG_MEDIAN (giant blocks = table rows merged)
+  The collapse check is applied both during grid search AND when evaluating
+  the current rule (so a previously-written collapsed rule is re-tuned).
 
 Table masking
 -------------
@@ -38,13 +42,11 @@ Table masking
   "text" strategy is intentionally omitted: it treats column-aligned body
   text as a table, masking the entire page and producing n=1 for all gaps.
 
-  edge_min_length=20pt filters decorative rules and thin section-heading
-  underlines that span less than ~1.5 cm.  Real table borders are always
-  longer.  This also prevents single-page-height decorative lines from
-  being detected as table edges and producing "p13: masked 58 chars" noise.
+  edge_min_length=20pt filters decorative rules, thin underlines under
+  section headings, and other short vector segments that are not table edges.
 
-  No area guard is applied: ETSI Requirement-tables and Capability-matrices
-  legitimately cover a full page and must not be excluded.
+  No area guard is applied: full-page ETSI tables (Capability-matrices,
+  Requirement tables) are legitimate and must not be excluded.
 
 Ollama fallback
 ---------------
@@ -56,10 +58,10 @@ Learned rules format  (corpus/para-tune/learned-rules.json)
 {
   "ts_11914402v020101p": {
     "gap_threshold": 18,
-    "merge_endings": [";", ","],   // extra non-sentence-end chars to merge on
-    "no_merge_starts": ["NOTE"],   // extra patterns that block merging
+    "merge_endings": [";", ","],
+    "no_merge_starts": ["NOTE"],
     "tuned_at": "2026-06-13T21:00:00Z",
-    "method": "grid"               // or "ollama"
+    "method": "grid"
   },
   ...
 }
@@ -110,10 +112,11 @@ DOWNLOAD_ROOTS = [
     Path("downloads/specs"),
 ]
 
-MIN_MEDIAN_CHARS = 150   # quality target: median segment ≥ this
-MAX_SHORT_FRAC   = 0.25  # quality target: fraction <100 chars ≤ this
+MIN_MEDIAN_CHARS  = 150   # quality target: median segment ≥ this
+MAX_SHORT_FRAC    = 0.25  # quality target: fraction <100 chars ≤ this
+MIN_SEGS_ABSOLUTE = 10    # collapse guard: fewer than this = definitely collapsed
 
-# Collapse-guard constants — prevent table rows being merged into giant blocks.
+# Relative collapse guard (vs gap=20 baseline)
 MIN_SEGS_RATIO  = 0.25   # candidate must keep ≥ 25 % of baseline segment count
 MAX_SEG_MEDIAN  = 1200   # median > 1200 chars almost certainly means table collapse
 
@@ -123,23 +126,14 @@ OLLAMA_URL   = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "llama3"
 
 # Table-detection: "lines" strategy only.
-# "text" strategy is intentionally omitted — it misclassifies column-aligned
-# body text as tables, masking all chars and producing n=1 for every gap.
-#
-# edge_min_length=20pt: real table borders are always longer than 1.5 cm.
-# This filters decorative rules, thin underlines under section headings, and
-# other short vector segments that are not table edges.  A value of 10pt was
-# too permissive and caused "p13: masked 58 chars" false-positive masking.
-#
-# No area guard (MAX_TABLE_AREA_FRAC was removed): full-page ETSI tables
-# (Capability-matrices, Requirement tables) are legitimate and must not be
-# excluded just because they cover most of the page.
+# edge_min_length=20pt: filters decorative rules / underlines (< ~1.5 cm).
+# No area guard: full-page ETSI tables are legitimate.
 _TABLE_SETTINGS_LINES = {
     "vertical_strategy":   "lines",
     "horizontal_strategy": "lines",
     "snap_tolerance":  3,
     "join_tolerance":  3,
-    "edge_min_length": 20,   # ≥20pt — filters decorative rules / underlines
+    "edge_min_length": 20,
 }
 
 _RFC2119_RE = re.compile(
@@ -183,15 +177,6 @@ def save_rules(rules: dict) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _get_table_bboxes(page) -> list[tuple[float, float, float, float]]:
-    """
-    Return (x0, top, x1, bottom) bounding boxes for bordered tables on *page*.
-
-    Uses only the "lines" strategy (real PDF vector edges ≥ 20pt).
-    The "text" strategy is excluded: it treats column-aligned body text as a
-    table, masking the entire page.
-
-    No area guard is applied — full-page ETSI tables are legitimate.
-    """
     try:
         tables = page.find_tables(table_settings=_TABLE_SETTINGS_LINES)
         if not tables:
@@ -205,10 +190,6 @@ def _char_in_table(
     ch: dict,
     bboxes: list[tuple[float, float, float, float]],
 ) -> bool:
-    """
-    Return True if the midpoint of char *ch* falls inside any of *bboxes*.
-    Uses midpoint so chars straddling a table border are not excluded.
-    """
     if not bboxes:
         return False
     mid_x = (ch["x0"] + ch["x1"]) / 2
@@ -227,11 +208,6 @@ def _extract_raw_lines(
     page,
     table_bboxes: list[tuple[float, float, float, float]] | None = None,
 ) -> list[tuple[int, list[dict]]]:
-    """
-    Return [(y_mid, chars)] sorted by y_mid, excluding chars inside *table_bboxes*.
-
-    When *table_bboxes* is None or empty, all chars are included (legacy behaviour).
-    """
     lines: dict[int, list[dict]] = {}
     for ch in (page.chars or []):
         if table_bboxes and _char_in_table(ch, table_bboxes):
@@ -243,7 +219,6 @@ def _extract_raw_lines(
 
 def _lines_to_blocks(lines: list[tuple[int, list[dict]]], gap: int, page_height: float
                     ) -> list[dict]:
-    """Group lines into blocks using *gap* as the split threshold."""
     blocks: list[dict] = []
     cur_chars: list[dict] = []
     cur_ys:    list[int]  = []
@@ -275,7 +250,6 @@ def _lines_to_blocks(lines: list[tuple[int, list[dict]]], gap: int, page_height:
 
 
 def _quick_classify(block: dict, page_nr: int, page_height: float) -> str:
-    """Minimal classifier — enough to distinguish NORM/INFORM from noise."""
     text = block["text"]
     y_frac_top = 1.0 - (block["y_bot"] / page_height)
     y_frac_bot = 1.0 - (block["y_top"] / page_height)
@@ -300,7 +274,6 @@ def _merge_body_blocks(blocks: list[dict], types: list[str],
                        extra_endings: list[str] | None = None,
                        extra_no_starts: list[str] | None = None
                        ) -> tuple[list[dict], list[str]]:
-    """Merge consecutive NORM/INFORM blocks where the predecessor doesn't end a sentence."""
     MERGEABLE = {"NORM", "INFORM"}
     no_start_pat = _NEW_ITEM_RE
     if extra_no_starts:
@@ -354,12 +327,21 @@ class SegQuality:
 
     @property
     def ok(self) -> bool:
+        """Meets quality target AND is not collapsed."""
+        if self.collapsed:
+            return False
         return self.median_len >= MIN_MEDIAN_CHARS and self.short_frac <= MAX_SHORT_FRAC
 
     @property
     def collapsed(self) -> bool:
+        """True if the result is clearly over-merged / collapsed."""
+        # Absolute floor: fewer than MIN_SEGS_ABSOLUTE segments is always collapsed
+        if self.n_segs < MIN_SEGS_ABSOLUTE:
+            return True
+        # Relative floor: lost too many segments vs gap=20 baseline
         if self.baseline_n > 0 and self.n_segs < self.baseline_n * MIN_SEGS_RATIO:
             return True
+        # Giant blocks: median > 1200 chars means table rows have been merged
         if self.median_len > MAX_SEG_MEDIAN:
             return True
         return False
@@ -382,12 +364,6 @@ def _measure_pdf(
     extra_no_starts: list[str] | None = None,
     mask_tables: bool = True,
 ) -> SegQuality:
-    """
-    Run extraction + merge with *gap* and return quality metrics.
-
-    mask_tables=True (default): chars inside bordered table regions are excluded.
-    Set to False only for debugging.
-    """
     all_texts: list[str] = []
     with pdfplumber.open(str(pdf_path)) as pdf:
         for page in pdf.pages:
@@ -424,7 +400,7 @@ def grid_search(pdf_path: Path, verbose: bool = True) -> tuple[int, SegQuality]:
     Try each GAP in GAP_GRID.  Return (best_gap, best_quality).
 
     Selection logic (in priority order):
-      1. Exclude collapsed candidates (n < 25% baseline OR median > 1200).
+      1. Exclude collapsed candidates.
       2. Among passing non-collapsed candidates, prefer the SMALLEST gap.
       3. If none pass, pick non-collapsed with highest median.
       4. If all collapsed, fall back to gap=20.
@@ -607,10 +583,15 @@ def tune_pdf(
     if verbose:
         print(f"  Current : {q_current}")
 
+    # Skip only if genuinely OK (not collapsed AND meets targets)
     if q_current.ok:
         if verbose:
             print("  → already meets quality target, skipping")
         return None
+
+    # Collapsed current rule gets a fresh grid search
+    if q_current.collapsed and verbose:
+        print("  ⚠️  Current rule is collapsed — re-tuning")
 
     if verbose:
         print("  Grid search:")
@@ -715,7 +696,7 @@ def print_stats(rules: dict, verbose: bool = True) -> None:
         print("No PDF corpus entries found.")
         return
 
-    ok = bad = 0
+    ok = bad = collapsed = 0
     for pdf in pdfs:
         stem  = pdf.stem
         rule  = rules.get(stem, {})
@@ -726,10 +707,12 @@ def print_stats(rules: dict, verbose: bool = True) -> None:
         print(q)
         if q.ok:
             ok += 1
+        elif q.collapsed:
+            collapsed += 1
         else:
             bad += 1
 
-    print(f"\n  OK: {ok}   Needs tuning: {bad}   Total: {ok+bad}")
+    print(f"\n  OK: {ok}   Collapsed: {collapsed}   Needs tuning: {bad}   Total: {ok+bad+collapsed}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -843,7 +826,7 @@ Examples:
             f"enabled ({args.model})" if _ollama_available(args.model) else "not available"
         )
         print(f"[para-tune]  {len(pdfs)} PDF(s)  |  AI fallback: {ai_status}")
-        print(f"             target: median ≥ {MIN_MEDIAN_CHARS}  short_frac ≤ {MAX_SHORT_FRAC*100:.0f}%\n")
+        print(f"             target: median ≥ {MIN_MEDIAN_CHARS}  short_frac ≤ {MAX_SHORT_FRAC*100:.0f}%  n ≥ {MIN_SEGS_ABSOLUTE}\n")
 
     changed = 0
     for pdf in pdfs:
