@@ -225,73 +225,53 @@ SEGMENT_TYPES = (
 )
 
 # ── ETSI Word template — known style → segment type mapping ──────────────────
-# Empirically derived from all 15 DOCX in downloads/specs/EN/.
-# Full reference: docs/etsi-style-map.md
-#
-# Frequency summary (≥2 docs):
-#   15x  Heading 1/2, ZA, ZT, FP, NO, EX, TT        → ✅ mapped
-#   13x  ZB, H6                                       → ✅ mapped
-#   12x  B1+                                          → NORM
-#   11x  Heading 3/8, toc 8                           → SECTION / TOC
-#    8x  BL, B2                                       → NORM
-#    6x  BN, B2+, ZD                                  → mapped
-#    5x  Heading 4, TH, List Paragraph                → mapped
-#    4x  B3, B4, TF                                   → mapped
-#    3x  PL, B3+                                      → NORM
-#    2x  Heading 5/9, Editor's Note                   → mapped
 _ETSI_STYLE_MAP: dict[str, str] = {
     # ── Cover page ────────────────────────────────────────────────
-    "za":           "OTHER",   # document title
-    "zb":           "OTHER",   # document type (European Standard / TS / TR)
-    "zt":           "OTHER",   # scope / status line
-    "zd":           "OTHER",   # additional cover metadata (6 docs)
-    "fp":           "OTHER",   # front-page metadata (Reference, Keywords…)
+    "za":           "OTHER",
+    "zb":           "OTHER",
+    "zt":           "OTHER",
+    "zd":           "OTHER",
+    "fp":           "OTHER",
 
     # ── Informative ───────────────────────────────────────────────
-    "no":           "INFORM",  # NOTE: paragraphs
-    "ex":           "INFORM",  # EXAMPLE: paragraphs
-    "ew":           "INFORM",  # definitions / editorial notes
-    "editor's note": "INFORM", # draft editor annotations
+    "no":           "INFORM",
+    "ex":           "INFORM",
+    "ew":           "INFORM",
+    "editor's note": "INFORM",
 
     # ── Normative body text ───────────────────────────────────────
-    "b1":           "NORM",    # requirement depth 1
-    "b1+":          "NORM",    # continuation / sub-item depth 1
-    "b2":           "NORM",    # requirement depth 2
-    "b2+":          "NORM",    # continuation depth 2
-    "b3":           "NORM",    # requirement depth 3
-    "b3+":          "NORM",    # continuation depth 3
-    "b4":           "NORM",    # requirement depth 4
-    "bl":           "NORM",    # normative body (block / list)
-    "bn":           "NORM",    # body numbered (numbered requirement list)
-    "pl":           "NORM",    # paragraph list (non-numbered list item)
-    "list paragraph": "NORM",  # Word built-in list paragraph
+    "b1":           "NORM",
+    "b1+":          "NORM",
+    "b2":           "NORM",
+    "b2+":          "NORM",
+    "b3":           "NORM",
+    "b3+":          "NORM",
+    "b4":           "NORM",
+    "bl":           "NORM",
+    "bn":           "NORM",
+    "pl":           "NORM",
+    "list paragraph": "NORM",
 
     # ── Table cells ───────────────────────────────────────────────
-    "th":           "TABLE",   # table header row
-    "tf":           "TABLE",   # table footer / figure caption
+    "th":           "TABLE",
+    "tf":           "TABLE",
 
     # ── Annex headings ────────────────────────────────────────────
-    # H6 is the ETSI-internal Annex heading style (present in 13/15 docs).
-    # It does NOT follow the "Heading N" Word convention.
     "h6":           "SECTION",
 }
 
-# Prefixes / exact names the segmenter handles without a map entry.
-# Styles NOT matching any of these are flagged ← UNKNOWN in --scan-styles
-# and trigger a warning during batch processing.
 _KNOWN_STYLE_PREFIXES = (
-    "heading",          # Heading 1 … Heading 9
-    "toc ",             # toc 1 … toc 9
+    "heading",
+    "toc ",
     "normal",
     "default paragraph",
-    # All keys in _ETSI_STYLE_MAP are also implicitly known:
     "za", "zb", "zt", "zd", "fp",
     "no", "ex", "ew", "editor",
     "b1", "b1+", "b2", "b2+", "b3", "b3+", "b4",
     "bl", "bn", "pl", "list paragraph",
     "th", "tf",
     "h6",
-    "tt",               # monospace / code
+    "tt",
 )
 
 
@@ -307,19 +287,10 @@ def _safe_stem(text: str) -> str:
 # Dynamic style detection  (scan once per DOCX, cache result)
 # ─────────────────────────────────────────────────────────────────────────────
 
-_style_cache: dict[str, set[str]] = {}  # path → set of lowercase style names
+_style_cache: dict[str, set[str]] = {}
 
 
 def detect_docx_heading_styles(docx_path: Path) -> tuple[set[str], set[str]]:
-    """
-    Scan all paragraph style names in *docx_path*.
-    Returns (known_styles, unknown_styles) — both sets of lowercase names.
-
-    known_styles  : styles the segmenter handles explicitly
-    unknown_styles: styles not in _KNOWN_STYLE_PREFIXES (flag for AI review)
-
-    Result is cached so repeated calls on the same path are free.
-    """
     key = str(docx_path)
     if key in _style_cache:
         cached = _style_cache[key]
@@ -344,14 +315,8 @@ def _is_known_style(style_lower: str) -> bool:
 
 
 def _warn_unknown_styles(unknown: set[str], docx_path: Path) -> None:
-    """
-    Print a warning when a DOCX contains style names we don't handle.
-    In a future step these can be sent to a local AI model for classification.
-    See docs/etsi-style-map.md → AI Fallback section.
-    """
     if not unknown:
         return
-    # Filter out noise (empty, single-char, purely numeric)
     flagged = {s for s in unknown if len(s) > 1 and not s.isdigit()}
     if not flagged:
         return
@@ -361,11 +326,6 @@ def _warn_unknown_styles(unknown: set[str], docx_path: Path) -> None:
         f"{', '.join(sorted(flagged)[:8])}",
         file=sys.stderr,
     )
-    # TODO: local AI fallback
-    # If ollama / llama.cpp is available, classify each unknown style name
-    # against a short prompt (see docs/etsi-style-map.md):
-    #   "Given an ETSI standards Word style named '{style}' with sample text
-    #    '{sample}', classify it as one of: SECTION NORM INFORM TABLE OTHER TOC"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -373,7 +333,6 @@ def _warn_unknown_styles(unknown: set[str], docx_path: Path) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _docx_para_is_bold(para) -> bool:
-    """True if the majority of runs in the paragraph are bold."""
     runs = para.runs
     if not runs:
         return False
@@ -382,21 +341,6 @@ def _docx_para_is_bold(para) -> bool:
 
 
 def _docx_para_type(para, profile: Profile) -> str:
-    """
-    Classify a python-docx Paragraph into a SEGMENT_TYPE.
-
-    Priority order:
-      1. Explicit ETSI style map (_ETSI_STYLE_MAP)
-      2. Heading N  (case-insensitive — fixes SECTION=0 bug)
-      3. toc N      (case-insensitive)
-      4. Boilerplate text heuristic
-      5. TOC dot-leader heuristic
-      6. Informative text heuristic
-      7. Bold numbered heading heuristic
-      8. Figure/Table caption heuristic
-      9. RFC-2119 normative keyword → NORM
-     10. OTHER
-    """
     style_raw  = para.style.name or ""
     style_low  = style_raw.lower()
     text       = para.text.strip()
@@ -404,42 +348,33 @@ def _docx_para_type(para, profile: Profile) -> str:
     if not text:
         return "OTHER"
 
-    # 1. Explicit ETSI template map
     mapped = _ETSI_STYLE_MAP.get(style_low)
     if mapped:
         return mapped
 
-    # 2. Heading N  (case-insensitive)
     if re.match(r"heading", style_low, re.IGNORECASE):
         return "SECTION"
 
-    # 3. TOC styles
     if re.match(r"toc\s", style_low) or "contents" in style_low:
         return "TOC"
 
-    # 4. Boilerplate cover text
     if _BOILERPLATE_RE.search(text):
         return "OTHER"
 
-    # 5. TOC heuristic (dot leaders)
     if _TOC_LINE_RE.search(text):
         return "TOC"
 
-    # 6. Informative
     if _INFORMATIVE_RE.search(text):
         return "INFORM"
 
-    # 7. Bold short line that looks like a section number → SECTION
     if _docx_para_is_bold(para) and len(text) < 120:
         m = _SECTION_RE.match(text)
         if m:
             return "SECTION"
 
-    # 8. Figure / table caption
     if re.match(r"^(Figure|Table|NOTE|EXAMPLE)\s+[\d\-A-Z]", text, re.IGNORECASE):
         return "TABLE"
 
-    # 9. Normative keywords
     if find_normative_keywords(text):
         return "NORM"
 
@@ -451,13 +386,6 @@ def segment_docx(
     profile: Profile,
     doc_stem: str | None = None,
 ) -> list[dict]:
-    """
-    Open a DOCX with python-docx and produce a flat list of segment dicts
-    with the same schema used by segment_pdf().
-
-    Tables are extracted with actual cell content (not just captions),
-    making them far more useful than the PDF table extractor.
-    """
     if not HAS_DOCX:
         raise RuntimeError(
             "python-docx not installed — run: pip install python-docx"
@@ -466,7 +394,6 @@ def segment_docx(
     stem = doc_stem or _safe_stem(docx_path.stem)
     doc  = docx_lib.Document(str(docx_path))
 
-    # Scan styles once and warn about unknown ones
     _, unknown_styles = detect_docx_heading_styles(docx_path)
     _warn_unknown_styles(unknown_styles, docx_path)
 
@@ -499,7 +426,6 @@ def segment_docx(
     for child in body.iterchildren():
         tag = child.tag.split("}")[-1] if "}" in child.tag else child.tag
 
-        # ── Paragraph ─────────────────────────────────────────────
         if tag == "p":
             para = para_map.get(child)
             if para is None:
@@ -511,7 +437,6 @@ def segment_docx(
 
             seg_type = _docx_para_type(para, profile)
 
-            # Update section state BEFORE building the segment dict
             if seg_type == "SECTION":
                 m = _SECTION_RE.match(text)
                 if m:
@@ -522,7 +447,6 @@ def segment_docx(
 
             segments.append(_new_seg(seg_type, text, para_idx))
 
-        # ── Table ──────────────────────────────────────────────────
         elif tag == "tbl":
             tbl = table_map.get(child)
             if tbl is None:
@@ -543,7 +467,7 @@ def segment_docx(
 
             header    = rows[0]
             data_rows = rows[1:]
-            flat_text = "\n".join(" | ".join(r) for r in rows)
+            flat_text = _table_to_markdown(rows)
 
             seg_counters[para_idx] = seg_counters.get(para_idx, 0) + 1
             seg_id = f"{stem}_pa{para_idx}_tbl{seg_counters[para_idx]}"
@@ -556,6 +480,7 @@ def segment_docx(
                 "section":            current_section,
                 "section_title":      current_section_title,
                 "text":               flat_text,
+                "markdown_text":      flat_text,
                 "table_header":       header,
                 "table_rows":         data_rows,
                 "normative_keywords": find_normative_keywords(flat_text),
@@ -569,12 +494,13 @@ def segment_docx(
 # PDF segmentation  (fallback — pdfplumber)
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Minimum vertical gap (in PDF points) that separates two distinct text blocks.
-# ETSI PDFs use a 10pt body font with ~14pt leading; real paragraph breaks are
-# ≥ 20 pt, so 20 is the sweet spot between joining wrapped lines and splitting
-# genuine paragraphs. The old value of 8 caused single sentences to be split
-# across multiple blocks at every line break.
 _GAP_THRESHOLD = 20
+
+# Fraction of page height — tables touching these zones are candidates for
+# cross-page continuation detection.
+_PAGE_BOTTOM_ZONE = 0.85   # table ending below this y-fraction → may continue
+_PAGE_TOP_ZONE    = 0.15   # table starting above this y-fraction on next page
+
 
 @dataclass
 class TextBlock:
@@ -594,15 +520,207 @@ class TextBlock:
         return 1.0 - (self.y_top / self.page_height)
 
 
-def _extract_blocks(page) -> list[TextBlock]:
+# ─────────────────────────────────────────────────────────────────────────────
+# Table helpers
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _table_to_markdown(rows: list[list[str]]) -> str:
+    """
+    Convert a list-of-lists table (as returned by pdfplumber or python-docx)
+    into a GitHub-Flavored Markdown table string.
+
+    The first row is treated as the header.  Empty rows are skipped.
+    Cell text is stripped and pipe characters inside cells are escaped.
+    """
+    if not rows:
+        return ""
+
+    def _cell(s: str) -> str:
+        return s.replace("|", "\\|").strip()
+
+    header = rows[0]
+    n_cols = len(header)
+    lines: list[str] = []
+
+    # Header row
+    lines.append("| " + " | ".join(_cell(c) for c in header) + " |")
+    # Separator
+    lines.append("| " + " | ".join("---" for _ in header) + " |")
+    # Data rows — skip completely empty rows, pad/trim to n_cols
+    for row in rows[1:]:
+        padded = (list(row) + [""] * n_cols)[:n_cols]
+        if all(not c.strip() for c in padded):
+            continue
+        lines.append("| " + " | ".join(_cell(c) for c in padded) + " |")
+
+    return "\n".join(lines)
+
+
+def _extract_tables(page) -> list[dict]:
+    """
+    Extract all tables from a pdfplumber page object.
+
+    Returns a list of dicts, each with:
+      bbox          — (x0, top, x1, bottom) in page coordinates
+      rows          — list[list[str]]  (raw cell text, including header)
+      header        — rows[0]
+      data_rows     — rows[1:]
+      markdown_text — GFM Markdown string
+      y_frac_top    — normalised vertical position (0=top, 1=bottom)
+      y_frac_bot    — normalised vertical position
+    """
+    height = float(page.height)
+    result = []
+    try:
+        tables = page.find_tables()
+    except Exception:
+        return result
+
+    for tbl in tables:
+        try:
+            raw = tbl.extract()
+        except Exception:
+            continue
+        if not raw:
+            continue
+
+        # Normalise: replace None with "", strip whitespace
+        rows: list[list[str]] = []
+        for raw_row in raw:
+            cleaned = [(c or "").strip() for c in raw_row]
+            # Skip completely empty rows
+            if any(cleaned):
+                rows.append(cleaned)
+
+        if not rows:
+            continue
+
+        bbox = tbl.bbox  # (x0, top, x1, bottom)
+        y_top = float(bbox[1])
+        y_bot = float(bbox[3])
+
+        result.append({
+            "bbox":          bbox,
+            "rows":          rows,
+            "header":        rows[0],
+            "data_rows":     rows[1:],
+            "markdown_text": _table_to_markdown(rows),
+            "y_frac_top":    y_top / height,
+            "y_frac_bot":    y_bot / height,
+        })
+
+    return result
+
+
+def _is_table_bbox(y_top: float, y_bot: float, table_bboxes: list[tuple]) -> bool:
+    """
+    Return True if the vertical range [y_top, y_bot] overlaps with any
+    known table bounding box on this page.  Used to mask table regions
+    from the text-block extractor so we don't double-count table content.
+    """
+    for (_, t_top, _, t_bot) in table_bboxes:
+        overlap_top = max(y_top, t_top)
+        overlap_bot = min(y_bot, t_bot)
+        if overlap_bot - overlap_top > 2:   # >2pt overlap
+            return True
+    return False
+
+
+def _merge_cross_page_tables(segments: list[dict]) -> list[dict]:
+    """
+    Detect and merge tables that span a page boundary.
+
+    Strategy A — header repeat (Word "Repeat Header Rows"):
+      If page N ends with a TABLE whose last row's y_frac_bot > _PAGE_BOTTOM_ZONE
+      AND page N+1 starts with a TABLE whose y_frac_top < _PAGE_TOP_ZONE
+      AND both tables have the same number of columns
+      AND the first row of the page-N+1 table is identical to the header of
+          the page-N table → it is a repeated header; strip it and append rows.
+
+    Strategy B — column-count match only (no repeated header):
+      Same positional criteria, same column count, but headers differ →
+      set continues_on_next_page=True on the page-N segment so the retrieval
+      pipeline can include both chunks together.
+
+    Operates in-place on *segments* (sorted by page then position).
+    Returns the (possibly shorter) merged list.
+    """
+    if not segments:
+        return segments
+
+    # Index TABLE segments by page
+    table_segs: list[int] = [
+        i for i, s in enumerate(segments)
+        if s.get("type") == "TABLE" and "table_header" in s
+    ]
+
+    merged_indices: set[int] = set()
+
+    for idx in range(len(table_segs) - 1):
+        i = table_segs[idx]
+        j = table_segs[idx + 1]
+
+        seg_a = segments[i]
+        seg_b = segments[j]
+
+        page_a = seg_a.get("page", 0)
+        page_b = seg_b.get("page", 0)
+        if page_b != page_a + 1:
+            continue
+
+        # Positional check
+        y_bot_a   = seg_a.get("y_frac_bot", 0.0)
+        y_top_b   = seg_b.get("y_frac_top", 1.0)
+        if y_bot_a < _PAGE_BOTTOM_ZONE or y_top_b > _PAGE_TOP_ZONE:
+            continue
+
+        header_a   = seg_a.get("table_header", [])
+        header_b   = seg_b.get("table_header", [])
+        data_rows_b = seg_b.get("table_rows", [])
+
+        n_cols_a = len(header_a)
+        n_cols_b = len(header_b)
+        if n_cols_a != n_cols_b or n_cols_a == 0:
+            # Strategy B: just annotate
+            seg_a["continues_on_next_page"] = True
+            continue
+
+        # Strategy A: repeated header?
+        if header_b == header_a and data_rows_b:
+            # Merge: append page-B data rows into page-A segment, drop page-B
+            merged_rows = seg_a.get("table_rows", []) + data_rows_b
+            all_rows    = [header_a] + merged_rows
+            seg_a["table_rows"]    = merged_rows
+            seg_a["text"]          = _table_to_markdown(all_rows)
+            seg_a["markdown_text"] = seg_a["text"]
+            seg_a["merged_from_page"] = page_b
+            merged_indices.add(j)
+        else:
+            # Strategy B: column counts match but headers differ — annotate only
+            seg_a["continues_on_next_page"] = True
+
+    return [s for idx, s in enumerate(segments) if idx not in merged_indices]
+
+
+def _extract_blocks(page, table_bboxes: list[tuple] | None = None) -> list[TextBlock]:
+    """
+    Extract text blocks from a pdfplumber page, skipping characters that fall
+    inside known table bounding boxes (so table content isn't double-counted).
+    """
     chars = page.chars
     if not chars:
         return []
     height = float(page.height)
+    mask   = table_bboxes or []
+
     lines: dict[int, list[dict]] = {}
     for ch in chars:
+        # Skip characters inside table regions
+        if mask and _is_table_bbox(ch["top"], ch["bottom"], mask):
+            continue
         y_mid = int((ch["top"] + ch["bottom"]) / 2)
         lines.setdefault(y_mid, []).append(ch)
+
     sorted_ys = sorted(lines)
     blocks: list[TextBlock] = []
     current_chars: list[dict] = []
@@ -640,14 +758,6 @@ def _extract_blocks(page) -> list[TextBlock]:
 
 
 def _dedup_blocks(blocks: list[TextBlock]) -> list[TextBlock]:
-    """
-    Remove duplicate adjacent text blocks on the same page.
-
-    PDF text layers sometimes emit the same visual text twice (e.g. for
-    simulated bold/shadow effects or repeated table cell content). A block is
-    considered a duplicate if its text is identical to the immediately preceding
-    block and they share the same approximate vertical position (±5 pt).
-    """
     if not blocks:
         return blocks
     out: list[TextBlock] = [blocks[0]]
@@ -663,32 +773,16 @@ def _merge_paragraph_blocks(
     blocks: list[TextBlock],
     seg_types: list[str],
 ) -> tuple[list[TextBlock], list[str]]:
-    """
-    Join adjacent text blocks that are continuations of the same paragraph.
-
-    A block is merged into its predecessor when ALL of the following hold:
-      • both blocks have the same classified segment type
-      • the type is NORM or INFORM (body text — not headings, TOC, headers…)
-      • the predecessor block does NOT end with sentence-terminating punctuation
-        (period, exclamation mark, question mark, or colon)
-      • the successor block does NOT look like a new list item or clause number
-        (i.e. does not start with a digit/bullet that signals a new requirement)
-
-    This fixes the most common PDF fragmentation pattern in ETSI specs where a
-    single normative sentence is split across two or three visual lines because
-    pdfplumber's gap threshold coincides with the inter-line spacing.
-    """
     if not blocks:
         return blocks, seg_types
 
     _MERGEABLE_TYPES = {"NORM", "INFORM"}
-    # A block starting with these patterns is a new logical item, never merge
     _NEW_ITEM_RE = re.compile(
-        r"^(\d+[\.\)]\s"          # numbered list: "1. " or "1) "
-        r"|\([a-z]\)\s"           # letter list: "(a) "
-        r"|[-–•]\s"               # bullet
-        r"|NOTE\b"                # NOTE:
-        r"|EXAMPLE\b)",           # EXAMPLE:
+        r"^(\d+[\.\ ]\s"
+        r"|\([a-z]\)\s"
+        r"|[-–•]\s"
+        r"|NOTE\b"
+        r"|EXAMPLE\b)",
         re.IGNORECASE,
     )
 
@@ -704,7 +798,6 @@ def _merge_paragraph_blocks(
             and not _NEW_ITEM_RE.match(blk.text)
         ):
             prev = merged_blocks[-1]
-            # Join with a single space; preserve geometry span
             merged_text = prev.text.rstrip() + " " + blk.text.lstrip()
             merged_blocks[-1] = TextBlock(
                 text=merged_text,
@@ -777,13 +870,45 @@ def segment_pdf(
 
     with pdfplumber.open(str(pdf_path)) as pdf:
         for page in pdf.pages:
-            page_nr = page.page_number
-            raw_blocks = _extract_blocks(page)
+            page_nr    = page.page_number
+            page_h     = float(page.height)
 
-            # ── Pass 1: remove duplicate adjacent blocks ──────────
+            # ── Pass 0: extract real tables first ─────────────────
+            # Tables are extracted with pdfplumber's table finder,
+            # then their bboxes are used to mask the text-block extractor
+            # so table content isn't double-counted as NORM/INFORM blocks.
+            pdf_tables  = _extract_tables(page)
+            table_bboxes = [t["bbox"] for t in pdf_tables]
+
+            # Emit TABLE segments (inserted before text blocks on same page
+            # so section context is correct for interleaved tables)
+            for tbl in pdf_tables:
+                seg_counters[page_nr] = seg_counters.get(page_nr, 0) + 1
+                seg_id = f"{stem}_p{page_nr}_tbl{seg_counters[page_nr]}"
+                segments.append({
+                    "id":                  seg_id,
+                    "type":               "TABLE",
+                    "page":               page_nr,
+                    "anchor":             f"#page={page_nr}",
+                    "section":            current_section,
+                    "section_title":      current_section_title,
+                    "text":               tbl["markdown_text"],
+                    "markdown_text":      tbl["markdown_text"],
+                    "table_header":       tbl["header"],
+                    "table_rows":         tbl["data_rows"],
+                    "y_frac_top":         tbl["y_frac_top"],
+                    "y_frac_bot":         tbl["y_frac_bot"],
+                    "normative_keywords": find_normative_keywords(tbl["markdown_text"]),
+                    "profile":            profile.name,
+                })
+
+            # ── Pass 1: text blocks (masked) ───────────────────────
+            raw_blocks = _extract_blocks(page, table_bboxes)
+
+            # ── Pass 2: remove duplicate adjacent blocks ──────────
             blocks = _dedup_blocks(raw_blocks)
 
-            # ── Pass 2: classify all blocks on this page ──────────
+            # ── Pass 3: classify all blocks on this page ──────────
             toc_lines = sum(
                 1 for b in blocks
                 if len(_TOC_LINE_RE.findall(b.text)) >= 1
@@ -800,10 +925,10 @@ def segment_pdf(
                 for b in blocks
             ]
 
-            # ── Pass 3: merge split paragraph blocks ──────────────
+            # ── Pass 4: merge split paragraph blocks ──────────────
             blocks, classified = _merge_paragraph_blocks(blocks, classified)
 
-            # ── Emit segments ─────────────────────────────────────
+            # ── Emit text segments ────────────────────────────────
             for block, seg_type in zip(blocks, classified):
                 if not block.text.strip():
                     continue
@@ -826,6 +951,10 @@ def segment_pdf(
                     "normative_keywords": kw,
                     "profile":            profile.name,
                 })
+
+    # ── Cross-page table merge (post-processing) ──────────────────
+    segments = _merge_cross_page_tables(segments)
+
     return segments
 
 
@@ -843,16 +972,6 @@ DOWNLOAD_ROOTS = [
 
 
 def find_source_file(rec: dict, stem: str) -> tuple[Path | None, str]:
-    """
-    Resolve the best available source file for a corpus record.
-    Returns (path, kind) where kind is 'docx' | 'pdf' | ''.
-
-    Priority:
-      1. source_docx field in corpus JSON (explicit, set by docx-ingest.py)
-      2. source_pdf  field in corpus JSON  — magic-byte verified
-      3. Auto-discover <stem>.docx in DOWNLOAD_ROOTS
-      4. Auto-discover <stem>.pdf  in DOWNLOAD_ROOTS
-    """
     docx_str = rec.get("source_docx", "")
     if docx_str:
         p = Path(docx_str)
@@ -959,9 +1078,16 @@ def segments_to_adoc(
         elif seg_type == "TABLE":
             if "table_header" in seg:
                 header = seg["table_header"]
-                rows   = seg["table_rows"]
-                lines += ["", f"// {anchor} — para {page_nr}"]
-                lines += ["|===", " | ".join(f"{c}" for c in header)]
+                rows   = seg.get("table_rows", [])
+                continued = seg.get("continues_on_next_page", False)
+                merged_from = seg.get("merged_from_page")
+                lines += ["", f"// {anchor} — page {page_nr}"]
+                if continued:
+                    lines.append("// ⚠️ table continues on next page")
+                if merged_from:
+                    lines.append(f"// ✅ merged with continuation from page {merged_from}")
+                lines += ["|==="]
+                lines.append(" | ".join(f"{c}" for c in header))
                 for row in rows:
                     lines.append(" | ".join(f"{c}" for c in row))
                 lines += ["|===", ""]
