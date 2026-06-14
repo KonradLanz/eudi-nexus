@@ -180,11 +180,44 @@ def _row_to_dict(row: sqlite3.Row) -> dict:
     return d
 
 
-def _norm_filter_clause(norm: str | None, version: str | None) -> tuple[str, list]:
+def _resolve_norm(raw: str, con: sqlite3.Connection) -> str:
+    """
+    Normalise a user-supplied norm identifier to the value stored in segments.norm.
+    Handles variants like:
+      'EN 319 401'  ->  'EN 319 401'   (already canonical, found directly)
+      '319 401'     ->  'EN 319 401'   (prefix-less)
+      '319401'      ->  'EN 319 401'   (no spaces)
+      'ESI-0019401' ->  resolved via source_file pattern (ETSI internal key)
+    Falls back to the raw value if no match is found.
+    """
+    # 1. Direct LIKE match (most common)
+    row = con.execute(
+        "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
+        (f"%{raw}%",),
+    ).fetchone()
+    if row:
+        return row[0]
+
+    # 2. Compact form: strip spaces and dashes, try numeric core
+    compact = "".join(c for c in raw if c.isdigit())
+    if compact:
+        row = con.execute(
+            "SELECT DISTINCT norm FROM segments WHERE REPLACE(REPLACE(norm,' ',''),'-','') LIKE ? LIMIT 1",
+            (f"%{compact}%",),
+        ).fetchone()
+        if row:
+            return row[0]
+
+    # 3. No match — return raw so the caller still gets a meaningful filter
+    return raw
+
+
+def _norm_filter_clause(norm: str | None, version: str | None, con: sqlite3.Connection | None = None) -> tuple[str, list]:
     clauses, params = [], []
     if norm:
+        resolved = _resolve_norm(norm, con) if con is not None else norm
         clauses.append("s.norm LIKE ?")
-        params.append(f"%{norm}%")
+        params.append(f"%{resolved}%")
     if version:
         clauses.append("s.version = ?")
         params.append(version)
@@ -341,7 +374,7 @@ def _hybrid_search(
     limit: int,
     alpha: float,
 ) -> list[dict]:
-    norm_clause, norm_params = _norm_filter_clause(norm, version)
+    norm_clause, norm_params = _norm_filter_clause(norm, version, con)
 
     bm25_scores:   dict[str, float] = {}
     cosine_scores: dict[str, float] = {}
@@ -414,8 +447,11 @@ mcp = FastMCP(
         "2. NEVER ask 'Would you like me to search X?' — just do it.\n"
         "3. If a result text ends mid-sentence or seems truncated, "
         "   automatically call get_section with the section number to get the full context.\n"
-        "4. If search_norm returns 0 results, try again with a broader query "
-        "   or a different norm — do not report failure without retrying.\n"
+        "4. If search_norm returns 0 results:\n"
+        "   a) Call list_norms and find the correct 'norm' field value (e.g. 'EN 319 401').\n"
+        "   b) Retry search_norm using that exact norm value.\n"
+        "   c) If still 0 results, try a broader query — but NEVER repeat the identical\n"
+        "      call with unchanged parameters. Change norm or query every retry.\n"
         "5. Always cite: norm name, version, section number, and segment ID.\n"
         "6. When a requirement contains 'shall', quote it verbatim.\n\n"
 
@@ -541,15 +577,21 @@ def list_norms() -> dict[str, Any]:
     rows = con.execute(
         """
         SELECT
-            norm, version,
+            s.norm, s.version,
             COUNT(*) as total_segments,
-            SUM(CASE WHEN type='NORM'    THEN 1 ELSE 0 END) as norm_count,
-            SUM(CASE WHEN type='INFORM'  THEN 1 ELSE 0 END) as inform_count,
-            SUM(CASE WHEN type='SECTION' THEN 1 ELSE 0 END) as section_count,
-            SUM(has_embedding) as embedded_count
-        FROM segments
-        GROUP BY norm, version
-        ORDER BY norm, version
+            SUM(CASE WHEN s.type='NORM'    THEN 1 ELSE 0 END) as norm_count,
+            SUM(CASE WHEN s.type='INFORM'  THEN 1 ELSE 0 END) as inform_count,
+            SUM(CASE WHEN s.type='SECTION' THEN 1 ELSE 0 END) as section_count,
+            SUM(s.has_embedding) as embedded_count,
+            (
+                SELECT n2.text FROM segments n2
+                WHERE n2.norm = s.norm AND n2.version = s.version
+                  AND n2.type = 'SECTION' AND n2.section = '0'
+                LIMIT 1
+            ) as title
+        FROM segments s
+        GROUP BY s.norm, s.version
+        ORDER BY s.norm, s.version
         """
     ).fetchall()
 
