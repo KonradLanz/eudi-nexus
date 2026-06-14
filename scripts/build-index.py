@@ -42,6 +42,7 @@ import statistics
 import struct
 import sys
 import time
+import zlib
 from pathlib import Path
 from typing import Iterator
 
@@ -421,15 +422,38 @@ def load_segments_file(path: Path) -> tuple[str, str, list[dict]]:
     return norm, version, segs
 
 
-def already_indexed(con: sqlite3.Connection, source_file: str) -> bool:
+def _crc32hex(path: Path) -> str:
+    """Fast CRC32 of file contents — sufficient for change detection, ~3-5x faster than SHA-256."""
+    return f"{zlib.crc32(path.read_bytes()) & 0xFFFFFFFF:08x}"
+
+
+def already_indexed(con: sqlite3.Connection, source_file: str, seg_path: Path) -> bool:
+    """
+    True if this segments file was previously indexed AND its content hasn't changed.
+    Uses CRC32 of the .segments.json file so re-segmented files are automatically re-indexed.
+    Falls back to legacy existence-only key for files indexed before this change.
+    """
     row = con.execute(
+        "SELECT value FROM index_meta WHERE key = ?",
+        (f"content_hash:{source_file}",),
+    ).fetchone()
+    if row is not None:
+        return row[0] == _crc32hex(seg_path)
+    # Legacy fallback: file was indexed before CRC tracking was added
+    legacy = con.execute(
         "SELECT 1 FROM index_meta WHERE key = ?",
         (f"indexed:{source_file}",),
     ).fetchone()
-    return row is not None
+    return legacy is not None
 
 
-def mark_indexed(con: sqlite3.Connection, source_file: str) -> None:
+def mark_indexed(con: sqlite3.Connection, source_file: str, seg_path: Path) -> None:
+    crc = _crc32hex(seg_path)
+    con.execute(
+        "INSERT OR REPLACE INTO index_meta(key, value) VALUES (?, ?)",
+        (f"content_hash:{source_file}", crc),
+    )
+    # Keep legacy key for backward compat with --check-index / external tooling
     con.execute(
         "INSERT OR REPLACE INTO index_meta(key, value) VALUES (?, ?)",
         (f"indexed:{source_file}", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())),
@@ -613,7 +637,7 @@ def index_segments_file(
                 stats["errors"] += len(batch)
 
     con.commit()
-    mark_indexed(con, source_file)
+    mark_indexed(con, source_file, path)
     con.commit()
 
     if verbose:
@@ -944,7 +968,7 @@ Examples:
 
     for seg_file in seg_files:
         stem = seg_file.stem
-        if not args.rebuild and not args.dry_run and already_indexed(con, stem):
+        if not args.rebuild and not args.dry_run and already_indexed(con, stem, seg_file):
             if args.reembed_missing:
                 # File already indexed — but re-embed any segments with has_embedding=0
                 n = _reembed_missing_segments(stem, con, client, verbose=verbose)

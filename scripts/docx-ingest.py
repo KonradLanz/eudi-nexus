@@ -27,20 +27,29 @@ try:
 except ImportError:
     sys.exit("[ERROR] python-docx not found. Please: pip install python-docx")
 
-# Re-use shortname helpers from pdf-ingest via direct import when run standalone,
-# or receive them as arguments when called from ingest.py.
-# Fallback: inline the same logic so this file stays self-contained.
+# Re-use parse_filename + helpers from pdf-ingest.py.
+# The file uses a hyphen in its name so it can't be imported with a plain
+# 'import' statement — use importlib instead.
+import importlib.util as _ilu
+
+_pdf_ingest_path = Path(__file__).parent / "pdf-ingest.py"
+_spec = _ilu.spec_from_file_location("pdf_ingest", _pdf_ingest_path)
+_pdf_ingest = _ilu.module_from_spec(_spec)
 try:
-    sys.path.insert(0, str(Path(__file__).parent))
-    from pdf_ingest import get_shortname, parse_filename as _parse_filename_pdf, SKIP_PREFIXES
-except ImportError:
-    # Standalone fallback — minimal version
+    _spec.loader.exec_module(_pdf_ingest)  # type: ignore[union-attr]
+    get_shortname        = _pdf_ingest.get_shortname
+    _parse_filename_pdf  = _pdf_ingest.parse_filename
+    SKIP_PREFIXES        = _pdf_ingest.SKIP_PREFIXES
+except Exception as _e:
+    # Hard fallback — should never happen in normal operation
+    import warnings
+    warnings.warn(f"[docx-ingest] Could not load pdf-ingest.py: {_e}. Version detection disabled.")
     SKIP_PREFIXES = (".",)
 
-    def get_shortname(norm: str, titles_dir=None):
+    def get_shortname(norm: str, titles_dir=None):  # type: ignore[misc]
         return "", ""
 
-    def _parse_filename_pdf(p):
+    def _parse_filename_pdf(p):  # type: ignore[misc]
         return p.stem, "vX.X.X"
 
 

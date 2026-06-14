@@ -198,6 +198,28 @@ FILENAME_MANUAL_RE = re.compile(
     re.IGNORECASE,
 )
 
+# ESI docbox schema A: ESI-0019060v002 or ESI-0019401v331v322  (no part number)
+# norm = "ESI 0019060", version = "v0.0.2" (first vNNN group used)
+FILENAME_ESI_SIMPLE_RE = re.compile(
+    r"^ESI-(?P<number>\d{7})v(?P<ver>\d{3})(?:v\d{3})?(?:\.(?:pdf|docx))?$",
+    re.IGNORECASE,
+)
+
+# ESI docbox schema B: ESI-0019102-1v151v142 / ESI-0019476-2v001
+# norm = "ESI 0019102-1", version taken from first vNNN group → v1.5.1
+FILENAME_ESI_PART_RE = re.compile(
+    r"^ESI-(?P<number>\d{7})-(?P<part>\d+)v(?P<ver1>\d{3})(?:v(?P<ver2>\d{3}))?(?:\.(?:pdf|docx))?$",
+    re.IGNORECASE,
+)
+
+
+def _esi_version(ver: str) -> str:
+    """Convert 3-digit ESI version string like '151' → 'v1.5.1'."""
+    if len(ver) == 3:
+        return f"v{int(ver[0])}.{int(ver[1])}.{int(ver[2])}"
+    # Fallback for unusual lengths
+    return f"v{ver}"
+
 SKIP_PREFIXES = (".",)
 
 
@@ -231,6 +253,20 @@ def parse_filename(pdf_path: Path) -> tuple[str, str]:
     m = FILENAME_MANUAL_RE.match(name)
     if m:
         return m.group("norm").replace("_", " "), m.group("version").lower()
+
+    # ESI docbox schema B (with part number): ESI-0019102-1v151v142
+    m = FILENAME_ESI_PART_RE.match(name)
+    if m:
+        norm    = f"ESI {m.group('number')}-{m.group('part')}"
+        version = _esi_version(m.group("ver1"))
+        return norm, version
+
+    # ESI docbox schema A (no part number): ESI-0019060v002
+    m = FILENAME_ESI_SIMPLE_RE.match(name)
+    if m:
+        norm    = f"ESI {m.group('number')}"
+        version = _esi_version(m.group("ver"))
+        return norm, version
 
     return pdf_path.stem, "vX.X.X"
 
