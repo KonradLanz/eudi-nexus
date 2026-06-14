@@ -83,3 +83,4 @@ logs/
 *.tmp
 *.temp
 .cache/
+test-untracked/

@@ -48,6 +48,8 @@
     "ingest:docx": ".venv/bin/python3 scripts/ingest.py --docx-only",
     "ingest:one": ".venv/bin/python3 scripts/pdf-ingest.py",
     "ingest:one:docx": ".venv/bin/python3 scripts/docx-ingest.py",
+    "ingest:resources": ".venv/bin/python3 scripts/ingest-resources.py",
+    "ingest:resources:force": ".venv/bin/python3 scripts/ingest-resources.py --force",
 
     "toc": ".venv/bin/python3 scripts/toc-extract.py",
     "toc:one": ".venv/bin/python3 scripts/toc-extract.py --pdf",
@@ -66,11 +68,11 @@
     "mcp:install:dry": "bash scripts/install-lmstudio-mcp.sh --dry-run",
     "mcp:remove": "bash scripts/install-lmstudio-mcp.sh --remove",
 
-    "pipeline": "npm run ingest && npm run toc && npm run segment && npm run index",
-    "pipeline:rebuild": "npm run ingest:force && npm run segment:force && npm run index:rebuild",
-    "pipeline:full": "npm run download && npm run ingest && npm run toc && npm run segment && npm run index",
-    "pipeline:full:rebuild": "npm run download:force && npm run ingest:force && npm run segment:force && npm run index:rebuild",
-    "pipeline:docx": "npm run download:docx && npm run ingest && npm run toc && npm run segment && npm run index",
+    "pipeline": "npm run ingest && npm run ingest:resources && npm run toc && npm run segment && npm run index",
+    "pipeline:rebuild": "npm run ingest:force && npm run ingest:resources:force && npm run segment:force && npm run index:rebuild",
+    "pipeline:full": "npm run download && npm run ingest && npm run ingest:resources && npm run toc && npm run segment && npm run index",
+    "pipeline:full:rebuild": "npm run download:force && npm run ingest:force && npm run ingest:resources:force && npm run segment:force && npm run index:rebuild",
+    "pipeline:docx": "npm run download:docx && npm run ingest && npm run ingest:resources && npm run toc && npm run segment && npm run index",
 
     "search": ".venv/bin/python3 scripts/spec-search.py",
     "qa": ".venv/bin/python3 scripts/ingest-qa.py",

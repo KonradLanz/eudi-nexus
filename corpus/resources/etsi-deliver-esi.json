@@ -1,0 +1,13 @@
+{
+  "id": "etsi-deliver-esi",
+  "type": "drafts",
+  "label": "ETSI Deliver server (public drafts)",
+  "url": "https://www.etsi.org/deliver/etsi_ts/119400_119499/",
+  "format": "html",
+  "scope": "tc",
+  "stf": null,
+  "wki_ids": [],
+  "note": "Published and archived TS/TR drafts in PDF/DOCX",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.859973+00:00"
+}
