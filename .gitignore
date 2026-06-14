@@ -13,11 +13,15 @@
 # ── Downloads (generated, large, not for VCS) ─────────────────────────
 downloads/
 
-# ── Corpus backups (generated, not for VCS) ───────────────────────────
+# ── Corpus — alle generierten Inhalte (nie einchecken) ────────────────
+# Heruntergeladene Specs (Download-Artefakte)
+corpus/specs/
 corpus/specs.bak_*/
 corpus/*.bak_*/
-
-# ── MCP index (built locally via: npm run index) ──────────────────────
+# Generierte Segmente / para-tune Ausgaben
+corpus/segments/
+corpus/para-tune/
+# MCP-Index (lokal gebaut via: npm run index)
 corpus/*.db
 corpus/*.db-shm
 corpus/*.db-wal
