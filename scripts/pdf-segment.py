@@ -47,8 +47,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
+import os
 import re
 import sys
+import urllib.request
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -105,6 +108,12 @@ class Profile:
     footer_zone:        float = 0.08
     heading_min_size:   float = 11.5
     heading_bold_ratio: float = 0.55
+    # OR-gate: if font size alone clearly exceeds this threshold, accept as
+    # heading even without bold — covers ETSI PDFs that use size-only headings.
+    # Audit across all EN/TR/TS/SR PDFs shows body text peaks at ~10pt;
+    # real headings start at ≥11pt. Set conservatively at 11.0 to avoid
+    # false positives from large-font boilerplate.
+    heading_size_only_min: float = 11.0
     toc_run_threshold:  int   = 4
     header_re:      list[str] = field(default_factory=list)
     footer_re:      list[str] = field(default_factory=list)
@@ -869,6 +878,61 @@ def _merge_paragraph_blocks(
     return merged_blocks, merged_types
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# AI fallback for heading classification (local LLM via LM Studio / Ollama)
+# ─────────────────────────────────────────────────────────────────────────────
+
+_AI_HEADING_CACHE: dict[str, bool] = {}
+
+def _ai_classify_heading(text: str) -> bool:
+    """Ask a local LLM whether *text* is a section heading.
+
+    Only called when _SECTION_RE matched but font signals were absent
+    (e.g. scanned PDFs, size=0 from pdfplumber).
+
+    Requires LOCAL_AI_URL in environment, e.g.:
+      LOCAL_AI_URL=http://localhost:1234/v1/chat/completions
+      LOCAL_AI_MODEL=lmstudio-community/Meta-Llama-3-8B-Instruct  (optional)
+
+    Returns False immediately if LOCAL_AI_URL is not set, so no overhead
+    for normal runs.
+    """
+    url = os.environ.get("LOCAL_AI_URL", "").strip()
+    if not url:
+        return False
+    if text in _AI_HEADING_CACHE:
+        return _AI_HEADING_CACHE[text]
+
+    model = os.environ.get("LOCAL_AI_MODEL", "local-model")
+    prompt = (
+        "You are classifying lines from ETSI standards PDF documents.\n"
+        "Reply with exactly one word: HEADING or BODY.\n\n"
+        f'Line: "{text}"'
+    )
+    payload = json.dumps({
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 4,
+        "temperature": 0.0,
+    }).encode()
+    try:
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read())
+        answer = data["choices"][0]["message"]["content"].strip().upper()
+        result = answer.startswith("HEADING")
+    except Exception as exc:
+        logging.debug("AI heading fallback failed: %s", exc)
+        result = False
+    _AI_HEADING_CACHE[text] = result
+    return result
+
+
 def classify_block(
     block: TextBlock,
     profile: Profile,
@@ -891,13 +955,31 @@ def classify_block(
     toc_matches = len(_TOC_LINE_RE.findall(text))
     if toc_mode or toc_matches >= profile.toc_run_threshold:
         return "TOC"
-    is_heading_font = (
+    # Heading detection — OR-gate with three tiers:
+    #   1. size+bold combined (original strict gate)
+    #   2. size-only fallback (ETSI PDFs: large non-bold headings, bold_r~0.0)
+    #   3. AI fallback (see _ai_classify_heading below) — triggered when
+    #      _SECTION_RE matches but neither font signal fires
+    #
+    # Audit findings (all EN/TR/TS/SR PDFs):
+    #   - body text:    avg_size ~9-10pt,  bold_ratio varies
+    #   - real headings: avg_size 11-18pt, bold_ratio 0.0-0.55
+    #   - AND-gate (old): missed 100% of PDF headings across all types
+    is_heading_size_bold = (
         block.avg_font_size >= profile.heading_min_size
         and block.bold_ratio  >= profile.heading_bold_ratio
     )
-    if is_heading_font:
-        m = _SECTION_RE.match(text.strip())
-        if m:
+    is_heading_size_only = (
+        block.avg_font_size >= profile.heading_size_only_min
+        and block.bold_ratio < profile.heading_bold_ratio  # explicitly non-bold path
+    )
+    regex_match = _SECTION_RE.match(text.strip())
+    if (is_heading_size_bold or is_heading_size_only) and regex_match:
+        return "SECTION"
+    # AI fallback: regex matched but no font signal (e.g. scanned PDFs where
+    # pdfplumber returns size=0). Only triggered when LOCAL_AI_URL is set.
+    if regex_match and not is_heading_size_bold and not is_heading_size_only:
+        if _ai_classify_heading(text.strip()):
             return "SECTION"
     # NOTE/EXAMPLE blocks are informative prose — check BEFORE the caption regex
     # so they are never mis-classified as TABLE.
@@ -1014,6 +1096,78 @@ def segment_pdf(
     # ── Cross-page table merge (post-processing) ──────────────────
     segments = _merge_cross_page_tables(segments)
 
+    # ── Quality metrics ───────────────────────────────────────────
+    # Emitted to stderr so callers can log / assert without parsing stdout.
+    #
+    # heading_density:  SECTION segments / total pages.
+    #   Healthy range for ETSI specs: 0.3 – 3.0 per page.
+    #   < 0.1  → likely heading detection failure (font signals absent).
+    #   > 5.0  → likely false-positive explosion (regex too broad).
+    #
+    # section_coverage: fraction of non-SECTION/non-TABLE segments that
+    #   have a non-empty `section` field.  Good PDFs: > 0.85.
+    #   Low coverage means headings were not detected early enough.
+    #
+    # norm_ratio: NORM / (NORM + OTHER).  For normative ETSI specs: 0.15–0.50.
+    #   < 0.05 → normative keyword matching may be broken.
+    #
+    # ai_fallback_hits: how many SECTION labels came from the local AI.
+    #   0 on normal runs (LOCAL_AI_URL not set).  > 0 means scanned/broken PDF.
+    type_counts: dict[str, int] = {}
+    for s in segments:
+        type_counts[s["type"]] = type_counts.get(s["type"], 0) + 1
+
+    total = len(segments)
+    n_pages = max((s["page"] for s in segments), default=1)
+    n_section = type_counts.get("SECTION", 0)
+    n_norm    = type_counts.get("NORM", 0)
+    n_other   = type_counts.get("OTHER", 0)
+    n_inform  = type_counts.get("INFORM", 0)
+    n_table   = type_counts.get("TABLE", 0)
+
+    content_segs = [s for s in segments if s["type"] not in ("SECTION", "TABLE", "TOC")]
+    covered = sum(1 for s in content_segs if s.get("section"))
+    section_coverage = covered / len(content_segs) if content_segs else 0.0
+
+    heading_density  = n_section / n_pages if n_pages else 0.0
+    norm_ratio       = n_norm / (n_norm + n_other) if (n_norm + n_other) else 0.0
+    ai_hits          = sum(1 for t in _AI_HEADING_CACHE.values() if t)
+
+    metrics = {
+        "total_segments":   total,
+        "pages":            n_pages,
+        "by_type":          type_counts,
+        "heading_density":  round(heading_density, 3),
+        "section_coverage": round(section_coverage, 3),
+        "norm_ratio":       round(norm_ratio, 3),
+        "ai_fallback_hits": ai_hits,
+        "warnings":         [],
+    }
+    if heading_density < 0.1:
+        metrics["warnings"].append(
+            f"heading_density={heading_density:.3f} < 0.1 — "
+            "font signals may be absent; consider enabling LOCAL_AI_URL"
+        )
+    if heading_density > 5.0:
+        metrics["warnings"].append(
+            f"heading_density={heading_density:.3f} > 5.0 — "
+            "possible false-positive heading explosion, check profile"
+        )
+    if section_coverage < 0.75:
+        metrics["warnings"].append(
+            f"section_coverage={section_coverage:.3f} < 0.75 — "
+            "many segments not under any section heading"
+        )
+    if norm_ratio < 0.05 and n_norm == 0:
+        metrics["warnings"].append(
+            "norm_ratio=0 — no normative keywords found; "
+            "check normative keyword list or PDF text layer"
+        )
+
+    for w in metrics["warnings"]:
+        logging.warning("[pdf-segment metrics] %s  (file: %s)", w, pdf_path.name)
+
+    print(json.dumps({"_metrics": metrics}), file=sys.stderr)
     return segments
 
 
