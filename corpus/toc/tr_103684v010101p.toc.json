@@ -1,0 +1,1586 @@
+{
+  "stem": "tr_103684v010101p",
+  "pdf": "downloads/specs/TR/tr_103684v010101p.pdf",
+  "title": "(2020-01)",
+  "reference": "tr_103684v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 10,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 11
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 11
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 11
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 11
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 14
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 14
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 14
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 15
+    },
+    {
+      "num": "4",
+      "title": "Study methodology",
+      "page": 16
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction",
+      "page": 16
+    },
+    {
+      "num": "4.2",
+      "title": "Areas of comparison between trust service schemes",
+      "page": 17
+    },
+    {
+      "num": "4.3",
+      "title": "Comparison process",
+      "page": 19
+    },
+    {
+      "num": "4.4",
+      "title": "Equivalence versus strict compliance",
+      "page": 20
+    },
+    {
+      "num": "4.5",
+      "title": "Study methodology",
+      "page": 20
+    },
+    {
+      "num": "5",
+      "title": "Information Collected on Existing PKI-based trust services schemes",
+      "page": 20
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 20
+    },
+    {
+      "num": "5.2",
+      "title": "International Legal Framework & Standards",
+      "page": 21
+    },
+    {
+      "num": "5.2.1",
+      "title": "UNCITRAL",
+      "page": 21
+    },
+    {
+      "num": "5.2.1.1",
+      "title": "Introduction",
+      "page": 21
+    },
+    {
+      "num": "5.2.1.2",
+      "title": "Legal context",
+      "page": 21
+    },
+    {
+      "num": "5.2.1.3",
+      "title": "Supervision and auditing",
+      "page": 21
+    },
+    {
+      "num": "5.2.1.4",
+      "title": "Best practice",
+      "page": 22
+    },
+    {
+      "num": "5.2.1.5",
+      "title": "Trust representation",
+      "page": 22
+    },
+    {
+      "num": "5.2.1.6",
+      "title": "Identified enablers",
+      "page": 22
+    },
+    {
+      "num": "5.2.1.7",
+      "title": "Reference Material",
+      "page": 23
+    },
+    {
+      "num": "5.2.2",
+      "title": "ISO 21188 PKI for financial services -- Practices and policy framework",
+      "page": 23
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "Legal context",
+      "page": 23
+    },
+    {
+      "num": "5.2.2.2",
+      "title": "Supervision and auditing",
+      "page": 23
+    },
+    {
+      "num": "5.2.2.3",
+      "title": "Best practice",
+      "page": 23
+    },
+    {
+      "num": "5.2.2.4",
+      "title": "Trust representation",
+      "page": 23
+    },
+    {
+      "num": "5.2.2.5",
+      "title": "Reference material",
+      "page": 23
+    },
+    {
+      "num": "5.2.3",
+      "title": "ISO/IEC 27099 PKI -- Practices and policy framework",
+      "page": 23
+    },
+    {
+      "num": "5.2.3.1",
+      "title": "Legal context",
+      "page": 23
+    },
+    {
+      "num": "5.2.3.2",
+      "title": "Supervision and auditing",
+      "page": 24
+    },
+    {
+      "num": "5.2.3.3",
+      "title": "Best practice",
+      "page": 24
+    },
+    {
+      "num": "5.2.3.4",
+      "title": "Trust representation",
+      "page": 24
+    },
+    {
+      "num": "5.2.3.5",
+      "title": "Reference material",
+      "page": 24
+    },
+    {
+      "num": "5.2.4",
+      "title": "WebTrust for CAs",
+      "page": 24
+    },
+    {
+      "num": "5.2.4.1",
+      "title": "Legal context",
+      "page": 24
+    },
+    {
+      "num": "5.2.4.2",
+      "title": "Supervision and auditing",
+      "page": 25
+    },
+    {
+      "num": "5.2.4.3",
+      "title": "Best practice",
+      "page": 25
+    },
+    {
+      "num": "5.2.4.4",
+      "title": "Trust representation",
+      "page": 25
+    },
+    {
+      "num": "5.2.4.5",
+      "title": "Reference material",
+      "page": 26
+    },
+    {
+      "num": "5.2.5",
+      "title": "CA/Browser Forum",
+      "page": 26
+    },
+    {
+      "num": "5.2.5.1",
+      "title": "Legal context",
+      "page": 26
+    },
+    {
+      "num": "5.2.5.2",
+      "title": "Supervision and auditing",
+      "page": 26
+    },
+    {
+      "num": "5.2.5.3",
+      "title": "Best practice",
+      "page": 26
+    },
+    {
+      "num": "5.2.5.4",
+      "title": "Trust representation",
+      "page": 26
+    },
+    {
+      "num": "5.2.5.5",
+      "title": "Identified enablers",
+      "page": 26
+    },
+    {
+      "num": "5.2.5.6",
+      "title": "Identified barriers",
+      "page": 26
+    },
+    {
+      "num": "5.2.5.7",
+      "title": "Reference material",
+      "page": 27
+    },
+    {
+      "num": "5.2.6",
+      "title": "IMRT-WG",
+      "page": 27
+    },
+    {
+      "num": "5.2.6.1",
+      "title": "Legal context",
+      "page": 27
+    },
+    {
+      "num": "5.2.6.2",
+      "title": "Supervision and auditing",
+      "page": 27
+    },
+    {
+      "num": "5.2.6.3",
+      "title": "Best Practices",
+      "page": 27
+    },
+    {
+      "num": "5.2.6.4",
+      "title": "Trust Representation",
+      "page": 27
+    },
+    {
+      "num": "5.2.7",
+      "title": "Kantara Initiative®",
+      "page": 27
+    },
+    {
+      "num": "5.2.7.1",
+      "title": "Legal context",
+      "page": 27
+    },
+    {
+      "num": "5.2.7.2",
+      "title": "Supervision and auditing",
+      "page": 27
+    },
+    {
+      "num": "5.2.7.3",
+      "title": "Best practice",
+      "page": 27
+    },
+    {
+      "num": "5.2.7.4",
+      "title": "Trust representation",
+      "page": 28
+    },
+    {
+      "num": "5.2.7.5",
+      "title": "Identified enablers",
+      "page": 28
+    },
+    {
+      "num": "5.2.7.6",
+      "title": "Reference material",
+      "page": 28
+    },
+    {
+      "num": "5.3",
+      "title": "Global Sector/Platform-specific PKI",
+      "page": 28
+    },
+    {
+      "num": "5.3.1",
+      "title": "Adobe® Approved Trust List",
+      "page": 28
+    },
+    {
+      "num": "5.3.1.1",
+      "title": "Legal context",
+      "page": 28
+    },
+    {
+      "num": "5.3.1.2",
+      "title": "Supervision and auditing",
+      "page": 28
+    },
+    {
+      "num": "5.3.1.3",
+      "title": "Best practice",
+      "page": 29
+    },
+    {
+      "num": "5.3.1.4",
+      "title": "Trust representation",
+      "page": 29
+    },
+    {
+      "num": "5.3.1.5",
+      "title": "Identified enablers",
+      "page": 29
+    },
+    {
+      "num": "5.3.1.6",
+      "title": "Reference material",
+      "page": 29
+    },
+    {
+      "num": "5.3.2",
+      "title": "CertiPath®",
+      "page": 29
+    },
+    {
+      "num": "5.3.2.1",
+      "title": "Legal context",
+      "page": 29
+    },
+    {
+      "num": "5.3.2.2",
+      "title": "Supervision and auditing",
+      "page": 30
+    },
+    {
+      "num": "5.3.2.3",
+      "title": "Best practice",
+      "page": 30
+    },
+    {
+      "num": "5.3.2.4",
+      "title": "Trust representation",
+      "page": 30
+    },
+    {
+      "num": "5.3.2.5",
+      "title": "Reference material",
+      "page": 30
+    },
+    {
+      "num": "5.3.3",
+      "title": "SAFE-BioPharma®",
+      "page": 31
+    },
+    {
+      "num": "5.3.3.1",
+      "title": "Legal context",
+      "page": 31
+    },
+    {
+      "num": "5.3.3.2",
+      "title": "Supervision and auditing",
+      "page": 31
+    },
+    {
+      "num": "5.3.3.3",
+      "title": "Best practice",
+      "page": 31
+    },
+    {
+      "num": "5.3.3.4",
+      "title": "Trust representation",
+      "page": 31
+    },
+    {
+      "num": "5.3.3.5",
+      "title": "Identified enablers",
+      "page": 31
+    },
+    {
+      "num": "5.3.3.6",
+      "title": "Identified Barriers",
+      "page": 31
+    },
+    {
+      "num": "5.3.3.7",
+      "title": "Reference material",
+      "page": 31
+    },
+    {
+      "num": "5.3.4",
+      "title": "Google Chrome®",
+      "page": 32
+    },
+    {
+      "num": "5.3.4.1",
+      "title": "Legal context",
+      "page": 32
+    },
+    {
+      "num": "5.3.4.2",
+      "title": "Supervision and audit",
+      "page": 32
+    },
+    {
+      "num": "5.3.4.3",
+      "title": "Best practice",
+      "page": 32
+    },
+    {
+      "num": "5.3.4.4",
+      "title": "Trust representation",
+      "page": 32
+    },
+    {
+      "num": "5.3.4.5",
+      "title": "Identified barriers",
+      "page": 32
+    },
+    {
+      "num": "5.3.4.6",
+      "title": "Reference material",
+      "page": 32
+    },
+    {
+      "num": "5.3.5",
+      "title": "Apple®",
+      "page": 32
+    },
+    {
+      "num": "5.3.5.1",
+      "title": "Legal context",
+      "page": 32
+    },
+    {
+      "num": "5.3.5.2",
+      "title": "Supervision and audit",
+      "page": 32
+    },
+    {
+      "num": "5.3.5.3",
+      "title": "Best practice",
+      "page": 33
+    },
+    {
+      "num": "5.3.5.4",
+      "title": "Trust representation",
+      "page": 33
+    },
+    {
+      "num": "5.3.5.5",
+      "title": "Reference material",
+      "page": 33
+    },
+    {
+      "num": "5.3.6",
+      "title": "Microsoft®",
+      "page": 33
+    },
+    {
+      "num": "5.3.6.1",
+      "title": "Legal context",
+      "page": 33
+    },
+    {
+      "num": "5.3.6.2",
+      "title": "Supervision and audit",
+      "page": 33
+    },
+    {
+      "num": "5.3.6.3",
+      "title": "Best practice",
+      "page": 33
+    },
+    {
+      "num": "5.3.6.4",
+      "title": "Trust representation",
+      "page": 33
+    },
+    {
+      "num": "5.3.6.5",
+      "title": "Reference material",
+      "page": 33
+    },
+    {
+      "num": "5.3.7",
+      "title": "Mozilla®",
+      "page": 33
+    },
+    {
+      "num": "5.3.7.1",
+      "title": "Legal context",
+      "page": 33
+    },
+    {
+      "num": "5.3.7.2",
+      "title": "Supervision and audit",
+      "page": 34
+    },
+    {
+      "num": "5.3.7.3",
+      "title": "Best practice",
+      "page": 34
+    },
+    {
+      "num": "5.3.7.4",
+      "title": "Trust representation",
+      "page": 34
+    },
+    {
+      "num": "5.4",
+      "title": "South America",
+      "page": 34
+    },
+    {
+      "num": "5.4.1",
+      "title": "Argentina",
+      "page": 34
+    },
+    {
+      "num": "5.4.1.1",
+      "title": "Legal context",
+      "page": 34
+    },
+    {
+      "num": "5.4.1.2",
+      "title": "Supervision and auditing",
+      "page": 35
+    },
+    {
+      "num": "5.4.1.3",
+      "title": "Best practice",
+      "page": 35
+    },
+    {
+      "num": "5.4.1.4",
+      "title": "Trust representation",
+      "page": 35
+    },
+    {
+      "num": "5.4.1.5",
+      "title": "Reference material",
+      "page": 35
+    },
+    {
+      "num": "5.4.2",
+      "title": "Bolivia",
+      "page": 36
+    },
+    {
+      "num": "5.4.2.1",
+      "title": "Legal context",
+      "page": 36
+    },
+    {
+      "num": "5.4.2.2",
+      "title": "Supervision and auditing",
+      "page": 36
+    },
+    {
+      "num": "5.4.2.3",
+      "title": "Best practice",
+      "page": 37
+    },
+    {
+      "num": "5.4.2.4",
+      "title": "Trust representation",
+      "page": 37
+    },
+    {
+      "num": "5.4.2.5",
+      "title": "Reference material",
+      "page": 37
+    },
+    {
+      "num": "5.4.3",
+      "title": "Brazil",
+      "page": 38
+    },
+    {
+      "num": "5.4.3.1",
+      "title": "Legal context",
+      "page": 38
+    },
+    {
+      "num": "5.4.3.2",
+      "title": "Supervision and auditing",
+      "page": 38
+    },
+    {
+      "num": "5.4.3.3",
+      "title": "Best practice",
+      "page": 39
+    },
+    {
+      "num": "5.4.3.4",
+      "title": "Trust representation",
+      "page": 39
+    },
+    {
+      "num": "5.4.3.5",
+      "title": "Reference material",
+      "page": 40
+    },
+    {
+      "num": "5.4.4",
+      "title": "Chile",
+      "page": 40
+    },
+    {
+      "num": "5.4.4.1",
+      "title": "Legal context",
+      "page": 40
+    },
+    {
+      "num": "5.4.4.2",
+      "title": "Supervision and auditing",
+      "page": 41
+    },
+    {
+      "num": "5.4.4.3",
+      "title": "Best practice",
+      "page": 41
+    },
+    {
+      "num": "5.4.4.4",
+      "title": "Trust representation",
+      "page": 42
+    },
+    {
+      "num": "5.4.4.5",
+      "title": "Identified enablers",
+      "page": 42
+    },
+    {
+      "num": "5.4.4.6",
+      "title": "Reference material",
+      "page": 43
+    },
+    {
+      "num": "5.4.5",
+      "title": "Columbia",
+      "page": 43
+    },
+    {
+      "num": "5.4.5.1",
+      "title": "Legal context",
+      "page": 43
+    },
+    {
+      "num": "5.4.5.2",
+      "title": "Supervision and auditing",
+      "page": 44
+    },
+    {
+      "num": "5.4.5.3",
+      "title": "Best practice",
+      "page": 44
+    },
+    {
+      "num": "5.4.5.4",
+      "title": "Trust representation",
+      "page": 44
+    },
+    {
+      "num": "5.4.5.5",
+      "title": "Reference material",
+      "page": 45
+    },
+    {
+      "num": "5.4.6",
+      "title": "Paraguay",
+      "page": 45
+    },
+    {
+      "num": "5.4.6.1",
+      "title": "Legal context",
+      "page": 45
+    },
+    {
+      "num": "5.4.6.2",
+      "title": "Supervision and auditing",
+      "page": 46
+    },
+    {
+      "num": "5.4.6.3",
+      "title": "Best practice",
+      "page": 46
+    },
+    {
+      "num": "5.4.6.4",
+      "title": "Trust representation",
+      "page": 46
+    },
+    {
+      "num": "5.4.6.5",
+      "title": "Reference material",
+      "page": 47
+    },
+    {
+      "num": "5.4.7",
+      "title": "Peru",
+      "page": 47
+    },
+    {
+      "num": "5.4.7.1",
+      "title": "Legal context",
+      "page": 47
+    },
+    {
+      "num": "5.4.7.2",
+      "title": "Supervision and auditing",
+      "page": 48
+    },
+    {
+      "num": "5.4.7.3",
+      "title": "Best practice",
+      "page": 48
+    },
+    {
+      "num": "5.4.7.4",
+      "title": "Trust representation",
+      "page": 48
+    },
+    {
+      "num": "5.4.7.5",
+      "title": "Identified enablers",
+      "page": 48
+    },
+    {
+      "num": "5.4.7.6",
+      "title": "Reference material",
+      "page": 49
+    },
+    {
+      "num": "5.4.8",
+      "title": "Uruguay",
+      "page": 49
+    },
+    {
+      "num": "5.4.8.1",
+      "title": "Legal context",
+      "page": 49
+    },
+    {
+      "num": "5.4.8.2",
+      "title": "Supervision and auditing",
+      "page": 49
+    },
+    {
+      "num": "5.4.8.3",
+      "title": "Best practice",
+      "page": 50
+    },
+    {
+      "num": "5.4.8.4",
+      "title": "Trust representation",
+      "page": 50
+    },
+    {
+      "num": "5.4.8.5",
+      "title": "Reference material",
+      "page": 50
+    },
+    {
+      "num": "5.5",
+      "title": "The Middle East & Africa",
+      "page": 50
+    },
+    {
+      "num": "5.5.1",
+      "title": "Arab-African e-Certification Authorities Network (AAECA-Net)",
+      "page": 50
+    },
+    {
+      "num": "5.5.1.1",
+      "title": "Legal context",
+      "page": 50
+    },
+    {
+      "num": "5.5.1.2",
+      "title": "Supervision and auditing",
+      "page": 50
+    },
+    {
+      "num": "5.5.1.3",
+      "title": "Best practice",
+      "page": 50
+    },
+    {
+      "num": "5.5.1.4",
+      "title": "Trust representation",
+      "page": 51
+    },
+    {
+      "num": "5.5.1.5",
+      "title": "Reference material",
+      "page": 51
+    },
+    {
+      "num": "5.5.2",
+      "title": "Israel",
+      "page": 51
+    },
+    {
+      "num": "5.5.2.1",
+      "title": "Legal context",
+      "page": 51
+    },
+    {
+      "num": "5.5.2.2",
+      "title": "Supervision and auditing",
+      "page": 51
+    },
+    {
+      "num": "5.5.2.3",
+      "title": "Best practice",
+      "page": 51
+    },
+    {
+      "num": "5.5.2.4",
+      "title": "Trust representation",
+      "page": 51
+    },
+    {
+      "num": "5.5.2.5",
+      "title": "Reference material",
+      "page": 51
+    },
+    {
+      "num": "5.5.3",
+      "title": "Sultanate of Oman",
+      "page": 51
+    },
+    {
+      "num": "5.5.3.1",
+      "title": "Legal context",
+      "page": 51
+    },
+    {
+      "num": "5.5.3.2",
+      "title": "Supervision and auditing",
+      "page": 52
+    },
+    {
+      "num": "5.5.3.3",
+      "title": "Best practice",
+      "page": 53
+    },
+    {
+      "num": "5.5.3.4",
+      "title": "Trust representation",
+      "page": 53
+    },
+    {
+      "num": "5.5.3.5",
+      "title": "Reference material",
+      "page": 54
+    },
+    {
+      "num": "5.5.4",
+      "title": "United Arab Emirates",
+      "page": 54
+    },
+    {
+      "num": "5.5.4.1",
+      "title": "Legal context",
+      "page": 54
+    },
+    {
+      "num": "5.5.4.2",
+      "title": "Supervision and auditing",
+      "page": 55
+    },
+    {
+      "num": "5.5.4.3",
+      "title": "Best practice",
+      "page": 55
+    },
+    {
+      "num": "5.5.4.4",
+      "title": "Trust representation",
+      "page": 55
+    },
+    {
+      "num": "5.5.4.5",
+      "title": "Reference material",
+      "page": 55
+    },
+    {
+      "num": "5.5.5",
+      "title": "Botswana",
+      "page": 56
+    },
+    {
+      "num": "5.5.5.1",
+      "title": "Legal context",
+      "page": 56
+    },
+    {
+      "num": "5.5.5.2",
+      "title": "Supervision and auditing",
+      "page": 56
+    },
+    {
+      "num": "5.5.5.3",
+      "title": "Best practice",
+      "page": 57
+    },
+    {
+      "num": "5.5.5.4",
+      "title": "Trust representation",
+      "page": 57
+    },
+    {
+      "num": "5.5.5.5",
+      "title": "Reference material",
+      "page": 57
+    },
+    {
+      "num": "5.6",
+      "title": "Asia/Pacific",
+      "page": 57
+    },
+    {
+      "num": "5.6.1",
+      "title": "China",
+      "page": 57
+    },
+    {
+      "num": "5.6.1.1",
+      "title": "Legal context",
+      "page": 57
+    },
+    {
+      "num": "5.6.1.2",
+      "title": "Supervision and auditing",
+      "page": 58
+    },
+    {
+      "num": "5.6.1.3",
+      "title": "Best practice",
+      "page": 58
+    },
+    {
+      "num": "5.6.1.4",
+      "title": "Trust representation",
+      "page": 58
+    },
+    {
+      "num": "5.6.1.5",
+      "title": "Reference material",
+      "page": 58
+    },
+    {
+      "num": "5.6.2",
+      "title": "Hong Kong",
+      "page": 58
+    },
+    {
+      "num": "5.6.2.1",
+      "title": "Legal context",
+      "page": 58
+    },
+    {
+      "num": "5.6.2.2",
+      "title": "Supervision and auditing",
+      "page": 59
+    },
+    {
+      "num": "5.6.2.3",
+      "title": "Best practice",
+      "page": 60
+    },
+    {
+      "num": "5.6.2.4",
+      "title": "Trust representation",
+      "page": 60
+    },
+    {
+      "num": "5.6.2.5",
+      "title": "Reference material",
+      "page": 61
+    },
+    {
+      "num": "5.6.3",
+      "title": "India",
+      "page": 61
+    },
+    {
+      "num": "5.6.3.1",
+      "title": "Legal context",
+      "page": 61
+    },
+    {
+      "num": "5.6.3.2",
+      "title": "Supervision and auditing",
+      "page": 62
+    },
+    {
+      "num": "5.6.3.3",
+      "title": "Best practice",
+      "page": 62
+    },
+    {
+      "num": "5.6.3.4",
+      "title": "Trust representation",
+      "page": 63
+    },
+    {
+      "num": "5.6.3.5",
+      "title": "Identified enablers",
+      "page": 63
+    },
+    {
+      "num": "5.6.3.6",
+      "title": "Reference material",
+      "page": 63
+    },
+    {
+      "num": "5.6.4",
+      "title": "Japan",
+      "page": 63
+    },
+    {
+      "num": "5.6.4.1",
+      "title": "Legal context",
+      "page": 63
+    },
+    {
+      "num": "5.6.4.2",
+      "title": "Supervision and auditing",
+      "page": 64
+    },
+    {
+      "num": "5.6.4.3",
+      "title": "Best practice",
+      "page": 65
+    },
+    {
+      "num": "5.6.4.4",
+      "title": "Trust representation",
+      "page": 65
+    },
+    {
+      "num": "5.6.4.5",
+      "title": "Identified enablers",
+      "page": 66
+    },
+    {
+      "num": "5.6.4.6",
+      "title": "Reference material",
+      "page": 66
+    },
+    {
+      "num": "5.6.5",
+      "title": "Asia PKI Consortium",
+      "page": 66
+    },
+    {
+      "num": "5.6.5.1",
+      "title": "Legal context",
+      "page": 66
+    },
+    {
+      "num": "5.6.5.2",
+      "title": "Supervision and auditing",
+      "page": 66
+    },
+    {
+      "num": "5.6.5.3",
+      "title": "Best practice",
+      "page": 66
+    },
+    {
+      "num": "5.6.5.4",
+      "title": "Trust representation",
+      "page": 66
+    },
+    {
+      "num": "5.6.5.5",
+      "title": "Reference material",
+      "page": 67
+    },
+    {
+      "num": "5.7",
+      "title": "North America",
+      "page": 67
+    },
+    {
+      "num": "5.7.1",
+      "title": "Canada",
+      "page": 67
+    },
+    {
+      "num": "5.7.1.1",
+      "title": "Legal context",
+      "page": 67
+    },
+    {
+      "num": "5.7.1.2",
+      "title": "Supervision and auditing",
+      "page": 67
+    },
+    {
+      "num": "5.7.1.3",
+      "title": "Best practice",
+      "page": 67
+    },
+    {
+      "num": "5.7.1.4",
+      "title": "Trust representation",
+      "page": 67
+    },
+    {
+      "num": "5.7.1.5",
+      "title": "Reference material",
+      "page": 67
+    },
+    {
+      "num": "5.7.2",
+      "title": "México",
+      "page": 68
+    },
+    {
+      "num": "5.7.2.1",
+      "title": "Legal context",
+      "page": 68
+    },
+    {
+      "num": "5.7.2.2",
+      "title": "Supervision and auditing",
+      "page": 69
+    },
+    {
+      "num": "5.7.2.3",
+      "title": "Best practice",
+      "page": 70
+    },
+    {
+      "num": "5.7.2.4",
+      "title": "Trust representation",
+      "page": 70
+    },
+    {
+      "num": "5.7.2.5",
+      "title": "Reference material",
+      "page": 70
+    },
+    {
+      "num": "5.7.3",
+      "title": "US Federal PKI",
+      "page": 71
+    },
+    {
+      "num": "5.7.3.1",
+      "title": "Legal context",
+      "page": 71
+    },
+    {
+      "num": "5.7.3.2",
+      "title": "Supervision and auditing",
+      "page": 71
+    },
+    {
+      "num": "5.7.3.3",
+      "title": "Best practice",
+      "page": 72
+    },
+    {
+      "num": "5.7.3.4",
+      "title": "Trust representation",
+      "page": 72
+    },
+    {
+      "num": "5.7.3.5",
+      "title": "Identified enablers",
+      "page": 72
+    },
+    {
+      "num": "5.7.3.6",
+      "title": "Identified barriers",
+      "page": 72
+    },
+    {
+      "num": "5.7.3.7",
+      "title": "Reference material",
+      "page": 72
+    },
+    {
+      "num": "5.8",
+      "title": "Other",
+      "page": 72
+    },
+    {
+      "num": "5.8.1",
+      "title": "Russia",
+      "page": 72
+    },
+    {
+      "num": "5.8.1.1",
+      "title": "Legal context",
+      "page": 72
+    },
+    {
+      "num": "5.8.1.2",
+      "title": "Supervision and auditing",
+      "page": 72
+    },
+    {
+      "num": "5.8.1.3",
+      "title": "Best practice",
+      "page": 73
+    },
+    {
+      "num": "5.8.1.4",
+      "title": "Trust representation",
+      "page": 73
+    },
+    {
+      "num": "5.8.1.5",
+      "title": "Identified enablers",
+      "page": 73
+    },
+    {
+      "num": "5.8.1.6",
+      "title": "Reference material",
+      "page": 74
+    },
+    {
+      "num": "5.8.2",
+      "title": "Switzerland",
+      "page": 74
+    },
+    {
+      "num": "5.8.2.1",
+      "title": "Legal context",
+      "page": 74
+    },
+    {
+      "num": "5.8.2.2",
+      "title": "Supervision and auditing",
+      "page": 75
+    },
+    {
+      "num": "5.8.2.3",
+      "title": "Best practice",
+      "page": 75
+    },
+    {
+      "num": "5.8.2.4",
+      "title": "Trust representation",
+      "page": 75
+    },
+    {
+      "num": "5.8.2.5",
+      "title": "Identified enablers",
+      "page": 75
+    },
+    {
+      "num": "5.8.2.6",
+      "title": "Reference material",
+      "page": 76
+    },
+    {
+      "num": "6",
+      "title": "Analysis of Enablers and Barriers to Mutual Recognition",
+      "page": 76
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 76
+    },
+    {
+      "num": "6.2",
+      "title": "Legal context",
+      "page": 76
+    },
+    {
+      "num": "6.2.1",
+      "title": "General Approaches",
+      "page": 76
+    },
+    {
+      "num": "6.2.2",
+      "title": "Enablers",
+      "page": 78
+    },
+    {
+      "num": "6.2.3",
+      "title": "Barriers",
+      "page": 78
+    },
+    {
+      "num": "6.3",
+      "title": "Supervision and auditing",
+      "page": 78
+    },
+    {
+      "num": "6.3.1",
+      "title": "General Approaches",
+      "page": 78
+    },
+    {
+      "num": "6.3.2",
+      "title": "Enablers",
+      "page": 79
+    },
+    {
+      "num": "6.3.3",
+      "title": "Barriers",
+      "page": 80
+    },
+    {
+      "num": "6.4",
+      "title": "Best Practice",
+      "page": 81
+    },
+    {
+      "num": "6.4.1",
+      "title": "General approaches",
+      "page": 81
+    },
+    {
+      "num": "6.4.2",
+      "title": "Enablers",
+      "page": 81
+    },
+    {
+      "num": "6.4.3",
+      "title": "Barriers",
+      "page": 81
+    },
+    {
+      "num": "6.5",
+      "title": "Trust Representation",
+      "page": 82
+    },
+    {
+      "num": "6.5.1",
+      "title": "General approaches",
+      "page": 82
+    },
+    {
+      "num": "6.5.2",
+      "title": "Enablers",
+      "page": 82
+    },
+    {
+      "num": "6.5.3",
+      "title": "Barriers",
+      "page": 82
+    },
+    {
+      "num": "7",
+      "title": "Conclusions",
+      "page": 82
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 82
+    },
+    {
+      "num": "7.2",
+      "title": "General",
+      "page": 82
+    },
+    {
+      "num": "7.3",
+      "title": "Legal Context",
+      "page": 83
+    },
+    {
+      "num": "7.4",
+      "title": "Supervision and Auditing",
+      "page": 83
+    },
+    {
+      "num": "7.5",
+      "title": "Best Practice",
+      "page": 83
+    },
+    {
+      "num": "7.6",
+      "title": "Trust Representation",
+      "page": 84
+    },
+    {
+      "num": "C.1",
+      "title": "Introduction",
+      "page": 90
+    },
+    {
+      "num": "C.1.1",
+      "title": "Overview",
+      "page": 90
+    },
+    {
+      "num": "C.1.2",
+      "title": "General principles for mutual recognition",
+      "page": 90
+    },
+    {
+      "num": "C.1.3",
+      "title": "Mutual recognition of qualified electronic signatures",
+      "page": 90
+    },
+    {
+      "num": "C.1.4",
+      "title": "Mutual recognition of qualified electronic seals",
+      "page": 91
+    },
+    {
+      "num": "C.1.5",
+      "title": "(Mutual) recognition of qualified signature/seal creation devices",
+      "page": 91
+    },
+    {
+      "num": "C.2",
+      "title": "Legal Context",
+      "page": 92
+    },
+    {
+      "num": "C.2.1",
+      "title": "Nine types of EU QTSP/QTS",
+      "page": 92
+    },
+    {
+      "num": "C.2.2",
+      "title": "eIDAS regulatory requirements for EU QTSP/QTS",
+      "page": 93
+    },
+    {
+      "num": "C.3",
+      "title": "Supervision & auditing of EU QTSP/QTS",
+      "page": 94
+    },
+    {
+      "num": "C.3.1",
+      "title": "Supervision of EU QTSP/QTS",
+      "page": 94
+    },
+    {
+      "num": "C.3.2",
+      "title": "Auditing of QTSP/QTS",
+      "page": 95
+    },
+    {
+      "num": "C.4",
+      "title": "Technical standards & best practices for EU QTSP/QTS",
+      "page": 95
+    },
+    {
+      "num": "C.5",
+      "title": "Trust representation of EU QTSP/QTS",
+      "page": 96
+    },
+    {
+      "num": "C.5.1",
+      "title": "EU Trust Mark for QTS",
+      "page": 96
+    },
+    {
+      "num": "C.5.2",
+      "title": "EU national trusted lists",
+      "page": 96
+    },
+    {
+      "num": "D.1",
+      "title": "Introduction",
+      "page": 98
+    },
+    {
+      "num": "D.2",
+      "title": "Dubai",
+      "page": 98
+    },
+    {
+      "num": "D.3",
+      "title": "Tokyo",
+      "page": 99
+    },
+    {
+      "num": "D.4",
+      "title": "Mexico City",
+      "page": 99
+    },
+    {
+      "num": "D.5",
+      "title": "New York",
+      "page": 100
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 102,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 11,
+  "total_pages": 102,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
+}

@@ -1,0 +1,340 @@
+{
+  "stem": "tr_102437v010101p",
+  "pdf": "downloads/specs/TR/tr_102437v010101p.pdf",
+  "title": "(2006-10)",
+  "reference": "tr_102437v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.3",
+      "title": "Additional terms used in the present document",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "General Concepts",
+      "page": 10
+    },
+    {
+      "num": "5",
+      "title": "Introduction to qualified certificate policies",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Overview",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Identification",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "User Community and applicability",
+      "page": 11
+    },
+    {
+      "num": "5.3.1",
+      "title": "QCP public + SSCD",
+      "page": 12
+    },
+    {
+      "num": "5.3.2",
+      "title": "QCP public",
+      "page": 12
+    },
+    {
+      "num": "5.4",
+      "title": "Conformance",
+      "page": 12
+    },
+    {
+      "num": "5.4.1",
+      "title": "General",
+      "page": 12
+    },
+    {
+      "num": "5.4.2",
+      "title": "QCP public + SSCD",
+      "page": 14
+    },
+    {
+      "num": "5.4.3",
+      "title": "QCP public",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "Obligations and liability",
+      "page": 14
+    },
+    {
+      "num": "6.1",
+      "title": "Certification authority obligations",
+      "page": 14
+    },
+    {
+      "num": "6.2",
+      "title": "Subscriber obligations",
+      "page": 15
+    },
+    {
+      "num": "6.3",
+      "title": "Information for Relying parties",
+      "page": 17
+    },
+    {
+      "num": "6.4",
+      "title": "Liability",
+      "page": 18
+    },
+    {
+      "num": "7",
+      "title": "Requirements on CA practice",
+      "page": 18
+    },
+    {
+      "num": "7.1",
+      "title": "Certification practice statement",
+      "page": 19
+    },
+    {
+      "num": "7.2",
+      "title": "Public key infrastructure - Key management life cycle",
+      "page": 21
+    },
+    {
+      "num": "7.2.1",
+      "title": "Certification authority key generation",
+      "page": 21
+    },
+    {
+      "num": "7.2.2",
+      "title": "Certification authority key storage, backup and recovery",
+      "page": 24
+    },
+    {
+      "num": "7.2.3",
+      "title": "Certification authority public key distribution",
+      "page": 27
+    },
+    {
+      "num": "7.2.4",
+      "title": "Key escrow",
+      "page": 27
+    },
+    {
+      "num": "7.2.5",
+      "title": "Certification authority key usage",
+      "page": 27
+    },
+    {
+      "num": "7.2.6",
+      "title": "End of CA key life cycle",
+      "page": 28
+    },
+    {
+      "num": "7.2.7",
+      "title": "Life cycle management of cryptographic hardware used to sign certificates",
+      "page": 29
+    },
+    {
+      "num": "7.2.8",
+      "title": "CA provided subject key management services",
+      "page": 30
+    },
+    {
+      "num": "7.2.9",
+      "title": "Secure-signature-creation device preparation",
+      "page": 31
+    },
+    {
+      "num": "7.3",
+      "title": "Public key infrastructure - Certificate Management life cycle",
+      "page": 32
+    },
+    {
+      "num": "7.3.1",
+      "title": "Subject registration",
+      "page": 32
+    },
+    {
+      "num": "7.3.2",
+      "title": "Certificate renewal, rekey and update",
+      "page": 36
+    },
+    {
+      "num": "7.3.3",
+      "title": "Certificate generation",
+      "page": 37
+    },
+    {
+      "num": "7.3.4",
+      "title": "Dissemination of Terms and Conditions",
+      "page": 39
+    },
+    {
+      "num": "7.3.5",
+      "title": "Certificate dissemination",
+      "page": 40
+    },
+    {
+      "num": "7.3.6",
+      "title": "Certificate revocation and suspension",
+      "page": 41
+    },
+    {
+      "num": "7.4",
+      "title": "CA management and operation",
+      "page": 44
+    },
+    {
+      "num": "7.4.1",
+      "title": "Security management",
+      "page": 44
+    },
+    {
+      "num": "7.4.2",
+      "title": "Asset classification and management",
+      "page": 48
+    },
+    {
+      "num": "7.4.3",
+      "title": "Personnel security",
+      "page": 49
+    },
+    {
+      "num": "7.4.4",
+      "title": "Physical and environmental security",
+      "page": 52
+    },
+    {
+      "num": "7.4.5",
+      "title": "Operations management",
+      "page": 54
+    },
+    {
+      "num": "7.4.6",
+      "title": "System Access Management",
+      "page": 56
+    },
+    {
+      "num": "7.4.7",
+      "title": "Trustworthy Systems Deployment and Maintenance",
+      "page": 58
+    },
+    {
+      "num": "7.4.8",
+      "title": "Business continuity management and incident handling",
+      "page": 59
+    },
+    {
+      "num": "7.4.9",
+      "title": "CA termination",
+      "page": 62
+    },
+    {
+      "num": "7.4.10",
+      "title": "Compliance with Legal Requirements",
+      "page": 63
+    },
+    {
+      "num": "7.4.11",
+      "title": "Recording of Information Concerning Qualified Certificates",
+      "page": 65
+    },
+    {
+      "num": "7.5",
+      "title": "Organizational",
+      "page": 67
+    },
+    {
+      "num": "8",
+      "title": "Framework for the definition of other qualified certificate policies",
+      "page": 69
+    },
+    {
+      "num": "8.1",
+      "title": "Qualified certificate policy management",
+      "page": 69
+    },
+    {
+      "num": "8.2",
+      "title": "Exclusions for non public QCPs",
+      "page": 70
+    },
+    {
+      "num": "8.3",
+      "title": "Additional requirements",
+      "page": 71
+    },
+    {
+      "num": "8.4",
+      "title": "Conformance",
+      "page": 71
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 73,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 73,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

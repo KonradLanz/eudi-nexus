@@ -1,0 +1,567 @@
+{
+  "stem": "ts_11913405v020101p",
+  "pdf": "downloads/specs/TS/ts_11913405v020101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11913405v020101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "Testing conformance to E-BES level of extended XAdES signatures",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Testing XML Signature elements and containers of XAdES qualifying properties",
+      "page": 9
+    },
+    {
+      "num": "5.2.1",
+      "title": "Testing XML Signature elements",
+      "page": 9
+    },
+    {
+      "num": "5.2.1.1",
+      "title": "Testing ds:Signature element",
+      "page": 9
+    },
+    {
+      "num": "5.2.1.2",
+      "title": "Testing ds:KeyInfo element",
+      "page": 10
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "Testing incorporation of XAdES qualifying properties to the signature",
+      "page": 10
+    },
+    {
+      "num": "5.2.2.2",
+      "title": "Testing xades:QualifyingPropertiesReference",
+      "page": 11
+    },
+    {
+      "num": "5.2.2.3",
+      "title": "Testing xades:QualifyingProperties",
+      "page": 11
+    },
+    {
+      "num": "5.2.2.4",
+      "title": "Testing xades:SignedProperties",
+      "page": 11
+    },
+    {
+      "num": "5.2.2.5",
+      "title": "Testing xades:SignedSignatureProperties",
+      "page": 12
+    },
+    {
+      "num": "5.2.2.6",
+      "title": "Testing xades:SignedDataObjectProperties",
+      "page": 12
+    },
+    {
+      "num": "5.2.2.7",
+      "title": "Testing xades:UnSignedProperties",
+      "page": 12
+    },
+    {
+      "num": "5.2.2.8",
+      "title": "Testing xades:UnSignedSignatureProperties",
+      "page": 12
+    },
+    {
+      "num": "5.2.2.9",
+      "title": "Testing xades:UnSignedDataObjectProperties",
+      "page": 13
+    },
+    {
+      "num": "5.3",
+      "title": "Testing XAdES qualifying properties",
+      "page": 13
+    },
+    {
+      "num": "5.3.1",
+      "title": "Testing xades:SigningTime element",
+      "page": 13
+    },
+    {
+      "num": "5.3.2",
+      "title": "Testing xades:SigningCertificateV2 element",
+      "page": 13
+    },
+    {
+      "num": "5.3.3",
+      "title": "Testing xades:CommitmentTypeIndication element",
+      "page": 13
+    },
+    {
+      "num": "5.3.4",
+      "title": "Testing xades:DataObjectFormat element",
+      "page": 13
+    },
+    {
+      "num": "5.3.5",
+      "title": "Testing xades:SignatureProductionPlaceV2 element",
+      "page": 14
+    },
+    {
+      "num": "5.3.6",
+      "title": "Testing xades:SignerRoleV2 element",
+      "page": 14
+    },
+    {
+      "num": "5.3.7",
+      "title": "Testing xades:CounterSignature element",
+      "page": 14
+    },
+    {
+      "num": "5.3.8",
+      "title": "Testing xades:AllDataObjectsTimeStamp element",
+      "page": 14
+    },
+    {
+      "num": "5.3.9",
+      "title": "Testing xades:IndividualDataObjectsTimeStamp element",
+      "page": 14
+    },
+    {
+      "num": "5.3.10",
+      "title": "Testing properties from upper levels",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "Testing conformance to E-EPES level of extended XAdES signatures",
+      "page": 16
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 16
+    },
+    {
+      "num": "6.2",
+      "title": "Testing xades:SignaturePolicyIdentifier element",
+      "page": 16
+    },
+    {
+      "num": "6.2.1",
+      "title": "General requirements",
+      "page": 16
+    },
+    {
+      "num": "6.2.2",
+      "title": "Test assertions specific to E-EPES level",
+      "page": 16
+    },
+    {
+      "num": "6.2.3",
+      "title": "Testing xades:SPURI signature policy qualifier",
+      "page": 16
+    },
+    {
+      "num": "6.2.4",
+      "title": "Testing xades:SPUserNotice signature policy qualifier",
+      "page": 16
+    },
+    {
+      "num": "6.2.5",
+      "title": "Testing xadesv141:SPDocSpecification signature policy qualifier",
+      "page": 16
+    },
+    {
+      "num": "6.3",
+      "title": "Testing xadesv141:SignaturePolicyStore element",
+      "page": 16
+    },
+    {
+      "num": "6.4",
+      "title": "Testing properties of upper levels",
+      "page": 17
+    },
+    {
+      "num": "7",
+      "title": "Testing conformance to E-T level of extended XAdES signatures",
+      "page": 17
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 17
+    },
+    {
+      "num": "7.2",
+      "title": "Testing xades:SignatureTimeStamp element",
+      "page": 17
+    },
+    {
+      "num": "7.2.1",
+      "title": "General requirements",
+      "page": 17
+    },
+    {
+      "num": "7.2.2",
+      "title": "Test assertions specific to E-T level",
+      "page": 17
+    },
+    {
+      "num": "7.3",
+      "title": "Testing properties from upper levels",
+      "page": 17
+    },
+    {
+      "num": "8",
+      "title": "Testing conformance to E-C level of extended XAdES signatures",
+      "page": 18
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction",
+      "page": 18
+    },
+    {
+      "num": "8.2",
+      "title": "Testing xadesv141:CompleteCertificateRefsV2 element",
+      "page": 18
+    },
+    {
+      "num": "8.2.1",
+      "title": "General requirements",
+      "page": 18
+    },
+    {
+      "num": "8.2.2",
+      "title": "Test assertions specific to E-C level",
+      "page": 18
+    },
+    {
+      "num": "8.2.3",
+      "title": "Test assertions no specific to E-C level",
+      "page": 18
+    },
+    {
+      "num": "8.3",
+      "title": "Testing xadesv141:AttributeCertificateRefsV2 element",
+      "page": 19
+    },
+    {
+      "num": "8.4",
+      "title": "Testing xades:CompleteRevocationRefs element",
+      "page": 19
+    },
+    {
+      "num": "8.4.1",
+      "title": "General requirements",
+      "page": 19
+    },
+    {
+      "num": "8.4.2",
+      "title": "Test assertions specific to E-C level",
+      "page": 19
+    },
+    {
+      "num": "8.4.3",
+      "title": "Test assertions no specific to E-C level",
+      "page": 19
+    },
+    {
+      "num": "8.5",
+      "title": "Testing xades:AttributeRevocationRefs element",
+      "page": 20
+    },
+    {
+      "num": "8.6",
+      "title": "Testing properties from upper levels",
+      "page": 20
+    },
+    {
+      "num": "9",
+      "title": "Testing conformance to E-X level of extended XAdES signatures",
+      "page": 20
+    },
+    {
+      "num": "9.1",
+      "title": "Introduction",
+      "page": 20
+    },
+    {
+      "num": "9.2",
+      "title": "Testing xadesv141:SigAndRefsTimeStampV2 element",
+      "page": 20
+    },
+    {
+      "num": "9.2.1",
+      "title": "General requirements",
+      "page": 20
+    },
+    {
+      "num": "9.2.2",
+      "title": "Test assertions specific to E-X level",
+      "page": 21
+    },
+    {
+      "num": "9.2.3",
+      "title": "Test assertions no specific to E-X level",
+      "page": 21
+    },
+    {
+      "num": "9.3",
+      "title": "Testing xadesv141:RefsOnlyTimeStampV2 element",
+      "page": 21
+    },
+    {
+      "num": "9.3.1",
+      "title": "General requirements",
+      "page": 21
+    },
+    {
+      "num": "9.3.2",
+      "title": "Test assertions specific to E-X level",
+      "page": 21
+    },
+    {
+      "num": "9.3.3",
+      "title": "Test assertions no specific to E-X level",
+      "page": 21
+    },
+    {
+      "num": "9.4",
+      "title": "Testing properties from upper levels",
+      "page": 22
+    },
+    {
+      "num": "10",
+      "title": "Testing conformance to E-X-L level of extended XAdES signatures",
+      "page": 22
+    },
+    {
+      "num": "10.1",
+      "title": "Introduction",
+      "page": 22
+    },
+    {
+      "num": "10.2",
+      "title": "Testing xades:CertificateValues element",
+      "page": 22
+    },
+    {
+      "num": "10.3",
+      "title": "Testing xades:RevocationValues element",
+      "page": 23
+    },
+    {
+      "num": "10.4",
+      "title": "Testing xades:AttrAuthoritiesCertValues element",
+      "page": 23
+    },
+    {
+      "num": "10.4.1",
+      "title": "General requirements",
+      "page": 23
+    },
+    {
+      "num": "10.4.2",
+      "title": "Test assertions specific to the E-X-L and E-X-Long levels",
+      "page": 23
+    },
+    {
+      "num": "10.4.3",
+      "title": "Test assertions no specific to the E-X-L and E-X-Long levels",
+      "page": 23
+    },
+    {
+      "num": "10.5",
+      "title": "Testing xades:AttributeRevocationValues element",
+      "page": 24
+    },
+    {
+      "num": "10.5.1",
+      "title": "General requirements",
+      "page": 24
+    },
+    {
+      "num": "10.5.2",
+      "title": "Test assertions specific to the E-X-L and E-X-Long levels",
+      "page": 24
+    },
+    {
+      "num": "10.5.3",
+      "title": "Test assertions no specific to the E-X-L and E-X-Long levels",
+      "page": 24
+    },
+    {
+      "num": "10.6",
+      "title": "Testing properties from upper levels",
+      "page": 24
+    },
+    {
+      "num": "11",
+      "title": "Testing conformance to E-X-Long level of extended XAdES signatures",
+      "page": 24
+    },
+    {
+      "num": "11.1",
+      "title": "General requirements",
+      "page": 24
+    },
+    {
+      "num": "11.2",
+      "title": "Test assertions for qualifying properties specific of the level",
+      "page": 25
+    },
+    {
+      "num": "11.3",
+      "title": "Testing properties from upper levels",
+      "page": 25
+    },
+    {
+      "num": "12",
+      "title": "Testing conformance to E-A level of extended XAdES signatures",
+      "page": 25
+    },
+    {
+      "num": "12.1",
+      "title": "Introduction",
+      "page": 25
+    },
+    {
+      "num": "12.2",
+      "title": "Testing xadesv141:TimeStampValidationData element",
+      "page": 25
+    },
+    {
+      "num": "12.2.1",
+      "title": "General requirements",
+      "page": 25
+    },
+    {
+      "num": "12.2.2",
+      "title": "Test assertions specific to E-A level",
+      "page": 26
+    },
+    {
+      "num": "12.3",
+      "title": "Testing xadesv141:ArchiveTimeStamp element",
+      "page": 26
+    },
+    {
+      "num": "12.3.1",
+      "title": "General requirements",
+      "page": 26
+    },
+    {
+      "num": "12.3.2",
+      "title": "Test assertions specific to E-A level",
+      "page": 26
+    },
+    {
+      "num": "12.3.3",
+      "title": "Test assertions no specific to E-A level",
+      "page": 26
+    },
+    {
+      "num": "12.4",
+      "title": "Testing xadesv141:RenewedDigests element",
+      "page": 26
+    },
+    {
+      "num": "12.4.1",
+      "title": "General requirements",
+      "page": 26
+    },
+    {
+      "num": "12.4.2",
+      "title": "Test assertions specific to E-A level",
+      "page": 26
+    },
+    {
+      "num": "Annex A",
+      "title": "Test assertions derived from XML Schema",
+      "page": 27,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 27
+    },
+    {
+      "num": "A.2",
+      "title": "Testing xades:QualifyingPropertiesReference",
+      "page": 27
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 28,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 28,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "stem": "sr_003091v010102p",
+  "pdf": "downloads/specs/Other/sr_003091v010102p.pdf",
+  "title": "(2013-03)",
+  "reference": "sr_003091v010102p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Basis for EV and Baseline Audit",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "EV Audit",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "Baseline Audit",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Audit Process/Conformity Assessment",
+      "page": 7
+    },
+    {
+      "num": "6",
+      "title": "Assessment Status Notification",
+      "page": 8
+    },
+    {
+      "num": "7",
+      "title": "Governance",
+      "page": 8
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 10,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 10,
+  "toc_pages": [
+    3
+  ]
+}

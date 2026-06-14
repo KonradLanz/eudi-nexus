@@ -1,0 +1,13 @@
+{
+  "id": "stf705-portal",
+  "type": "portal",
+  "label": "STF 705 Portal Page",
+  "url": "https://portal.etsi.org/STFs/STF_HomePages/STF705/STF705.asp",
+  "format": "html",
+  "scope": "stf",
+  "stf": "STF705",
+  "wki_ids": [],
+  "note": "ETSI STF homepage with meeting minutes, contributions, and status",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.859580+00:00"
+}

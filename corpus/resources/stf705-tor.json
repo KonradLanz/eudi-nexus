@@ -1,0 +1,13 @@
+{
+  "id": "stf705-tor",
+  "type": "tor",
+  "label": "STF 705 Terms of Reference (with Annexes)",
+  "url": "https://portal.etsi.org/STFs/ToR/ToR705_EUDIW-Stan-project_with_Annexes.docx",
+  "format": "docx",
+  "scope": "stf",
+  "stf": "STF705",
+  "wki_ids": [],
+  "note": "Defines deliverables, timeline, and work split for all STF 705 work items (TS/TR 119 4xx series)",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.859176+00:00"
+}

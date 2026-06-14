@@ -1,0 +1,204 @@
+{
+  "stem": "ts_103174v020201p",
+  "pdf": "downloads/specs/TS/ts_103174v020201p.pdf",
+  "title": "(2013-06)",
+  "reference": "ts_103174v020201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Conformance Levels",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "General requirements",
+      "page": 8
+    },
+    {
+      "num": "5.1",
+      "title": "Algorithm requirements",
+      "page": 8
+    },
+    {
+      "num": "5.2",
+      "title": "Compliance requirements",
+      "page": 8
+    },
+    {
+      "num": "6",
+      "title": "Requirements for ASiC formats",
+      "page": 9
+    },
+    {
+      "num": "6.1",
+      "title": "ASiC conformance",
+      "page": 9
+    },
+    {
+      "num": "7",
+      "title": "Requirements for ASiC-S",
+      "page": 10
+    },
+    {
+      "num": "7.1",
+      "title": "ASiC-S Media type identification",
+      "page": 10
+    },
+    {
+      "num": "7.2",
+      "title": "ASiC-S Signed data object",
+      "page": 10
+    },
+    {
+      "num": "7.3",
+      "title": "Requirements for ASiC-S format",
+      "page": 10
+    },
+    {
+      "num": "7.3.1",
+      "title": "Requirements for ASiC-S CAdES signature format",
+      "page": 10
+    },
+    {
+      "num": "7.3.2",
+      "title": "Requirements for ASiC-S XAdES signature format",
+      "page": 11
+    },
+    {
+      "num": "7.3.3",
+      "title": "Requirements for ASiC-S Time stamp token format",
+      "page": 11
+    },
+    {
+      "num": "8",
+      "title": "Requirements for ASiC-E",
+      "page": 11
+    },
+    {
+      "num": "8.1",
+      "title": "ASiC-E Media type identification",
+      "page": 11
+    },
+    {
+      "num": "8.2",
+      "title": "ASiC-E Signed data object",
+      "page": 11
+    },
+    {
+      "num": "8.3",
+      "title": "Requirements for ASiC-E XAdES",
+      "page": 12
+    },
+    {
+      "num": "8.3.1",
+      "title": "ASiC-E XAdES signature",
+      "page": 12
+    },
+    {
+      "num": "8.3.2",
+      "title": "Requirements for the contents of Container",
+      "page": 12
+    },
+    {
+      "num": "8.4",
+      "title": "Requirements for ASiC-E CAdES",
+      "page": 12
+    },
+    {
+      "num": "8.4.1",
+      "title": "ASiC-E CAdES signature",
+      "page": 12
+    },
+    {
+      "num": "8.4.2",
+      "title": "Requirements for the contents of Container",
+      "page": 13
+    },
+    {
+      "num": "8.5",
+      "title": "Requirements for ASiC-E Time stamp token",
+      "page": 13
+    },
+    {
+      "num": "8.5.1",
+      "title": "Requirements on Time stamp tokens",
+      "page": 13
+    },
+    {
+      "num": "8.5.2",
+      "title": "Requirements for the contents of Container",
+      "page": 13
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 14,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 14,
+  "toc_pages": [
+    3
+  ]
+}

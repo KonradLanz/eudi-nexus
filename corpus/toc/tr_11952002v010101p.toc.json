@@ -1,0 +1,181 @@
+{
+  "stem": "tr_11952002v010101p",
+  "pdf": "downloads/specs/TR/tr_11952002v010101p.pdf",
+  "title": "(2024-04)",
+  "reference": "tr_11952002v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Gathering information on emerging technologies and new models",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Information sources",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Monitoring of standardization activities",
+      "page": 8
+    },
+    {
+      "num": "4.2.1",
+      "title": "ETSI ISG Permissioned Distributed Ledger (PDL)",
+      "page": 8
+    },
+    {
+      "num": "4.2.2",
+      "title": "ISO 19626 Trusted communication platforms for electronic documents",
+      "page": 9
+    },
+    {
+      "num": "4.2.3",
+      "title": "CEN/TS 16326 Functional Specification for postal registered electronic mail",
+      "page": 10
+    },
+    {
+      "num": "4.3",
+      "title": "Monitoring of European initiatives",
+      "page": 10
+    },
+    {
+      "num": "4.3.1",
+      "title": "Policy initiatives relevant for electronic delivery",
+      "page": 10
+    },
+    {
+      "num": "4.3.1.1",
+      "title": "Single Digital Gateway, the once-only technical system",
+      "page": 10
+    },
+    {
+      "num": "4.3.1.2",
+      "title": "The EIF and the Interoperable Europe Act",
+      "page": 10
+    },
+    {
+      "num": "4.3.1.3",
+      "title": "The eFTI draft implementing act",
+      "page": 11
+    },
+    {
+      "num": "4.3.2",
+      "title": "The European projects",
+      "page": 11
+    },
+    {
+      "num": "4.3.2.1",
+      "title": "The Digital Europe Programme",
+      "page": 11
+    },
+    {
+      "num": "4.3.2.2",
+      "title": "Peppol",
+      "page": 11
+    },
+    {
+      "num": "4.4",
+      "title": "ERDS/REM Emerging technologies",
+      "page": 12
+    },
+    {
+      "num": "4.4.1",
+      "title": "Blockchain & DLT",
+      "page": 12
+    },
+    {
+      "num": "4.4.2",
+      "title": "REST",
+      "page": 12
+    },
+    {
+      "num": "5",
+      "title": "Assessment of emerging technologies and models for ERDS/REM provision",
+      "page": 13
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 14,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 14,
+  "toc_pages": [
+    3
+  ]
+}

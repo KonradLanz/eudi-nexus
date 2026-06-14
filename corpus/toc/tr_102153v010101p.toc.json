@@ -1,0 +1,102 @@
+{
+  "stem": "tr_102153v010101p",
+  "pdf": "downloads/specs/TR/tr_102153v010101p.pdf",
+  "title": "(2003-02)",
+  "reference": "tr_102153v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Implications from the requirements of the Directive",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Documents scrutinized",
+      "page": 7
+    },
+    {
+      "num": "6",
+      "title": "Analysis outcomes",
+      "page": 7
+    },
+    {
+      "num": "6.1",
+      "title": "Profile comparison",
+      "page": 7
+    },
+    {
+      "num": "6.2",
+      "title": "Profiles inconsistencies",
+      "page": 11
+    },
+    {
+      "num": "6.2.1",
+      "title": "Inconsistencies list",
+      "page": 11
+    },
+    {
+      "num": "6.2.2",
+      "title": "Comments on the findings",
+      "page": 12
+    },
+    {
+      "num": "7",
+      "title": "Proposed strategy and implementation phases",
+      "page": 13
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 15,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 15,
+  "toc_pages": [
+    3
+  ]
+}

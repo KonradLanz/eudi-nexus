@@ -1,0 +1,136 @@
+{
+  "stem": "tr_11947902v010101p",
+  "pdf": "downloads/specs/TR/tr_11947902v010101p.pdf",
+  "title": "(2025-07)",
+  "reference": "tr_11947902v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Extended Validation Service(s)",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Overview",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Attestation Refreshing",
+      "page": 9
+    },
+    {
+      "num": "4.3",
+      "title": "Cyphered Attestation Presentation",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Central Rulebook for Attributes",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Overview",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Attestation metadata extension",
+      "page": 11
+    },
+    {
+      "num": "6",
+      "title": "Security Considerations",
+      "page": 13
+    },
+    {
+      "num": "7",
+      "title": "Privacy Considerations",
+      "page": 14
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 17,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 17,
+  "toc_pages": [
+    3
+  ]
+}

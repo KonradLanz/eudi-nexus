@@ -1,0 +1,191 @@
+{
+  "stem": "ts_11914201v010001p",
+  "pdf": "downloads/specs/TS/ts_11914201v010001p.pdf",
+  "title": "(2015-07)",
+  "reference": "ts_11914201v010001p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "General syntax",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "General requirements for PAdES signatures based on PDF signatures",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Attributes syntax and semantics",
+      "page": 8
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 8
+    },
+    {
+      "num": "5.2",
+      "title": "CMS and CAdES defined attributes",
+      "page": 8
+    },
+    {
+      "num": "5.3",
+      "title": "ISO 32000-1 defined attributes",
+      "page": 8
+    },
+    {
+      "num": "5.4",
+      "title": "Validation data and archive validation data attributes",
+      "page": 8
+    },
+    {
+      "num": "5.4.1",
+      "title": "Overview",
+      "page": 8
+    },
+    {
+      "num": "5.4.2",
+      "title": "Document Security Store",
+      "page": 10
+    },
+    {
+      "num": "5.4.2.1",
+      "title": "Catalog",
+      "page": 10
+    },
+    {
+      "num": "5.4.2.2",
+      "title": "DSS Dictionary",
+      "page": 10
+    },
+    {
+      "num": "5.4.2.3",
+      "title": "Signature VRI Dictionary",
+      "page": 11
+    },
+    {
+      "num": "5.4.3",
+      "title": "Document Time-stamp",
+      "page": 13
+    },
+    {
+      "num": "5.5",
+      "title": "Requirements on encryption",
+      "page": 13
+    },
+    {
+      "num": "5.6",
+      "title": "Extensions dictionary",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "PAdES baseline signatures",
+      "page": 14
+    },
+    {
+      "num": "6.1",
+      "title": "Signature levels",
+      "page": 14
+    },
+    {
+      "num": "6.2",
+      "title": "General requirements for PAdES baseline signatures",
+      "page": 15
+    },
+    {
+      "num": "6.2.1",
+      "title": "Algorithm requirements",
+      "page": 15
+    },
+    {
+      "num": "6.2.2",
+      "title": "Notation for requirements",
+      "page": 15
+    },
+    {
+      "num": "6.3",
+      "title": "PAdES baseline signatures",
+      "page": 16
+    },
+    {
+      "num": "6.4",
+      "title": "Legacy PAdES baseline signatures",
+      "page": 20
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 21,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 21,
+  "toc_pages": [
+    3
+  ]
+}

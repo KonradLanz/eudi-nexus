@@ -1,0 +1,534 @@
+{
+  "stem": "ts_11941108v010101p",
+  "pdf": "downloads/specs/TS/ts_11941108v010101p.pdf",
+  "title": "(2025-10)",
+  "reference": "ts_11941108v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 9
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 10
+    },
+    {
+      "num": "4.1",
+      "title": "General policy requirements concept",
+      "page": 10
+    },
+    {
+      "num": "4.2",
+      "title": "Certificate policy and certification practice statement",
+      "page": 10
+    },
+    {
+      "num": "4.2.1",
+      "title": "Certification Practice Statement",
+      "page": 10
+    },
+    {
+      "num": "4.2.2",
+      "title": "Certificate Policy",
+      "page": 10
+    },
+    {
+      "num": "4.2.3",
+      "title": "Terms and conditions and PKI disclosure statement",
+      "page": 10
+    },
+    {
+      "num": "4.3",
+      "title": "Certification services",
+      "page": 10
+    },
+    {
+      "num": "5",
+      "title": "General provisions on Certification Practice Statement and Certificate Policies",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "General requirements",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Certification Practice Statement Requirements",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "Certificate Policy name and identification",
+      "page": 11
+    },
+    {
+      "num": "5.4",
+      "title": "PKI Participants",
+      "page": 11
+    },
+    {
+      "num": "5.4.1",
+      "title": "Certification authority",
+      "page": 11
+    },
+    {
+      "num": "5.4.2",
+      "title": "Subscriber and subject",
+      "page": 11
+    },
+    {
+      "num": "5.4.3",
+      "title": "Others",
+      "page": 12
+    },
+    {
+      "num": "5.5",
+      "title": "Certificate Usage",
+      "page": 12
+    },
+    {
+      "num": "5.5.1",
+      "title": "NCP-n-eudiwrp",
+      "page": 12
+    },
+    {
+      "num": "5.5.2",
+      "title": "NCP-l-eudiwrp",
+      "page": 12
+    },
+    {
+      "num": "5.5.3",
+      "title": "QCP-n-eudiwrp",
+      "page": 12
+    },
+    {
+      "num": "5.5.4",
+      "title": "QCP-l-eudiwrp",
+      "page": 12
+    },
+    {
+      "num": "6",
+      "title": "Trust Service Providers practice",
+      "page": 12
+    },
+    {
+      "num": "6.1",
+      "title": "Publication and Repository Responsibilities",
+      "page": 12
+    },
+    {
+      "num": "6.2",
+      "title": "Identification and Authentication",
+      "page": 12
+    },
+    {
+      "num": "6.2.1",
+      "title": "Naming",
+      "page": 12
+    },
+    {
+      "num": "6.2.2",
+      "title": "Initial Identity Validation",
+      "page": 12
+    },
+    {
+      "num": "6.2.3",
+      "title": "Identification and authentication for Re-key requests",
+      "page": 13
+    },
+    {
+      "num": "6.2.4",
+      "title": "Identification and authentication for revocation requests",
+      "page": 13
+    },
+    {
+      "num": "6.3",
+      "title": "Certificate Life-Cycle Operational Requirements",
+      "page": 13
+    },
+    {
+      "num": "6.3.1",
+      "title": "Certificate Application",
+      "page": 13
+    },
+    {
+      "num": "6.3.2",
+      "title": "Certificate application processing",
+      "page": 13
+    },
+    {
+      "num": "6.3.3",
+      "title": "Certificate issuance",
+      "page": 13
+    },
+    {
+      "num": "6.3.4",
+      "title": "Certificate acceptance",
+      "page": 13
+    },
+    {
+      "num": "6.3.5",
+      "title": "Key Pair and Certificate Usage",
+      "page": 13
+    },
+    {
+      "num": "6.3.6",
+      "title": "Certificate Renewal",
+      "page": 14
+    },
+    {
+      "num": "6.3.7",
+      "title": "Certificate Re-key",
+      "page": 14
+    },
+    {
+      "num": "6.3.8",
+      "title": "Certificate Modification",
+      "page": 14
+    },
+    {
+      "num": "6.3.9",
+      "title": "Certificate Revocation and Suspension",
+      "page": 14
+    },
+    {
+      "num": "6.3.10",
+      "title": "Certificate Status Services",
+      "page": 14
+    },
+    {
+      "num": "6.3.11",
+      "title": "End of Subscription",
+      "page": 14
+    },
+    {
+      "num": "6.3.12",
+      "title": "Key Escrow and Recovery",
+      "page": 14
+    },
+    {
+      "num": "6.4",
+      "title": "Facility, Management and Operational Controls",
+      "page": 14
+    },
+    {
+      "num": "6.4.1",
+      "title": "General",
+      "page": 14
+    },
+    {
+      "num": "6.4.2",
+      "title": "Physical Security Controls",
+      "page": 14
+    },
+    {
+      "num": "6.4.3",
+      "title": "Procedural Controls",
+      "page": 14
+    },
+    {
+      "num": "6.4.4",
+      "title": "Personnel Controls",
+      "page": 15
+    },
+    {
+      "num": "6.4.5",
+      "title": "Audit Logging Procedures",
+      "page": 15
+    },
+    {
+      "num": "6.4.6",
+      "title": "Records Archival",
+      "page": 15
+    },
+    {
+      "num": "6.4.7",
+      "title": "Key Changeover",
+      "page": 15
+    },
+    {
+      "num": "6.4.8",
+      "title": "Compromise and Disaster Recovery",
+      "page": 15
+    },
+    {
+      "num": "6.4.9",
+      "title": "CA or RA Termination",
+      "page": 15
+    },
+    {
+      "num": "6.5",
+      "title": "Technical Security Controls",
+      "page": 15
+    },
+    {
+      "num": "6.5.1",
+      "title": "Key Pair Generation and Installation",
+      "page": 15
+    },
+    {
+      "num": "6.5.2",
+      "title": "Private Key Protection and Cryptographic Module Engineering Controls",
+      "page": 15
+    },
+    {
+      "num": "6.5.3",
+      "title": "Other Aspects of Key Pair Management",
+      "page": 15
+    },
+    {
+      "num": "6.5.4",
+      "title": "Activation Data",
+      "page": 15
+    },
+    {
+      "num": "6.5.5",
+      "title": "Computer Security Controls",
+      "page": 16
+    },
+    {
+      "num": "6.5.6",
+      "title": "Life Cycle Security Controls",
+      "page": 16
+    },
+    {
+      "num": "6.5.7",
+      "title": "Network Security Controls",
+      "page": 16
+    },
+    {
+      "num": "6.6",
+      "title": "Certificate, CRL, and OCSP Profiles",
+      "page": 16
+    },
+    {
+      "num": "6.6.1",
+      "title": "Certificate Profile",
+      "page": 16
+    },
+    {
+      "num": "6.6.2",
+      "title": "CRL Profile",
+      "page": 17
+    },
+    {
+      "num": "6.6.3",
+      "title": "OCSP Profile",
+      "page": 17
+    },
+    {
+      "num": "6.7",
+      "title": "Compliance Audit and Other Assessment",
+      "page": 17
+    },
+    {
+      "num": "6.8",
+      "title": "Other Business and Legal Matters",
+      "page": 17
+    },
+    {
+      "num": "6.8.1",
+      "title": "Fees",
+      "page": 17
+    },
+    {
+      "num": "6.8.2",
+      "title": "Financial Responsibility",
+      "page": 17
+    },
+    {
+      "num": "6.8.3",
+      "title": "Confidentiality of Business Information",
+      "page": 17
+    },
+    {
+      "num": "6.8.4",
+      "title": "Privacy of Personal Information",
+      "page": 18
+    },
+    {
+      "num": "6.8.5",
+      "title": "Intellectual Property Rights",
+      "page": 18
+    },
+    {
+      "num": "6.8.6",
+      "title": "Representations and Warranties",
+      "page": 18
+    },
+    {
+      "num": "6.8.7",
+      "title": "Disclaimers of Warranties",
+      "page": 18
+    },
+    {
+      "num": "6.8.8",
+      "title": "Limitations of Liability",
+      "page": 18
+    },
+    {
+      "num": "6.8.9",
+      "title": "Indemnities",
+      "page": 18
+    },
+    {
+      "num": "6.8.10",
+      "title": "Term and Termination",
+      "page": 18
+    },
+    {
+      "num": "6.8.11",
+      "title": "Individual notices and communications with participants",
+      "page": 18
+    },
+    {
+      "num": "6.8.12",
+      "title": "Amendments",
+      "page": 18
+    },
+    {
+      "num": "6.8.13",
+      "title": "Dispute Resolution Procedures",
+      "page": 18
+    },
+    {
+      "num": "6.8.14",
+      "title": "Governing Law",
+      "page": 18
+    },
+    {
+      "num": "6.8.15",
+      "title": "Compliance with Applicable Law",
+      "page": 18
+    },
+    {
+      "num": "6.8.16",
+      "title": "Miscellaneous Provisions",
+      "page": 18
+    },
+    {
+      "num": "6.9",
+      "title": "Other Provisions",
+      "page": 19
+    },
+    {
+      "num": "6.9.1",
+      "title": "Organizational",
+      "page": 19
+    },
+    {
+      "num": "6.9.2",
+      "title": "Additional testing",
+      "page": 19
+    },
+    {
+      "num": "6.9.3",
+      "title": "Disabilities",
+      "page": 19
+    },
+    {
+      "num": "6.9.4",
+      "title": "Terms and conditions",
+      "page": 19
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 20,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Change history",
+      "page": 21,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 22,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 22,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

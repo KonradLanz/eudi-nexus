@@ -1,0 +1,117 @@
+{
+  "stem": "ts_11940303v010101p",
+  "pdf": "downloads/specs/TS/ts_11940303v010101p.pdf",
+  "title": "(2019-03)",
+  "reference": "ts_11940303v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Conformity assessment scheme",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Conformity assessment report",
+      "page": 10
+    },
+    {
+      "num": "A.1",
+      "title": "Overview",
+      "page": 15
+    },
+    {
+      "num": "Annex B",
+      "title": "Bibliography",
+      "page": 17,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 18,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 18,
+  "toc_pages": [
+    3
+  ]
+}

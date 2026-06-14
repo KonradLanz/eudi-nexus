@@ -1,0 +1,532 @@
+{
+  "stem": "ts_11918201v010201p",
+  "pdf": "downloads/specs/TS/ts_11918201v010201p.pdf",
+  "title": "(2024-07)",
+  "reference": "ts_11918201v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 9
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and terminology",
+      "page": 10
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 10
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 10
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.4",
+      "title": "Terminology",
+      "page": 11
+    },
+    {
+      "num": "4",
+      "title": "General Requirements",
+      "page": 12
+    },
+    {
+      "num": "5",
+      "title": "Header parameters semantics and syntax",
+      "page": 13
+    },
+    {
+      "num": "5.1.1",
+      "title": "Introduction",
+      "page": 13
+    },
+    {
+      "num": "5.1.2",
+      "title": "The alg (X.509 URL) header parameter",
+      "page": 13
+    },
+    {
+      "num": "5.1.3",
+      "title": "The cty (content type) header parameter",
+      "page": 13
+    },
+    {
+      "num": "5.1.4",
+      "title": "The kid (key identifier) header parameter",
+      "page": 13
+    },
+    {
+      "num": "5.1.5",
+      "title": "The x5u (X.509 URL) header parameter",
+      "page": 14
+    },
+    {
+      "num": "5.1.6",
+      "title": "The x5t (X.509 Certificate SHA-1 Thumbprint) header parameter",
+      "page": 14
+    },
+    {
+      "num": "5.1.7",
+      "title": "The x5t#S256 (X.509 Certificate SHA-256 Thumbprint) header parameter",
+      "page": 14
+    },
+    {
+      "num": "5.1.8",
+      "title": "The x5c (X.509 Certificate Chain) header parameter",
+      "page": 14
+    },
+    {
+      "num": "5.1.9",
+      "title": "The crit (critical) header parameter",
+      "page": 15
+    },
+    {
+      "num": "5.1.10",
+      "title": "The b64 header parameter",
+      "page": 15
+    },
+    {
+      "num": "5.1.11",
+      "title": "The iat (claimed signing time) header parameter",
+      "page": 15
+    },
+    {
+      "num": "5.2",
+      "title": "New signed header parameters",
+      "page": 16
+    },
+    {
+      "num": "5.2.1",
+      "title": "The sigT (claimed signing time) header parameter",
+      "page": 16
+    },
+    {
+      "num": "5.2.2",
+      "title": "Header parameters for certificate references",
+      "page": 17
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "Introduction",
+      "page": 17
+    },
+    {
+      "num": "5.2.2.2",
+      "title": "The x5t#o (X509 certificate digest) header parameter",
+      "page": 17
+    },
+    {
+      "num": "5.2.2.3",
+      "title": "The sigX5ts (X509 certificates digests) header parameter",
+      "page": 17
+    },
+    {
+      "num": "5.2.3",
+      "title": "The srCms (signer commitments) header parameter",
+      "page": 18
+    },
+    {
+      "num": "5.2.4",
+      "title": "The sigPl (signature production place) header parameter",
+      "page": 19
+    },
+    {
+      "num": "5.2.5",
+      "title": "The srAts (signer attributes) header parameter",
+      "page": 19
+    },
+    {
+      "num": "5.2.6",
+      "title": "The adoTst (signed data time-stamp) header parameter",
+      "page": 21
+    },
+    {
+      "num": "5.2.7",
+      "title": "The sigPId (signature policy identifier) header parameter",
+      "page": 22
+    },
+    {
+      "num": "5.2.7.1",
+      "title": "Semantics and syntax",
+      "page": 22
+    },
+    {
+      "num": "5.2.7.2",
+      "title": "Signature policy qualifiers",
+      "page": 23
+    },
+    {
+      "num": "5.2.8",
+      "title": "The sigD header parameter",
+      "page": 24
+    },
+    {
+      "num": "5.2.8.1",
+      "title": "Semantics and Syntax",
+      "page": 24
+    },
+    {
+      "num": "5.2.8.2",
+      "title": "Mechanism HttpHeaders",
+      "page": 26
+    },
+    {
+      "num": "5.2.8.3",
+      "title": "Mechanisms supported by URI-references",
+      "page": 26
+    },
+    {
+      "num": "5.2.8.3.1",
+      "title": "General requirements",
+      "page": 26
+    },
+    {
+      "num": "5.2.8.3.2",
+      "title": "Mechanism ObjectIdByURI",
+      "page": 27
+    },
+    {
+      "num": "5.2.8.3.3",
+      "title": "Mechanism ObjectIdByURIHash",
+      "page": 27
+    },
+    {
+      "num": "5.3",
+      "title": "New unsigned header parameter",
+      "page": 28
+    },
+    {
+      "num": "5.3.1",
+      "title": "The etsiU header parameter",
+      "page": 28
+    },
+    {
+      "num": "5.3.2",
+      "title": "The cSig (counter signature) JSON object",
+      "page": 30
+    },
+    {
+      "num": "5.3.3",
+      "title": "The sigPSt JSON object",
+      "page": 31
+    },
+    {
+      "num": "5.3.4",
+      "title": "The sigTst JSON object",
+      "page": 32
+    },
+    {
+      "num": "5.3.5",
+      "title": "JSON objects for validation data values",
+      "page": 32
+    },
+    {
+      "num": "5.3.5.1",
+      "title": "Introduction",
+      "page": 32
+    },
+    {
+      "num": "5.3.5.2",
+      "title": "The xVals JSON array",
+      "page": 32
+    },
+    {
+      "num": "5.3.5.3",
+      "title": "The rVals JSON object",
+      "page": 33
+    },
+    {
+      "num": "5.3.5.4",
+      "title": "The axVals JSON array",
+      "page": 34
+    },
+    {
+      "num": "5.3.5.5",
+      "title": "The arVals JSON object",
+      "page": 35
+    },
+    {
+      "num": "5.3.5.6",
+      "title": "The anyValData JSON object",
+      "page": 35
+    },
+    {
+      "num": "5.3.6",
+      "title": "JSON values for long term availability and integrity of validation material",
+      "page": 36
+    },
+    {
+      "num": "5.3.6.1",
+      "title": "The tstVD JSON object",
+      "page": 36
+    },
+    {
+      "num": "5.3.6.2",
+      "title": "The arcTst JSON object",
+      "page": 37
+    },
+    {
+      "num": "5.3.6.2.1",
+      "title": "Semantics and syntax",
+      "page": 37
+    },
+    {
+      "num": "5.3.6.2.2",
+      "title": "Generation and incorporation of arcTst",
+      "page": 38
+    },
+    {
+      "num": "5.3.6.2.3",
+      "title": "Computation of message-imprint with Base64url incorporation",
+      "page": 38
+    },
+    {
+      "num": "5.3.6.2.4",
+      "title": "Computation of message-imprint with JSON clear incorporation",
+      "page": 39
+    },
+    {
+      "num": "5.4",
+      "title": "Generally useful syntax",
+      "page": 39
+    },
+    {
+      "num": "5.4.1",
+      "title": "The oId data type",
+      "page": 39
+    },
+    {
+      "num": "5.4.2",
+      "title": "The pkiOb data type",
+      "page": 40
+    },
+    {
+      "num": "5.4.3",
+      "title": "Container for electronic time-stamps",
+      "page": 41
+    },
+    {
+      "num": "5.4.3.1",
+      "title": "Introduction",
+      "page": 41
+    },
+    {
+      "num": "5.4.3.2",
+      "title": "Containers for electronic time-stamps",
+      "page": 41
+    },
+    {
+      "num": "5.4.3.3",
+      "title": "The tstContainer type",
+      "page": 41
+    },
+    {
+      "num": "6",
+      "title": "JAdES baseline signatures",
+      "page": 42
+    },
+    {
+      "num": "6.1",
+      "title": "Signature levels",
+      "page": 42
+    },
+    {
+      "num": "6.2",
+      "title": "General requirements",
+      "page": 43
+    },
+    {
+      "num": "6.2.1",
+      "title": "Algorithm requirements",
+      "page": 43
+    },
+    {
+      "num": "6.2.2",
+      "title": "Notation for requirements",
+      "page": 43
+    },
+    {
+      "num": "6.3",
+      "title": "Requirements on JAdES components and services",
+      "page": 45
+    },
+    {
+      "num": "Annex A",
+      "title": "Additional components Specification",
+      "page": 50,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Components for references to validation data",
+      "page": 50
+    },
+    {
+      "num": "A.1.1",
+      "title": "The xRefs JSON array",
+      "page": 50
+    },
+    {
+      "num": "A.1.2",
+      "title": "The rRefs JSON object",
+      "page": 51
+    },
+    {
+      "num": "A.1.3",
+      "title": "The axRefs JSON array",
+      "page": 54
+    },
+    {
+      "num": "A.1.4",
+      "title": "The arRefs JSON object",
+      "page": 54
+    },
+    {
+      "num": "A.1.5",
+      "title": "Time-stamps on references to validation data",
+      "page": 55
+    },
+    {
+      "num": "A.1.5.1",
+      "title": "The sigRTst JSON object",
+      "page": 55
+    },
+    {
+      "num": "A.1.5.1.1",
+      "title": "General",
+      "page": 55
+    },
+    {
+      "num": "A.1.5.1.2",
+      "title": "Computation of the message imprint with Base64url incorporation",
+      "page": 55
+    },
+    {
+      "num": "A.1.5.1.3",
+      "title": "Computation of the message imprint with JSON clear incorporation",
+      "page": 56
+    },
+    {
+      "num": "A.1.5.2",
+      "title": "The rfsTst JSON object",
+      "page": 56
+    },
+    {
+      "num": "A.1.5.2.1",
+      "title": "Semantics and syntax",
+      "page": 56
+    },
+    {
+      "num": "A.1.5.2.2",
+      "title": "Computation of the message imprint with Base64url incorporation",
+      "page": 56
+    },
+    {
+      "num": "A.1.5.2.3",
+      "title": "Computation of the message imprint with clear JSON incorporation",
+      "page": 57
+    },
+    {
+      "num": "Annex B",
+      "title": "JSON Schema files",
+      "page": 58,
+      "annex_type": "normative"
+    },
+    {
+      "num": "B.1",
+      "title": "JSON Schema files location for JAdES components",
+      "page": 58
+    },
+    {
+      "num": "Annex C",
+      "title": "Correspondence between XAdES tags and JAdES tags",
+      "page": 59,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "Correspondence between XAdES qualifying properties tags and JAdES component tags",
+      "page": 59
+    },
+    {
+      "num": "Annex E",
+      "title": "IANA Considerations",
+      "page": 61,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex F",
+      "title": "Change history",
+      "page": 67,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 69,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 69,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

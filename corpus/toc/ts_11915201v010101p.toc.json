@@ -1,0 +1,472 @@
+{
+  "stem": "ts_11915201v010101p",
+  "pdf": "downloads/specs/TS/ts_11915201v010101p.pdf",
+  "title": "(2026-03)",
+  "reference": "ts_11915201v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and terminology",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 10
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.4",
+      "title": "Terminology",
+      "page": 11
+    },
+    {
+      "num": "4",
+      "title": "General Requirements",
+      "page": 12
+    },
+    {
+      "num": "4.1",
+      "title": "CDDL definitions",
+      "page": 12
+    },
+    {
+      "num": "4.2",
+      "title": "Requirements on CB-AdES supporting COSE structures",
+      "page": 12
+    },
+    {
+      "num": "4.3",
+      "title": "Requirements on CB-AdES encoding",
+      "page": 12
+    },
+    {
+      "num": "4.4",
+      "title": "Requirements on CB-AdES headers",
+      "page": 12
+    },
+    {
+      "num": "4.5",
+      "title": "Requirements on Payload",
+      "page": 13
+    },
+    {
+      "num": "4.6",
+      "title": "Requirements on map keys and data tags",
+      "page": 13
+    },
+    {
+      "num": "4.7",
+      "title": "Requirements on encapsulation in CBOR byte strings",
+      "page": 13
+    },
+    {
+      "num": "5",
+      "title": "Header parameters semantics and syntax",
+      "page": 13
+    },
+    {
+      "num": "5.1",
+      "title": "Header parameters defined by IETF",
+      "page": 13
+    },
+    {
+      "num": "5.1.1",
+      "title": "Introduction",
+      "page": 13
+    },
+    {
+      "num": "5.1.2",
+      "title": "The alg (algorithm) header parameter",
+      "page": 14
+    },
+    {
+      "num": "5.1.3",
+      "title": "The content type (content type) header parameter",
+      "page": 14
+    },
+    {
+      "num": "5.1.4",
+      "title": "The kid (key identifier) header parameter",
+      "page": 14
+    },
+    {
+      "num": "5.1.5",
+      "title": "The x5u (X.509 URL) header parameter",
+      "page": 15
+    },
+    {
+      "num": "5.1.6",
+      "title": "The CBOR component for counter signatures",
+      "page": 15
+    },
+    {
+      "num": "5.1.7",
+      "title": "The x5t (cert hash) header parameter",
+      "page": 15
+    },
+    {
+      "num": "5.1.8",
+      "title": "The x5chain (X.509 chain) header parameter",
+      "page": 16
+    },
+    {
+      "num": "5.1.9",
+      "title": "The iat (issued at) header parameter",
+      "page": 16
+    },
+    {
+      "num": "5.1.10",
+      "title": "The crit (critical) header parameter",
+      "page": 16
+    },
+    {
+      "num": "5.2",
+      "title": "New signed header parameters",
+      "page": 17
+    },
+    {
+      "num": "5.2.1",
+      "title": "Labels and tags of the signed header parameters",
+      "page": 17
+    },
+    {
+      "num": "5.2.2",
+      "title": "The x5ts (X.509 certificates Thumbprints) header parameter",
+      "page": 17
+    },
+    {
+      "num": "5.2.3",
+      "title": "The srCms (signer commitments) header parameter",
+      "page": 18
+    },
+    {
+      "num": "5.2.4",
+      "title": "The sigPl (signature production place) header parameter",
+      "page": 19
+    },
+    {
+      "num": "5.2.5",
+      "title": "The srAts (signer attributes) header parameter",
+      "page": 20
+    },
+    {
+      "num": "5.2.6",
+      "title": "The adoTst (COSE payload time-stamp) header parameter",
+      "page": 21
+    },
+    {
+      "num": "5.2.7",
+      "title": "The sigPId (signature policy identifier) header parameter",
+      "page": 22
+    },
+    {
+      "num": "5.2.7.1",
+      "title": "Semantics and syntax",
+      "page": 22
+    },
+    {
+      "num": "5.2.7.2",
+      "title": "Signature policy qualifiers",
+      "page": 23
+    },
+    {
+      "num": "5.2.8",
+      "title": "The sigD header parameter",
+      "page": 24
+    },
+    {
+      "num": "5.2.8.1",
+      "title": "Semantics and Syntax",
+      "page": 24
+    },
+    {
+      "num": "5.2.8.2",
+      "title": "Mechanisms supported by URI-references",
+      "page": 26
+    },
+    {
+      "num": "5.2.8.2.1",
+      "title": "General requirements",
+      "page": 26
+    },
+    {
+      "num": "5.2.8.2.2",
+      "title": "Mechanism ObjectIdByURI",
+      "page": 26
+    },
+    {
+      "num": "5.2.8.2.3",
+      "title": "Mechanism ObjectIdByURIHash",
+      "page": 27
+    },
+    {
+      "num": "5.3",
+      "title": "New unsigned header parameter",
+      "page": 27
+    },
+    {
+      "num": "5.3.1",
+      "title": "The uHeaders header parameter",
+      "page": 27
+    },
+    {
+      "num": "5.3.1.1",
+      "title": "Semantics and syntax",
+      "page": 27
+    },
+    {
+      "num": "5.3.2",
+      "title": "The sigPSt CBOR map",
+      "page": 30
+    },
+    {
+      "num": "5.3.3",
+      "title": "The sigTst CBOR map",
+      "page": 31
+    },
+    {
+      "num": "5.3.4",
+      "title": "The valData CBOR map",
+      "page": 31
+    },
+    {
+      "num": "5.3.5",
+      "title": "The arcTst CBOR map",
+      "page": 32
+    },
+    {
+      "num": "5.3.5.1",
+      "title": "Semantics and syntax",
+      "page": 32
+    },
+    {
+      "num": "5.3.5.2",
+      "title": "Generation and incorporation of arcTst",
+      "page": 33
+    },
+    {
+      "num": "5.3.5.3",
+      "title": "Computation of message-imprint for arcTst",
+      "page": 33
+    },
+    {
+      "num": "5.4",
+      "title": "Generally useful syntax",
+      "page": 35
+    },
+    {
+      "num": "5.4.1",
+      "title": "The obId data type",
+      "page": 35
+    },
+    {
+      "num": "5.4.2",
+      "title": "The pkiOb data type",
+      "page": 35
+    },
+    {
+      "num": "5.4.3",
+      "title": "Container for electronic time-stamps",
+      "page": 36
+    },
+    {
+      "num": "5.4.3.1",
+      "title": "Introduction",
+      "page": 36
+    },
+    {
+      "num": "5.4.3.2",
+      "title": "Containers for electronic time-stamps",
+      "page": 36
+    },
+    {
+      "num": "5.4.3.3",
+      "title": "The tstContainer type",
+      "page": 37
+    },
+    {
+      "num": "6",
+      "title": "CB-AdES baseline signatures",
+      "page": 38
+    },
+    {
+      "num": "6.1",
+      "title": "Signature levels",
+      "page": 38
+    },
+    {
+      "num": "6.2",
+      "title": "General requirements",
+      "page": 38
+    },
+    {
+      "num": "6.2.1",
+      "title": "Algorithm requirements",
+      "page": 38
+    },
+    {
+      "num": "6.2.2",
+      "title": "Notation for requirements",
+      "page": 38
+    },
+    {
+      "num": "6.3",
+      "title": "Requirements on CB-AdES components and services",
+      "page": 40
+    },
+    {
+      "num": "Annex A",
+      "title": "Additional components Specification",
+      "page": 44,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Components for validation data",
+      "page": 44
+    },
+    {
+      "num": "A.1.1",
+      "title": "The refs CBOR map",
+      "page": 44
+    },
+    {
+      "num": "A.1.2",
+      "title": "Time-stamps on references to validation data",
+      "page": 47
+    },
+    {
+      "num": "A.1.2.1",
+      "title": "The sigRTst CBOR map",
+      "page": 47
+    },
+    {
+      "num": "A.1.2.1.1",
+      "title": "General",
+      "page": 47
+    },
+    {
+      "num": "A.1.2.1.2",
+      "title": "Computation of the message imprint",
+      "page": 47
+    },
+    {
+      "num": "A.1.2.2",
+      "title": "The rfsTst CBOR map",
+      "page": 48
+    },
+    {
+      "num": "A.1.2.2.1",
+      "title": "Semantics and syntax",
+      "page": 48
+    },
+    {
+      "num": "A.1.2.2.2",
+      "title": "Computation of the message imprint",
+      "page": 48
+    },
+    {
+      "num": "Annex B",
+      "title": "IANA Considerations",
+      "page": 49,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "URIs defined for commitment type",
+      "page": 51,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Correspondence between JAdES tags and CB-AdES tags",
+      "page": 52,
+      "annex_type": "informative"
+    },
+    {
+      "num": "D.1",
+      "title": "Correspondence between JAdES components tags and CB-AdES component tags",
+      "page": 52
+    },
+    {
+      "num": "Annex F",
+      "title": "Change history",
+      "page": 54,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 55,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 55,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

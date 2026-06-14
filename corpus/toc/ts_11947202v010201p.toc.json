@@ -1,0 +1,268 @@
+{
+  "stem": "ts_11947202v010201p",
+  "pdf": "downloads/specs/TS/ts_11947202v010201p.pdf",
+  "title": "(2026-03)",
+  "reference": "ts_11947202v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.4",
+      "title": "Notation",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "Implementation of Electronic Attestation of Attributes Presentations",
+      "page": 10
+    },
+    {
+      "num": "4.1",
+      "title": "EAAP implementation based on SD-JWT VC",
+      "page": 10
+    },
+    {
+      "num": "4.2",
+      "title": "EAAP implementation based on ISO/IEC-mdoc",
+      "page": 10
+    },
+    {
+      "num": "5",
+      "title": "ISO/IEC-mdoc profile",
+      "page": 11
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 11
+    },
+    {
+      "num": "5.2",
+      "title": "Requirements on EUDI Wallet and RP support",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "Protocol requirements",
+      "page": 11
+    },
+    {
+      "num": "5.3.1",
+      "title": "General requirements",
+      "page": 11
+    },
+    {
+      "num": "5.3.2",
+      "title": "ISO/IEC-mdoc EAAP Request contents",
+      "page": 11
+    },
+    {
+      "num": "5.3.3",
+      "title": "ISO/IEC-mdoc EAAP Response profile",
+      "page": 13
+    },
+    {
+      "num": "6",
+      "title": "Profile built on OpenID4VC-HAIP",
+      "page": 13
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 13
+    },
+    {
+      "num": "6.2",
+      "title": "Requirements on EUDI Wallet and RP support",
+      "page": 14
+    },
+    {
+      "num": "6.3",
+      "title": "Common requirements for all the transmission mechanisms",
+      "page": 14
+    },
+    {
+      "num": "6.3.1",
+      "title": "General requirements",
+      "page": 14
+    },
+    {
+      "num": "6.3.2",
+      "title": "Authorization Request (EAAP request) profile",
+      "page": 15
+    },
+    {
+      "num": "6.3.2.1",
+      "title": "General requirements",
+      "page": 15
+    },
+    {
+      "num": "6.3.2.2",
+      "title": "Requirements for the Request Object",
+      "page": 15
+    },
+    {
+      "num": "6.3.3",
+      "title": "Authorization Response (EAAP response) profile",
+      "page": 16
+    },
+    {
+      "num": "6.4",
+      "title": "Specific requirements for non-API mediated transmission mechanism",
+      "page": 16
+    },
+    {
+      "num": "6.4.1",
+      "title": "General requirements",
+      "page": 16
+    },
+    {
+      "num": "6.4.2",
+      "title": "Requirements for the Request Object",
+      "page": 17
+    },
+    {
+      "num": "6.5",
+      "title": "Specific requirements for API-mediated transmission mechanism",
+      "page": 17
+    },
+    {
+      "num": "6.5.1",
+      "title": "OpenID4VC-HAIP-related requirements",
+      "page": 17
+    },
+    {
+      "num": "6.5.2",
+      "title": "Additional requirements",
+      "page": 17
+    },
+    {
+      "num": "6.6",
+      "title": "Security considerations",
+      "page": 18
+    },
+    {
+      "num": "Annex A",
+      "title": "EAAP implementation based on JSON-LD W3C VC",
+      "page": 19,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 19
+    },
+    {
+      "num": "A.2",
+      "title": "JOSE-signed JSON-LD W3C EAAPs for JSON-LD W3C EAAs",
+      "page": 19
+    },
+    {
+      "num": "C.1",
+      "title": "Introduction",
+      "page": 22
+    },
+    {
+      "num": "C.2",
+      "title": "Authorization Request",
+      "page": 22
+    },
+    {
+      "num": "Annex D",
+      "title": "Requirements for requesting presentation of X509-AC EAAs",
+      "page": 23,
+      "annex_type": "normative"
+    },
+    {
+      "num": "D.1",
+      "title": "Introduction",
+      "page": 23
+    },
+    {
+      "num": "D.2",
+      "title": "Authorization Request",
+      "page": 23
+    },
+    {
+      "num": "Annex E",
+      "title": "Change history",
+      "page": 24,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 26,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 26,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

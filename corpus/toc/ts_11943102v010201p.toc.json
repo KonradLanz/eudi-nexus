@@ -1,0 +1,259 @@
+{
+  "stem": "ts_11943102v010201p",
+  "pdf": "downloads/specs/TS/ts_11943102v010201p.pdf",
+  "title": "(2023-06)",
+  "reference": "ts_11943102v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 10
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 10
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 11
+    },
+    {
+      "num": "4.1",
+      "title": "General policy requirements concepts",
+      "page": 11
+    },
+    {
+      "num": "4.2",
+      "title": "Signature creation application service component applicable documentation",
+      "page": 11
+    },
+    {
+      "num": "4.2.1",
+      "title": "Signature creation application service component practice statement",
+      "page": 11
+    },
+    {
+      "num": "4.2.2",
+      "title": "Signature creation application service component policy",
+      "page": 11
+    },
+    {
+      "num": "4.2.3",
+      "title": "Terms and conditions",
+      "page": 12
+    },
+    {
+      "num": "4.2.4",
+      "title": "Other documents associated with signature creation",
+      "page": 12
+    },
+    {
+      "num": "4.3",
+      "title": "Architecture",
+      "page": 12
+    },
+    {
+      "num": "5",
+      "title": "Risk assessment",
+      "page": 13
+    },
+    {
+      "num": "6",
+      "title": "Policies and practices",
+      "page": 13
+    },
+    {
+      "num": "6.1",
+      "title": "Trust service practice statement",
+      "page": 13
+    },
+    {
+      "num": "6.2",
+      "title": "Terms and Conditions",
+      "page": 13
+    },
+    {
+      "num": "6.3",
+      "title": "Information security policy",
+      "page": 14
+    },
+    {
+      "num": "7",
+      "title": "Signature creation application service management and operation",
+      "page": 14
+    },
+    {
+      "num": "7.1",
+      "title": "Internal organization",
+      "page": 14
+    },
+    {
+      "num": "7.2",
+      "title": "Human resources",
+      "page": 15
+    },
+    {
+      "num": "7.3",
+      "title": "Asset management",
+      "page": 15
+    },
+    {
+      "num": "7.4",
+      "title": "Access control",
+      "page": 15
+    },
+    {
+      "num": "7.5",
+      "title": "Cryptographic controls",
+      "page": 15
+    },
+    {
+      "num": "7.6",
+      "title": "Physical and environmental security",
+      "page": 15
+    },
+    {
+      "num": "7.7",
+      "title": "Operation security",
+      "page": 15
+    },
+    {
+      "num": "7.8",
+      "title": "Network security",
+      "page": 15
+    },
+    {
+      "num": "7.9",
+      "title": "Incident management",
+      "page": 15
+    },
+    {
+      "num": "7.10",
+      "title": "Collection of evidence",
+      "page": 16
+    },
+    {
+      "num": "7.11",
+      "title": "Business continuity management",
+      "page": 16
+    },
+    {
+      "num": "7.12",
+      "title": "Termination and termination plans",
+      "page": 16
+    },
+    {
+      "num": "7.13",
+      "title": "Compliance and legal requirements",
+      "page": 16
+    },
+    {
+      "num": "8",
+      "title": "Signature creation application service component technical requirements",
+      "page": 17
+    },
+    {
+      "num": "8.1",
+      "title": "Interface",
+      "page": 17
+    },
+    {
+      "num": "8.2",
+      "title": "AdES digital signature creation",
+      "page": 17
+    },
+    {
+      "num": "Annex A",
+      "title": "Table of contents for SCASC practice statement",
+      "page": 20,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Change history",
+      "page": 25,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 26,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 26,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

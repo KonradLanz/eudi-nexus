@@ -1,0 +1,526 @@
+{
+  "stem": "ts_11913201v010001p",
+  "pdf": "downloads/specs/TS/ts_11913201v010001p.pdf",
+  "title": "(2015-07)",
+  "reference": "ts_11913201v010001p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions, abbreviations and terminology",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.3",
+      "title": "Terminology",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "General Syntax",
+      "page": 10
+    },
+    {
+      "num": "4.1",
+      "title": "General requirements",
+      "page": 10
+    },
+    {
+      "num": "4.2",
+      "title": "XML Namespaces",
+      "page": 10
+    },
+    {
+      "num": "4.3",
+      "title": "The QualifyingProperties container",
+      "page": 11
+    },
+    {
+      "num": "4.3.1",
+      "title": "Semantics and syntax",
+      "page": 11
+    },
+    {
+      "num": "4.3.2",
+      "title": "The SignedProperties container",
+      "page": 11
+    },
+    {
+      "num": "4.3.3",
+      "title": "The UnsignedProperties container",
+      "page": 12
+    },
+    {
+      "num": "4.3.4",
+      "title": "The SignedSignatureProperties container",
+      "page": 12
+    },
+    {
+      "num": "4.3.5",
+      "title": "The SignedDataObjectProperties container",
+      "page": 13
+    },
+    {
+      "num": "4.3.6",
+      "title": "The UnsignedSignatureProperties container",
+      "page": 14
+    },
+    {
+      "num": "4.3.7",
+      "title": "The UnsignedDataObjectProperties container",
+      "page": 15
+    },
+    {
+      "num": "4.4",
+      "title": "Incorporating qualifying properties into XAdES signatures",
+      "page": 15
+    },
+    {
+      "num": "4.4.1",
+      "title": "General requirements",
+      "page": 15
+    },
+    {
+      "num": "4.4.2",
+      "title": "Signing properties",
+      "page": 16
+    },
+    {
+      "num": "4.4.3",
+      "title": "The QualifyingPropertiesReference element",
+      "page": 16
+    },
+    {
+      "num": "4.5",
+      "title": "Managing canonicalization of XML nodesets",
+      "page": 16
+    },
+    {
+      "num": "5",
+      "title": "Qualifying properties semantics and syntax",
+      "page": 17
+    },
+    {
+      "num": "5.1",
+      "title": "Auxiliary syntax",
+      "page": 17
+    },
+    {
+      "num": "5.1.1",
+      "title": "The AnyType data type",
+      "page": 17
+    },
+    {
+      "num": "5.1.2",
+      "title": "The ObjectIdentifierType data type",
+      "page": 17
+    },
+    {
+      "num": "5.1.3",
+      "title": "The EncapsulatedPKIDataType data type",
+      "page": 19
+    },
+    {
+      "num": "5.1.4",
+      "title": "Types for electronic time-stamps management",
+      "page": 19
+    },
+    {
+      "num": "5.1.4.1",
+      "title": "Semantics",
+      "page": 19
+    },
+    {
+      "num": "5.1.4.2",
+      "title": "Containers for electronic time-stamps",
+      "page": 20
+    },
+    {
+      "num": "5.1.4.3",
+      "title": "The GenericTimeStampType data type",
+      "page": 20
+    },
+    {
+      "num": "5.1.4.4",
+      "title": "The XAdESTimeStampType data type",
+      "page": 21
+    },
+    {
+      "num": "5.1.4.4.1",
+      "title": "Semantics and syntax",
+      "page": 21
+    },
+    {
+      "num": "5.1.4.4.2",
+      "title": "Include mechanism",
+      "page": 22
+    },
+    {
+      "num": "5.1.4.5",
+      "title": "The OtherTimeStampType data type",
+      "page": 23
+    },
+    {
+      "num": "5.2",
+      "title": "Basic qualifying properties for XAdES signatures",
+      "page": 24
+    },
+    {
+      "num": "5.2.1",
+      "title": "The SigningTime qualifying property",
+      "page": 24
+    },
+    {
+      "num": "5.2.2",
+      "title": "The SigningCertificateV2 qualifying property",
+      "page": 24
+    },
+    {
+      "num": "5.2.3",
+      "title": "The CommitmentTypeIndication qualifying property",
+      "page": 25
+    },
+    {
+      "num": "5.2.4",
+      "title": "The DataObjectFormat qualifying property",
+      "page": 26
+    },
+    {
+      "num": "5.2.5",
+      "title": "The SignatureProductionPlaceV2 qualifying property",
+      "page": 27
+    },
+    {
+      "num": "5.2.6",
+      "title": "The SignerRoleV2 qualifying property",
+      "page": 28
+    },
+    {
+      "num": "5.2.7",
+      "title": "Countersignatures",
+      "page": 29
+    },
+    {
+      "num": "5.2.7.1",
+      "title": "Countersignature identifier in Type attribute of ds:Reference",
+      "page": 29
+    },
+    {
+      "num": "5.2.7.2",
+      "title": "Enveloped countersignatures: the CounterSignature qualifying property",
+      "page": 29
+    },
+    {
+      "num": "5.2.8",
+      "title": "Time-stamps on signed data objects",
+      "page": 31
+    },
+    {
+      "num": "5.2.8.1",
+      "title": "The AllDataObjectsTimeStamp qualifying property",
+      "page": 31
+    },
+    {
+      "num": "5.2.8.2",
+      "title": "The IndividualDataObjectsTimeStamp qualifying property",
+      "page": 31
+    },
+    {
+      "num": "5.2.9",
+      "title": "The SignaturePolicyIdentifier qualifying property",
+      "page": 32
+    },
+    {
+      "num": "5.2.9.1",
+      "title": "Semantics and syntax",
+      "page": 32
+    },
+    {
+      "num": "5.2.9.2",
+      "title": "Signature policy qualifiers",
+      "page": 33
+    },
+    {
+      "num": "5.2.10",
+      "title": "The SignaturePolicyStore qualifying property",
+      "page": 34
+    },
+    {
+      "num": "5.3",
+      "title": "The SignatureTimeStamp qualifying property",
+      "page": 35
+    },
+    {
+      "num": "5.4",
+      "title": "Qualifying Properties for validation data values",
+      "page": 36
+    },
+    {
+      "num": "5.4.1",
+      "title": "The CertificateValues qualifying property",
+      "page": 36
+    },
+    {
+      "num": "5.4.2",
+      "title": "The RevocationValues qualifying property",
+      "page": 37
+    },
+    {
+      "num": "5.4.3",
+      "title": "The AttrAuthoritiesCertValues qualifying property",
+      "page": 38
+    },
+    {
+      "num": "5.4.4",
+      "title": "The AttributeRevocationValues qualifying property",
+      "page": 39
+    },
+    {
+      "num": "5.5.1",
+      "title": "The TimeStampValidationData qualifying property",
+      "page": 39
+    },
+    {
+      "num": "5.5.1.1",
+      "title": "Semantics and syntax",
+      "page": 39
+    },
+    {
+      "num": "5.5.1.2",
+      "title": "Use of URI attribute",
+      "page": 40
+    },
+    {
+      "num": "5.5.2.1",
+      "title": "Semantics and syntax",
+      "page": 41
+    },
+    {
+      "num": "5.5.2.2",
+      "title": "Not distributed case",
+      "page": 42
+    },
+    {
+      "num": "5.5.2.3",
+      "title": "Distributed case",
+      "page": 43
+    },
+    {
+      "num": "5.5.3",
+      "title": "The RenewedDigests qualifying property",
+      "page": 43
+    },
+    {
+      "num": "6",
+      "title": "XAdES baseline signatures",
+      "page": 44
+    },
+    {
+      "num": "6.1",
+      "title": "Signature levels",
+      "page": 44
+    },
+    {
+      "num": "6.2",
+      "title": "General requirements",
+      "page": 45
+    },
+    {
+      "num": "6.2.1",
+      "title": "Algorithm requirements",
+      "page": 45
+    },
+    {
+      "num": "6.2.2",
+      "title": "Notation for requirements",
+      "page": 45
+    },
+    {
+      "num": "6.3",
+      "title": "Requirements on XAdES signature's elements, qualifying properties and services",
+      "page": 48
+    },
+    {
+      "num": "6.4",
+      "title": "Legacy XAdES baseline signatures",
+      "page": 54
+    },
+    {
+      "num": "Annex A",
+      "title": "Additional Qualifying Properties Specification",
+      "page": 55,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Qualifying properties for validation data",
+      "page": 55
+    },
+    {
+      "num": "A.1.1",
+      "title": "The CompleteCertificateRefsV2 qualifying property",
+      "page": 55
+    },
+    {
+      "num": "A.1.2",
+      "title": "The CompleteRevocationRefs qualifying property",
+      "page": 55
+    },
+    {
+      "num": "A.1.3",
+      "title": "The AttributeCertificateRefsV2 qualifying property",
+      "page": 58
+    },
+    {
+      "num": "A.1.4",
+      "title": "The AttributeRevocationRefs qualifying property",
+      "page": 59
+    },
+    {
+      "num": "A.1.5",
+      "title": "Time-stamps on references to validation data",
+      "page": 60
+    },
+    {
+      "num": "A.1.5.1",
+      "title": "The SigAndRefsTimeStampV2 qualifying property",
+      "page": 60
+    },
+    {
+      "num": "A.1.5.1.1",
+      "title": "Semantics and syntax",
+      "page": 60
+    },
+    {
+      "num": "A.1.5.1.2",
+      "title": "Not distributed case",
+      "page": 60
+    },
+    {
+      "num": "A.1.5.1.3",
+      "title": "Distributed case",
+      "page": 61
+    },
+    {
+      "num": "A.1.5.2",
+      "title": "The RefsOnlyTimeStampV2 qualifying property",
+      "page": 61
+    },
+    {
+      "num": "A.1.5.2.1",
+      "title": "Semantics and syntax",
+      "page": 61
+    },
+    {
+      "num": "A.1.5.2.2",
+      "title": "Not distributed case",
+      "page": 62
+    },
+    {
+      "num": "A.1.5.2.3",
+      "title": "Distributed case",
+      "page": 62
+    },
+    {
+      "num": "Annex B",
+      "title": "XML Schema files",
+      "page": 63,
+      "annex_type": "normative"
+    },
+    {
+      "num": "B.1",
+      "title": "XML Schema file location for namespace http://uri.etsi.org/01903/v1.3.2#",
+      "page": 63
+    },
+    {
+      "num": "B.2",
+      "title": "XML Schema file location for namespace http://uri.etsi.org/01903/v1.4.1#",
+      "page": 63
+    },
+    {
+      "num": "Annex C",
+      "title": "Deprecated qualifying properties",
+      "page": 64,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Change History",
+      "page": 65,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 66,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 66,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

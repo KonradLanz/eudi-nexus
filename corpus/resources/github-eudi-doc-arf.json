@@ -1,0 +1,13 @@
+{
+  "id": "github-eudi-doc-arf",
+  "type": "contributions",
+  "label": "GitHub: eudi-doc-architecture-and-reference-framework",
+  "url": "https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework",
+  "format": "github",
+  "scope": "external",
+  "stf": null,
+  "wki_ids": [],
+  "note": "Public issue tracker and PR history — maps to STF 705 contributions",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.860378+00:00"
+}

@@ -1,0 +1,720 @@
+{
+  "stem": "ts_101903v010402p",
+  "pdf": "downloads/specs/TS/ts_101903v010402p.pdf",
+  "title": "(2010-12)",
+  "reference": "ts_101903v010402p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 9
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 9
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 10
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 10
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 11
+    },
+    {
+      "num": "4.1",
+      "title": "Major Parties",
+      "page": 11
+    },
+    {
+      "num": "4.2",
+      "title": "Signatures policies",
+      "page": 12
+    },
+    {
+      "num": "4.3",
+      "title": "Signature properties and signature forms",
+      "page": 12
+    },
+    {
+      "num": "4.4",
+      "title": "Electronic signature forms",
+      "page": 14
+    },
+    {
+      "num": "4.4.1",
+      "title": "Basic electronic signature (XAdES-BES)",
+      "page": 14
+    },
+    {
+      "num": "4.4.2",
+      "title": "Explicit policy electronic signatures (XAdES-EPES)",
+      "page": 17
+    },
+    {
+      "num": "4.4.3",
+      "title": "Electronic signature formats with validation data",
+      "page": 18
+    },
+    {
+      "num": "4.4.3.1",
+      "title": "Electronic signature with time (XAdES-T)",
+      "page": 18
+    },
+    {
+      "num": "4.4.3.2",
+      "title": "Electronic signature with complete validation data references (XAdES-C)",
+      "page": 19
+    },
+    {
+      "num": "4.5",
+      "title": "Validation process",
+      "page": 21
+    },
+    {
+      "num": "4.6",
+      "title": "Arbitration",
+      "page": 21
+    },
+    {
+      "num": "5",
+      "title": "XML namespaces for the present document",
+      "page": 22
+    },
+    {
+      "num": "5.1",
+      "title": "Namespace for elements specified in XAdESv1.3.2",
+      "page": 22
+    },
+    {
+      "num": "5.2",
+      "title": "Namespace for new elements defined in V1.4.1",
+      "page": 23
+    },
+    {
+      "num": "6",
+      "title": "Syntax overview",
+      "page": 23
+    },
+    {
+      "num": "6.1",
+      "title": "Technical criteria",
+      "page": 23
+    },
+    {
+      "num": "6.2",
+      "title": "The QualifyingProperties element",
+      "page": 24
+    },
+    {
+      "num": "6.2.1",
+      "title": "The SignedProperties element",
+      "page": 24
+    },
+    {
+      "num": "6.2.2",
+      "title": "The UnsignedProperties element",
+      "page": 25
+    },
+    {
+      "num": "6.2.3",
+      "title": "The SignedSignatureProperties element",
+      "page": 25
+    },
+    {
+      "num": "6.2.4",
+      "title": "The SignedDataObjectProperties element",
+      "page": 26
+    },
+    {
+      "num": "6.2.5",
+      "title": "The UnsignedSignatureProperties element",
+      "page": 26
+    },
+    {
+      "num": "6.2.6",
+      "title": "The UnsignedDataObjectProperties element",
+      "page": 27
+    },
+    {
+      "num": "6.3",
+      "title": "Incorporating qualifying properties into an XML signature",
+      "page": 27
+    },
+    {
+      "num": "6.3.1",
+      "title": "Signing properties",
+      "page": 28
+    },
+    {
+      "num": "6.3.2",
+      "title": "The QualifyingPropertiesReference element",
+      "page": 28
+    },
+    {
+      "num": "7",
+      "title": "Qualifying properties syntax",
+      "page": 28
+    },
+    {
+      "num": "7.1",
+      "title": "Auxiliary syntax",
+      "page": 29
+    },
+    {
+      "num": "7.1.1",
+      "title": "The AnyType data type",
+      "page": 29
+    },
+    {
+      "num": "7.1.2",
+      "title": "The ObjectIdentifierType data type",
+      "page": 29
+    },
+    {
+      "num": "7.1.3",
+      "title": "The EncapsulatedPKIDataType data type",
+      "page": 30
+    },
+    {
+      "num": "7.1.4",
+      "title": "Types for time-stamp tokens management",
+      "page": 31
+    },
+    {
+      "num": "7.1.4.1",
+      "title": "Time-stamp properties in XAdES",
+      "page": 31
+    },
+    {
+      "num": "7.1.4.2",
+      "title": "The GenericTimeStampType data type",
+      "page": 31
+    },
+    {
+      "num": "7.1.4.3",
+      "title": "The XAdESTimeStampType data type",
+      "page": 33
+    },
+    {
+      "num": "7.1.4.3.1",
+      "title": "Include mechanism",
+      "page": 33
+    },
+    {
+      "num": "7.1.4.4",
+      "title": "The OtherTimeStampType data type",
+      "page": 34
+    },
+    {
+      "num": "7.2",
+      "title": "Properties for XAdES-BES and XAdES-EPES forms",
+      "page": 35
+    },
+    {
+      "num": "7.2.1",
+      "title": "The SigningTime element",
+      "page": 35
+    },
+    {
+      "num": "7.2.2",
+      "title": "The SigningCertificate element",
+      "page": 35
+    },
+    {
+      "num": "7.2.3",
+      "title": "The SignaturePolicyIdentifier element",
+      "page": 36
+    },
+    {
+      "num": "7.2.3.1",
+      "title": "Signature Policy qualifiers",
+      "page": 38
+    },
+    {
+      "num": "7.2.4",
+      "title": "Countersignatures",
+      "page": 38
+    },
+    {
+      "num": "7.2.4.1",
+      "title": "Countersignature identifier in Type attribute of ds:Reference",
+      "page": 38
+    },
+    {
+      "num": "7.2.4.2",
+      "title": "Enveloped countersignatures: the CounterSignature element",
+      "page": 39
+    },
+    {
+      "num": "7.2.5",
+      "title": "The DataObjectFormat element",
+      "page": 40
+    },
+    {
+      "num": "7.2.6",
+      "title": "The CommitmentTypeIndication element",
+      "page": 41
+    },
+    {
+      "num": "7.2.7",
+      "title": "The SignatureProductionPlace element",
+      "page": 42
+    },
+    {
+      "num": "7.2.8",
+      "title": "The SignerRole element",
+      "page": 43
+    },
+    {
+      "num": "7.2.9",
+      "title": "The AllDataObjectsTimeStamp element",
+      "page": 44
+    },
+    {
+      "num": "7.2.10",
+      "title": "The IndividualDataObjectsTimeStamp element",
+      "page": 44
+    },
+    {
+      "num": "7.3",
+      "title": "The SignatureTimeStamp element",
+      "page": 45
+    },
+    {
+      "num": "7.4",
+      "title": "Properties for references to validation data",
+      "page": 45
+    },
+    {
+      "num": "7.4.1",
+      "title": "The CompleteCertificateRefs element",
+      "page": 46
+    },
+    {
+      "num": "7.4.2",
+      "title": "The CompleteRevocationRefs element",
+      "page": 46
+    },
+    {
+      "num": "7.4.3",
+      "title": "The AttributeCertificateRefs element",
+      "page": 48
+    },
+    {
+      "num": "7.4.4",
+      "title": "The AttributeRevocationRefs element",
+      "page": 49
+    },
+    {
+      "num": "7.5",
+      "title": "Time-stamps on references to validation data",
+      "page": 49
+    },
+    {
+      "num": "7.5.1",
+      "title": "The SigAndRefsTimeStamp element",
+      "page": 49
+    },
+    {
+      "num": "7.5.1.1",
+      "title": "Not distributed case",
+      "page": 50
+    },
+    {
+      "num": "7.5.1.2",
+      "title": "Distributed case",
+      "page": 50
+    },
+    {
+      "num": "7.5.2",
+      "title": "The RefsOnlyTimeStamp element",
+      "page": 51
+    },
+    {
+      "num": "7.5.2.1",
+      "title": "Not distributed case",
+      "page": 51
+    },
+    {
+      "num": "7.5.2.2",
+      "title": "Distributed case",
+      "page": 52
+    },
+    {
+      "num": "7.6",
+      "title": "Properties for validation data values",
+      "page": 52
+    },
+    {
+      "num": "7.6.1",
+      "title": "The CertificateValues Property element",
+      "page": 52
+    },
+    {
+      "num": "7.6.2",
+      "title": "The RevocationValues property element",
+      "page": 53
+    },
+    {
+      "num": "7.6.3",
+      "title": "The AttrAuthoritiesCertValues element",
+      "page": 54
+    },
+    {
+      "num": "7.6.4",
+      "title": "The AttributeRevocationValues Property element",
+      "page": 55
+    },
+    {
+      "num": "7.7",
+      "title": "The ArchiveTimeStamp element",
+      "page": 55
+    },
+    {
+      "num": "8",
+      "title": "New unsigned properties in XAdESv1.4.1",
+      "page": 55
+    },
+    {
+      "num": "8.1",
+      "title": "The new XAdESv141:TimeStampValidationData element",
+      "page": 56
+    },
+    {
+      "num": "8.1.1",
+      "title": "Use of URI attribute",
+      "page": 56
+    },
+    {
+      "num": "8.2",
+      "title": "The new xadesv141:ArchiveTimeStamp element",
+      "page": 57
+    },
+    {
+      "num": "8.2.1",
+      "title": "Not distributed case",
+      "page": 58
+    },
+    {
+      "num": "8.2.2",
+      "title": "Distributed case",
+      "page": 59
+    },
+    {
+      "num": "9",
+      "title": "Conformance requirements",
+      "page": 60
+    },
+    {
+      "num": "9.1",
+      "title": "Basic Electronic Signature (XAdES-BES)",
+      "page": 60
+    },
+    {
+      "num": "9.2",
+      "title": "Explicit policy based Electronic Signature (XAdES-EPES)",
+      "page": 60
+    },
+    {
+      "num": "9.3",
+      "title": "Verification using time-stamping",
+      "page": 61
+    },
+    {
+      "num": "9.4",
+      "title": "Verification using secure records",
+      "page": 61
+    },
+    {
+      "num": "Annex A",
+      "title": "Definitions",
+      "page": 62,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Extended electronic signature forms",
+      "page": 63,
+      "annex_type": "informative"
+    },
+    {
+      "num": "B.1",
+      "title": "Extended signatures with time forms (XAdES-X)",
+      "page": 63
+    },
+    {
+      "num": "B.2",
+      "title": "Extended long electronic signatures with time (XAdES-X-L)",
+      "page": 64
+    },
+    {
+      "num": "B.3",
+      "title": "Archival electronic signatures (XAdES-A)",
+      "page": 65
+    },
+    {
+      "num": "Annex C",
+      "title": "concepts and rationales",
+      "page": 67,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "Multiple signatures and countersignatures",
+      "page": 67
+    },
+    {
+      "num": "Annex D",
+      "title": "Schema definitions",
+      "page": 68,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex E",
+      "title": "Main changes to XAdESv1.4.1",
+      "page": 77,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex F",
+      "title": "Incorporation of qualifying properties",
+      "page": 79,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex G",
+      "title": "Details on XAdES signatures validation",
+      "page": 84,
+      "annex_type": "informative"
+    },
+    {
+      "num": "G.1",
+      "title": "Signatures evolution example",
+      "page": 84
+    },
+    {
+      "num": "G.1.1",
+      "title": "Example of path to archival form with validation data references",
+      "page": 87
+    },
+    {
+      "num": "G.1.2",
+      "title": "Example of path to archival form without validation data references",
+      "page": 90
+    },
+    {
+      "num": "G.2",
+      "title": "Verification technical rules",
+      "page": 91
+    },
+    {
+      "num": "G.2.1",
+      "title": "Relationship with other standard verification procedures",
+      "page": 91
+    },
+    {
+      "num": "G.2.2",
+      "title": "Verification procedure",
+      "page": 91
+    },
+    {
+      "num": "G.2.2.1",
+      "title": "General Checks",
+      "page": 91
+    },
+    {
+      "num": "G.2.2.2",
+      "title": "Getting certificates for verification",
+      "page": 91
+    },
+    {
+      "num": "G.2.2.3",
+      "title": "Getting certificates status information for verification",
+      "page": 92
+    },
+    {
+      "num": "G.2.2.4",
+      "title": "Checking SigningTime",
+      "page": 92
+    },
+    {
+      "num": "G.2.2.5",
+      "title": "Checking SigningCertificate",
+      "page": 92
+    },
+    {
+      "num": "G.2.2.6",
+      "title": "Checking SignaturePolicyIdentifier",
+      "page": 93
+    },
+    {
+      "num": "G.2.2.7",
+      "title": "Checking Countersignatures",
+      "page": 93
+    },
+    {
+      "num": "G.2.2.8",
+      "title": "Checking DataObjectFormat",
+      "page": 94
+    },
+    {
+      "num": "G.2.2.9",
+      "title": "Checking CommitmentTypeIndication",
+      "page": 94
+    },
+    {
+      "num": "G.2.2.10",
+      "title": "Checking SignatureProductionPlace",
+      "page": 94
+    },
+    {
+      "num": "G.2.2.11",
+      "title": "Checking SignerRole",
+      "page": 94
+    },
+    {
+      "num": "G.2.2.12",
+      "title": "Checking CompleteCertificateRefs and AttributeCertificateRefs",
+      "page": 94
+    },
+    {
+      "num": "G.2.2.13",
+      "title": "Checking CompleteRevocationRefs and AttributeRevocationRefs",
+      "page": 95
+    },
+    {
+      "num": "G.2.2.14",
+      "title": "Checking CertificateValues and AttrAuthoritiesValues",
+      "page": 96
+    },
+    {
+      "num": "G.2.2.15",
+      "title": "Checking RevocationValues and AttributeRevocationValues",
+      "page": 96
+    },
+    {
+      "num": "G.2.2.16",
+      "title": "Checking time-stamp tokens",
+      "page": 96
+    },
+    {
+      "num": "G.2.2.16.1",
+      "title": "Containers using one identification mechanism",
+      "page": 97
+    },
+    {
+      "num": "G.2.2.16.1.1",
+      "title": "Checking AllDataObjectsTimeStamp",
+      "page": 97
+    },
+    {
+      "num": "G.2.2.16.1.2",
+      "title": "Checking IndividualDataObjectsTimeStamp",
+      "page": 97
+    },
+    {
+      "num": "G.2.2.16.1.3",
+      "title": "Checking SignatureTimeStamp",
+      "page": 98
+    },
+    {
+      "num": "G.2.2.16.2",
+      "title": "Containers using two/both identification mechanism",
+      "page": 98
+    },
+    {
+      "num": "G.2.2.16.2.1",
+      "title": "Common rules",
+      "page": 98
+    },
+    {
+      "num": "G.2.2.16.2.2",
+      "title": "Checking RefsOnlyTimeStamp",
+      "page": 99
+    },
+    {
+      "num": "G.2.2.16.2.3",
+      "title": "Checking SigAndRefsTimeStamp",
+      "page": 100
+    },
+    {
+      "num": "G.2.2.16.2.4",
+      "title": "Checking xadesV141:ArchiveTimeStamp",
+      "page": 100
+    },
+    {
+      "num": "Annex H",
+      "title": "Versioning rules",
+      "page": 102,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex I",
+      "title": "Bibliography",
+      "page": 103,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 104,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 104,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

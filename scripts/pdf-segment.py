@@ -50,6 +50,8 @@ import json
 import logging
 import os
 import re
+import shutil
+import subprocess
 import sys
 import urllib.request
 from dataclasses import dataclass, field
@@ -513,6 +515,86 @@ def segment_docx(
 
 _GAP_THRESHOLD = 20
 RULES_PATH = Path("corpus/para-tune/learned-rules.json")
+_DOUBLED_BIGRAM_RE = re.compile(r"\b(?:([A-Za-z])\1){4,}\b")
+
+
+def _has_doubled_prefix(token: str) -> bool:
+    if len(token) < 4:
+        return False
+    pairs = [token[i:i+2] for i in range(0, min(len(token) - 1, 8), 2)]
+    good = 0
+    for p in pairs:
+        if len(p) == 2 and p[0] == p[1] and p[0].isalpha():
+            good += 1
+        else:
+            break
+    return good >= 2
+
+
+def _detect_doubled_bigram_ratio(text: str) -> float:
+    """
+    Detect synthetic-bold / overprinted text artifacts like:
+    'SSeeccuurriittyy', 'RReellyyiinngg', 'AAddddiittiioonnaall'.
+
+    We combine two signals:
+    1. fully doubled tokens with length >= 4 char-pairs
+    2. doubled prefixes in fragmented figure labels (e.g. 'SSee', 'AAdd', 'RRee')
+
+    This avoids false positives for ordinary words like 'Committee' or
+    'assessment', because those contain only isolated double letters rather
+    than repeated char-pairs across the token.
+    """
+    words = re.findall(r"\b[A-Za-z]{4,}\b", text)
+    if not words:
+        return 0.0
+    strong = sum(1 for w in words if _DOUBLED_BIGRAM_RE.fullmatch(w))
+    weak = sum(1 for w in words if _has_doubled_prefix(w) and not _DOUBLED_BIGRAM_RE.fullmatch(w))
+    return (strong + 0.35 * weak) / max(len(words), 1)
+
+
+def _extract_text_with_pdftotext(pdf_path: Path, page_nr: int) -> str:
+    """Extract a single page via pdftotext if available."""
+    pdftotext_bin = shutil.which("pdftotext")
+    if not pdftotext_bin:
+        return ""
+    try:
+        proc = subprocess.run(
+            [pdftotext_bin, "-f", str(page_nr), "-l", str(page_nr), str(pdf_path), "-"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return proc.stdout.strip()
+    except Exception:
+        return ""
+
+
+def _looks_like_figure_label_artifact(text: str) -> bool:
+    return _detect_doubled_bigram_ratio(text) > 0.05
+
+
+def _collapse_doubled_tokens(text: str) -> str:
+    """
+    Collapse only synthetic-bold overprint tokens where *every* character is
+    duplicated, e.g.:
+      SSeeccuurriittyy -> Security
+      RReellyyiinngg   -> Relying
+
+    Ordinary words with natural double letters (Committee, assessment,
+    Commission) are preserved because they do not match the full-token pattern.
+    """
+    def repl(match: re.Match) -> str:
+        token = match.group(0)
+        return token[::2]
+    return _DOUBLED_BIGRAM_RE.sub(repl, text)
+
+
+def _normalize_artifact_text(text: str) -> str:
+    collapsed = _collapse_doubled_tokens(text)
+    # If collapse changed something, trust the normalized version.
+    if collapsed != text:
+        return collapsed
+    return text
 
 
 def _get_rule_for_stem(stem: str) -> dict:
@@ -795,6 +877,7 @@ def _extract_blocks(page, table_bboxes: list[tuple] | None = None) -> list[TextB
             return
         text = "".join(c["text"] for c in sorted(chs, key=lambda c: (c["top"], c["x0"])))
         text = re.sub(r" {2,}", " ", text).strip()
+        text = _normalize_artifact_text(text)
         if not text:
             return
         sizes = [c.get("size", 0) for c in chs if c.get("size")]
@@ -1045,6 +1128,31 @@ def segment_pdf(
 
             # ── Pass 1: text blocks (masked) ───────────────────────
             raw_blocks = _extract_blocks(page, table_bboxes)
+
+            # Secondary page-level sanity check: if synthetic-bold figure-label
+            # artifacts still dominate after block normalization, prefer
+            # pdftotext for the full page. This keeps the normal path local and
+            # deterministic, and only escalates for unusual legacy PDFs.
+            page_text_probe = "\n".join(b.text for b in raw_blocks if getattr(b, 'text', '').strip())
+            if _looks_like_figure_label_artifact(page_text_probe):
+                fallback_text = _extract_text_with_pdftotext(pdf_path, page_nr)
+                if fallback_text:
+                    logging.info(
+                        "[%s p.%s] residual doubled-bigram artifact (ratio=%.3f) -> pdftotext fallback",
+                        stem,
+                        page_nr,
+                        _detect_doubled_bigram_ratio(page_text_probe),
+                    )
+                    raw_blocks = [TextBlock(
+                        text=fallback_text,
+                        x0=0.0,
+                        x1=page.width,
+                        top=0.0,
+                        bottom=page.height,
+                        size=10.0,
+                        fontnames=[],
+                        page_number=page_nr,
+                    )]
 
             # ── Pass 2: remove duplicate adjacent blocks ──────────
             blocks = _dedup_blocks(raw_blocks)

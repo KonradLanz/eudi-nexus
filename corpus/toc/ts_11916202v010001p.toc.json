@@ -1,0 +1,148 @@
+{
+  "stem": "ts_11916202v010001p",
+  "pdf": "downloads/specs/TS/ts_11916202v010001p.pdf",
+  "title": "(2015-08)",
+  "reference": "ts_11916202v010001p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "ASiC additional containers",
+      "page": 6
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction",
+      "page": 6
+    },
+    {
+      "num": "4.2",
+      "title": "ASiC-S additional containers",
+      "page": 6
+    },
+    {
+      "num": "4.2.1",
+      "title": "ASiC-S Time assertion additional container",
+      "page": 6
+    },
+    {
+      "num": "4.3",
+      "title": "ASiC-E additional containers",
+      "page": 6
+    },
+    {
+      "num": "4.3.1",
+      "title": "ASiC-E CAdES additional container",
+      "page": 6
+    },
+    {
+      "num": "4.3.2",
+      "title": "ASiC-E Time assertion additional container",
+      "page": 7
+    },
+    {
+      "num": "Annex A",
+      "title": "Using ASiC with existing container specifications",
+      "page": 8,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "ASiC application to archival systems using ER",
+      "page": 10,
+      "annex_type": "informative"
+    },
+    {
+      "num": "B.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "B.2",
+      "title": "Extraction of one single signed data from the archive",
+      "page": 10
+    },
+    {
+      "num": "B.3",
+      "title": "Extraction of multiple signed data from the archive",
+      "page": 10
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 11,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 11,
+  "toc_pages": [
+    3
+  ]
+}

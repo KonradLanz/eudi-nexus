@@ -1,0 +1,132 @@
+{
+  "stem": "ts_10277804v010102p",
+  "pdf": "downloads/specs/TS/ts_10277804v010102p.pdf",
+  "title": "(2009-12)",
+  "reference": "ts_10277804v010102p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Profile for PAdES-LTV",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Overview",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "General Requirements",
+      "page": 9
+    },
+    {
+      "num": "4.3",
+      "title": "Validation Process",
+      "page": 10
+    },
+    {
+      "num": "4.4",
+      "title": "Extensions Dictionary",
+      "page": 10
+    },
+    {
+      "num": "Annex A",
+      "title": "ISO 32000-1 LTV Extensions",
+      "page": 11,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Document Security Store",
+      "page": 11
+    },
+    {
+      "num": "A.2",
+      "title": "Document Time-stamp",
+      "page": 15
+    },
+    {
+      "num": "Annex B",
+      "title": "Matching of PAdES-LTV-profiles to CAdES",
+      "page": 17,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Change history",
+      "page": 19,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 20,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 20,
+  "toc_pages": [
+    3
+  ]
+}

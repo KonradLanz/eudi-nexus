@@ -1,0 +1,416 @@
+{
+  "stem": "ts_102280v010101p",
+  "pdf": "downloads/specs/TS/ts_102280v010101p.pdf",
+  "title": "(2004-03)",
+  "reference": "ts_102280v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Document structure and terminology",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "Document structure",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "Terminology",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Profile requirements",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Generic requirements",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Basic certificate fields",
+      "page": 8
+    },
+    {
+      "num": "5.2.1",
+      "title": "Version",
+      "page": 8
+    },
+    {
+      "num": "5.2.2",
+      "title": "Serial number",
+      "page": 8
+    },
+    {
+      "num": "5.2.3",
+      "title": "Signature",
+      "page": 8
+    },
+    {
+      "num": "5.2.4",
+      "title": "Issuer",
+      "page": 8
+    },
+    {
+      "num": "5.2.5",
+      "title": "Validity",
+      "page": 8
+    },
+    {
+      "num": "5.2.6",
+      "title": "Subject",
+      "page": 8
+    },
+    {
+      "num": "5.2.7",
+      "title": "Subject public key info",
+      "page": 9
+    },
+    {
+      "num": "5.3",
+      "title": "X.509 version 2 certificate fields",
+      "page": 9
+    },
+    {
+      "num": "5.4",
+      "title": "Standard certificate extensions",
+      "page": 9
+    },
+    {
+      "num": "5.4.1",
+      "title": "Authority key identifier",
+      "page": 9
+    },
+    {
+      "num": "5.4.2",
+      "title": "Subject key identifier",
+      "page": 9
+    },
+    {
+      "num": "5.4.3",
+      "title": "Key usage",
+      "page": 9
+    },
+    {
+      "num": "5.4.4",
+      "title": "Private key usage period",
+      "page": 10
+    },
+    {
+      "num": "5.4.5",
+      "title": "Certificate policies",
+      "page": 10
+    },
+    {
+      "num": "5.4.6",
+      "title": "Policy mappings",
+      "page": 10
+    },
+    {
+      "num": "5.4.7",
+      "title": "Subject alternative name",
+      "page": 10
+    },
+    {
+      "num": "5.4.8",
+      "title": "Issuer alternative name",
+      "page": 10
+    },
+    {
+      "num": "5.4.9",
+      "title": "Subject directory attributes",
+      "page": 10
+    },
+    {
+      "num": "5.4.10",
+      "title": "Basic constraints",
+      "page": 10
+    },
+    {
+      "num": "5.4.11",
+      "title": "Name constraints",
+      "page": 11
+    },
+    {
+      "num": "5.4.12",
+      "title": "Policy constraints",
+      "page": 11
+    },
+    {
+      "num": "5.4.13",
+      "title": "Extended key usage",
+      "page": 11
+    },
+    {
+      "num": "5.4.14",
+      "title": "CRL distribution points",
+      "page": 11
+    },
+    {
+      "num": "5.4.15",
+      "title": "Inhibit any-policy",
+      "page": 11
+    },
+    {
+      "num": "5.4.16",
+      "title": "Freshest CRL",
+      "page": 11
+    },
+    {
+      "num": "5.5",
+      "title": "RFC 3280 internet certificate extensions",
+      "page": 11
+    },
+    {
+      "num": "5.5.1",
+      "title": "Authority Information Access",
+      "page": 11
+    },
+    {
+      "num": "5.5.2",
+      "title": "Subject information access",
+      "page": 11
+    },
+    {
+      "num": "5.6",
+      "title": "RFC 3739 certificate extensions",
+      "page": 11
+    },
+    {
+      "num": "5.6.1",
+      "title": "Biometric information",
+      "page": 11
+    },
+    {
+      "num": "5.6.2",
+      "title": "Qualified certificate statement",
+      "page": 12
+    },
+    {
+      "num": "Annex A",
+      "title": "Important requirements from referenced standards",
+      "page": 13,
+      "annex_type": "informative"
+    },
+    {
+      "num": "A.1",
+      "title": "Scope and structure",
+      "page": 13
+    },
+    {
+      "num": "A.2",
+      "title": "Basic certificate fields",
+      "page": 13
+    },
+    {
+      "num": "A.2.1",
+      "title": "Version",
+      "page": 13
+    },
+    {
+      "num": "A.2.2",
+      "title": "Serial number",
+      "page": 13
+    },
+    {
+      "num": "A.2.3",
+      "title": "Signature",
+      "page": 13
+    },
+    {
+      "num": "A.2.4",
+      "title": "Issuer",
+      "page": 13
+    },
+    {
+      "num": "A.2.5",
+      "title": "Validity",
+      "page": 14
+    },
+    {
+      "num": "A.2.6",
+      "title": "Subject",
+      "page": 14
+    },
+    {
+      "num": "A.2.7",
+      "title": "Subject public key info",
+      "page": 14
+    },
+    {
+      "num": "A.3",
+      "title": "X.509 version 2 certificate fields",
+      "page": 14
+    },
+    {
+      "num": "A.4",
+      "title": "Standard certificate extensions",
+      "page": 14
+    },
+    {
+      "num": "A.4.1",
+      "title": "Authority key identifier",
+      "page": 14
+    },
+    {
+      "num": "A.4.2",
+      "title": "Subject key identifier",
+      "page": 15
+    },
+    {
+      "num": "A.4.3",
+      "title": "KeyUsage",
+      "page": 15
+    },
+    {
+      "num": "A.4.4",
+      "title": "Private key usage period",
+      "page": 15
+    },
+    {
+      "num": "A.4.5",
+      "title": "Certificate policies",
+      "page": 15
+    },
+    {
+      "num": "A.4.6",
+      "title": "Policy mappings",
+      "page": 15
+    },
+    {
+      "num": "A.4.7",
+      "title": "Subject alternative name",
+      "page": 16
+    },
+    {
+      "num": "A.4.8",
+      "title": "Issuer alternative name",
+      "page": 16
+    },
+    {
+      "num": "A.4.9",
+      "title": "Subject directory attributes",
+      "page": 16
+    },
+    {
+      "num": "A.4.10",
+      "title": "Basic constraints",
+      "page": 16
+    },
+    {
+      "num": "A.4.11",
+      "title": "Name constraints",
+      "page": 16
+    },
+    {
+      "num": "A.4.12",
+      "title": "Policy constraints",
+      "page": 16
+    },
+    {
+      "num": "A.4.13",
+      "title": "Extended key usage",
+      "page": 16
+    },
+    {
+      "num": "A.4.14",
+      "title": "CRL distribution points",
+      "page": 16
+    },
+    {
+      "num": "A.4.15",
+      "title": "Inhibit any-policy",
+      "page": 17
+    },
+    {
+      "num": "A.4.16",
+      "title": "Freshest CRL",
+      "page": 17
+    },
+    {
+      "num": "A.5",
+      "title": "RFC 3280 internet certificate extensions",
+      "page": 17
+    },
+    {
+      "num": "A.5.1",
+      "title": "Authority information access",
+      "page": 17
+    },
+    {
+      "num": "A.5.2",
+      "title": "Subject information access",
+      "page": 17
+    },
+    {
+      "num": "A.6",
+      "title": "RFC 3739 certificate extensions",
+      "page": 17
+    },
+    {
+      "num": "A.6.1",
+      "title": "Biometric information",
+      "page": 17
+    },
+    {
+      "num": "A.6.2",
+      "title": "Qualified certificate statement",
+      "page": 18
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 19,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 19,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "stem": "tr_102047v010201p",
+  "pdf": "downloads/specs/TR/tr_102047v010201p.pdf",
+  "title": "(2005-03)",
+  "reference": "tr_102047v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 5
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 5
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 5
+    },
+    {
+      "num": "4",
+      "title": "Objective",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "International basis of European electronic signature formats",
+      "page": 6
+    },
+    {
+      "num": "5.1",
+      "title": "TS 101 733 and IETF RFC 2630",
+      "page": 6
+    },
+    {
+      "num": "5.2",
+      "title": "TS 101 903 and W3C XML signatures",
+      "page": 6
+    },
+    {
+      "num": "6",
+      "title": "Further harmonization activities",
+      "page": 7
+    },
+    {
+      "num": "6.1",
+      "title": "IETF RFC 3126",
+      "page": 7
+    },
+    {
+      "num": "6.2",
+      "title": "W3C Note and joint working group",
+      "page": 7
+    },
+    {
+      "num": "6.3",
+      "title": "OASIS Digital Signature Services (DSS)",
+      "page": 7
+    },
+    {
+      "num": "7",
+      "title": "Recommendations",
+      "page": 9
+    },
+    {
+      "num": "A.1",
+      "title": "OASIS DSS Core Protocol",
+      "page": 10
+    },
+    {
+      "num": "A.2",
+      "title": "OASIS DSS XAdES-related protocols",
+      "page": 10
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 12,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 12,
+  "toc_pages": [
+    3
+  ]
+}

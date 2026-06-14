@@ -1,0 +1,196 @@
+{
+  "stem": "tr_119500v010101p",
+  "pdf": "downloads/specs/TR/tr_119500v010101p.pdf",
+  "title": "(2019-02)",
+  "reference": "tr_119500v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Overview of this area of standardization",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "What is a Trust Application Service Provider",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Types of Trust Application Service",
+      "page": 9
+    },
+    {
+      "num": "4.2.1",
+      "title": "ERDS",
+      "page": 9
+    },
+    {
+      "num": "4.2.2",
+      "title": "REM",
+      "page": 10
+    },
+    {
+      "num": "4.2.3",
+      "title": "Data Preservation Service (DPS)",
+      "page": 11
+    },
+    {
+      "num": "4.2.4",
+      "title": "Other potential Trust Application Services",
+      "page": 11
+    },
+    {
+      "num": "4.3",
+      "title": "Aspects of TASP Service Requiring Standardization",
+      "page": 11
+    },
+    {
+      "num": "4.3.1",
+      "title": "Policy & security Requirements",
+      "page": 11
+    },
+    {
+      "num": "4.3.2",
+      "title": "Technical Specifications",
+      "page": 11
+    },
+    {
+      "num": "4.3.3",
+      "title": "Conformity Assessment",
+      "page": 12
+    },
+    {
+      "num": "5",
+      "title": "Introduction to the Selection Process",
+      "page": 12
+    },
+    {
+      "num": "6",
+      "title": "Business Scoping Parameters",
+      "page": 12
+    },
+    {
+      "num": "6.1",
+      "title": "Overview",
+      "page": 12
+    },
+    {
+      "num": "6.2",
+      "title": "Scoping the trust application processes and/or services",
+      "page": 13
+    },
+    {
+      "num": "7",
+      "title": "Selecting the Most Appropriate Standards and options",
+      "page": 13
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 13
+    },
+    {
+      "num": "7.2",
+      "title": "Illustration of Application of Standard",
+      "page": 14
+    },
+    {
+      "num": "7.2.1",
+      "title": "ERDS",
+      "page": 14
+    },
+    {
+      "num": "7.2.2",
+      "title": "REM",
+      "page": 14
+    },
+    {
+      "num": "7.2.3",
+      "title": "Data Preservation Service",
+      "page": 15
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 16,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 16,
+  "toc_pages": [
+    3
+  ]
+}

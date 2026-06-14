@@ -1,0 +1,227 @@
+{
+  "stem": "ts_11941206v010201p",
+  "pdf": "downloads/specs/TS/ts_11941206v010201p.pdf",
+  "title": "(2026-04)",
+  "reference": "ts_11941206v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "PID Provider sign/seal certificate profile requirements",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "General requirements",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Issuer",
+      "page": 9
+    },
+    {
+      "num": "4.3",
+      "title": "Subject",
+      "page": 9
+    },
+    {
+      "num": "4.4",
+      "title": "Extensions",
+      "page": 9
+    },
+    {
+      "num": "4.4.1",
+      "title": "Key usage",
+      "page": 9
+    },
+    {
+      "num": "4.4.2",
+      "title": "Subject Key Identifier",
+      "page": 9
+    },
+    {
+      "num": "4.4.3",
+      "title": "Authority Information Access",
+      "page": 9
+    },
+    {
+      "num": "4.5",
+      "title": "Indicator that the certificate is for a PID Provider sign/seal certificate",
+      "page": 10
+    },
+    {
+      "num": "5",
+      "title": "Wallet Provider sign/seal certificate profile requirements",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "General requirements",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Indicator that the certificate is for a Wallet Provider sign/seal certificate",
+      "page": 10
+    },
+    {
+      "num": "6",
+      "title": "EAA Provider attribute sign/seal certificate profile requirements",
+      "page": 10
+    },
+    {
+      "num": "6.1",
+      "title": "General certificate requirements",
+      "page": 10
+    },
+    {
+      "num": "6.2",
+      "title": "Other requirements",
+      "page": 10
+    },
+    {
+      "num": "7",
+      "title": "QEAA Provider attribute qualified sign/seal certificate profile requirements",
+      "page": 10
+    },
+    {
+      "num": "7.1",
+      "title": "General certificate requirements",
+      "page": 10
+    },
+    {
+      "num": "7.2",
+      "title": "Extensions",
+      "page": 11
+    },
+    {
+      "num": "7.2.1",
+      "title": "Authority Information Access",
+      "page": 11
+    },
+    {
+      "num": "7.3",
+      "title": "Other requirements",
+      "page": 11
+    },
+    {
+      "num": "8.1",
+      "title": "General certificate requirements",
+      "page": 11
+    },
+    {
+      "num": "8.2",
+      "title": "Extensions",
+      "page": 11
+    },
+    {
+      "num": "8.2.1",
+      "title": "Authority Information Access",
+      "page": 11
+    },
+    {
+      "num": "8.3",
+      "title": "Set of data on the National or EU Law under which PSBEAA provider is established",
+      "page": 11
+    },
+    {
+      "num": "8.4",
+      "title": "Other requirements",
+      "page": 12
+    },
+    {
+      "num": "Annex A",
+      "title": "ASN.1 declarations",
+      "page": 13,
+      "annex_type": "normative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 14,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 14,
+  "toc_pages": [
+    3
+  ]
+}

@@ -381,6 +381,8 @@ def main() -> None:
                         help="Overwrite existing JSON files")
     parser.add_argument("--timeout", type=int, default=30,
                         help="Seconds before a single PDF is killed (default: 30)")
+    parser.add_argument("--workers", type=int, default=multiprocessing.cpu_count(),
+                        help="Parallel worker processes (default: CPU count)")
     args = parser.parse_args()
 
     out_dir = Path(args.output)
@@ -416,31 +418,49 @@ def main() -> None:
     if not pdfs:
         sys.exit(f"[ERROR] No PDFs found in {args.input}")
 
-    print(f"[INFO] Processing {len(pdfs)} PDFs → {out_dir}/  (timeout={args.timeout}s/PDF)")
+    workers = min(args.workers, len(pdfs))
+    print(f"[INFO] Processing {len(pdfs)} PDFs → {out_dir}/  "
+          f"(timeout={args.timeout}s/PDF, workers={workers})")
 
-    all_tocs: list[dict] = []
-    done = skipped = errors = 0
-
+    # Separate already-cached from those that need processing
+    todo: list[Path] = []
+    cached_tocs: list[dict] = []
     for pdf_path in pdfs:
         out_path = out_dir / f"{pdf_path.stem}.toc.json"
         if not args.force and out_path.exists():
             try:
-                all_tocs.append(json.loads(out_path.read_text()))
-                skipped += 1
+                cached_tocs.append(json.loads(out_path.read_text()))
                 continue
             except Exception:
                 pass
+        todo.append(pdf_path)
+
+    skipped = len(cached_tocs)
+    all_tocs: list[dict] = list(cached_tocs)
+    done = errors = 0
+
+    def _process_one(pdf_path: Path) -> tuple[Path, dict | Exception]:
         try:
-            result = extract_toc_with_timeout(pdf_path, args.timeout)
-            out_path.write_text(json.dumps(result, indent=2, ensure_ascii=False))
-            all_tocs.append(result)
-            toc_n = len(result["toc"])
-            body_p = result["body_starts_page"] or "?"
-            print(f"  ✓ {pdf_path.name:50s}  TOC={toc_n:3d}  body=p.{body_p}")
-            done += 1
+            return pdf_path, extract_toc_with_timeout(pdf_path, args.timeout)
         except Exception as exc:
-            print(f"  ✗ {pdf_path.name}: {exc}", file=sys.stderr)
-            errors += 1
+            return pdf_path, exc
+
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(_process_one, p): p for p in todo}
+        for fut in as_completed(futures):
+            pdf_path, result = fut.result()
+            out_path = out_dir / f"{pdf_path.stem}.toc.json"
+            if isinstance(result, Exception):
+                print(f"  ✗ {pdf_path.name}: {result}", file=sys.stderr)
+                errors += 1
+            else:
+                out_path.write_text(json.dumps(result, indent=2, ensure_ascii=False))
+                all_tocs.append(result)
+                toc_n = len(result["toc"])
+                body_p = result["body_starts_page"] or "?"
+                print(f"  ✓ {pdf_path.name:50s}  TOC={toc_n:3d}  body=p.{body_p}")
+                done += 1
 
     summary_path = out_dir / "_summary.json"
     summary_path.write_text(

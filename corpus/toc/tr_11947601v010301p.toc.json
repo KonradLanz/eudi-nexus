@@ -1,0 +1,1305 @@
+{
+  "stem": "tr_11947601v010301p",
+  "pdf": "downloads/specs/TR/tr_11947601v010301p.pdf",
+  "title": "(2025-08)",
+  "reference": "tr_11947601v010301p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 13,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 21
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 21
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 21
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 22
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 32
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 32
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 35
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 35
+    },
+    {
+      "num": "4",
+      "title": "Selective disclosure signature schemes",
+      "page": 38
+    },
+    {
+      "num": "4.1",
+      "title": "General",
+      "page": 38
+    },
+    {
+      "num": "4.2",
+      "title": "Atomic (Q)EAAs schemes",
+      "page": 39
+    },
+    {
+      "num": "4.3",
+      "title": "Salted attribute hashes",
+      "page": 40
+    },
+    {
+      "num": "4.3.1",
+      "title": "Overview of salted attribute hashes",
+      "page": 40
+    },
+    {
+      "num": "4.3.2",
+      "title": "Issuance phase",
+      "page": 41
+    },
+    {
+      "num": "4.3.3",
+      "title": "Presentation and verification phase",
+      "page": 41
+    },
+    {
+      "num": "4.3.4",
+      "title": "Salted attribute hashes and unlinkability",
+      "page": 42
+    },
+    {
+      "num": "4.3.4.2",
+      "title": "The Asynchronous Remote Key Generation (ARKG) algorithm",
+      "page": 43
+    },
+    {
+      "num": "4.3.4.3",
+      "title": "Batch issuance and Proof of Possession / Association",
+      "page": 44
+    },
+    {
+      "num": "4.3.5",
+      "title": "Cryptographic analysis",
+      "page": 45
+    },
+    {
+      "num": "4.3.6",
+      "title": "Predicates based on computational inputs",
+      "page": 46
+    },
+    {
+      "num": "4.3.7",
+      "title": "HashWires",
+      "page": 47
+    },
+    {
+      "num": "4.3.7.1",
+      "title": "Introduction",
+      "page": 47
+    },
+    {
+      "num": "4.3.7.2",
+      "title": "Cryptographic analysis of HashWires",
+      "page": 47
+    },
+    {
+      "num": "4.3.8",
+      "title": "Authentic Chained Data Containers (ACDCs)",
+      "page": 48
+    },
+    {
+      "num": "4.3.9",
+      "title": "Gordian Envelopes",
+      "page": 49
+    },
+    {
+      "num": "4.4",
+      "title": "Multi-message signature schemes",
+      "page": 50
+    },
+    {
+      "num": "4.4.1",
+      "title": "Camenisch-Lysyanskaya (CL) signatures",
+      "page": 50
+    },
+    {
+      "num": "4.4.1.1",
+      "title": "Introduction to CL-signatures",
+      "page": 50
+    },
+    {
+      "num": "4.4.1.2",
+      "title": "The CL-signature scheme",
+      "page": 51
+    },
+    {
+      "num": "4.4.1.3",
+      "title": "The CL-signature scheme and selective disclosure",
+      "page": 51
+    },
+    {
+      "num": "4.4.1.4",
+      "title": "The CL-signature scheme, predicates, and knowledge proofs",
+      "page": 52
+    },
+    {
+      "num": "4.4.1.5",
+      "title": "Cryptographic analysis of the CL-signature scheme",
+      "page": 52
+    },
+    {
+      "num": "4.4.2",
+      "title": "The BBS, BBS+ and BBS# signature schemes",
+      "page": 52
+    },
+    {
+      "num": "4.4.2.1",
+      "title": "Background: Boneh-Boyen-Shacham (BBS04) signature scheme",
+      "page": 52
+    },
+    {
+      "num": "4.4.2.2",
+      "title": "Introducing the BBS+ signature scheme",
+      "page": 53
+    },
+    {
+      "num": "4.4.2.3",
+      "title": "Overview of BBS+",
+      "page": 53
+    },
+    {
+      "num": "4.4.2.4",
+      "title": "IRTF CFRG BBS specification",
+      "page": 54
+    },
+    {
+      "num": "4.4.2.5",
+      "title": "Device Binding Options for BBS+",
+      "page": 55
+    },
+    {
+      "num": "4.4.2.6",
+      "title": "Cryptographic analysis of the BBS+ signature scheme",
+      "page": 56
+    },
+    {
+      "num": "4.4.3",
+      "title": "The BBS# signature scheme",
+      "page": 56
+    },
+    {
+      "num": "4.4.3.1",
+      "title": "Introduction to the BBS# protocol",
+      "page": 56
+    },
+    {
+      "num": "4.4.3.2",
+      "title": "BBS# underlying signature schemes",
+      "page": 56
+    },
+    {
+      "num": "4.4.3.2.1",
+      "title": "General",
+      "page": 56
+    },
+    {
+      "num": "4.4.3.2.2",
+      "title": "Holder's signature scheme",
+      "page": 56
+    },
+    {
+      "num": "4.4.3.2.3",
+      "title": "Issuer's signature scheme",
+      "page": 57
+    },
+    {
+      "num": "4.4.3.3",
+      "title": "Overview of the BBS# protocol",
+      "page": 58
+    },
+    {
+      "num": "4.4.3.3.1",
+      "title": "General",
+      "page": 58
+    },
+    {
+      "num": "4.4.3.3.2",
+      "title": "Issuance",
+      "page": 58
+    },
+    {
+      "num": "4.4.3.3.3",
+      "title": "Selective disclosure",
+      "page": 58
+    },
+    {
+      "num": "4.4.3.3.4",
+      "title": "Verification",
+      "page": 58
+    },
+    {
+      "num": "4.4.3.4",
+      "title": "Cryptographic analysis of the BBS# protocol",
+      "page": 59
+    },
+    {
+      "num": "4.4.4",
+      "title": "Mercurial signatures",
+      "page": 60
+    },
+    {
+      "num": "4.4.5",
+      "title": "Pointcheval-Sanders Multi-Signatures (PS-MS)",
+      "page": 60
+    },
+    {
+      "num": "4.4.6",
+      "title": "ISO standardisation of multi-message signature schemes",
+      "page": 61
+    },
+    {
+      "num": "4.4.6.1",
+      "title": "ISO/IEC 20008 - Anonymous digital signatures",
+      "page": 61
+    },
+    {
+      "num": "4.4.6.2",
+      "title": "ISO/IEC 24843 - Privacy-preserving attribute-based credentials",
+      "page": 61
+    },
+    {
+      "num": "4.4.6.3",
+      "title": "ISO/IEC CD 27565 - Guidelines on privacy preservation based on ZKP",
+      "page": 61
+    },
+    {
+      "num": "4.4.7",
+      "title": "Extensions of multi-messages signature schemes",
+      "page": 62
+    },
+    {
+      "num": "4.5",
+      "title": "Proofs for arithmetic circuits (programmable ZKPs)",
+      "page": 62
+    },
+    {
+      "num": "4.5.1",
+      "title": "General",
+      "page": 62
+    },
+    {
+      "num": "4.5.2",
+      "title": "zk-SNARKs",
+      "page": 62
+    },
+    {
+      "num": "4.5.2.1",
+      "title": "Introduction to zk-SNARKs",
+      "page": 62
+    },
+    {
+      "num": "4.5.2.2",
+      "title": "Trusted setup of zk-SNARKs",
+      "page": 63
+    },
+    {
+      "num": "4.5.2.3",
+      "title": "Transparent setup zk-SNARKs",
+      "page": 64
+    },
+    {
+      "num": "4.5.2.4",
+      "title": "Cryptography behind zk-SNARKs",
+      "page": 64
+    },
+    {
+      "num": "4.5.2.5",
+      "title": "Implementations",
+      "page": 66
+    },
+    {
+      "num": "4.5.2.6",
+      "title": "Cryptographic analysis",
+      "page": 66
+    },
+    {
+      "num": "4.5.3",
+      "title": "zk-STARKs",
+      "page": 66
+    },
+    {
+      "num": "4.5.3.1",
+      "title": "Introduction to zk-STARK",
+      "page": 66
+    },
+    {
+      "num": "4.5.3.2",
+      "title": "Setup of zk-STARK",
+      "page": 67
+    },
+    {
+      "num": "4.5.3.3",
+      "title": "Cryptography behind zk-STARK",
+      "page": 67
+    },
+    {
+      "num": "4.5.3.4",
+      "title": "Implementations",
+      "page": 67
+    },
+    {
+      "num": "4.5.3.5",
+      "title": "Cryptographic analysis",
+      "page": 68
+    },
+    {
+      "num": "4.5.4",
+      "title": "ZK Bulletproofs",
+      "page": 68
+    },
+    {
+      "num": "5",
+      "title": "(Q)EAA formats with selective disclosure",
+      "page": 69
+    },
+    {
+      "num": "5.1",
+      "title": "General",
+      "page": 69
+    },
+    {
+      "num": "5.2",
+      "title": "Atomic (Q)EAA formats",
+      "page": 70
+    },
+    {
+      "num": "5.2.1",
+      "title": "Introduction to atomic (Q)EAA formats",
+      "page": 70
+    },
+    {
+      "num": "5.2.2",
+      "title": "PKIX X.509 attribute certificate with atomic attribute",
+      "page": 70
+    },
+    {
+      "num": "5.2.3",
+      "title": "W3C Verifiable Credential with atomic attribute",
+      "page": 71
+    },
+    {
+      "num": "5.3",
+      "title": "Formats of (Q)EAAs with salted attribute hashes",
+      "page": 71
+    },
+    {
+      "num": "5.3.1",
+      "title": "General",
+      "page": 71
+    },
+    {
+      "num": "5.3.2",
+      "title": "IETF SD-JWT and SD-JWT VC",
+      "page": 72
+    },
+    {
+      "num": "5.3.2.1",
+      "title": "IETF SD-JWT",
+      "page": 72
+    },
+    {
+      "num": "5.3.2.2",
+      "title": "IETF SD-JWT VC",
+      "page": 72
+    },
+    {
+      "num": "5.3.3",
+      "title": "ISO/IEC 18013-5 Mobile Security Object (MSO)",
+      "page": 72
+    },
+    {
+      "num": "5.4",
+      "title": "Multi-message signature (Q)EAA formats",
+      "page": 73
+    },
+    {
+      "num": "5.4.1",
+      "title": "W3C VC Data Model with ZKP",
+      "page": 73
+    },
+    {
+      "num": "5.4.2",
+      "title": "W3C VC Data Integrity with BBS Cryptosuite",
+      "page": 74
+    },
+    {
+      "num": "5.4.2.1",
+      "title": "W3C BBS Cryptosuite v2023",
+      "page": 74
+    },
+    {
+      "num": "5.4.2.2",
+      "title": "W3C VC Data Integrity with ISO standardized BBS04/BBS+",
+      "page": 74
+    },
+    {
+      "num": "5.4.3",
+      "title": "W3C Data Integrity ECDSA Cryptosuites v1.0",
+      "page": 75
+    },
+    {
+      "num": "5.4.4",
+      "title": "Hyperledger AnonCreds (format)",
+      "page": 75
+    },
+    {
+      "num": "5.4.5",
+      "title": "Cryptographic analysis",
+      "page": 76
+    },
+    {
+      "num": "5.5",
+      "title": "JSON container formats",
+      "page": 76
+    },
+    {
+      "num": "5.5.1",
+      "title": "IETF JSON WebProof (JWP)",
+      "page": 76
+    },
+    {
+      "num": "5.5.2",
+      "title": "W3C JSON Web Proofs For Binary Merkle Trees",
+      "page": 77
+    },
+    {
+      "num": "5.5.3",
+      "title": "JSON Web Zero Knowledge (JWZ)",
+      "page": 77
+    },
+    {
+      "num": "6",
+      "title": "Selective disclosure systems and protocols",
+      "page": 78
+    },
+    {
+      "num": "6.1",
+      "title": "General",
+      "page": 78
+    },
+    {
+      "num": "6.2",
+      "title": "Atomic attribute (Q)EAA presentation protocols",
+      "page": 78
+    },
+    {
+      "num": "6.2.1",
+      "title": "PKIX X.509 attribute certificates with single attributes",
+      "page": 78
+    },
+    {
+      "num": "6.2.2",
+      "title": "VC-FIDO for atomic (Q)EAAs",
+      "page": 79
+    },
+    {
+      "num": "6.3",
+      "title": "Salted attribute hashes protocols",
+      "page": 80
+    },
+    {
+      "num": "6.3.1",
+      "title": "OpenAttestation (Singapore's Smart Nation)",
+      "page": 80
+    },
+    {
+      "num": "6.4",
+      "title": "Multi-message signature protocols and solutions",
+      "page": 80
+    },
+    {
+      "num": "6.4.1",
+      "title": "Hyperledger AnonCreds (protocols)",
+      "page": 80
+    },
+    {
+      "num": "6.4.2",
+      "title": "Direct Anonymous Attestation (DAA) used with TPMs",
+      "page": 81
+    },
+    {
+      "num": "6.5",
+      "title": "Proofs for arithmetic circuits solutions",
+      "page": 81
+    },
+    {
+      "num": "6.5.1",
+      "title": "Anonymous (Q)EAAs from programmable ZKPs and existing digital identities",
+      "page": 81
+    },
+    {
+      "num": "6.5.1.1",
+      "title": "Overview",
+      "page": 81
+    },
+    {
+      "num": "6.5.1.2",
+      "title": "Setup phase",
+      "page": 82
+    },
+    {
+      "num": "6.5.1.3",
+      "title": "Issuance phase",
+      "page": 82
+    },
+    {
+      "num": "6.5.1.4",
+      "title": "Proof phase",
+      "page": 82
+    },
+    {
+      "num": "6.5.2",
+      "title": "Cinderella: zk-SNARKs to verify the validity of X.509 certificates",
+      "page": 83
+    },
+    {
+      "num": "6.5.3",
+      "title": "zk-creds: zk-SNARKs used with ICAO passports",
+      "page": 83
+    },
+    {
+      "num": "6.5.4",
+      "title": "Anonymous credentials from ECDSA",
+      "page": 84
+    },
+    {
+      "num": "6.5.4.1",
+      "title": "Overview of the research paper",
+      "page": 84
+    },
+    {
+      "num": "6.5.4.2",
+      "title": "Implementation and standardization",
+      "page": 85
+    },
+    {
+      "num": "6.5.5",
+      "title": "Crescent: Stronger Privacy for Existing Credentials",
+      "page": 85
+    },
+    {
+      "num": "6.5.6",
+      "title": "Analysis of systems based on programmable ZKPs",
+      "page": 86
+    },
+    {
+      "num": "6.6",
+      "title": "Anonymous attribute based credentials systems",
+      "page": 87
+    },
+    {
+      "num": "6.6.1",
+      "title": "Idemix (Identity Mixer)",
+      "page": 87
+    },
+    {
+      "num": "6.6.2",
+      "title": "U-Prove",
+      "page": 88
+    },
+    {
+      "num": "6.6.3",
+      "title": "ISO/IEC 18370 (blind digital signatures)",
+      "page": 89
+    },
+    {
+      "num": "6.6.4",
+      "title": "Keyed-Verification Anonymous Credentials (KVAC)",
+      "page": 89
+    },
+    {
+      "num": "6.6.5",
+      "title": "Fast IDentity Online with Anonymous Credentials (FIDO-AC)",
+      "page": 90
+    },
+    {
+      "num": "6.7",
+      "title": "ISO mobile driving license (ISO mDL)",
+      "page": 90
+    },
+    {
+      "num": "6.7.1",
+      "title": "Introduction to ISO/IEC 18013-5 (ISO mDL)",
+      "page": 90
+    },
+    {
+      "num": "6.7.2",
+      "title": "ISO/IEC 18013-5 (device retrieval flow)",
+      "page": 91
+    },
+    {
+      "num": "6.7.3",
+      "title": "ISO/IEC 18013-5 (server retrieval flows)",
+      "page": 91
+    },
+    {
+      "num": "6.7.4",
+      "title": "ISO/IEC 18013-7 (unattended flow)",
+      "page": 92
+    },
+    {
+      "num": "6.7.5",
+      "title": "ISO/IEC 23220-4 (operational protocols)",
+      "page": 92
+    },
+    {
+      "num": "6.8",
+      "title": "OpenID for Verifiable Credentials (OpenID4VC)",
+      "page": 93
+    },
+    {
+      "num": "6.8.1",
+      "title": "OpenID for Verifiable Credential Issuance (OpenID4VCI / OID4VCI)",
+      "page": 93
+    },
+    {
+      "num": "6.8.2",
+      "title": "OpenID for Verifiable Presentations (OpenID4VP / OID4VP)",
+      "page": 93
+    },
+    {
+      "num": "6.8.3",
+      "title": "OpenID4VC High Assurance Interoperability Profile (HAIP)",
+      "page": 94
+    },
+    {
+      "num": "6.9",
+      "title": "The Iden3 protocol",
+      "page": 94
+    },
+    {
+      "num": "6.9.1",
+      "title": "Introduction to the Iden3 protocol",
+      "page": 94
+    },
+    {
+      "num": "6.9.2",
+      "title": "Cryptography behind the Iden3 protocol",
+      "page": 94
+    },
+    {
+      "num": "6.9.3",
+      "title": "Implementation aspects of the Iden3 protocol",
+      "page": 95
+    },
+    {
+      "num": "7",
+      "title": "Implications of selective disclosure on standards for (Q)EAA/PID",
+      "page": 96
+    },
+    {
+      "num": "7.1",
+      "title": "General implications",
+      "page": 96
+    },
+    {
+      "num": "7.2",
+      "title": "Implications for mdoc with selective disclosure",
+      "page": 97
+    },
+    {
+      "num": "7.2.1",
+      "title": "QTSP/PIDP issuing mdoc",
+      "page": 97
+    },
+    {
+      "num": "7.2.1.1",
+      "title": "General",
+      "page": 97
+    },
+    {
+      "num": "7.2.1.2",
+      "title": "Certificate profiles",
+      "page": 97
+    },
+    {
+      "num": "7.2.1.3",
+      "title": "Trusted Lists",
+      "page": 98
+    },
+    {
+      "num": "7.2.1.4",
+      "title": "Issuance of mdocs",
+      "page": 98
+    },
+    {
+      "num": "7.2.1.5",
+      "title": "Comparison with ETSI certificate profiles for Open Banking (PSD2)",
+      "page": 99
+    },
+    {
+      "num": "7.2.1.6",
+      "title": "Mapping of mdoc and eIDAS2 terms",
+      "page": 100
+    },
+    {
+      "num": "7.2.2",
+      "title": "EUDI Wallet mdoc authentication key",
+      "page": 100
+    },
+    {
+      "num": "7.2.3",
+      "title": "EUDI Wallet used with ISO mDL flows",
+      "page": 100
+    },
+    {
+      "num": "7.3",
+      "title": "Implications for SD-JWT selective disclosure",
+      "page": 101
+    },
+    {
+      "num": "7.3.1",
+      "title": "Analysis of using SD-JWT as (Q)EAA format applied to eIDAS2",
+      "page": 101
+    },
+    {
+      "num": "7.4",
+      "title": "Feasibility of BBS+ and BBS# applied to eIDAS2",
+      "page": 102
+    },
+    {
+      "num": "7.4.1",
+      "title": "General",
+      "page": 102
+    },
+    {
+      "num": "7.4.2",
+      "title": "Standardization of BBS+ and BBS#",
+      "page": 102
+    },
+    {
+      "num": "7.4.2.1",
+      "title": "Standardization of BBS+",
+      "page": 102
+    },
+    {
+      "num": "7.4.2.2",
+      "title": "Standardization of BBS#",
+      "page": 103
+    },
+    {
+      "num": "7.4.3",
+      "title": "Feasibility of using BBS+ or BBS# with W3C VCDM and mdoc",
+      "page": 103
+    },
+    {
+      "num": "7.4.3.1",
+      "title": "BBS+ applied to W3C VCDM",
+      "page": 103
+    },
+    {
+      "num": "7.4.3.2",
+      "title": "BBS# applied to mdoc",
+      "page": 104
+    },
+    {
+      "num": "7.4.3.3",
+      "title": "BBS# applied to W3C VCDM",
+      "page": 104
+    },
+    {
+      "num": "7.4.4",
+      "title": "Post-quantum considerations for BBS+ and BBS#",
+      "page": 104
+    },
+    {
+      "num": "7.4.5",
+      "title": "Conclusions of using BBS+ and BBS# applied to eIDAS2",
+      "page": 104
+    },
+    {
+      "num": "7.4.5.1",
+      "title": "Conclusions of applying BBS+ to eIDAS2",
+      "page": 104
+    },
+    {
+      "num": "7.4.5.2",
+      "title": "Conclusions of applying BBS# to eIDAS2",
+      "page": 105
+    },
+    {
+      "num": "7.5",
+      "title": "Feasibility of programmable ZKPs applied to eIDAS2 (Q)EAAs",
+      "page": 106
+    },
+    {
+      "num": "7.5.1",
+      "title": "Background and existing solutions",
+      "page": 106
+    },
+    {
+      "num": "7.5.2",
+      "title": "Extensions to EUDI Wallets, relying parties and protocols",
+      "page": 106
+    },
+    {
+      "num": "7.5.3",
+      "title": "Conclusions of programmable ZKPs applied to eIDAS2 (Q)EAAs",
+      "page": 107
+    },
+    {
+      "num": "7.6",
+      "title": "Secure storage of PID/(Q)EAA keys in EUDI Wallet",
+      "page": 107
+    },
+    {
+      "num": "7.6.1",
+      "title": "General",
+      "page": 107
+    },
+    {
+      "num": "7.6.2",
+      "title": "Key splitting technique (relevant for BBS#)",
+      "page": 108
+    },
+    {
+      "num": "7.7",
+      "title": "The proportionality of privacy goals",
+      "page": 109
+    },
+    {
+      "num": "7.7.1",
+      "title": "General",
+      "page": 109
+    },
+    {
+      "num": "7.7.2",
+      "title": "Issuance",
+      "page": 109
+    },
+    {
+      "num": "7.7.3",
+      "title": "Presentation",
+      "page": 111
+    },
+    {
+      "num": "7.7.4",
+      "title": "Prioritizing privacy goals given the costs",
+      "page": 112
+    },
+    {
+      "num": "8",
+      "title": "Privacy aspects of revocation and validity checks",
+      "page": 113
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction to revocation and validity checks",
+      "page": 113
+    },
+    {
+      "num": "8.2",
+      "title": "Online certificate status protocol (OCSP)",
+      "page": 113
+    },
+    {
+      "num": "8.3",
+      "title": "Revocation lists",
+      "page": 114
+    },
+    {
+      "num": "8.4",
+      "title": "Validity status lists",
+      "page": 114
+    },
+    {
+      "num": "8.5",
+      "title": "Cryptographic accumulators",
+      "page": 115
+    },
+    {
+      "num": "8.6",
+      "title": "Using programmable ZKP schemes for revocation checks",
+      "page": 116
+    },
+    {
+      "num": "8.7",
+      "title": "Conclusions on validity status checks",
+      "page": 116
+    },
+    {
+      "num": "9",
+      "title": "Post-quantum considerations",
+      "page": 117
+    },
+    {
+      "num": "9.1",
+      "title": "General remarks",
+      "page": 117
+    },
+    {
+      "num": "9.2",
+      "title": "Post-quantum computing threats",
+      "page": 118
+    },
+    {
+      "num": "9.3",
+      "title": "Post-quantum computing solutions",
+      "page": 119
+    },
+    {
+      "num": "9.4",
+      "title": "Lattice-based anonymous credentials schemes",
+      "page": 119
+    },
+    {
+      "num": "9.4.1",
+      "title": "Background",
+      "page": 119
+    },
+    {
+      "num": "9.4.2",
+      "title": "Research on effective lattice-based anonymous credentials",
+      "page": 120
+    },
+    {
+      "num": "10",
+      "title": "Conclusions",
+      "page": 120
+    },
+    {
+      "num": "A.1",
+      "title": "Selective disclosure signature schemes",
+      "page": 123
+    },
+    {
+      "num": "A.2",
+      "title": "(Q)EAA formats with selective disclosure",
+      "page": 125
+    },
+    {
+      "num": "A.3",
+      "title": "Selective disclosure systems and protocols",
+      "page": 126
+    },
+    {
+      "num": "A.4",
+      "title": "zk-SNARK protocols",
+      "page": 127
+    },
+    {
+      "num": "B.1",
+      "title": "HashWires applied on inequality tests",
+      "page": 129
+    },
+    {
+      "num": "B.1.1",
+      "title": "Using a hash chain for inequality tests",
+      "page": 129
+    },
+    {
+      "num": "B.1.2",
+      "title": "Using multiple hash chains for inequality tests",
+      "page": 129
+    },
+    {
+      "num": "B.1.3",
+      "title": "Protecting optimized HashWires with SD-JWT or MSO",
+      "page": 131
+    },
+    {
+      "num": "B.1.4",
+      "title": "Less than or equal to and range proofs",
+      "page": 133
+    },
+    {
+      "num": "B.2",
+      "title": "Hash chain code example",
+      "page": 133
+    },
+    {
+      "num": "B.3",
+      "title": "HashWires for SD-JWT and MSO",
+      "page": 134
+    },
+    {
+      "num": "C.1",
+      "title": "General",
+      "page": 135
+    },
+    {
+      "num": "C.2",
+      "title": "Quantum physics applied on ZKP schemes",
+      "page": 135
+    },
+    {
+      "num": "C.2.1",
+      "title": "Background",
+      "page": 135
+    },
+    {
+      "num": "C.2.2",
+      "title": "Quantum Key Distribution (QKD)",
+      "page": 135
+    },
+    {
+      "num": "C.2.3",
+      "title": "Quantum physics applied to the graph 3-colouring ZKP scheme",
+      "page": 136
+    },
+    {
+      "num": "C.2.4",
+      "title": "ZKP using the quantum Internet (based on Schnorr's algorithm)",
+      "page": 137
+    },
+    {
+      "num": "C.2.5",
+      "title": "Conclusions on quantum ZKP schemes",
+      "page": 138
+    },
+    {
+      "num": "D.1",
+      "title": "EUDI Wallet used with ISO mDL device retrieval flow",
+      "page": 139
+    },
+    {
+      "num": "D.1.1",
+      "title": "Overview of the ISO mDL device retrieval flow",
+      "page": 139
+    },
+    {
+      "num": "D.1.2",
+      "title": "Analysis of the ISO mDL device retrieval flow for eIDAS2",
+      "page": 140
+    },
+    {
+      "num": "D.2",
+      "title": "EUDI Wallet used with ISO mDL server retrieval flow",
+      "page": 141
+    },
+    {
+      "num": "D.2.1",
+      "title": "Overview of the ISO mDL server retrieval flows",
+      "page": 141
+    },
+    {
+      "num": "D.2.2",
+      "title": "ISO mDL flow initialization",
+      "page": 141
+    },
+    {
+      "num": "D.2.3",
+      "title": "ISO mDL server retrieval flow initialization",
+      "page": 142
+    },
+    {
+      "num": "D.2.4",
+      "title": "ISO mDL server retrieval WebAPI flow",
+      "page": 142
+    },
+    {
+      "num": "D.2.5",
+      "title": "Analysis of the ISO mDL server retrieval WebAPI flow for eIDAS2",
+      "page": 143
+    },
+    {
+      "num": "D.2.6",
+      "title": "ISO mDL server retrieval OIDC flow",
+      "page": 144
+    },
+    {
+      "num": "D.2.7",
+      "title": "Analysis of the ISO mDL OIDC server retrieval flow applied to eIDAS2",
+      "page": 144
+    },
+    {
+      "num": "D.3",
+      "title": "EUDI Wallets used with ISO/IEC 18013-7 for unattended flow",
+      "page": 145
+    },
+    {
+      "num": "D.3.1",
+      "title": "Overview of the ISO/IEC 18013-7 flows",
+      "page": 145
+    },
+    {
+      "num": "D.3.2",
+      "title": "ISO/IEC 18013-7 Device Retrieval flow",
+      "page": 146
+    },
+    {
+      "num": "D.3.3",
+      "title": "ISO/IEC 18013-7 OID4VP/SIOP2 flow",
+      "page": 146
+    },
+    {
+      "num": "E.1",
+      "title": "Overview of W3C Verifiable Credential Data Model (VCDM)",
+      "page": 148
+    },
+    {
+      "num": "E.1.1",
+      "title": "W3C VC, JSON-LD, data integrity proofs, and linked data signatures",
+      "page": 148
+    },
+    {
+      "num": "E.1.2",
+      "title": "W3C VC, JSON-LD, data integrity proofs, and linked data signatures",
+      "page": 149
+    },
+    {
+      "num": "E.1.3",
+      "title": "JWT based W3C VC",
+      "page": 150
+    },
+    {
+      "num": "E.2",
+      "title": "SD-JWT based attestations",
+      "page": 151
+    },
+    {
+      "num": "E.2.1",
+      "title": "General",
+      "page": 151
+    },
+    {
+      "num": "E.2.2",
+      "title": "SD-JWT VC",
+      "page": 153
+    },
+    {
+      "num": "E.2.3",
+      "title": "SD-JWT and multi-show unlinkable disclosures",
+      "page": 154
+    },
+    {
+      "num": "E.2.4",
+      "title": "Predicates in SD-JWT",
+      "page": 155
+    },
+    {
+      "num": "E.3",
+      "title": "W3C VCDM 2.0 with SD-JWT",
+      "page": 155
+    },
+    {
+      "num": "F.1",
+      "title": "General",
+      "page": 156
+    },
+    {
+      "num": "F.2",
+      "title": "ETSI TR 119 479-2",
+      "page": 156
+    },
+    {
+      "num": "F.3",
+      "title": "Anonymous usage data aggregation",
+      "page": 156
+    },
+    {
+      "num": "F.3.1",
+      "title": "General",
+      "page": 156
+    },
+    {
+      "num": "F.3.2",
+      "title": "The billing model and private sum process",
+      "page": 157
+    },
+    {
+      "num": "F.3.3",
+      "title": "Alternative approach optimized for compatibility",
+      "page": 158
+    },
+    {
+      "num": "G.1",
+      "title": "General",
+      "page": 159
+    },
+    {
+      "num": "G.2",
+      "title": "Setup",
+      "page": 159
+    },
+    {
+      "num": "G.3",
+      "title": "Issuance",
+      "page": 159
+    },
+    {
+      "num": "G.4",
+      "title": "Selective disclosure",
+      "page": 160
+    },
+    {
+      "num": "G.5",
+      "title": "Verification",
+      "page": 160
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 163,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 21,
+  "total_pages": 163,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ]
+}

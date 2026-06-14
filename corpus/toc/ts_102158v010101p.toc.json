@@ -1,0 +1,389 @@
+{
+  "stem": "ts_102158v010101p",
+  "pdf": "downloads/specs/TS/ts_102158v010101p.pdf",
+  "title": "(2003-10)",
+  "reference": "ts_102158v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Certified attributes",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Attribute Authority",
+      "page": 9
+    },
+    {
+      "num": "4.3",
+      "title": "Attribute certification services",
+      "page": 9
+    },
+    {
+      "num": "4.4",
+      "title": "Attribute certificate policy and attribute certification practice statement",
+      "page": 11
+    },
+    {
+      "num": "4.4.1",
+      "title": "Purpose",
+      "page": 11
+    },
+    {
+      "num": "4.4.2",
+      "title": "Level of specificity",
+      "page": 11
+    },
+    {
+      "num": "4.4.3",
+      "title": "Approach",
+      "page": 11
+    },
+    {
+      "num": "4.4.4",
+      "title": "Other AA statements",
+      "page": 11
+    },
+    {
+      "num": "4.5",
+      "title": "Subscriber and subject",
+      "page": 12
+    },
+    {
+      "num": "4.6",
+      "title": "Attribute semantics",
+      "page": 13
+    },
+    {
+      "num": "5",
+      "title": "Introduction to Attribute Certificate policies",
+      "page": 13
+    },
+    {
+      "num": "5.1",
+      "title": "Overview",
+      "page": 13
+    },
+    {
+      "num": "5.2",
+      "title": "Identification",
+      "page": 13
+    },
+    {
+      "num": "5.3",
+      "title": "User community and applicability",
+      "page": 14
+    },
+    {
+      "num": "5.4",
+      "title": "Conformance",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "Obligations and liability",
+      "page": 14
+    },
+    {
+      "num": "6.1",
+      "title": "Attribute authority obligations",
+      "page": 14
+    },
+    {
+      "num": "6.2",
+      "title": "Subscriber obligations",
+      "page": 14
+    },
+    {
+      "num": "6.3",
+      "title": "Subject obligations",
+      "page": 14
+    },
+    {
+      "num": "6.4",
+      "title": "Information for relying parties",
+      "page": 15
+    },
+    {
+      "num": "6.5",
+      "title": "Liability",
+      "page": 15
+    },
+    {
+      "num": "7",
+      "title": "Requirements on AA practice",
+      "page": 15
+    },
+    {
+      "num": "7.1",
+      "title": "Attribute Certification practice statements",
+      "page": 15
+    },
+    {
+      "num": "7.2",
+      "title": "Attribute management life cycle",
+      "page": 16
+    },
+    {
+      "num": "7.2.1",
+      "title": "Subject and attribute initial registration",
+      "page": 16
+    },
+    {
+      "num": "7.2.2",
+      "title": "Attribute renewal",
+      "page": 18
+    },
+    {
+      "num": "7.2.3",
+      "title": "Dissemination of Terms and Conditions",
+      "page": 19
+    },
+    {
+      "num": "7.2.3.1",
+      "title": "Terms and Conditions for subscribers and subjects",
+      "page": 19
+    },
+    {
+      "num": "7.2.4",
+      "title": "Attribute Certificate acquisition",
+      "page": 20
+    },
+    {
+      "num": "7.2.5",
+      "title": "Attribute Certificate dissemination",
+      "page": 20
+    },
+    {
+      "num": "7.2.6",
+      "title": "Attribute Certificate generation",
+      "page": 20
+    },
+    {
+      "num": "7.2.7",
+      "title": "Attribute and AC revocation and suspension",
+      "page": 21
+    },
+    {
+      "num": "7.3",
+      "title": "Attribute Authority keys management life cycle",
+      "page": 22
+    },
+    {
+      "num": "7.3.1",
+      "title": "Attribute Authority keys generation",
+      "page": 22
+    },
+    {
+      "num": "7.3.2",
+      "title": "Attribute Authority keys storage, backup and recovery",
+      "page": 23
+    },
+    {
+      "num": "7.3.3",
+      "title": "Attribute Authority public keys distribution",
+      "page": 23
+    },
+    {
+      "num": "7.3.4",
+      "title": "Attribute authority keys usage",
+      "page": 23
+    },
+    {
+      "num": "7.3.5",
+      "title": "End of AA key life cycle",
+      "page": 24
+    },
+    {
+      "num": "7.4",
+      "title": "AA management and operation",
+      "page": 24
+    },
+    {
+      "num": "7.4.1",
+      "title": "Security management",
+      "page": 24
+    },
+    {
+      "num": "7.4.2",
+      "title": "Asset classification and management",
+      "page": 25
+    },
+    {
+      "num": "7.4.3",
+      "title": "Personnel security",
+      "page": 25
+    },
+    {
+      "num": "7.4.4",
+      "title": "Physical and environmental security",
+      "page": 26
+    },
+    {
+      "num": "7.4.5",
+      "title": "Operations management",
+      "page": 27
+    },
+    {
+      "num": "7.4.6",
+      "title": "System Access management",
+      "page": 28
+    },
+    {
+      "num": "7.4.7",
+      "title": "Trustworthy Systems deployment and maintenance",
+      "page": 29
+    },
+    {
+      "num": "7.4.8",
+      "title": "Business continuity management and incident handling",
+      "page": 29
+    },
+    {
+      "num": "7.4.9",
+      "title": "AA termination",
+      "page": 29
+    },
+    {
+      "num": "7.4.10",
+      "title": "Compliance with Legal requirements",
+      "page": 30
+    },
+    {
+      "num": "7.4.11",
+      "title": "Recording of information concerning Attribute Certificates",
+      "page": 30
+    },
+    {
+      "num": "7.5",
+      "title": "Organizational",
+      "page": 32
+    },
+    {
+      "num": "8",
+      "title": "Framework for the definition of other Attribute Certificate policies",
+      "page": 33
+    },
+    {
+      "num": "8.1",
+      "title": "Attribute Certificate policy management",
+      "page": 33
+    },
+    {
+      "num": "8.2",
+      "title": "Exclusions for AC not issued to the public",
+      "page": 33
+    },
+    {
+      "num": "8.3",
+      "title": "Additional requirements",
+      "page": 34
+    },
+    {
+      "num": "8.4",
+      "title": "Conformance",
+      "page": 34
+    },
+    {
+      "num": "Annex A",
+      "title": "Requirements for the format of Attribute Certificates",
+      "page": 35,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Liability assertions",
+      "page": 36,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Model AC disclosure statement",
+      "page": 38,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "Introduction",
+      "page": 38
+    },
+    {
+      "num": "C.2",
+      "title": "The PDS structure",
+      "page": 38
+    },
+    {
+      "num": "Annex D",
+      "title": "Bibliography",
+      "page": 40,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 42,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 42,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

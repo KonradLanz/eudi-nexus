@@ -1,0 +1,586 @@
+{
+  "stem": "ts_11953402v010201p",
+  "pdf": "downloads/specs/TS/ts_11953402v010201p.pdf",
+  "title": "(2023-12)",
+  "reference": "ts_11953402v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 7
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Technical approach",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Components of test cases and their identifiers",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Adding new test cases to the test suite",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Scenarios",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Abbreviations used in tables defining scenarios",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "Black-box model scenarios",
+      "page": 12
+    },
+    {
+      "num": "5.3.1",
+      "title": "Introduction",
+      "page": 12
+    },
+    {
+      "num": "5.3.2",
+      "title": "Scenarios for Store and Forward style",
+      "page": 12
+    },
+    {
+      "num": "5.3.3",
+      "title": "Scenarios for Store and Notify style",
+      "page": 27
+    },
+    {
+      "num": "5.4",
+      "title": "Scenarios for 4-corner model",
+      "page": 31
+    },
+    {
+      "num": "5.4.1",
+      "title": "Introduction",
+      "page": 31
+    },
+    {
+      "num": "5.4.2",
+      "title": "Scenarios for Store&Forward to Store&Forward",
+      "page": 31
+    },
+    {
+      "num": "5.4.3",
+      "title": "Scenarios for Store&Forward to Store&Notify",
+      "page": 39
+    },
+    {
+      "num": "5.4.4",
+      "title": "Scenarios for Store&Notify to Store&Forward",
+      "page": 48
+    },
+    {
+      "num": "5.5",
+      "title": "Scenarios for extended model",
+      "page": 60
+    },
+    {
+      "num": "5.5.1",
+      "title": "Introduction",
+      "page": 60
+    },
+    {
+      "num": "5.5.2",
+      "title": "Scenarios for S&F->S&F->S&F",
+      "page": 60
+    },
+    {
+      "num": "5.5.3",
+      "title": "Scenarios for S&F -> S&N -> S&F",
+      "page": 69
+    },
+    {
+      "num": "6",
+      "title": "REM Messages instances",
+      "page": 79
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction and technical approach",
+      "page": 79
+    },
+    {
+      "num": "6.2",
+      "title": "Combinations of fields for headers in REM envelopes",
+      "page": 80
+    },
+    {
+      "num": "6.2.1",
+      "title": "Introduction",
+      "page": 80
+    },
+    {
+      "num": "6.2.2",
+      "title": "Combinations of fields for the REMS relay metadata MIME Header",
+      "page": 80
+    },
+    {
+      "num": "6.2.3",
+      "title": "Combinations of fields for the signed data MIME header",
+      "page": 86
+    },
+    {
+      "num": "6.2.4",
+      "title": "Combinations of fields for the REMS introduction section",
+      "page": 86
+    },
+    {
+      "num": "6.2.4.1",
+      "title": "Introduction",
+      "page": 86
+    },
+    {
+      "num": "6.2.4.2",
+      "title": "Combinations of fields for the REMS introduction MIME header",
+      "page": 86
+    },
+    {
+      "num": "6.2.4.3",
+      "title": "Combinations of fields for the multipart/alternative free text subsection header",
+      "page": 86
+    },
+    {
+      "num": "6.2.4.4",
+      "title": "Combinations of fields for the multipart/alternative html subsection header",
+      "page": 87
+    },
+    {
+      "num": "6.2.5",
+      "title": "Combinations of fields for the original message MIME section header",
+      "page": 87
+    },
+    {
+      "num": "6.2.6",
+      "title": "Combinations of fields for one REMS extension MIME section header",
+      "page": 87
+    },
+    {
+      "num": "6.2.7",
+      "title": "Combinations of fields for one ERDS evidence MIME section header",
+      "page": 88
+    },
+    {
+      "num": "6.2.7.1",
+      "title": "Combinations of fields for one XML ERDS evidence MIME section header",
+      "page": 88
+    },
+    {
+      "num": "6.2.7.2",
+      "title": "Combinations of fields for one PDF ERDS evidence MIME section header",
+      "page": 89
+    },
+    {
+      "num": "6.2.8",
+      "title": "Combinations of fields for the REMS signature MIME section header",
+      "page": 90
+    },
+    {
+      "num": "6.3",
+      "title": "Instances of REM payload",
+      "page": 91
+    },
+    {
+      "num": "6.4",
+      "title": "Instances of REMS notification",
+      "page": 97
+    },
+    {
+      "num": "6.5",
+      "title": "Instances of REMS receipts",
+      "page": 101
+    },
+    {
+      "num": "6.6",
+      "title": "Instances of REM dispatch",
+      "page": 102
+    },
+    {
+      "num": "7",
+      "title": "Other named sets",
+      "page": 106
+    },
+    {
+      "num": "7.1",
+      "title": "Named sets of participating REMSs",
+      "page": 106
+    },
+    {
+      "num": "7.2",
+      "title": "Named sets of additional requirements",
+      "page": 106
+    },
+    {
+      "num": "7.3",
+      "title": "Named sets of entities in receiving side",
+      "page": 106
+    },
+    {
+      "num": "8",
+      "title": "Test cases definition",
+      "page": 107
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction",
+      "page": 107
+    },
+    {
+      "num": "8.2",
+      "title": "Test cases for black-box model",
+      "page": 108
+    },
+    {
+      "num": "8.2.1",
+      "title": "Test cases for Store&Forward style of operation",
+      "page": 108
+    },
+    {
+      "num": "8.2.1.1",
+      "title": "Introduction",
+      "page": 108
+    },
+    {
+      "num": "8.2.1.2",
+      "title": "Test cases for scenario REM_SF#1",
+      "page": 109
+    },
+    {
+      "num": "8.2.1.3",
+      "title": "Test cases for scenario REM_SF#2",
+      "page": 109
+    },
+    {
+      "num": "8.2.1.4",
+      "title": "Test cases for scenario REM_SF#3",
+      "page": 110
+    },
+    {
+      "num": "8.2.1.5",
+      "title": "Test cases for scenario REM_SF#4",
+      "page": 110
+    },
+    {
+      "num": "8.2.1.6",
+      "title": "Test cases for scenario REM_SF#5",
+      "page": 110
+    },
+    {
+      "num": "8.2.1.7",
+      "title": "Test cases for scenario REM_SF#6",
+      "page": 111
+    },
+    {
+      "num": "8.2.1.8",
+      "title": "Test cases for scenario REM_SF#7",
+      "page": 111
+    },
+    {
+      "num": "8.2.1.9",
+      "title": "Test cases for scenario REM_SF#8",
+      "page": 112
+    },
+    {
+      "num": "8.2.1.10",
+      "title": "Test cases for scenario REM_SF#9",
+      "page": 112
+    },
+    {
+      "num": "8.2.1.11",
+      "title": "Test cases for scenario REM_SF#10",
+      "page": 113
+    },
+    {
+      "num": "8.2.1.12",
+      "title": "Test cases for scenario REM_SF#11",
+      "page": 113
+    },
+    {
+      "num": "8.2.1.13",
+      "title": "Test cases for scenario REM_SF#12",
+      "page": 114
+    },
+    {
+      "num": "8.2.1.14",
+      "title": "Test cases for scenario REM_SF#13",
+      "page": 114
+    },
+    {
+      "num": "8.2.2",
+      "title": "Test cases for Store&Notify style of operation",
+      "page": 115
+    },
+    {
+      "num": "8.2.2.1",
+      "title": "Rules for REM messages",
+      "page": 115
+    },
+    {
+      "num": "8.2.2.2",
+      "title": "Rules for failure reasons",
+      "page": 115
+    },
+    {
+      "num": "8.3",
+      "title": "Test cases for 4-corner model",
+      "page": 115
+    },
+    {
+      "num": "8.3.1",
+      "title": "Introduction and general rules",
+      "page": 115
+    },
+    {
+      "num": "8.3.2",
+      "title": "Test cases for Store&Forward to Store&Forward scenarios",
+      "page": 116
+    },
+    {
+      "num": "8.3.2.1",
+      "title": "Rules for REM messages",
+      "page": 116
+    },
+    {
+      "num": "8.3.2.2",
+      "title": "Rules for failure reasons",
+      "page": 116
+    },
+    {
+      "num": "8.3.3",
+      "title": "Test cases for Store&Forward to Store&Notify scenarios",
+      "page": 117
+    },
+    {
+      "num": "8.3.3.1",
+      "title": "Rules for REM messages",
+      "page": 117
+    },
+    {
+      "num": "8.3.3.2",
+      "title": "Rules for failure reasons",
+      "page": 117
+    },
+    {
+      "num": "8.3.4",
+      "title": "Test cases for Store&Notify to Store&Forward scenarios",
+      "page": 117
+    },
+    {
+      "num": "8.3.4.1",
+      "title": "Rules for REM messages",
+      "page": 117
+    },
+    {
+      "num": "8.3.4.2",
+      "title": "Rules for failure reasons",
+      "page": 117
+    },
+    {
+      "num": "8.4",
+      "title": "Test cases for extended model",
+      "page": 118
+    },
+    {
+      "num": "8.4.1",
+      "title": "Test cases for scenarios S&F->S&F->S&F",
+      "page": 118
+    },
+    {
+      "num": "8.4.1.1",
+      "title": "Rules for REM messages",
+      "page": 118
+    },
+    {
+      "num": "8.4.1.2",
+      "title": "Rules for failure reasons",
+      "page": 118
+    },
+    {
+      "num": "8.4.2",
+      "title": "Test cases for scenarios S&F->S&N->S&F",
+      "page": 118
+    },
+    {
+      "num": "8.4.2.1",
+      "title": "Rules for REM messages",
+      "page": 118
+    },
+    {
+      "num": "8.4.2.2",
+      "title": "Rules for failure reasons",
+      "page": 118
+    },
+    {
+      "num": "9",
+      "title": "Test suite for REM Baseline",
+      "page": 118
+    },
+    {
+      "num": "9.1",
+      "title": "Introduction",
+      "page": 118
+    },
+    {
+      "num": "9.2",
+      "title": "Test cases for REM Baseline",
+      "page": 119
+    },
+    {
+      "num": "9.2.1",
+      "title": "Combinations of fields for the REM relay metadata header",
+      "page": 119
+    },
+    {
+      "num": "9.2.2",
+      "title": "Combinations of fields for the signed data MIME section header",
+      "page": 119
+    },
+    {
+      "num": "9.2.3",
+      "title": "Combinations of fields for the introduction MIME section header",
+      "page": 119
+    },
+    {
+      "num": "9.2.4",
+      "title": "Combinations of fields for the free text MIME subsection header",
+      "page": 119
+    },
+    {
+      "num": "9.2.5",
+      "title": "Combinations of fields for the HTML MIME subsection header",
+      "page": 120
+    },
+    {
+      "num": "9.2.6",
+      "title": "Combinations of fields for the original message MIME section header",
+      "page": 120
+    },
+    {
+      "num": "9.2.7",
+      "title": "Combinations of fields for the ERDS evidence MIME section header",
+      "page": 120
+    },
+    {
+      "num": "9.2.8",
+      "title": "Combinations of fields for the REMS signature MIME section header",
+      "page": 120
+    },
+    {
+      "num": "9.2.9",
+      "title": "Test cases for REM Baseline built on scenario SREMS_SF_RREMS_SF#3",
+      "page": 121
+    },
+    {
+      "num": "9.2.10",
+      "title": "Test cases for REM Baseline built on scenario Scenario id: SREMS_SF_RREMS_SF#2",
+      "page": 122
+    },
+    {
+      "num": "9.2.11",
+      "title": "Test cases for REM Baseline built on scenario SREMS_SF_RREMS_SF#6",
+      "page": 123
+    },
+    {
+      "num": "9.2.12",
+      "title": "Test cases for REM Baseline built on scenario SREMS_SF_RREMS_SF#1",
+      "page": 125
+    },
+    {
+      "num": "9.2.13",
+      "title": "Test case for REM Baseline built on scenario SREMS_SF_RREMS_SF#7",
+      "page": 125
+    },
+    {
+      "num": "Annex A",
+      "title": "Change History",
+      "page": 127,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 128,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 128,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

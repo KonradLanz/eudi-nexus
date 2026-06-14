@@ -1,0 +1,135 @@
+{
+  "stem": "ts_103090v010101p",
+  "pdf": "downloads/specs/TS/ts_103090v010101p.pdf",
+  "title": "(2012-04)",
+  "reference": "ts_103090v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 5
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 5
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 5
+    },
+    {
+      "num": "4",
+      "title": "Introduction",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Assessment process",
+      "page": 6
+    },
+    {
+      "num": "5.1",
+      "title": "Additional audit requirements for EVC",
+      "page": 6
+    },
+    {
+      "num": "5.2",
+      "title": "Publication of the Assessment report",
+      "page": 7
+    },
+    {
+      "num": "5.3",
+      "title": "Regular Surveillance activities",
+      "page": 7
+    },
+    {
+      "num": "5.4",
+      "title": "Incidents handling",
+      "page": 7
+    },
+    {
+      "num": "5.5",
+      "title": "Reassessment",
+      "page": 7
+    },
+    {
+      "num": "6",
+      "title": "Requirements on TSP conformity assessment body",
+      "page": 7
+    },
+    {
+      "num": "6.1",
+      "title": "Competence criteria and qualification",
+      "page": 7
+    },
+    {
+      "num": "7",
+      "title": "Cross Border Assessments",
+      "page": 7
+    },
+    {
+      "num": "Annex A",
+      "title": "Self-declaration",
+      "page": 8,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 9,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 9,
+  "toc_pages": [
+    3
+  ]
+}

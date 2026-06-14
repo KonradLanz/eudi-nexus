@@ -1,0 +1,356 @@
+{
+  "stem": "ts_102904v010101p",
+  "pdf": "downloads/specs/TS/ts_102904v010101p.pdf",
+  "title": "(2007-02)",
+  "reference": "ts_102904v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "General requirements",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Algorithm requirements",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Compliance requirements",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "XAdES profile for e-Invoicing",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Elements defined in XML SIG",
+      "page": 10
+    },
+    {
+      "num": "5.1.1",
+      "title": "Placement of the signature",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Profile of elements in Basic XAdES form (XAdES-BES)",
+      "page": 10
+    },
+    {
+      "num": "5.2.1",
+      "title": "ds:KeyInfo and xades:SigningCertificate",
+      "page": 10
+    },
+    {
+      "num": "5.2.2",
+      "title": "Signing Time",
+      "page": 10
+    },
+    {
+      "num": "5.2.3",
+      "title": "Countersignatures",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "Additional attributes defined in XAdES",
+      "page": 11
+    },
+    {
+      "num": "5.3.1",
+      "title": "Signature time-stamp / time-mark",
+      "page": 11
+    },
+    {
+      "num": "5.4",
+      "title": "Additional attributes defined in XAdES for long term signatures",
+      "page": 11
+    },
+    {
+      "num": "5.4.1",
+      "title": "Certificate references",
+      "page": 11
+    },
+    {
+      "num": "5.4.2",
+      "title": "Revocation status references",
+      "page": 12
+    },
+    {
+      "num": "5.4.3",
+      "title": "Certificate values",
+      "page": 12
+    },
+    {
+      "num": "5.4.4",
+      "title": "Revocation status values",
+      "page": 12
+    },
+    {
+      "num": "5.4.5",
+      "title": "Archive time-stamp",
+      "page": 13
+    },
+    {
+      "num": "5.5",
+      "title": "Other standards",
+      "page": 13
+    },
+    {
+      "num": "5.5.1",
+      "title": "X.509 Certificates",
+      "page": 13
+    },
+    {
+      "num": "5.5.2",
+      "title": "Certificate key usage for e-Invoicing",
+      "page": 13
+    },
+    {
+      "num": "5.5.3",
+      "title": "Naming",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "XAdES profile for e-Government",
+      "page": 14
+    },
+    {
+      "num": "6.1",
+      "title": "Elements defined in XML SIG",
+      "page": 15
+    },
+    {
+      "num": "6.1.1",
+      "title": "Placement of the signature",
+      "page": 15
+    },
+    {
+      "num": "6.2",
+      "title": "Profile of elements in Basic XAdES form (XAdES-BES)",
+      "page": 15
+    },
+    {
+      "num": "6.2.1",
+      "title": "ds:KeyInfo and xades:SigningCertificate",
+      "page": 15
+    },
+    {
+      "num": "6.2.2",
+      "title": "Signing Time",
+      "page": 15
+    },
+    {
+      "num": "6.2.3",
+      "title": "Countersignatures",
+      "page": 15
+    },
+    {
+      "num": "6.3",
+      "title": "Additional attributes defined in XAdES",
+      "page": 16
+    },
+    {
+      "num": "6.3.1",
+      "title": "Signature time-stamp / time-mark",
+      "page": 16
+    },
+    {
+      "num": "6.4",
+      "title": "Additional attributes defined in XAdES for long term signatures",
+      "page": 16
+    },
+    {
+      "num": "6.4.1",
+      "title": "Certificate references",
+      "page": 16
+    },
+    {
+      "num": "6.4.2",
+      "title": "Revocation status references",
+      "page": 16
+    },
+    {
+      "num": "6.4.3",
+      "title": "Certificate values",
+      "page": 17
+    },
+    {
+      "num": "6.4.4",
+      "title": "Revocation status values",
+      "page": 17
+    },
+    {
+      "num": "6.4.5",
+      "title": "Archive time-stamp",
+      "page": 18
+    },
+    {
+      "num": "6.5",
+      "title": "Other standards",
+      "page": 18
+    },
+    {
+      "num": "6.5.1",
+      "title": "X.509 Certificates",
+      "page": 18
+    },
+    {
+      "num": "7",
+      "title": "XAdES baseline profile",
+      "page": 18
+    },
+    {
+      "num": "7.1",
+      "title": "Elements defined in XML SIG",
+      "page": 18
+    },
+    {
+      "num": "7.1.1",
+      "title": "Placement of the signature",
+      "page": 18
+    },
+    {
+      "num": "7.2",
+      "title": "Profile of elements in Basic XAdES form (XAdES-BES)",
+      "page": 19
+    },
+    {
+      "num": "7.2.1",
+      "title": "ds:KeyInfo and xades:SigningCertificate",
+      "page": 19
+    },
+    {
+      "num": "7.2.2",
+      "title": "Signing Time",
+      "page": 19
+    },
+    {
+      "num": "7.2.3",
+      "title": "Countersignatures",
+      "page": 19
+    },
+    {
+      "num": "7.3",
+      "title": "Additional attributes defined in XAdES",
+      "page": 20
+    },
+    {
+      "num": "7.3.1",
+      "title": "Signature time-stamp / time-mark",
+      "page": 20
+    },
+    {
+      "num": "7.4",
+      "title": "Additional attributes defined in XAdES for long term signatures",
+      "page": 20
+    },
+    {
+      "num": "7.4.1",
+      "title": "Certificate references",
+      "page": 20
+    },
+    {
+      "num": "7.4.2",
+      "title": "Revocation status references",
+      "page": 20
+    },
+    {
+      "num": "7.4.3",
+      "title": "Certificate values",
+      "page": 21
+    },
+    {
+      "num": "7.4.4",
+      "title": "Revocation status values",
+      "page": 21
+    },
+    {
+      "num": "7.4.5",
+      "title": "Archive time-stamp",
+      "page": 21
+    },
+    {
+      "num": "7.5",
+      "title": "Other standards",
+      "page": 22
+    },
+    {
+      "num": "7.5.1",
+      "title": "X.509 Certificates",
+      "page": 22
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 23,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 24,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 24,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

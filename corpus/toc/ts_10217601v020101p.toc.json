@@ -1,0 +1,577 @@
+{
+  "stem": "ts_10217601v020101p",
+  "pdf": "downloads/specs/TS/ts_10217601v020101p.pdf",
+  "title": "(2011-07)",
+  "reference": "ts_10217601v020101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 9
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 9
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 12
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 13
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 13
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 13
+    },
+    {
+      "num": "4",
+      "title": "Maintenance of the document",
+      "page": 14
+    },
+    {
+      "num": "5",
+      "title": "Hash functions",
+      "page": 15
+    },
+    {
+      "num": "5.1",
+      "title": "General",
+      "page": 15
+    },
+    {
+      "num": "5.2",
+      "title": "Recommended one way hash functions",
+      "page": 16
+    },
+    {
+      "num": "5.2.1",
+      "title": "SHA-1 is no more recommended",
+      "page": 16
+    },
+    {
+      "num": "5.2.2",
+      "title": "RIPEMD-160 is no more recommended",
+      "page": 16
+    },
+    {
+      "num": "5.2.3",
+      "title": "SHA-224",
+      "page": 16
+    },
+    {
+      "num": "5.2.4",
+      "title": "SHA-256",
+      "page": 17
+    },
+    {
+      "num": "5.2.5",
+      "title": "WHIRLPOOL",
+      "page": 17
+    },
+    {
+      "num": "5.2.6",
+      "title": "SHA-384",
+      "page": 17
+    },
+    {
+      "num": "5.2.7",
+      "title": "SHA-512",
+      "page": 17
+    },
+    {
+      "num": "5.2.8",
+      "title": "SHA-3",
+      "page": 17
+    },
+    {
+      "num": "6",
+      "title": "Signature schemes",
+      "page": 17
+    },
+    {
+      "num": "6.1",
+      "title": "Signature algorithms",
+      "page": 17
+    },
+    {
+      "num": "6.1.1",
+      "title": "General",
+      "page": 17
+    },
+    {
+      "num": "6.1.2",
+      "title": "Recommended signature algorithms",
+      "page": 18
+    },
+    {
+      "num": "6.1.2.1",
+      "title": "RSA",
+      "page": 18
+    },
+    {
+      "num": "6.1.2.2",
+      "title": "DSA",
+      "page": 18
+    },
+    {
+      "num": "6.1.2.3",
+      "title": "Elliptic curve analogue of DSA based on a group E(Fp)",
+      "page": 19
+    },
+    {
+      "num": "6.1.2.4",
+      "title": "Elliptic curve analogue of DSA based on a group E(F2m)",
+      "page": 20
+    },
+    {
+      "num": "6.1.2.5",
+      "title": "EC-GDSA based on a group E(Fp)",
+      "page": 20
+    },
+    {
+      "num": "6.1.2.6",
+      "title": "EC-GDSA based on a group E(F2m)",
+      "page": 20
+    },
+    {
+      "num": "6.2",
+      "title": "Recommended key pair generation methods",
+      "page": 21
+    },
+    {
+      "num": "6.2.1",
+      "title": "General",
+      "page": 21
+    },
+    {
+      "num": "6.2.2",
+      "title": "Recommended key pair generation methods",
+      "page": 21
+    },
+    {
+      "num": "6.2.2.1",
+      "title": "Key and parameter generation algorithm rsagen1",
+      "page": 21
+    },
+    {
+      "num": "6.2.2.2",
+      "title": "Key and parameter generation algorithm dsagen1",
+      "page": 22
+    },
+    {
+      "num": "6.2.2.3",
+      "title": "Key and parameter generation algorithm ecgen1 for ecdsa-Fp",
+      "page": 22
+    },
+    {
+      "num": "6.2.2.4",
+      "title": "Key and parameter generation algorithm ecgen2 for ecdsa-F2m",
+      "page": 22
+    },
+    {
+      "num": "6.2.2.5",
+      "title": "Key and parameter generation algorithm ecgen1 for ecgdsa-Fp",
+      "page": 22
+    },
+    {
+      "num": "6.2.2.6",
+      "title": "Key and parameter generation algorithm ecgen2 for ecgdsa-F2m",
+      "page": 23
+    },
+    {
+      "num": "7",
+      "title": "Signature suites",
+      "page": 23
+    },
+    {
+      "num": "7.1",
+      "title": "General",
+      "page": 23
+    },
+    {
+      "num": "7.2",
+      "title": "Padding methods",
+      "page": 23
+    },
+    {
+      "num": "7.3",
+      "title": "Recommended signature suites",
+      "page": 24
+    },
+    {
+      "num": "8",
+      "title": "Random number generation methods",
+      "page": 25
+    },
+    {
+      "num": "8.1",
+      "title": "General",
+      "page": 25
+    },
+    {
+      "num": "8.2",
+      "title": "Recommended random number generation methods",
+      "page": 25
+    },
+    {
+      "num": "8.2.1",
+      "title": "Random generator requirements trueran",
+      "page": 26
+    },
+    {
+      "num": "8.2.2",
+      "title": "Random generator requirements pseuran",
+      "page": 27
+    },
+    {
+      "num": "9",
+      "title": "Recommended hash functions and key sizes versus time",
+      "page": 28
+    },
+    {
+      "num": "9.1",
+      "title": "Basis for the recommendations",
+      "page": 28
+    },
+    {
+      "num": "9.2",
+      "title": "Recommended hash functions versus time",
+      "page": 29
+    },
+    {
+      "num": "9.3",
+      "title": "Recommended key sizes versus time",
+      "page": 29
+    },
+    {
+      "num": "10",
+      "title": "Time period resistance of hash functions and keys",
+      "page": 32
+    },
+    {
+      "num": "10.1",
+      "title": "Time period resistance for hash functions",
+      "page": 32
+    },
+    {
+      "num": "10.2",
+      "title": "Time period resistance for signer's key",
+      "page": 32
+    },
+    {
+      "num": "10.3",
+      "title": "Time period resistance for trust anchors",
+      "page": 32
+    },
+    {
+      "num": "10.4",
+      "title": "Time period resistance for other keys",
+      "page": 32
+    },
+    {
+      "num": "11",
+      "title": "Practical ways to identify hash functions and signature algorithms",
+      "page": 33
+    },
+    {
+      "num": "11.1",
+      "title": "Hash functions and signature algorithms objects identified using OIDs",
+      "page": 33
+    },
+    {
+      "num": "11.1.1",
+      "title": "Hash functions",
+      "page": 33
+    },
+    {
+      "num": "11.1.2",
+      "title": "Signature algorithms",
+      "page": 33
+    },
+    {
+      "num": "11.1.3",
+      "title": "Signature suites",
+      "page": 34
+    },
+    {
+      "num": "11.2",
+      "title": "Hash functions and signature algorithms identified objects using URNs",
+      "page": 35
+    },
+    {
+      "num": "11.2.1",
+      "title": "Hash functions",
+      "page": 35
+    },
+    {
+      "num": "11.2.2",
+      "title": "Signature algorithms",
+      "page": 35
+    },
+    {
+      "num": "11.2.3",
+      "title": "Signature suites",
+      "page": 35
+    },
+    {
+      "num": "Annex A",
+      "title": "Algorithms for various data structures",
+      "page": 37,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Advanced Electronic Signatures based on TS 101 733",
+      "page": 37
+    },
+    {
+      "num": "A.2",
+      "title": "Advanced Electronic Signatures based on TS 101 903",
+      "page": 38
+    },
+    {
+      "num": "A.3",
+      "title": "Signer's certificates",
+      "page": 38
+    },
+    {
+      "num": "A.4",
+      "title": "CRLs",
+      "page": 39
+    },
+    {
+      "num": "A.5",
+      "title": "OCSP responses",
+      "page": 39
+    },
+    {
+      "num": "A.6",
+      "title": "CA certificates",
+      "page": 40
+    },
+    {
+      "num": "A.7",
+      "title": "Self-signed certificates for CA issuing CA certificates",
+      "page": 40
+    },
+    {
+      "num": "A.8",
+      "title": "TSTs based on RFC 3161 and TS 101 861",
+      "page": 41
+    },
+    {
+      "num": "A.9",
+      "title": "TSU certificates",
+      "page": 41
+    },
+    {
+      "num": "A.10",
+      "title": "Self-signed certificates for CAs issuing TSU certificates",
+      "page": 41
+    },
+    {
+      "num": "A.11",
+      "title": "Attribute certificates",
+      "page": 42
+    },
+    {
+      "num": "A.12",
+      "title": "AA certificates",
+      "page": 42
+    },
+    {
+      "num": "Annex B",
+      "title": "Recommended key sizes (historical)",
+      "page": 43,
+      "annex_type": "informative"
+    },
+    {
+      "num": "B.1",
+      "title": "Changes in 2005",
+      "page": 43
+    },
+    {
+      "num": "B.2",
+      "title": "Changes in 2007",
+      "page": 45
+    },
+    {
+      "num": "B.3",
+      "title": "Changes in 2011",
+      "page": 45
+    },
+    {
+      "num": "Annex C",
+      "title": "Generation of RSA modulus",
+      "page": 46,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Generation of elliptic curve domain parameters",
+      "page": 47,
+      "annex_type": "informative"
+    },
+    {
+      "num": "D.1",
+      "title": "ECDSA and ECGDSA based on a group E(Fp)",
+      "page": 47
+    },
+    {
+      "num": "D.2",
+      "title": "ECDSA and ECGDSA based on a group E(F2 m)",
+      "page": 48
+    },
+    {
+      "num": "D.3",
+      "title": "The class number condition",
+      "page": 49
+    },
+    {
+      "num": "Annex E",
+      "title": "On the generation of random data",
+      "page": 51,
+      "annex_type": "informative"
+    },
+    {
+      "num": "E.1",
+      "title": "Classes of random number generators",
+      "page": 51
+    },
+    {
+      "num": "E.2",
+      "title": "On tests for NRNGs",
+      "page": 52
+    },
+    {
+      "num": "Annex F",
+      "title": "Algorithm identifiers defined in various documents",
+      "page": 53,
+      "annex_type": "informative"
+    },
+    {
+      "num": "F.1",
+      "title": "Algorithm identifiers defined in RFC 3278",
+      "page": 53
+    },
+    {
+      "num": "F.2",
+      "title": "Algorithm identifiers defined in RFC 3279",
+      "page": 53
+    },
+    {
+      "num": "F.3",
+      "title": "Algorithm identifiers defined in RFC 3370",
+      "page": 54
+    },
+    {
+      "num": "F.4",
+      "title": "Algorithm identifiers defined in RFC 3447",
+      "page": 54
+    },
+    {
+      "num": "F.5",
+      "title": "Algorithm identifier defined in RFC 3874",
+      "page": 54
+    },
+    {
+      "num": "F.8",
+      "title": "Algorithm identifiers defined in RFC 4050",
+      "page": 55
+    },
+    {
+      "num": "F.9",
+      "title": "Algorithm identifiers defined in RFC 4051",
+      "page": 55
+    },
+    {
+      "num": "F.10",
+      "title": "Algorithm identifiers defined in RFC 4055",
+      "page": 56
+    },
+    {
+      "num": "Annex G",
+      "title": "Abstracts of ISO/IEC 10118-3 and ISO/IEC 9796-2",
+      "page": 57,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex H",
+      "title": "Signature maintenance",
+      "page": 58,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex I",
+      "title": "Major changes from previous versions",
+      "page": 59,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex J",
+      "title": "National Bodies",
+      "page": 60,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex K",
+      "title": "Bibliography",
+      "page": 64,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 66,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 66,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

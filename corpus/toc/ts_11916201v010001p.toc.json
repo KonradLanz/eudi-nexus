@@ -1,0 +1,364 @@
+{
+  "stem": "ts_11916201v010001p",
+  "pdf": "downloads/specs/TS/ts_11916201v010001p.pdf",
+  "title": "(2015-08)",
+  "reference": "ts_11916201v010001p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "General Syntax",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Description of main features of Associated Signature Containers",
+      "page": 9
+    },
+    {
+      "num": "4.1.1",
+      "title": "Basic container structure",
+      "page": 9
+    },
+    {
+      "num": "4.1.2",
+      "title": "Container types",
+      "page": 10
+    },
+    {
+      "num": "4.2",
+      "title": "General requirements",
+      "page": 11
+    },
+    {
+      "num": "4.3",
+      "title": "Associated Signature Container Simple (ASiC-S)",
+      "page": 11
+    },
+    {
+      "num": "4.3.1",
+      "title": "Introduction",
+      "page": 11
+    },
+    {
+      "num": "4.3.2",
+      "title": "General Requirements for ASiC-S",
+      "page": 11
+    },
+    {
+      "num": "4.3.3",
+      "title": "Detailed format for ASiC-S",
+      "page": 11
+    },
+    {
+      "num": "4.3.3.1",
+      "title": "Media type identification",
+      "page": 11
+    },
+    {
+      "num": "4.3.3.2",
+      "title": "Contents of the container",
+      "page": 12
+    },
+    {
+      "num": "4.3.4",
+      "title": "Long term validity of ASiC-S",
+      "page": 13
+    },
+    {
+      "num": "4.4",
+      "title": "Associated Signature Container Extended (ASiC-E)",
+      "page": 15
+    },
+    {
+      "num": "4.4.1",
+      "title": "Introduction",
+      "page": 15
+    },
+    {
+      "num": "4.4.2",
+      "title": "General Requirements of ASiC-E",
+      "page": 16
+    },
+    {
+      "num": "4.4.3",
+      "title": "Detailed format for ASiC-E with XAdES",
+      "page": 16
+    },
+    {
+      "num": "4.4.3.1",
+      "title": "Media type identification",
+      "page": 16
+    },
+    {
+      "num": "4.4.3.2",
+      "title": "Contents of Container",
+      "page": 16
+    },
+    {
+      "num": "4.4.3.3",
+      "title": "ASiC-E with XAdES example (informative)",
+      "page": 17
+    },
+    {
+      "num": "4.4.3.4",
+      "title": "XAdES use in ASiC-E with XAdES",
+      "page": 18
+    },
+    {
+      "num": "4.4.4",
+      "title": "Detailed format for ASiC-E with CAdES - time assertions",
+      "page": 18
+    },
+    {
+      "num": "4.4.4.1",
+      "title": "Media type identification",
+      "page": 18
+    },
+    {
+      "num": "4.4.4.2",
+      "title": "Contents of Container",
+      "page": 19
+    },
+    {
+      "num": "4.4.5",
+      "title": "Long term validity of ASiC-E",
+      "page": 21
+    },
+    {
+      "num": "5",
+      "title": "ASiC Baseline containers",
+      "page": 21
+    },
+    {
+      "num": "5.1",
+      "title": "ASiC Levels",
+      "page": 21
+    },
+    {
+      "num": "5.2",
+      "title": "General requirements",
+      "page": 22
+    },
+    {
+      "num": "5.2.1",
+      "title": "Algorithm requirements",
+      "page": 22
+    },
+    {
+      "num": "5.2.2",
+      "title": "Notation for requirements",
+      "page": 22
+    },
+    {
+      "num": "5.3",
+      "title": "Requirements for ASiC baseline containers",
+      "page": 23
+    },
+    {
+      "num": "5.3.1",
+      "title": "ASiC conformance",
+      "page": 23
+    },
+    {
+      "num": "5.3.2",
+      "title": "Requirements for ASiC-S",
+      "page": 24
+    },
+    {
+      "num": "5.3.2.1",
+      "title": "General requirements for ASiC-S",
+      "page": 24
+    },
+    {
+      "num": "5.3.2.2",
+      "title": "Requirements for ASiC-S with CAdES signature",
+      "page": 24
+    },
+    {
+      "num": "5.3.2.3",
+      "title": "Requirements for ASiC-S with XAdES signature",
+      "page": 24
+    },
+    {
+      "num": "5.3.3",
+      "title": "Requirements for ASiC-E with XAdES signature",
+      "page": 25
+    },
+    {
+      "num": "Annex A",
+      "title": "ASiC metadata specification, data naming and referencing",
+      "page": 26,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "The mimetype file",
+      "page": 26
+    },
+    {
+      "num": "A.2",
+      "title": "Media type registrations",
+      "page": 26
+    },
+    {
+      "num": "A.3",
+      "title": "ASiC XML Schema",
+      "page": 27
+    },
+    {
+      "num": "A.4",
+      "title": "ASiCManifest element",
+      "page": 27
+    },
+    {
+      "num": "A.4.1",
+      "title": "Semantics",
+      "page": 27
+    },
+    {
+      "num": "A.4.2",
+      "title": "Syntax",
+      "page": 28
+    },
+    {
+      "num": "A.5",
+      "title": "XAdESSignatures element",
+      "page": 29
+    },
+    {
+      "num": "A.5.1",
+      "title": "Semantics",
+      "page": 29
+    },
+    {
+      "num": "A.5.2",
+      "title": "Syntax",
+      "page": 29
+    },
+    {
+      "num": "A.6",
+      "title": "Naming and referencing data within ASiC",
+      "page": 29
+    },
+    {
+      "num": "A.7",
+      "title": "ASiCArchiveManifest file content and rules",
+      "page": 30
+    },
+    {
+      "num": "Annex B",
+      "title": "ASiC Examples",
+      "page": 32,
+      "annex_type": "informative"
+    },
+    {
+      "num": "B.1",
+      "title": "Examples of ASiC-S",
+      "page": 32
+    },
+    {
+      "num": "B.1.1",
+      "title": "PDF document Associated with CAdES Signature",
+      "page": 32
+    },
+    {
+      "num": "B.1.2",
+      "title": "Simple document time stamp",
+      "page": 32
+    },
+    {
+      "num": "B.1.3",
+      "title": "Signature of a ZIP file with an ASiC-S container",
+      "page": 32
+    },
+    {
+      "num": "B.2",
+      "title": "Example of ASiC-E with XAdES",
+      "page": 32
+    },
+    {
+      "num": "B.3",
+      "title": "Example of ASiC-E with CAdES and time-stamp token",
+      "page": 33
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 35,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 35,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

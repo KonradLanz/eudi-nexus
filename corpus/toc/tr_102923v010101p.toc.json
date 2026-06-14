@@ -1,0 +1,355 @@
+{
+  "stem": "tr_102923v010101p",
+  "pdf": "downloads/specs/TR/tr_102923v010101p.pdf",
+  "title": "(2010-07)",
+  "reference": "tr_102923v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Background: PAdES' historical context",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "Using PAdES",
+      "page": 8
+    },
+    {
+      "num": "5.1",
+      "title": "Parts of PAdES specification",
+      "page": 8
+    },
+    {
+      "num": "5.2",
+      "title": "PAdES, ISO 32000-1, CAdES and XAdES",
+      "page": 9
+    },
+    {
+      "num": "5.3",
+      "title": "Selecting the right PAdES Profile",
+      "page": 10
+    },
+    {
+      "num": "5.3.1",
+      "title": "Selecting the right CMS/CAdES-based PAdES Profile",
+      "page": 10
+    },
+    {
+      "num": "5.3.2",
+      "title": "Selecting the right XAdES-based PAdES Profile",
+      "page": 10
+    },
+    {
+      "num": "5.4",
+      "title": "PAdES types vs. CAdES/XAdES types",
+      "page": 11
+    },
+    {
+      "num": "5.4.1",
+      "title": "PAdES and CMS (PAdES Part 2)",
+      "page": 12
+    },
+    {
+      "num": "5.4.2",
+      "title": "PAdES Part 3 and CAdES",
+      "page": 13
+    },
+    {
+      "num": "5.4.3",
+      "title": "PAdES Part 4 and CAdES",
+      "page": 13
+    },
+    {
+      "num": "5.4.4",
+      "title": "PAdES and XAdES (PAdES Part 5)",
+      "page": 14
+    },
+    {
+      "num": "5.4.5",
+      "title": "PAdES Part 6",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "Implementing PAdES",
+      "page": 14
+    },
+    {
+      "num": "6.1",
+      "title": "Implementing PAdES Part 2",
+      "page": 14
+    },
+    {
+      "num": "6.1.1",
+      "title": "Serial and Parallel signatures",
+      "page": 15
+    },
+    {
+      "num": "6.1.2",
+      "title": "Signature time-stamp",
+      "page": 15
+    },
+    {
+      "num": "6.1.3",
+      "title": "Revocation information at the time of signing",
+      "page": 15
+    },
+    {
+      "num": "6.1.4",
+      "title": "Signature validation",
+      "page": 15
+    },
+    {
+      "num": "6.2",
+      "title": "Implementing PAdES Part 3",
+      "page": 15
+    },
+    {
+      "num": "6.2.1",
+      "title": "Features provided",
+      "page": 15
+    },
+    {
+      "num": "6.2.2",
+      "title": "PDF signature dictionary",
+      "page": 16
+    },
+    {
+      "num": "6.2.3",
+      "title": "PAdES Part 3, CAdES and incorporation of signed attributes",
+      "page": 16
+    },
+    {
+      "num": "6.2.4",
+      "title": "Signature Policy and ISO 32000 seed values",
+      "page": 16
+    },
+    {
+      "num": "6.2.5",
+      "title": "Signature validation",
+      "page": 17
+    },
+    {
+      "num": "6.2.6",
+      "title": "Time-stamp on signed content",
+      "page": 17
+    },
+    {
+      "num": "6.3",
+      "title": "Implementing PAdES Part 4",
+      "page": 17
+    },
+    {
+      "num": "6.3.1",
+      "title": "Achieving long term signatures in PAdES",
+      "page": 17
+    },
+    {
+      "num": "6.3.2",
+      "title": "Rationale for the new PDF container objects",
+      "page": 18
+    },
+    {
+      "num": "6.3.3",
+      "title": "New PDF container objects for LTV material",
+      "page": 18
+    },
+    {
+      "num": "6.3.3.1",
+      "title": "The Document Security Store",
+      "page": 18
+    },
+    {
+      "num": "6.3.3.2",
+      "title": "The Document Time-stamp",
+      "page": 19
+    },
+    {
+      "num": "6.3.4",
+      "title": "Signature Validation",
+      "page": 20
+    },
+    {
+      "num": "6.3.5",
+      "title": "No references to validation material in PAdES Part 4",
+      "page": 20
+    },
+    {
+      "num": "6.4",
+      "title": "Implementing PAdES Part 5",
+      "page": 21
+    },
+    {
+      "num": "6.4.1",
+      "title": "Implementing Profiles for XAdES-signed XML documents embedded in PDF containers",
+      "page": 21
+    },
+    {
+      "num": "6.4.1.1",
+      "title": "Implementing Basic Profile",
+      "page": 21
+    },
+    {
+      "num": "6.4.1.1.1",
+      "title": "Serial and Parallel signatures",
+      "page": 21
+    },
+    {
+      "num": "6.4.1.1.2",
+      "title": "XAdES signed XML documents to be embedded",
+      "page": 21
+    },
+    {
+      "num": "6.4.1.1.3",
+      "title": "XAdES properties",
+      "page": 21
+    },
+    {
+      "num": "6.4.1.1.4",
+      "title": "Signing the embedding PDF document",
+      "page": 22
+    },
+    {
+      "num": "6.4.1.2",
+      "title": "Implementing Long Term Profile",
+      "page": 22
+    },
+    {
+      "num": "6.4.1.2.1",
+      "title": "Signature Validation",
+      "page": 22
+    },
+    {
+      "num": "6.4.2",
+      "title": "Implementing Profile for XAdES signatures on XFA forms",
+      "page": 22
+    },
+    {
+      "num": "6.4.2.1",
+      "title": "Implementing Basic Profile",
+      "page": 23
+    },
+    {
+      "num": "6.4.2.1.1",
+      "title": "Signing the signed properties",
+      "page": 23
+    },
+    {
+      "num": "6.4.2.1.2",
+      "title": "Serial and Parallel signatures",
+      "page": 23
+    },
+    {
+      "num": "6.4.2.1.3",
+      "title": "XAdES properties",
+      "page": 23
+    },
+    {
+      "num": "6.4.2.2",
+      "title": "Implementing Long Term Profile",
+      "page": 23
+    },
+    {
+      "num": "6.4.2.2.1",
+      "title": "DSS Dictionary",
+      "page": 23
+    },
+    {
+      "num": "6.4.2.2.2",
+      "title": "Validation process",
+      "page": 24
+    },
+    {
+      "num": "6.5",
+      "title": "Implementing PAdES Part 6",
+      "page": 24
+    },
+    {
+      "num": "6.5.1",
+      "title": "Content of signature appearance",
+      "page": 24
+    },
+    {
+      "num": "6.5.2",
+      "title": "Encoding of the signature appearance",
+      "page": 24
+    },
+    {
+      "num": "6.5.3",
+      "title": "Implementing signature verification representation",
+      "page": 25
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 26,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 26,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

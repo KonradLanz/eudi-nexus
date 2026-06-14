@@ -1,0 +1,867 @@
+{
+  "stem": "tr_102605v010101p",
+  "pdf": "downloads/specs/TR/tr_102605v010101p.pdf",
+  "title": "(2007-09)",
+  "reference": "tr_102605v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 9
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 10
+    },
+    {
+      "num": "2.1",
+      "title": "Informative references",
+      "page": 10
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 11
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 11
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 11
+    },
+    {
+      "num": "4",
+      "title": "Questionnaire",
+      "page": 12
+    },
+    {
+      "num": "5",
+      "title": "Market",
+      "page": 13
+    },
+    {
+      "num": "5.1",
+      "title": "Specific Conclusions on Market",
+      "page": 17
+    },
+    {
+      "num": "6",
+      "title": "Regulations and legal validity",
+      "page": 17
+    },
+    {
+      "num": "6.1",
+      "title": "Survey overview",
+      "page": 18
+    },
+    {
+      "num": "6.2",
+      "title": "National situation",
+      "page": 20
+    },
+    {
+      "num": "6.2.1",
+      "title": "Specific legislation on REM evidential services",
+      "page": 20
+    },
+    {
+      "num": "6.2.1.1",
+      "title": "Posta Elettronica Certificata (PEC) (Italy)",
+      "page": 20
+    },
+    {
+      "num": "6.2.1.2",
+      "title": "Belgium",
+      "page": 21
+    },
+    {
+      "num": "6.2.1.3",
+      "title": "France",
+      "page": 21
+    },
+    {
+      "num": "6.2.2.1",
+      "title": "Secure Telematic Notifications Service (Spain)",
+      "page": 22
+    },
+    {
+      "num": "6.2.2.2",
+      "title": "ChamberSign Sverige AB (Sweden)",
+      "page": 22
+    },
+    {
+      "num": "6.2.2.3",
+      "title": "Hybrid REM systems (send electronically - receive on paper)",
+      "page": 22
+    },
+    {
+      "num": "6.2.3",
+      "title": "General electronic signature and contractual legislation",
+      "page": 22
+    },
+    {
+      "num": "6.3",
+      "title": "Specific conclusions on regulation and legal validity",
+      "page": 23
+    },
+    {
+      "num": "7",
+      "title": "Services",
+      "page": 24
+    },
+    {
+      "num": "7.1",
+      "title": "Evidence",
+      "page": 24
+    },
+    {
+      "num": "7.2",
+      "title": "Other security related services",
+      "page": 25
+    },
+    {
+      "num": "7.3",
+      "title": "Other Services",
+      "page": 26
+    },
+    {
+      "num": "7.4",
+      "title": "External",
+      "page": 27
+    },
+    {
+      "num": "7.5",
+      "title": "Specific conclusions services",
+      "page": 28
+    },
+    {
+      "num": "8",
+      "title": "REM system overviews",
+      "page": 29
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction",
+      "page": 29
+    },
+    {
+      "num": "8.2",
+      "title": "Initial architecture",
+      "page": 30
+    },
+    {
+      "num": "8.3",
+      "title": "Generic Model and Specific Adaptations",
+      "page": 30
+    },
+    {
+      "num": "8.3.1",
+      "title": "REM relevant entities",
+      "page": 31
+    },
+    {
+      "num": "8.3.2",
+      "title": "AFNOR REM service",
+      "page": 34
+    },
+    {
+      "num": "8.3.3",
+      "title": "Italian REM service (a.k.a. \"CNIPA\" model)",
+      "page": 34
+    },
+    {
+      "num": "8.3.4",
+      "title": "UPU ECPM model",
+      "page": 35
+    },
+    {
+      "num": "8.3.5",
+      "title": "Critical Path model",
+      "page": 36
+    },
+    {
+      "num": "9",
+      "title": "Services within REM",
+      "page": 37
+    },
+    {
+      "num": "9.1",
+      "title": "Availability of evidence",
+      "page": 38
+    },
+    {
+      "num": "9.1.1",
+      "title": "Flow of evidence between parties",
+      "page": 38
+    },
+    {
+      "num": "9.1.2",
+      "title": "Carrying evidence",
+      "page": 39
+    },
+    {
+      "num": "9.1.3",
+      "title": "On-line querying services without signed evidences",
+      "page": 39
+    },
+    {
+      "num": "9.1.4",
+      "title": "Specific conclusions on the availability of evidence",
+      "page": 40
+    },
+    {
+      "num": "9.2",
+      "title": "Message identification",
+      "page": 40
+    },
+    {
+      "num": "9.2.1",
+      "title": "Allocation of message identifier",
+      "page": 40
+    },
+    {
+      "num": "9.2.2",
+      "title": "Message Identification in Notifications",
+      "page": 41
+    },
+    {
+      "num": "9.2.3",
+      "title": "Specific conclusions on message identification",
+      "page": 41
+    },
+    {
+      "num": "9.3",
+      "title": "E-mail clients",
+      "page": 42
+    },
+    {
+      "num": "9.3.1",
+      "title": "Specific conclusions on e-mail clients",
+      "page": 42
+    },
+    {
+      "num": "9.4",
+      "title": "Interface to external services",
+      "page": 43
+    },
+    {
+      "num": "9.4.1",
+      "title": "Specific conclusions on external interfaces",
+      "page": 43
+    },
+    {
+      "num": "9.5",
+      "title": "Use of independent service providers",
+      "page": 43
+    },
+    {
+      "num": "9.5.1",
+      "title": "Specific conclusions on use of independent services",
+      "page": 43
+    },
+    {
+      "num": "10",
+      "title": "Security features",
+      "page": 44
+    },
+    {
+      "num": "10.1",
+      "title": "Authentication of parties",
+      "page": 44
+    },
+    {
+      "num": "10.1.1",
+      "title": "Specific conclusions on authentication of parties",
+      "page": 44
+    },
+    {
+      "num": "10.2",
+      "title": "Authentication of evidence",
+      "page": 45
+    },
+    {
+      "num": "10.2.1",
+      "title": "Specific conclusions on authentication of evidence",
+      "page": 46
+    },
+    {
+      "num": "10.3",
+      "title": "Signature formats",
+      "page": 46
+    },
+    {
+      "num": "10.3.1",
+      "title": "Specific conclusions on signature formats",
+      "page": 46
+    },
+    {
+      "num": "10.4",
+      "title": "Time-stamping and time-marking",
+      "page": 46
+    },
+    {
+      "num": "10.4.1",
+      "title": "Specific conclusions on time-stamping and time-marking",
+      "page": 47
+    },
+    {
+      "num": "10.5",
+      "title": "Security protocols",
+      "page": 47
+    },
+    {
+      "num": "10.5.1",
+      "title": "Specific conclusions on security protocols",
+      "page": 47
+    },
+    {
+      "num": "10.6",
+      "title": "Supporting services",
+      "page": 48
+    },
+    {
+      "num": "10.6.1",
+      "title": "Specific conclusions on supporting services",
+      "page": 48
+    },
+    {
+      "num": "11",
+      "title": "Policies and practices",
+      "page": 49
+    },
+    {
+      "num": "11.1",
+      "title": "Registration",
+      "page": 49
+    },
+    {
+      "num": "11.1.1",
+      "title": "Specific conclusions on registration",
+      "page": 49
+    },
+    {
+      "num": "11.2",
+      "title": "Security management",
+      "page": 50
+    },
+    {
+      "num": "11.2.1",
+      "title": "Specific conclusions on security management",
+      "page": 50
+    },
+    {
+      "num": "11.3",
+      "title": "Security of signing device",
+      "page": 50
+    },
+    {
+      "num": "11.3.1",
+      "title": "Conclusions on clause 11.3",
+      "page": 50
+    },
+    {
+      "num": "11.3.1.1",
+      "title": "Security of signing device",
+      "page": 50
+    },
+    {
+      "num": "12",
+      "title": "Related standards activities",
+      "page": 51
+    },
+    {
+      "num": "12.1",
+      "title": "AFNOR Z 74-600",
+      "page": 51
+    },
+    {
+      "num": "12.2",
+      "title": "UPU & CEN Electronic Postal Certification Mark (EPCM)",
+      "page": 51
+    },
+    {
+      "num": "12.3",
+      "title": "General security standards",
+      "page": 51
+    },
+    {
+      "num": "12.4",
+      "title": "Specific conclusions on related standards activities",
+      "page": 52
+    },
+    {
+      "num": "13",
+      "title": "Conclusions and recommendations",
+      "page": 52
+    },
+    {
+      "num": "13.1",
+      "title": "General conclusions",
+      "page": 52
+    },
+    {
+      "num": "13.2",
+      "title": "Recommendations regarding work plan for next phase",
+      "page": 54
+    },
+    {
+      "num": "A.1",
+      "title": "Main approaches - standards",
+      "page": 56
+    },
+    {
+      "num": "A.1.1",
+      "title": "France - AFNOR",
+      "page": 56
+    },
+    {
+      "num": "A.1.2",
+      "title": "Italian legislation based REM systems",
+      "page": 57
+    },
+    {
+      "num": "A.1.3",
+      "title": "UPU Electronic Postal Certification Mark",
+      "page": 58
+    },
+    {
+      "num": "A.2",
+      "title": "Main approaches - implementations",
+      "page": 60
+    },
+    {
+      "num": "A.2.1",
+      "title": "Austrian electronic delivery",
+      "page": 60
+    },
+    {
+      "num": "A.2.2",
+      "title": "French system",
+      "page": 62
+    },
+    {
+      "num": "A.2.3",
+      "title": "French enterprise system",
+      "page": 62
+    },
+    {
+      "num": "A.2.4",
+      "title": "Spain - UPM-ACEPTA",
+      "page": 63
+    },
+    {
+      "num": "A.2.5",
+      "title": "Spain - MAP, AND FNMT-RCM",
+      "page": 64
+    },
+    {
+      "num": "A.2.6",
+      "title": "Spain - Bankinter",
+      "page": 65
+    },
+    {
+      "num": "A.2.7",
+      "title": "Spain - CCN",
+      "page": 65
+    },
+    {
+      "num": "A.2.8",
+      "title": "Switzerland - IncaMail from SwissPost",
+      "page": 66
+    },
+    {
+      "num": "A.2.9",
+      "title": "Norway - eNotarius",
+      "page": 67
+    },
+    {
+      "num": "A.2.10",
+      "title": "Worldwide - PxMail",
+      "page": 68
+    },
+    {
+      "num": "A.2.11",
+      "title": "Worldwide - Critical Path (CP)",
+      "page": 68
+    },
+    {
+      "num": "B.1",
+      "title": "Information about your organisation",
+      "page": 70
+    },
+    {
+      "num": "B.1.1",
+      "title": "What is the name of the organisation that you represent?",
+      "page": 70
+    },
+    {
+      "num": "B.1.3",
+      "title": "What is the type of the organisation? (select all that apply)",
+      "page": 70
+    },
+    {
+      "num": "B.1.4",
+      "title": "Any other relevant details about your organisation:",
+      "page": 71
+    },
+    {
+      "num": "B.2",
+      "title": "Status of Implementation",
+      "page": 72
+    },
+    {
+      "num": "B.2.2",
+      "title": "If you ticked 'yes' in section to 2.1 what is the status of this service",
+      "page": 72
+    },
+    {
+      "num": "B.2.3",
+      "title": "If you ticked 'yes' in section 2.1 give information on the service deployment",
+      "page": 72
+    },
+    {
+      "num": "B.2.5",
+      "title": "If you ticked 'yes' in section 2.4 what is the status of this product",
+      "page": 72
+    },
+    {
+      "num": "B.2.6",
+      "title": "If you ticked 'yes' in section 2.4:",
+      "page": 73
+    },
+    {
+      "num": "B.2.7",
+      "title": "Does information given in this questionnaire relate to a regulation or standard?",
+      "page": 73
+    },
+    {
+      "num": "B.2.9",
+      "title": "If you ticked in section to 2.7:",
+      "page": 73
+    },
+    {
+      "num": "B.2.10",
+      "title": "Please provide any other information relevant to implementation",
+      "page": 73
+    },
+    {
+      "num": "B.3",
+      "title": "Services",
+      "page": 74
+    },
+    {
+      "num": "B.3.1",
+      "title": "What evidence related services are:",
+      "page": 74
+    },
+    {
+      "num": "B.3.2",
+      "title": "What other security related services are:",
+      "page": 75
+    },
+    {
+      "num": "B.3.3",
+      "title": "Please identify any restrictions on the Registered E-Mail services",
+      "page": 76
+    },
+    {
+      "num": "B.3.5",
+      "title": "What other services are:",
+      "page": 77
+    },
+    {
+      "num": "B.3.6",
+      "title": "What type of users are supported",
+      "page": 78
+    },
+    {
+      "num": "B.3.8",
+      "title": "Please provide any further relevant information regarding the services provided",
+      "page": 79
+    },
+    {
+      "num": "B.4",
+      "title": "Regulations and Legal Validity",
+      "page": 79
+    },
+    {
+      "num": "B.4.3",
+      "title": "Is the evidence verifiable by:",
+      "page": 81
+    },
+    {
+      "num": "B.5",
+      "title": "Service Provision Model",
+      "page": 81
+    },
+    {
+      "num": "B.5.1",
+      "title": "Model Used",
+      "page": 82
+    },
+    {
+      "num": "B.5.1.1",
+      "title": "Indicate below the applicability of this model to the REM service",
+      "page": 82
+    },
+    {
+      "num": "B.5.1.2",
+      "title": "Is Registered E-Mail service outsourced to an independent hosting service",
+      "page": 82
+    },
+    {
+      "num": "B.5.2",
+      "title": "Sender Services and Mechanisms",
+      "page": 83
+    },
+    {
+      "num": "B.5.2.1",
+      "title": "Check all the services and mechanisms employed by the sender",
+      "page": 83
+    },
+    {
+      "num": "B.5.3",
+      "title": "Sender - Sender REM Provider Dialogue",
+      "page": 83
+    },
+    {
+      "num": "B.5.3.1",
+      "title": "Peer Entity Authentication Is client authenticated to REM Provider",
+      "page": 83
+    },
+    {
+      "num": "B.5.3.3",
+      "title": "Message identifier",
+      "page": 85
+    },
+    {
+      "num": "B.5.3.4",
+      "title": "Please provide other information relevant to this dialogue",
+      "page": 85
+    },
+    {
+      "num": "B.5.4",
+      "title": "Sender REM Provider Services and Mechanisms",
+      "page": 85
+    },
+    {
+      "num": "B.5.4.1",
+      "title": "Check all the services and mechanisms employed by the sender REM provider",
+      "page": 85
+    },
+    {
+      "num": "B.5.5",
+      "title": "Sender REM provider - Recipient REM provider dialogue",
+      "page": 87
+    },
+    {
+      "num": "B.5.5.3",
+      "title": "Message identifier",
+      "page": 89
+    },
+    {
+      "num": "B.5.5.4",
+      "title": "Please provider other information relevant to this dialogue",
+      "page": 89
+    },
+    {
+      "num": "B.5.6",
+      "title": "Recipient REM Provider Services and Mechanisms",
+      "page": 89
+    },
+    {
+      "num": "B.5.7",
+      "title": "Recipient REM Service Provider - Recipient Dialogue",
+      "page": 92
+    },
+    {
+      "num": "B.5.7.1",
+      "title": "Peer Entity Authentication Is client authenticated to REM Provider",
+      "page": 92
+    },
+    {
+      "num": "B.5.7.3",
+      "title": "Please provider other information relevant to this dialogue",
+      "page": 93
+    },
+    {
+      "num": "B.5.8",
+      "title": "Recipient Services and Mechanisms",
+      "page": 93
+    },
+    {
+      "num": "B.5.8.1",
+      "title": "Check all the services and mechanisms employed by the recipient",
+      "page": 93
+    },
+    {
+      "num": "B.5.9",
+      "title": "Final Notifications",
+      "page": 94
+    },
+    {
+      "num": "B.5.10",
+      "title": "Gateway",
+      "page": 94
+    },
+    {
+      "num": "B.5.11",
+      "title": "Security Service Provider",
+      "page": 95
+    },
+    {
+      "num": "B.5.11.1",
+      "title": "What independent security service provider elements are used?",
+      "page": 95
+    },
+    {
+      "num": "B.6",
+      "title": "Technical Details",
+      "page": 96
+    },
+    {
+      "num": "B.6.1",
+      "title": "What clients are supported for sender / recipient?",
+      "page": 96
+    },
+    {
+      "num": "B.6.2",
+      "title": "How are messages referenced in notifications?",
+      "page": 96
+    },
+    {
+      "num": "B.6.3",
+      "title": "How is the evidence information carried with original message?",
+      "page": 97
+    },
+    {
+      "num": "B.6.4",
+      "title": "What signature format is used?",
+      "page": 97
+    },
+    {
+      "num": "B.6.5",
+      "title": "If time-stamping is used, what form of time-stamp is used?",
+      "page": 98
+    },
+    {
+      "num": "B.6.6",
+      "title": "If time-marking is used pleased provider further information on how implemented",
+      "page": 98
+    },
+    {
+      "num": "B.6.7",
+      "title": "What time source is used for time-stamps / time-marks applied to messages?",
+      "page": 98
+    },
+    {
+      "num": "B.6.8",
+      "title": "What other security protocols are used?",
+      "page": 98
+    },
+    {
+      "num": "B.6.9",
+      "title": "What PKI / signature support services are used ?",
+      "page": 99
+    },
+    {
+      "num": "B.6.10",
+      "title": "UPU DPM supported (UPU specification S43-3)?",
+      "page": 99
+    },
+    {
+      "num": "B.7",
+      "title": "Security Policies and Practices",
+      "page": 100
+    },
+    {
+      "num": "B.7.1",
+      "title": "Registration: Are senders / recipients securely identified at registration time?",
+      "page": 100
+    },
+    {
+      "num": "B.7.2",
+      "title": "Users are always registered both as a sender and as a recipient",
+      "page": 100
+    },
+    {
+      "num": "B.7.6",
+      "title": "Does the system operate under a defined Security Policy?",
+      "page": 101
+    },
+    {
+      "num": "B.7.8",
+      "title": "What type of signing device is employed in service provider",
+      "page": 101
+    },
+    {
+      "num": "B.7.10",
+      "title": "Please provide other relevant policy / practices details:",
+      "page": 102
+    },
+    {
+      "num": "B.8",
+      "title": "Other Relevant Information",
+      "page": 102
+    },
+    {
+      "num": "B.9",
+      "title": "Sources of Information",
+      "page": 103
+    },
+    {
+      "num": "B.9.2",
+      "title": "Please provide contact information",
+      "page": 103
+    },
+    {
+      "num": "B.10",
+      "title": "Continuation Tables",
+      "page": 104
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 107,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 9,
+  "total_pages": 107,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6
+  ]
+}

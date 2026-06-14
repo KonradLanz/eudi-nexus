@@ -1,0 +1,13 @@
+{
+  "id": "ietf-openid4vp",
+  "type": "external_standard",
+  "label": "OpenID for Verifiable Presentations (OID4VP)",
+  "url": "https://openid.net/specs/openid-4-verifiable-presentations-1_0.html",
+  "format": "html",
+  "scope": "external",
+  "stf": null,
+  "wki_ids": [],
+  "note": "Protocol referenced in TS 119 471 / TS 119 476 for presentation layer",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.860629+00:00"
+}

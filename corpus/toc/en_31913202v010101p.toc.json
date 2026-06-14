@@ -1,0 +1,122 @@
+{
+  "stem": "en_31913202v010101p",
+  "pdf": "downloads/specs/EN/en_31913202v010101p.pdf",
+  "title": "(2016-04)",
+  "reference": "en_31913202v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions, abbreviations and terminology",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.3",
+      "title": "Terminology",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Additional XAdES levels without references to validation data",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Overview",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "General requirements",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "Legacy signatures",
+      "page": 13
+    },
+    {
+      "num": "Annex A",
+      "title": "XAdES signature levels with references to validation data",
+      "page": 14,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "XAdES-E-C, XAdES-E-X, XAdES-E-X-Long and XAdES-E-X-L signatures",
+      "page": 14
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 20,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 20,
+  "toc_pages": [
+    3
+  ]
+}

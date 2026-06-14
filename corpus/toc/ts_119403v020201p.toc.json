@@ -1,0 +1,484 @@
+{
+  "stem": "ts_119403v020201p",
+  "pdf": "downloads/specs/TS/ts_119403v020201p.pdf",
+  "title": "(2015-08)",
+  "reference": "ts_119403v020201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "General requirements",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Legal and contractual matters",
+      "page": 8
+    },
+    {
+      "num": "4.1.1",
+      "title": "Legal responsibility",
+      "page": 8
+    },
+    {
+      "num": "4.1.2",
+      "title": "Certification agreement",
+      "page": 8
+    },
+    {
+      "num": "4.1.3",
+      "title": "Use of license, certificates and marks of conformity",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Management of impartiality",
+      "page": 8
+    },
+    {
+      "num": "4.2.0",
+      "title": "General requirements",
+      "page": 8
+    },
+    {
+      "num": "4.2.1",
+      "title": "Activities not conflicting with impartiality",
+      "page": 8
+    },
+    {
+      "num": "4.3",
+      "title": "Liability and financing",
+      "page": 8
+    },
+    {
+      "num": "4.4",
+      "title": "Non-discriminatory conditions",
+      "page": 9
+    },
+    {
+      "num": "4.5",
+      "title": "Confidentiality",
+      "page": 9
+    },
+    {
+      "num": "4.6",
+      "title": "Publicly available information",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Structural requirements",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Organizational structure and top management",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Mechanism for safeguarding impartiality",
+      "page": 9
+    },
+    {
+      "num": "6",
+      "title": "Resource requirements",
+      "page": 9
+    },
+    {
+      "num": "6.1",
+      "title": "Conformity Assessment Body personnel",
+      "page": 9
+    },
+    {
+      "num": "6.1.1",
+      "title": "General",
+      "page": 9
+    },
+    {
+      "num": "6.1.2",
+      "title": "Management of competence for personnel involved in the audit process",
+      "page": 9
+    },
+    {
+      "num": "6.1.2.0",
+      "title": "General requirements",
+      "page": 9
+    },
+    {
+      "num": "6.1.2.1",
+      "title": "Management of competence",
+      "page": 9
+    },
+    {
+      "num": "6.1.2.2",
+      "title": "Training of audit teams",
+      "page": 9
+    },
+    {
+      "num": "6.2",
+      "title": "Resources for evaluation",
+      "page": 10
+    },
+    {
+      "num": "6.2.0",
+      "title": "General requirements",
+      "page": 10
+    },
+    {
+      "num": "6.2.1",
+      "title": "Internal resources",
+      "page": 10
+    },
+    {
+      "num": "6.2.1.0",
+      "title": "General requirement",
+      "page": 10
+    },
+    {
+      "num": "6.2.1.1",
+      "title": "Competence of Conformity Assessment Body personnel",
+      "page": 10
+    },
+    {
+      "num": "6.2.1.2",
+      "title": "Competences for all functions",
+      "page": 10
+    },
+    {
+      "num": "6.2.1.3",
+      "title": "Competences for application review",
+      "page": 10
+    },
+    {
+      "num": "6.2.1.4",
+      "title": "Competences and prerequisites for auditing",
+      "page": 11
+    },
+    {
+      "num": "6.2.1.5",
+      "title": "Competences for review",
+      "page": 11
+    },
+    {
+      "num": "6.2.1.6",
+      "title": "Competences for certification decision",
+      "page": 11
+    },
+    {
+      "num": "6.2.1.7",
+      "title": "Competences for Technical Experts",
+      "page": 11
+    },
+    {
+      "num": "6.2.1.8",
+      "title": "Audit team",
+      "page": 12
+    },
+    {
+      "num": "6.2.1.9",
+      "title": "Audit team leader",
+      "page": 12
+    },
+    {
+      "num": "7",
+      "title": "Process requirements",
+      "page": 13
+    },
+    {
+      "num": "7.1",
+      "title": "General requirements",
+      "page": 13
+    },
+    {
+      "num": "7.2",
+      "title": "Application",
+      "page": 13
+    },
+    {
+      "num": "7.3",
+      "title": "Application Review",
+      "page": 13
+    },
+    {
+      "num": "7.3.0",
+      "title": "General requirements",
+      "page": 13
+    },
+    {
+      "num": "7.4",
+      "title": "Audit",
+      "page": 13
+    },
+    {
+      "num": "7.4.0",
+      "title": "General requirements",
+      "page": 13
+    },
+    {
+      "num": "7.4.1",
+      "title": "Audit Scope",
+      "page": 13
+    },
+    {
+      "num": "7.4.1.0",
+      "title": "Audit Scope General",
+      "page": 13
+    },
+    {
+      "num": "7.4.1.1",
+      "title": "Audit Team Mandate",
+      "page": 14
+    },
+    {
+      "num": "7.4.1.2",
+      "title": "Audit Methodology",
+      "page": 14
+    },
+    {
+      "num": "7.4.2",
+      "title": "Audit time",
+      "page": 15
+    },
+    {
+      "num": "7.4.3",
+      "title": "Multiple sites",
+      "page": 15
+    },
+    {
+      "num": "7.4.3.1",
+      "title": "When to Consider Sample Based Approach",
+      "page": 15
+    },
+    {
+      "num": "7.4.3.2",
+      "title": "Requirements of Sample Based Approach",
+      "page": 15
+    },
+    {
+      "num": "7.4.4",
+      "title": "Audit Report",
+      "page": 16
+    },
+    {
+      "num": "7.4.4.1",
+      "title": "Report contents",
+      "page": 16
+    },
+    {
+      "num": "7.4.4.2",
+      "title": "Report contents details to be provided",
+      "page": 16
+    },
+    {
+      "num": "7.4.5",
+      "title": "Audit process",
+      "page": 17
+    },
+    {
+      "num": "7.4.5.1",
+      "title": "General preparation for the initial audit",
+      "page": 17
+    },
+    {
+      "num": "7.4.5.2",
+      "title": "Audit Process",
+      "page": 17
+    },
+    {
+      "num": "7.4.5.3",
+      "title": "Stage 1 audit",
+      "page": 17
+    },
+    {
+      "num": "7.4.5.4",
+      "title": "Stage 2 audit",
+      "page": 18
+    },
+    {
+      "num": "7.4.6",
+      "title": "Audit Frequency",
+      "page": 19
+    },
+    {
+      "num": "7.5",
+      "title": "Review",
+      "page": 19
+    },
+    {
+      "num": "7.6",
+      "title": "Certification decision",
+      "page": 19
+    },
+    {
+      "num": "7.7",
+      "title": "Certification documentation",
+      "page": 19
+    },
+    {
+      "num": "7.8",
+      "title": "Directory of certified products",
+      "page": 19
+    },
+    {
+      "num": "7.9",
+      "title": "Surveillance",
+      "page": 19
+    },
+    {
+      "num": "7.10",
+      "title": "Changes affecting certification",
+      "page": 20
+    },
+    {
+      "num": "7.11",
+      "title": "Termination, reduction, suspension or withdrawal of certification",
+      "page": 20
+    },
+    {
+      "num": "7.12",
+      "title": "Records",
+      "page": 20
+    },
+    {
+      "num": "7.13",
+      "title": "Complaints and appeals",
+      "page": 20
+    },
+    {
+      "num": "8",
+      "title": "Management system requirements",
+      "page": 21
+    },
+    {
+      "num": "8.1",
+      "title": "Options",
+      "page": 21
+    },
+    {
+      "num": "8.2",
+      "title": "General management system documentation",
+      "page": 21
+    },
+    {
+      "num": "8.3",
+      "title": "Control of documents",
+      "page": 21
+    },
+    {
+      "num": "8.4",
+      "title": "Control of records",
+      "page": 21
+    },
+    {
+      "num": "8.5",
+      "title": "Management review",
+      "page": 21
+    },
+    {
+      "num": "8.6",
+      "title": "Internal audits",
+      "page": 21
+    },
+    {
+      "num": "8.7",
+      "title": "Corrective actions",
+      "page": 21
+    },
+    {
+      "num": "8.8",
+      "title": "Preventive actions",
+      "page": 21
+    },
+    {
+      "num": "Annex A",
+      "title": "Auditors' code of conduct",
+      "page": 22,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Bibliography",
+      "page": 23,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 24,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 24,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

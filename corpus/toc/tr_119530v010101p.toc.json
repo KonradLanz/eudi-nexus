@@ -1,0 +1,276 @@
+{
+  "stem": "tr_119530v010101p",
+  "pdf": "downloads/specs/TR/tr_119530v010101p.pdf",
+  "title": "(2019-02)",
+  "reference": "tr_119530v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and terminology",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.4",
+      "title": "Terminology",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Goals and approaches",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "Gap analysis",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "REM - ETSI TS 102 640 vs ETSI EN 319 532",
+      "page": 9
+    },
+    {
+      "num": "5.1.1",
+      "title": "Introduction",
+      "page": 9
+    },
+    {
+      "num": "5.1.2",
+      "title": "Changes on terms and boundary roles",
+      "page": 9
+    },
+    {
+      "num": "5.1.3",
+      "title": "Changes on event and evidence types",
+      "page": 12
+    },
+    {
+      "num": "5.1.4",
+      "title": "Changes on messages",
+      "page": 15
+    },
+    {
+      "num": "5.1.4.1",
+      "title": "Introduction",
+      "page": 15
+    },
+    {
+      "num": "5.1.4.2",
+      "title": "Metadata implemented as optional extension headers in REM messages",
+      "page": 16
+    },
+    {
+      "num": "5.1.4.3",
+      "title": "Differences in the outermost MIME section header of a REM message",
+      "page": 18
+    },
+    {
+      "num": "5.1.4.4",
+      "title": "Differences in the signed data MIME section header of a REM message",
+      "page": 19
+    },
+    {
+      "num": "5.1.4.5",
+      "title": "Differences in the Introduction MIME section header of a REM message",
+      "page": 19
+    },
+    {
+      "num": "5.1.4.6",
+      "title": "Differences in the original message MIME section header of a REM message",
+      "page": 20
+    },
+    {
+      "num": "5.1.4.7",
+      "title": "Differences in the extensions MIME section header of a REM message",
+      "page": 21
+    },
+    {
+      "num": "5.1.4.8",
+      "title": "Differences in the evidence MIME section header of a REM message",
+      "page": 22
+    },
+    {
+      "num": "5.1.4.9",
+      "title": "Differences in the signature MIME section header of a REM message",
+      "page": 24
+    },
+    {
+      "num": "5.1.5",
+      "title": "Changes on evidence structure and semantic",
+      "page": 25
+    },
+    {
+      "num": "5.1.6",
+      "title": "Changes on trusting",
+      "page": 32
+    },
+    {
+      "num": "5.2",
+      "title": "PReM - UPU S.52 2008 vs UPU S.52 CEN/TS 16326 (2013)",
+      "page": 37
+    },
+    {
+      "num": "5.2.1",
+      "title": "Introduction",
+      "page": 37
+    },
+    {
+      "num": "5.2.2",
+      "title": "Changes on flows",
+      "page": 37
+    },
+    {
+      "num": "5.2.3",
+      "title": "Changes on messages",
+      "page": 39
+    },
+    {
+      "num": "5.2.4",
+      "title": "Changes on evidence structure and semantic",
+      "page": 40
+    },
+    {
+      "num": "5.2.5",
+      "title": "Changes on signature",
+      "page": 41
+    },
+    {
+      "num": "5.2.6",
+      "title": "Changes on trusting",
+      "page": 41
+    },
+    {
+      "num": "6",
+      "title": "Recommendation for follow-up activities",
+      "page": 42
+    },
+    {
+      "num": "6.1",
+      "title": "Overview",
+      "page": 42
+    },
+    {
+      "num": "6.2",
+      "title": "UPU-side activities",
+      "page": 42
+    },
+    {
+      "num": "6.2.1",
+      "title": "Update of references",
+      "page": 42
+    },
+    {
+      "num": "6.2.2",
+      "title": "Update of security techniques",
+      "page": 43
+    },
+    {
+      "num": "6.2.3",
+      "title": "Adaptation of flows",
+      "page": 43
+    },
+    {
+      "num": "6.2.4",
+      "title": "Adaptation of message formats",
+      "page": 43
+    },
+    {
+      "num": "6.2.5",
+      "title": "Adaptation of evidence format",
+      "page": 44
+    },
+    {
+      "num": "6.2.6",
+      "title": "Update of policy considerations",
+      "page": 44
+    },
+    {
+      "num": "6.3",
+      "title": "ETSI-side activities",
+      "page": 45
+    },
+    {
+      "num": "7",
+      "title": "Conclusions",
+      "page": 47
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 48,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 48,
+  "toc_pages": [
+    3
+  ]
+}

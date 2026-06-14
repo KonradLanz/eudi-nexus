@@ -1,0 +1,164 @@
+{
+  "stem": "ts_11914405v010101p",
+  "pdf": "downloads/specs/TS/ts_11914405v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11914405v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Testing conformance to CMS signatures in PDF profile",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Testing signature dictionary elements",
+      "page": 8
+    },
+    {
+      "num": "5.3",
+      "title": "Testing PKCS #7 signature elements",
+      "page": 8
+    },
+    {
+      "num": "6",
+      "title": "Testing conformance to PAdES-E-BES and PAdES-E-EPES additional signatures",
+      "page": 9
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 9
+    },
+    {
+      "num": "6.2",
+      "title": "Testing PAdES-E-BES signature dictionary and CMS signature elements",
+      "page": 9
+    },
+    {
+      "num": "6.2.1",
+      "title": "Testing signature dictionary elements",
+      "page": 9
+    },
+    {
+      "num": "6.2.2",
+      "title": "Testing CMS signature elements",
+      "page": 10
+    },
+    {
+      "num": "6.3",
+      "title": "Testing PAdES-E-EPES signature dictionary and CMS signature elements",
+      "page": 11
+    },
+    {
+      "num": "6.3.1",
+      "title": "Testing signature dictionary elements",
+      "page": 11
+    },
+    {
+      "num": "6.3.2",
+      "title": "Testing CMS signature elements",
+      "page": 11
+    },
+    {
+      "num": "7",
+      "title": "Testing conformance to PAdES-E-LTV additional signatures",
+      "page": 11
+    },
+    {
+      "num": "7.1",
+      "title": "General requirements",
+      "page": 11
+    },
+    {
+      "num": "7.2",
+      "title": "Testing DSS dictionary",
+      "page": 12
+    },
+    {
+      "num": "7.3",
+      "title": "Testing DTS dictionary",
+      "page": 12
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 13,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 13,
+  "toc_pages": [
+    3
+  ]
+}

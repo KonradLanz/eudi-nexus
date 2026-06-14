@@ -1,0 +1,164 @@
+{
+  "stem": "ts_11914403v010101p",
+  "pdf": "downloads/specs/TS/ts_11914403v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11914403v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Testing CMS digital signatures in PDF interoperability",
+      "page": 6
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction",
+      "page": 6
+    },
+    {
+      "num": "4.2",
+      "title": "Testing CMS digital signatures in PDF",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Testing interoperability of PAdES-E-BES and PAdES-E-EPES signatures",
+      "page": 8
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 8
+    },
+    {
+      "num": "5.2",
+      "title": "Testing PAdES-E-BES signatures",
+      "page": 9
+    },
+    {
+      "num": "5.3",
+      "title": "Testing PAdES-E-EPES signatures",
+      "page": 11
+    },
+    {
+      "num": "6",
+      "title": "Testing interoperability of PAdES-E-LTV signatures",
+      "page": 11
+    },
+    {
+      "num": "6.1",
+      "title": "Testing PAdES-E-LTV signatures",
+      "page": 11
+    },
+    {
+      "num": "7",
+      "title": "Testing interoperability of XAdES signatures signing XML content in PDF",
+      "page": 15
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 15
+    },
+    {
+      "num": "7.2",
+      "title": "Testing XAdES signatures of XML documents embedded in PDF containers",
+      "page": 15
+    },
+    {
+      "num": "7.3",
+      "title": "Testing XAdES signatures on XFA forms",
+      "page": 16
+    },
+    {
+      "num": "8",
+      "title": "Testing negative additional PAdES signatures",
+      "page": 16
+    },
+    {
+      "num": "8.1",
+      "title": "CMS digital signatures in PDF test cases",
+      "page": 16
+    },
+    {
+      "num": "8.2",
+      "title": "PAdES-E-BES and PAdES-E-EPES test cases",
+      "page": 17
+    },
+    {
+      "num": "8.3",
+      "title": "PAdES-E-LTV test cases",
+      "page": 17
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 18,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 18,
+  "toc_pages": [
+    3
+  ]
+}

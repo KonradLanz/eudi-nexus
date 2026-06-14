@@ -1,0 +1,1505 @@
+{
+  "stem": "ts_102231v030102p",
+  "pdf": "downloads/specs/TS/ts_102231v030102p.pdf",
+  "title": "(2009-12)",
+  "reference": "ts_102231v030102p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 11
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 11
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 11
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 13
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 13
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 13
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 14
+    },
+    {
+      "num": "4",
+      "title": "Trust-service status information",
+      "page": 15
+    },
+    {
+      "num": "5",
+      "title": "Trust-service Status List structure",
+      "page": 16
+    },
+    {
+      "num": "5.1",
+      "title": "Structure of the Trust-service Status List",
+      "page": 16
+    },
+    {
+      "num": "5.1.1",
+      "title": "Trust-service Status List information",
+      "page": 16
+    },
+    {
+      "num": "5.1.2",
+      "title": "Logical model",
+      "page": 17
+    },
+    {
+      "num": "5.1.3",
+      "title": "Language support",
+      "page": 19
+    },
+    {
+      "num": "5.1.4",
+      "title": "Date-time indication",
+      "page": 19
+    },
+    {
+      "num": "5.1.5",
+      "title": "Use of Uniform Resource Identifiers",
+      "page": 19
+    },
+    {
+      "num": "5.1.6",
+      "title": "Value of Country Code fields",
+      "page": 20
+    },
+    {
+      "num": "5.1.7",
+      "title": "TSL Format",
+      "page": 20
+    },
+    {
+      "num": "5.2",
+      "title": "Trust-service Status List tag",
+      "page": 20
+    },
+    {
+      "num": "5.2.1",
+      "title": "TSL Tag",
+      "page": 20
+    },
+    {
+      "num": "5.3",
+      "title": "Scheme information",
+      "page": 20
+    },
+    {
+      "num": "5.3.1",
+      "title": "TSL version identifier",
+      "page": 20
+    },
+    {
+      "num": "5.3.2",
+      "title": "TSL sequence number",
+      "page": 20
+    },
+    {
+      "num": "5.3.3",
+      "title": "TSL type",
+      "page": 21
+    },
+    {
+      "num": "5.3.4",
+      "title": "Scheme operator name",
+      "page": 21
+    },
+    {
+      "num": "5.3.5",
+      "title": "Scheme operator address",
+      "page": 21
+    },
+    {
+      "num": "5.3.5.1",
+      "title": "Scheme operator postal address",
+      "page": 21
+    },
+    {
+      "num": "5.3.5.2",
+      "title": "Scheme operator electronic address",
+      "page": 22
+    },
+    {
+      "num": "5.3.6",
+      "title": "Scheme name",
+      "page": 22
+    },
+    {
+      "num": "5.3.7",
+      "title": "Scheme information URI",
+      "page": 22
+    },
+    {
+      "num": "5.3.8",
+      "title": "Status determination approach",
+      "page": 23
+    },
+    {
+      "num": "5.3.9",
+      "title": "Scheme type/community/rules",
+      "page": 23
+    },
+    {
+      "num": "5.3.10",
+      "title": "Scheme territory",
+      "page": 23
+    },
+    {
+      "num": "5.3.11",
+      "title": "TSL policy/legal notice",
+      "page": 24
+    },
+    {
+      "num": "5.3.12",
+      "title": "Historical information period",
+      "page": 24
+    },
+    {
+      "num": "5.3.13",
+      "title": "Pointers to other TSLs",
+      "page": 24
+    },
+    {
+      "num": "5.3.13.1",
+      "title": "Additional information field",
+      "page": 25
+    },
+    {
+      "num": "5.3.14",
+      "title": "List issue date and time",
+      "page": 25
+    },
+    {
+      "num": "5.3.15",
+      "title": "Next update",
+      "page": 26
+    },
+    {
+      "num": "5.3.16",
+      "title": "Distribution points",
+      "page": 26
+    },
+    {
+      "num": "5.3.17",
+      "title": "Scheme extensions",
+      "page": 26
+    },
+    {
+      "num": "5.3.18",
+      "title": "List of Trust Service Providers",
+      "page": 26
+    },
+    {
+      "num": "5.4",
+      "title": "TSP information",
+      "page": 27
+    },
+    {
+      "num": "5.4.1",
+      "title": "TSP name",
+      "page": 27
+    },
+    {
+      "num": "5.4.2",
+      "title": "TSP trade name",
+      "page": 27
+    },
+    {
+      "num": "5.4.3",
+      "title": "TSP address",
+      "page": 27
+    },
+    {
+      "num": "5.4.3.1",
+      "title": "TSP postal address",
+      "page": 27
+    },
+    {
+      "num": "5.4.3.2",
+      "title": "TSP electronic address",
+      "page": 28
+    },
+    {
+      "num": "5.4.4",
+      "title": "TSP information URI",
+      "page": 28
+    },
+    {
+      "num": "5.4.5",
+      "title": "TSP information extensions",
+      "page": 28
+    },
+    {
+      "num": "5.4.6",
+      "title": "List of services",
+      "page": 28
+    },
+    {
+      "num": "5.5",
+      "title": "Service information",
+      "page": 29
+    },
+    {
+      "num": "5.5.1",
+      "title": "Service type identifier",
+      "page": 29
+    },
+    {
+      "num": "5.5.2",
+      "title": "Service name",
+      "page": 30
+    },
+    {
+      "num": "5.5.3",
+      "title": "Service digital identity",
+      "page": 30
+    },
+    {
+      "num": "5.5.4",
+      "title": "Service current status",
+      "page": 30
+    },
+    {
+      "num": "5.5.5",
+      "title": "Current status starting date and time",
+      "page": 32
+    },
+    {
+      "num": "5.5.6",
+      "title": "Scheme service definition URI",
+      "page": 32
+    },
+    {
+      "num": "5.5.7",
+      "title": "Service supply points",
+      "page": 33
+    },
+    {
+      "num": "5.5.8",
+      "title": "TSP service definition URI",
+      "page": 33
+    },
+    {
+      "num": "5.5.9",
+      "title": "Service information extensions",
+      "page": 33
+    },
+    {
+      "num": "5.5.10",
+      "title": "Service approval history",
+      "page": 33
+    },
+    {
+      "num": "5.6",
+      "title": "Service approval history information",
+      "page": 33
+    },
+    {
+      "num": "5.6.1",
+      "title": "Service type identifier",
+      "page": 33
+    },
+    {
+      "num": "5.6.2",
+      "title": "Service name",
+      "page": 34
+    },
+    {
+      "num": "5.6.3",
+      "title": "Service digital identity",
+      "page": 34
+    },
+    {
+      "num": "5.6.4",
+      "title": "Service previous status",
+      "page": 34
+    },
+    {
+      "num": "5.6.5",
+      "title": "Previous status starting date and time",
+      "page": 34
+    },
+    {
+      "num": "5.6.6",
+      "title": "Service information extensions",
+      "page": 34
+    },
+    {
+      "num": "5.7",
+      "title": "Signature",
+      "page": 34
+    },
+    {
+      "num": "5.7.1",
+      "title": "Signed TSL",
+      "page": 34
+    },
+    {
+      "num": "5.7.2",
+      "title": "Scheme identification",
+      "page": 35
+    },
+    {
+      "num": "5.7.3",
+      "title": "Signature algorithm identifier",
+      "page": 35
+    },
+    {
+      "num": "5.7.4",
+      "title": "Signature value",
+      "page": 35
+    },
+    {
+      "num": "5.8",
+      "title": "TSL extensions",
+      "page": 35
+    },
+    {
+      "num": "5.8.1",
+      "title": "expiredCertsRevocationInfo Extension",
+      "page": 36
+    },
+    {
+      "num": "5.8.2",
+      "title": "additionalServiceInformation Extension",
+      "page": 36
+    },
+    {
+      "num": "6",
+      "title": "Operations",
+      "page": 37
+    },
+    {
+      "num": "6.1",
+      "title": "TSL publication",
+      "page": 37
+    },
+    {
+      "num": "6.1.1",
+      "title": "Transport Protocols",
+      "page": 37
+    },
+    {
+      "num": "6.1.1.1",
+      "title": "LDAP transport",
+      "page": 37
+    },
+    {
+      "num": "6.1.1.1.1",
+      "title": "Attributes and Object class definition",
+      "page": 37
+    },
+    {
+      "num": "6.1.1.2",
+      "title": "HTTP-Transport",
+      "page": 39
+    },
+    {
+      "num": "6.1.1.2.1",
+      "title": "HTTP-Media Type",
+      "page": 39
+    },
+    {
+      "num": "6.1.1.3",
+      "title": "FTP-Transport",
+      "page": 39
+    },
+    {
+      "num": "6.1.1.4",
+      "title": "Email Transport",
+      "page": 39
+    },
+    {
+      "num": "6.1.1.4.1",
+      "title": "Content-Types",
+      "page": 39
+    },
+    {
+      "num": "6.1.1.4.2",
+      "title": "Encoding considerations",
+      "page": 39
+    },
+    {
+      "num": "6.1.1.5",
+      "title": "MIME registrations",
+      "page": 39
+    },
+    {
+      "num": "6.2",
+      "title": "TSL Signer Certificate",
+      "page": 40
+    },
+    {
+      "num": "6.3",
+      "title": "TSL Distribution Points",
+      "page": 40
+    },
+    {
+      "num": "Annex A",
+      "title": "Implementation in ASN.1",
+      "page": 41,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Structure of the Trust-service Status List",
+      "page": 41
+    },
+    {
+      "num": "A.1.1",
+      "title": "ASN.1 versioning",
+      "page": 41
+    },
+    {
+      "num": "A.1.2",
+      "title": "Basic types",
+      "page": 41
+    },
+    {
+      "num": "A.1.2.1",
+      "title": "The NonEmptyURI type",
+      "page": 41
+    },
+    {
+      "num": "A.1.2.2",
+      "title": "The LanguageTag type",
+      "page": 42
+    },
+    {
+      "num": "A.1.2.3",
+      "title": "The CountryCode type",
+      "page": 42
+    },
+    {
+      "num": "A.1.2.4",
+      "title": "The MultiLangPointer type",
+      "page": 42
+    },
+    {
+      "num": "A.1.2.5",
+      "title": "The MultiLangString type",
+      "page": 42
+    },
+    {
+      "num": "A.1.2.6",
+      "title": "The PhysicalAndElectronicAddresses type",
+      "page": 42
+    },
+    {
+      "num": "A.1.3",
+      "title": "General Structure",
+      "page": 43
+    },
+    {
+      "num": "A.2",
+      "title": "Scheme information fields",
+      "page": 43
+    },
+    {
+      "num": "A.2.1",
+      "title": "The tSLTag field",
+      "page": 43
+    },
+    {
+      "num": "A.2.2",
+      "title": "The version field",
+      "page": 43
+    },
+    {
+      "num": "A.2.3",
+      "title": "The sequenceNumber field",
+      "page": 44
+    },
+    {
+      "num": "A.2.4",
+      "title": "The tSLType field",
+      "page": 44
+    },
+    {
+      "num": "A.2.5",
+      "title": "The schemeOperatorName field",
+      "page": 44
+    },
+    {
+      "num": "A.2.6",
+      "title": "The schemeOperatorAddress field",
+      "page": 44
+    },
+    {
+      "num": "A.2.7",
+      "title": "The schemeName field",
+      "page": 44
+    },
+    {
+      "num": "A.2.8",
+      "title": "The schemeInformationURI field",
+      "page": 44
+    },
+    {
+      "num": "A.2.9",
+      "title": "The statusDeterminationApproach field",
+      "page": 44
+    },
+    {
+      "num": "A.2.10",
+      "title": "The schemeTypeCommunityRules field",
+      "page": 45
+    },
+    {
+      "num": "A.2.11",
+      "title": "The schemeTerritory field",
+      "page": 45
+    },
+    {
+      "num": "A.2.12",
+      "title": "The tSLpolicy field",
+      "page": 45
+    },
+    {
+      "num": "A.2.13",
+      "title": "The historicalInformationPeriod field",
+      "page": 45
+    },
+    {
+      "num": "A.2.14",
+      "title": "The pointersToOtherTSLs field",
+      "page": 45
+    },
+    {
+      "num": "A.2.14.1",
+      "title": "otherQualifier",
+      "page": 46
+    },
+    {
+      "num": "A.2.15",
+      "title": "The listIssueDateTime field",
+      "page": 46
+    },
+    {
+      "num": "A.2.16",
+      "title": "The nextUpdate field",
+      "page": 47
+    },
+    {
+      "num": "A.2.17",
+      "title": "The distributionPoints field",
+      "page": 47
+    },
+    {
+      "num": "A.2.18",
+      "title": "The schemeExtensions field",
+      "page": 47
+    },
+    {
+      "num": "A.2.19",
+      "title": "The tSPlist field",
+      "page": 47
+    },
+    {
+      "num": "A.3",
+      "title": "TSP information fields",
+      "page": 48
+    },
+    {
+      "num": "A.3.1",
+      "title": "The tSPname field",
+      "page": 48
+    },
+    {
+      "num": "A.3.2",
+      "title": "The tradeName field",
+      "page": 48
+    },
+    {
+      "num": "A.3.3",
+      "title": "The tSPaddress field",
+      "page": 48
+    },
+    {
+      "num": "A.3.4",
+      "title": "The tSPinformationURI field",
+      "page": 48
+    },
+    {
+      "num": "A.3.5",
+      "title": "The tSPextensions field",
+      "page": 48
+    },
+    {
+      "num": "A.3.6",
+      "title": "The listOfServices field",
+      "page": 48
+    },
+    {
+      "num": "A.4",
+      "title": "TSP service information fields",
+      "page": 49
+    },
+    {
+      "num": "A.4.1",
+      "title": "The serviceType field",
+      "page": 49
+    },
+    {
+      "num": "A.4.2",
+      "title": "The serviceName field",
+      "page": 49
+    },
+    {
+      "num": "A.4.3",
+      "title": "The serviceDigitalIdentity field",
+      "page": 49
+    },
+    {
+      "num": "A.4.4",
+      "title": "The currentServiceStatus field",
+      "page": 50
+    },
+    {
+      "num": "A.4.5",
+      "title": "The currentStatusStartingTime field",
+      "page": 50
+    },
+    {
+      "num": "A.4.6",
+      "title": "The schemeURI field",
+      "page": 50
+    },
+    {
+      "num": "A.4.7",
+      "title": "The tspURI field",
+      "page": 50
+    },
+    {
+      "num": "A.4.8",
+      "title": "The serviceSupplyPoints field",
+      "page": 50
+    },
+    {
+      "num": "A.4.9",
+      "title": "The srvcExtensions field",
+      "page": 51
+    },
+    {
+      "num": "A.4.10",
+      "title": "The serviceApprovalHistory field",
+      "page": 51
+    },
+    {
+      "num": "A.5",
+      "title": "Service history information fields",
+      "page": 51
+    },
+    {
+      "num": "A.5.1",
+      "title": "The serviceType field",
+      "page": 51
+    },
+    {
+      "num": "A.5.2",
+      "title": "The serviceName field",
+      "page": 51
+    },
+    {
+      "num": "A.5.3",
+      "title": "The serviceDigitalIdentity field",
+      "page": 51
+    },
+    {
+      "num": "A.5.4",
+      "title": "The previousServiceStatus field",
+      "page": 51
+    },
+    {
+      "num": "A.5.5",
+      "title": "The previousStatusStartingTime field",
+      "page": 51
+    },
+    {
+      "num": "A.5.6",
+      "title": "The srvcExtensions field",
+      "page": 52
+    },
+    {
+      "num": "A.6",
+      "title": "TSL signature fields",
+      "page": 52
+    },
+    {
+      "num": "A.6.1",
+      "title": "The signedTSL field",
+      "page": 52
+    },
+    {
+      "num": "A.6.2",
+      "title": "The scheme operator identifier",
+      "page": 52
+    },
+    {
+      "num": "A.6.2.1",
+      "title": "ESS signing certificate attribute",
+      "page": 53
+    },
+    {
+      "num": "A.6.3",
+      "title": "Algorithms and parameters",
+      "page": 53
+    },
+    {
+      "num": "A.7",
+      "title": "Extensions defined in the present document",
+      "page": 53
+    },
+    {
+      "num": "A.7.1",
+      "title": "TSL Extensions OID",
+      "page": 54
+    },
+    {
+      "num": "A.7.2",
+      "title": "TSLDistributionPoints",
+      "page": 54
+    },
+    {
+      "num": "A.7.3",
+      "title": "ExpiredCertsRevocationInfo",
+      "page": 54
+    },
+    {
+      "num": "A.7.4",
+      "title": "AdditionalServiceInformation",
+      "page": 54
+    },
+    {
+      "num": "Annex B",
+      "title": "Implementation in XML",
+      "page": 55,
+      "annex_type": "normative"
+    },
+    {
+      "num": "B.1",
+      "title": "Structure of the Trust-service Status List",
+      "page": 55
+    },
+    {
+      "num": "B.1.1",
+      "title": "General Rules",
+      "page": 55
+    },
+    {
+      "num": "B.1.2",
+      "title": "XML-namespace and basic types",
+      "page": 55
+    },
+    {
+      "num": "B.1.2.1",
+      "title": "The InternationalNamesType and MultiLangString Types",
+      "page": 55
+    },
+    {
+      "num": "B.1.2.2",
+      "title": "The AddressType Type",
+      "page": 56
+    },
+    {
+      "num": "B.1.2.3",
+      "title": "The PostalAddresses Element",
+      "page": 56
+    },
+    {
+      "num": "B.1.2.4",
+      "title": "The ElectronicAddressType Type",
+      "page": 57
+    },
+    {
+      "num": "B.1.2.5",
+      "title": "Types for managing the extensions",
+      "page": 57
+    },
+    {
+      "num": "B.1.2.6",
+      "title": "Types for URIs",
+      "page": 58
+    },
+    {
+      "num": "B.1.3",
+      "title": "The TrustServiceStatusList element",
+      "page": 58
+    },
+    {
+      "num": "B.1.3.1",
+      "title": "The TSLTag attribute",
+      "page": 58
+    },
+    {
+      "num": "B.2",
+      "title": "The SchemeInformation element",
+      "page": 59
+    },
+    {
+      "num": "B.2.1",
+      "title": "The TSLVersionIdentifier element",
+      "page": 59
+    },
+    {
+      "num": "B.2.2",
+      "title": "The TSLSequenceNumber element",
+      "page": 59
+    },
+    {
+      "num": "B.2.3",
+      "title": "The TSLType element",
+      "page": 59
+    },
+    {
+      "num": "B.2.4",
+      "title": "The SchemeOperatorName element",
+      "page": 59
+    },
+    {
+      "num": "B.2.5",
+      "title": "The SchemeOperatorAddress element",
+      "page": 59
+    },
+    {
+      "num": "B.2.6",
+      "title": "The SchemeName element",
+      "page": 60
+    },
+    {
+      "num": "B.2.7",
+      "title": "The SchemeInformationURI element",
+      "page": 60
+    },
+    {
+      "num": "B.2.8",
+      "title": "The StatusDeterminationApproach element",
+      "page": 60
+    },
+    {
+      "num": "B.2.9",
+      "title": "The SchemeTypeCommunityRules element",
+      "page": 60
+    },
+    {
+      "num": "B.2.10",
+      "title": "The SchemeTerritory element",
+      "page": 60
+    },
+    {
+      "num": "B.2.11",
+      "title": "The PolicyOrLegalNotice element",
+      "page": 60
+    },
+    {
+      "num": "B.2.12",
+      "title": "The HistoricalInformationPeriod element",
+      "page": 61
+    },
+    {
+      "num": "B.2.13",
+      "title": "The PointersToOtherTSL element",
+      "page": 61
+    },
+    {
+      "num": "B.2.13.1",
+      "title": "Already identified contents of OtherInformation element",
+      "page": 61
+    },
+    {
+      "num": "B.2.14",
+      "title": "The ListIssueDateTime element",
+      "page": 62
+    },
+    {
+      "num": "B.2.15",
+      "title": "The NextUpdate element",
+      "page": 62
+    },
+    {
+      "num": "B.2.16",
+      "title": "The SchemeExtensions element",
+      "page": 62
+    },
+    {
+      "num": "B.2.17",
+      "title": "The DistributionPoints element",
+      "page": 62
+    },
+    {
+      "num": "B.2.18",
+      "title": "The TrustServiceProviderList element",
+      "page": 62
+    },
+    {
+      "num": "B.3",
+      "title": "The TSPInformation element",
+      "page": 63
+    },
+    {
+      "num": "B.3.1",
+      "title": "The TSPName element",
+      "page": 63
+    },
+    {
+      "num": "B.3.2",
+      "title": "The TSPTradeName element",
+      "page": 63
+    },
+    {
+      "num": "B.3.3",
+      "title": "The TSPAddress element",
+      "page": 63
+    },
+    {
+      "num": "B.3.4",
+      "title": "The TSPInformationURI element",
+      "page": 63
+    },
+    {
+      "num": "B.3.5",
+      "title": "The TSPInformationExtensions element",
+      "page": 63
+    },
+    {
+      "num": "B.3.6",
+      "title": "The TSPServices element",
+      "page": 63
+    },
+    {
+      "num": "B.4",
+      "title": "The ServiceInformation element",
+      "page": 64
+    },
+    {
+      "num": "B.4.1",
+      "title": "The ServiceTypeIdentifier element",
+      "page": 64
+    },
+    {
+      "num": "B.4.2",
+      "title": "The ServiceName element",
+      "page": 64
+    },
+    {
+      "num": "B.4.3",
+      "title": "The ServiceDigitalIdentity element",
+      "page": 64
+    },
+    {
+      "num": "B.4.4",
+      "title": "The ServiceStatus element",
+      "page": 65
+    },
+    {
+      "num": "B.4.5",
+      "title": "The StatusStartingTime element",
+      "page": 65
+    },
+    {
+      "num": "B.4.6",
+      "title": "The SchemeServiceDefinitionURI element",
+      "page": 65
+    },
+    {
+      "num": "B.4.7",
+      "title": "The ServiceSupplyPoints element",
+      "page": 65
+    },
+    {
+      "num": "B.4.8",
+      "title": "The TSPServiceDefinitionURI element",
+      "page": 65
+    },
+    {
+      "num": "B.4.9",
+      "title": "The ServiceInformationExtensions element",
+      "page": 65
+    },
+    {
+      "num": "B.4.10",
+      "title": "The ServiceHistory element",
+      "page": 66
+    },
+    {
+      "num": "B.5",
+      "title": "The ServiceHistory type",
+      "page": 66
+    },
+    {
+      "num": "B.6",
+      "title": "The Signature element",
+      "page": 66
+    },
+    {
+      "num": "B.6.1",
+      "title": "The scheme identification",
+      "page": 67
+    },
+    {
+      "num": "B.6.1.1",
+      "title": "The scheme operator identifier in XAdES signatures",
+      "page": 67
+    },
+    {
+      "num": "B.6.2",
+      "title": "Algorithm and parameters",
+      "page": 67
+    },
+    {
+      "num": "B.7",
+      "title": "Elements and types for TSL extensions",
+      "page": 67
+    },
+    {
+      "num": "B.7.1",
+      "title": "The ExpiredCertsRevocationInfo element",
+      "page": 68
+    },
+    {
+      "num": "B.7.2",
+      "title": "The AdditionalServiceInformation element",
+      "page": 68
+    },
+    {
+      "num": "Annex C",
+      "title": "ASN.1 and XML files",
+      "page": 69,
+      "annex_type": "normative"
+    },
+    {
+      "num": "C.1",
+      "title": "Electronic attachment",
+      "page": 69
+    },
+    {
+      "num": "C.2",
+      "title": "ASN.1 module",
+      "page": 69
+    },
+    {
+      "num": "C.3",
+      "title": "XML schema",
+      "page": 69
+    },
+    {
+      "num": "C.4",
+      "title": "LDAP schema",
+      "page": 70
+    },
+    {
+      "num": "Annex D",
+      "title": "Registered Uniform Resource Identifiers",
+      "page": 71,
+      "annex_type": "normative"
+    },
+    {
+      "num": "D.1",
+      "title": "URIs registered within the present document",
+      "page": 71
+    },
+    {
+      "num": "D.2",
+      "title": "ETSI Common Domain URIs",
+      "page": 72
+    },
+    {
+      "num": "D.3",
+      "title": "Registering additional URIs",
+      "page": 74
+    },
+    {
+      "num": "Annex E",
+      "title": "Implementation notes for multilingual support",
+      "page": 75,
+      "annex_type": "normative"
+    },
+    {
+      "num": "E.1",
+      "title": "Multilingual character string",
+      "page": 75
+    },
+    {
+      "num": "E.2",
+      "title": "Multilingual pointer",
+      "page": 75
+    },
+    {
+      "num": "E.3",
+      "title": "Overall requirements",
+      "page": 76
+    },
+    {
+      "num": "Annex F",
+      "title": "TSL Signing considerations",
+      "page": 77,
+      "annex_type": "informative"
+    },
+    {
+      "num": "F.1",
+      "title": "Signing application maturity",
+      "page": 77
+    },
+    {
+      "num": "F.2",
+      "title": "CMS/ESS and CAdES",
+      "page": 77
+    },
+    {
+      "num": "F.3",
+      "title": "XML",
+      "page": 77
+    },
+    {
+      "num": "F.4",
+      "title": "PDF/A",
+      "page": 78
+    },
+    {
+      "num": "Annex G",
+      "title": "Management and Policy considerations",
+      "page": 79,
+      "annex_type": "informative"
+    },
+    {
+      "num": "G.1",
+      "title": "Change of scheme administrative information",
+      "page": 79
+    },
+    {
+      "num": "G.2",
+      "title": "Trust-service identification",
+      "page": 79
+    },
+    {
+      "num": "G.3",
+      "title": "Change of trust-service status",
+      "page": 79
+    },
+    {
+      "num": "G.4",
+      "title": "Amendment response times",
+      "page": 80
+    },
+    {
+      "num": "G.5",
+      "title": "On-going verification of authenticity",
+      "page": 80
+    },
+    {
+      "num": "G.6",
+      "title": "Upon a scheme's cessation of operations",
+      "page": 80
+    },
+    {
+      "num": "G.7",
+      "title": "User reference to TSL",
+      "page": 81
+    },
+    {
+      "num": "G.8",
+      "title": "Reliance upon hard-copy TSL information",
+      "page": 81
+    },
+    {
+      "num": "G.9",
+      "title": "TSL size",
+      "page": 81
+    },
+    {
+      "num": "Annex H",
+      "title": "Locating and Authenticating a TSL",
+      "page": 82,
+      "annex_type": "informative"
+    },
+    {
+      "num": "H.1",
+      "title": "Introduction",
+      "page": 82
+    },
+    {
+      "num": "H.2",
+      "title": "Locating a TSL",
+      "page": 82
+    },
+    {
+      "num": "H.2.1",
+      "title": "TSL location models",
+      "page": 82
+    },
+    {
+      "num": "H.2.1.1",
+      "title": "Bound information",
+      "page": 82
+    },
+    {
+      "num": "H.2.1.2",
+      "title": "Linked information",
+      "page": 83
+    },
+    {
+      "num": "H.2.1.3",
+      "title": "De-coupled information",
+      "page": 83
+    },
+    {
+      "num": "H.2.2",
+      "title": "Searching for a TSL",
+      "page": 83
+    },
+    {
+      "num": "H.2.2.1",
+      "title": "Same-scheme searching",
+      "page": 83
+    },
+    {
+      "num": "H.2.2.2",
+      "title": "Known scheme searching",
+      "page": 84
+    },
+    {
+      "num": "H.2.2.3",
+      "title": "\"Blind\" (unknown) scheme searching",
+      "page": 84
+    },
+    {
+      "num": "H.2.2.3.1",
+      "title": "Structure of the HTML-Page",
+      "page": 84
+    },
+    {
+      "num": "H.2.2.3.2",
+      "title": "Example",
+      "page": 85
+    },
+    {
+      "num": "H.3",
+      "title": "Authenticating a TSL",
+      "page": 86
+    },
+    {
+      "num": "H.4",
+      "title": "Trusting a TSL",
+      "page": 86
+    },
+    {
+      "num": "H.5",
+      "title": "Replicating TSLs",
+      "page": 87
+    },
+    {
+      "num": "H.6",
+      "title": "Security issues",
+      "page": 87
+    },
+    {
+      "num": "H.7",
+      "title": "Implications for authentication of Trust Service Tokens",
+      "page": 88
+    },
+    {
+      "num": "Annex I",
+      "title": "General TSL usage",
+      "page": 89,
+      "annex_type": "informative"
+    },
+    {
+      "num": "I.1",
+      "title": "Introduction",
+      "page": 89
+    },
+    {
+      "num": "I.2",
+      "title": "Generic TSL usage",
+      "page": 89
+    },
+    {
+      "num": "I.2.1",
+      "title": "Trusted Lists",
+      "page": 89
+    },
+    {
+      "num": "I.2.2",
+      "title": "Trust service status as legal evidence",
+      "page": 89
+    },
+    {
+      "num": "I.2.3",
+      "title": "Checking for anomalous status before accepting a credential",
+      "page": 90
+    },
+    {
+      "num": "I.2.4",
+      "title": "Cross-certification status confirmation",
+      "page": 90
+    },
+    {
+      "num": "I.3",
+      "title": "TSLs used to list other schemes",
+      "page": 90
+    },
+    {
+      "num": "I.3.1",
+      "title": "Hierarchical relationships",
+      "page": 90
+    },
+    {
+      "num": "I.3.2",
+      "title": "A collection of TSLs",
+      "page": 91
+    },
+    {
+      "num": "I.3.3",
+      "title": "Schemes applying common rules",
+      "page": 91
+    },
+    {
+      "num": "I.3.4",
+      "title": "Schemes trusted by a vendor community",
+      "page": 92
+    },
+    {
+      "num": "I.3.5",
+      "title": "Industrial trading consortium",
+      "page": 92
+    },
+    {
+      "num": "Annex J",
+      "title": "TSL manual/auto field usage",
+      "page": 93,
+      "annex_type": "informative"
+    },
+    {
+      "num": "L.1",
+      "title": "Introduction",
+      "page": 95
+    },
+    {
+      "num": "L.2",
+      "title": "eSig Directive URIs",
+      "page": 95
+    },
+    {
+      "num": "L.3",
+      "title": "eSig Directive Extensions",
+      "page": 101
+    },
+    {
+      "num": "L.3.1",
+      "title": "Qualifications Extension",
+      "page": 101
+    },
+    {
+      "num": "L.3.1.1",
+      "title": "QualificationElement",
+      "page": 101
+    },
+    {
+      "num": "L.3.1.2",
+      "title": "CriteriaList",
+      "page": 101
+    },
+    {
+      "num": "L.3.1.2.1",
+      "title": "KeyUsage",
+      "page": 102
+    },
+    {
+      "num": "L.3.1.2.2",
+      "title": "PolicySet",
+      "page": 102
+    },
+    {
+      "num": "L.3.1.2.3",
+      "title": "OtherCriteria",
+      "page": 102
+    },
+    {
+      "num": "L.3.1.3",
+      "title": "Qualifier",
+      "page": 103
+    },
+    {
+      "num": "L.3.2",
+      "title": "TakenOverBy Extension",
+      "page": 103
+    },
+    {
+      "num": "Annex M",
+      "title": "Changes since the last major version",
+      "page": 104,
+      "annex_type": "informative"
+    },
+    {
+      "num": "M.1",
+      "title": "Changes from v2.1.1 to v3.1.1",
+      "page": 104
+    },
+    {
+      "num": "M.2",
+      "title": "Changes from v3.1.1 to v3.1.2",
+      "page": 104
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 106,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 11,
+  "total_pages": 106,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
+}

@@ -1,0 +1,372 @@
+{
+  "stem": "ts_119471v010101p",
+  "pdf": "downloads/specs/TS/ts_119471v010101p.pdf",
+  "title": "(2025-05)",
+  "reference": "ts_119471v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 9
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.4",
+      "title": "Notation",
+      "page": 10
+    },
+    {
+      "num": "4",
+      "title": "EAA trust services",
+      "page": 10
+    },
+    {
+      "num": "4.1",
+      "title": "Overview",
+      "page": 10
+    },
+    {
+      "num": "4.2",
+      "title": "EAA Issuance services",
+      "page": 11
+    },
+    {
+      "num": "4.2.1",
+      "title": "Initiation",
+      "page": 11
+    },
+    {
+      "num": "4.2.1.1",
+      "title": "General",
+      "page": 11
+    },
+    {
+      "num": "4.2.1.2",
+      "title": "EUDIW specific",
+      "page": 11
+    },
+    {
+      "num": "4.2.2",
+      "title": "EAA issuance",
+      "page": 11
+    },
+    {
+      "num": "4.2.2.1",
+      "title": "General",
+      "page": 11
+    },
+    {
+      "num": "4.2.2.2",
+      "title": "Verification of attributes against authentic sources",
+      "page": 12
+    },
+    {
+      "num": "4.2.2.3",
+      "title": "EUDIW specific",
+      "page": 12
+    },
+    {
+      "num": "4.2.3",
+      "title": "EAA Usage",
+      "page": 14
+    },
+    {
+      "num": "4.2.3.1",
+      "title": "General",
+      "page": 14
+    },
+    {
+      "num": "4.2.3.2",
+      "title": "EUDIW Specific",
+      "page": 14
+    },
+    {
+      "num": "4.2.4",
+      "title": "EAA Renewal",
+      "page": 14
+    },
+    {
+      "num": "4.2.4.1",
+      "title": "General",
+      "page": 14
+    },
+    {
+      "num": "4.2.4.2",
+      "title": "EUDIW Specific",
+      "page": 14
+    },
+    {
+      "num": "4.2.5",
+      "title": "EAA Revocation",
+      "page": 14
+    },
+    {
+      "num": "4.2.5.1",
+      "title": "General",
+      "page": 14
+    },
+    {
+      "num": "4.2.5.2",
+      "title": "EUDIW Specific",
+      "page": 15
+    },
+    {
+      "num": "4.3",
+      "title": "EAA validation services",
+      "page": 16
+    },
+    {
+      "num": "4.3.1",
+      "title": "General",
+      "page": 16
+    },
+    {
+      "num": "4.3.2",
+      "title": "EUDIW Specific",
+      "page": 16
+    },
+    {
+      "num": "5",
+      "title": "Risk Assessment",
+      "page": 16
+    },
+    {
+      "num": "6",
+      "title": "General provision on policies and practices",
+      "page": 17
+    },
+    {
+      "num": "6.1",
+      "title": "EAAS practice statement",
+      "page": 17
+    },
+    {
+      "num": "6.1.1",
+      "title": "General",
+      "page": 17
+    },
+    {
+      "num": "6.1.2",
+      "title": "EUDIW specific",
+      "page": 17
+    },
+    {
+      "num": "6.2",
+      "title": "Terms and conditions",
+      "page": 17
+    },
+    {
+      "num": "6.3",
+      "title": "Information security policy",
+      "page": 17
+    },
+    {
+      "num": "6.4",
+      "title": "EAA policy",
+      "page": 17
+    },
+    {
+      "num": "7",
+      "title": "EAASP management and operation",
+      "page": 18
+    },
+    {
+      "num": "7.1",
+      "title": "Internal organization",
+      "page": 18
+    },
+    {
+      "num": "7.1.1",
+      "title": "Organization reliability",
+      "page": 18
+    },
+    {
+      "num": "7.1.2",
+      "title": "Segregation of duties",
+      "page": 18
+    },
+    {
+      "num": "7.2",
+      "title": "Human resources",
+      "page": 18
+    },
+    {
+      "num": "7.3",
+      "title": "Asset management",
+      "page": 18
+    },
+    {
+      "num": "7.4",
+      "title": "Access control",
+      "page": 19
+    },
+    {
+      "num": "7.5",
+      "title": "Cryptographic controls",
+      "page": 19
+    },
+    {
+      "num": "7.5.1",
+      "title": "General",
+      "page": 19
+    },
+    {
+      "num": "7.5.2",
+      "title": "Key pair generation and installation",
+      "page": 19
+    },
+    {
+      "num": "7.5.3",
+      "title": "EAAS key protection and cryptographic module engineering controls",
+      "page": 20
+    },
+    {
+      "num": "7.5.4",
+      "title": "Other aspects of key pair management",
+      "page": 21
+    },
+    {
+      "num": "7.5.5",
+      "title": "EUDIW specific",
+      "page": 21
+    },
+    {
+      "num": "7.6",
+      "title": "Physical and environmental security",
+      "page": 21
+    },
+    {
+      "num": "7.7",
+      "title": "Operation security",
+      "page": 21
+    },
+    {
+      "num": "7.8",
+      "title": "Network security",
+      "page": 21
+    },
+    {
+      "num": "7.9",
+      "title": "Vulnerabilities and Incident management",
+      "page": 22
+    },
+    {
+      "num": "7.10",
+      "title": "Collection of evidence for EAASP internal services",
+      "page": 22
+    },
+    {
+      "num": "7.11",
+      "title": "Business continuity management",
+      "page": 22
+    },
+    {
+      "num": "7.11.1",
+      "title": "General",
+      "page": 22
+    },
+    {
+      "num": "7.11.2",
+      "title": "Back up",
+      "page": 22
+    },
+    {
+      "num": "7.11.3",
+      "title": "Crisis management",
+      "page": 23
+    },
+    {
+      "num": "7.12",
+      "title": "EAASP and EAAS termination and termination plans",
+      "page": 23
+    },
+    {
+      "num": "7.13",
+      "title": "Compliance",
+      "page": 23
+    },
+    {
+      "num": "7.14",
+      "title": "Supply chain",
+      "page": 23
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 24,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 24,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

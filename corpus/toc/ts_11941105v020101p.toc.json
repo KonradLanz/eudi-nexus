@@ -1,0 +1,199 @@
+{
+  "stem": "ts_11941105v020101p",
+  "pdf": "downloads/specs/TS/ts_11941105v020101p.pdf",
+  "title": "(2025-02)",
+  "reference": "ts_11941105v020101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "1-QWAC Approach",
+      "page": 9
+    },
+    {
+      "num": "4.1.1",
+      "title": "Policy Requirements",
+      "page": 9
+    },
+    {
+      "num": "4.1.2",
+      "title": "Certificate Profile Requirements",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "2-QWAC Approach",
+      "page": 9
+    },
+    {
+      "num": "4.2.1",
+      "title": "Policy Requirements",
+      "page": 9
+    },
+    {
+      "num": "4.2.2",
+      "title": "Certificate Profile Requirements",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Usage of 1-QWACs",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Usage of 2-QWACs",
+      "page": 9
+    },
+    {
+      "num": "6.1",
+      "title": "General Procedures",
+      "page": 10
+    },
+    {
+      "num": "6.1.1",
+      "title": "Determining Usage",
+      "page": 10
+    },
+    {
+      "num": "6.1.2",
+      "title": "Validation of QWACs",
+      "page": 10
+    },
+    {
+      "num": "6.2",
+      "title": "Usage of QWACs",
+      "page": 11
+    },
+    {
+      "num": "6.2.1",
+      "title": "Usage of 1-QWACs (i.e. \"Approach #1\")",
+      "page": 11
+    },
+    {
+      "num": "6.2.2",
+      "title": "Usage of 2-QWACs with TLS Certificate Binding (i.e. \"Approach #2\")",
+      "page": 11
+    },
+    {
+      "num": "6.3",
+      "title": "Validation outcomes",
+      "page": 12
+    },
+    {
+      "num": "Annex A",
+      "title": "id-kp-tlsBinding EKU specification",
+      "page": 13,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex B",
+      "title": "TLS Certificate Binding Profile",
+      "page": 14,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Web Browser Recommendations",
+      "page": 15,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "General Web Browser Recommendations",
+      "page": 15
+    },
+    {
+      "num": "C.3",
+      "title": "Content of the Root Store Policy",
+      "page": 15
+    },
+    {
+      "num": "C.4",
+      "title": "Application of a Root Store Policy",
+      "page": 16
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 18,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 18,
+  "toc_pages": [
+    3
+  ]
+}

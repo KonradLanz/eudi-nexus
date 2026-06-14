@@ -1,0 +1,363 @@
+{
+  "stem": "ts_10277805v010102p",
+  "pdf": "downloads/specs/TS/ts_10277805v010102p.pdf",
+  "title": "(2009-12)",
+  "reference": "ts_10277805v010102p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "Profiles for XAdES signatures of signed XML documents embedded in PDF containers",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Overview",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Profile for Basic XAdES signatures of XML documents embedded in PDF containers",
+      "page": 11
+    },
+    {
+      "num": "4.2.1",
+      "title": "Features",
+      "page": 11
+    },
+    {
+      "num": "4.2.2",
+      "title": "General syntax and requirements",
+      "page": 12
+    },
+    {
+      "num": "4.2.3",
+      "title": "Requirements for applications generating signed XML document to be embedded",
+      "page": 12
+    },
+    {
+      "num": "4.2.4",
+      "title": "Mandatory operations",
+      "page": 13
+    },
+    {
+      "num": "4.2.4.1",
+      "title": "Protecting the signing certificate",
+      "page": 13
+    },
+    {
+      "num": "4.2.5",
+      "title": "Requirements on XAdES optional properties",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.1",
+      "title": "The SigningTime element",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.2",
+      "title": "The SignaturePolicyIdentifier element",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.3",
+      "title": "The SignatureProductionPlace element",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.4",
+      "title": "The SignerRole element",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.5",
+      "title": "The SignedDataObjectFormat element",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.6",
+      "title": "The CommitmentTypeIndication element",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.7",
+      "title": "The AllDataObjectsTimeStamp element",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.8",
+      "title": "The IndividualDataObjectsTimeStamp element",
+      "page": 13
+    },
+    {
+      "num": "4.2.5.9",
+      "title": "The SignatureTimeStamp element",
+      "page": 14
+    },
+    {
+      "num": "4.2.6",
+      "title": "Serial Signatures",
+      "page": 14
+    },
+    {
+      "num": "4.2.6.1",
+      "title": "The CounterSignature element",
+      "page": 14
+    },
+    {
+      "num": "4.2.6.2",
+      "title": "Detached serial signature",
+      "page": 14
+    },
+    {
+      "num": "4.2.7",
+      "title": "Parallel Signatures",
+      "page": 14
+    },
+    {
+      "num": "4.3.1",
+      "title": "Features",
+      "page": 14
+    },
+    {
+      "num": "4.3.2",
+      "title": "Upgrading mechanism",
+      "page": 14
+    },
+    {
+      "num": "4.3.3",
+      "title": "Optional properties",
+      "page": 14
+    },
+    {
+      "num": "4.3.4",
+      "title": "Validation Process",
+      "page": 15
+    },
+    {
+      "num": "5",
+      "title": "Profiles for XAdES signatures on XFA Forms",
+      "page": 15
+    },
+    {
+      "num": "5.1",
+      "title": "Overview",
+      "page": 15
+    },
+    {
+      "num": "5.2",
+      "title": "Profile for Basic XAdES signatures on XFA forms",
+      "page": 18
+    },
+    {
+      "num": "5.2.1",
+      "title": "Features",
+      "page": 18
+    },
+    {
+      "num": "5.2.2",
+      "title": "General syntax and requirements",
+      "page": 18
+    },
+    {
+      "num": "5.2.3",
+      "title": "Mandatory operations",
+      "page": 19
+    },
+    {
+      "num": "5.2.3.1",
+      "title": "Protecting the signing certificate",
+      "page": 19
+    },
+    {
+      "num": "5.2.4",
+      "title": "Requirements on XAdES optional properties",
+      "page": 19
+    },
+    {
+      "num": "5.2.4.1",
+      "title": "The SigningTime element",
+      "page": 19
+    },
+    {
+      "num": "5.2.4.2",
+      "title": "The SignaturePolicyIdentifier element",
+      "page": 19
+    },
+    {
+      "num": "5.2.4.3",
+      "title": "The SignatureProductionPlace element",
+      "page": 19
+    },
+    {
+      "num": "5.2.4.4",
+      "title": "The SignerRole element",
+      "page": 20
+    },
+    {
+      "num": "5.2.4.5",
+      "title": "The SignedDataObjectFormat element",
+      "page": 20
+    },
+    {
+      "num": "5.2.4.6",
+      "title": "The CommitmentTypeIndication element",
+      "page": 20
+    },
+    {
+      "num": "5.2.4.7",
+      "title": "The AllDataObjectsTimeStamp element",
+      "page": 20
+    },
+    {
+      "num": "5.2.4.8",
+      "title": "The IndividualDataObjectsTimeStamp element",
+      "page": 20
+    },
+    {
+      "num": "5.2.4.9",
+      "title": "The SignatureTimeStamp element",
+      "page": 20
+    },
+    {
+      "num": "5.2.5",
+      "title": "Serial Signatures",
+      "page": 20
+    },
+    {
+      "num": "5.2.5.1",
+      "title": "The CounterSignature element",
+      "page": 20
+    },
+    {
+      "num": "5.2.5.2",
+      "title": "Detached serial signature",
+      "page": 21
+    },
+    {
+      "num": "5.2.6",
+      "title": "Parallel Signatures",
+      "page": 21
+    },
+    {
+      "num": "5.3",
+      "title": "Profile for long-term validation XAdES signatures on XFA forms (XAdES-LTV)",
+      "page": 21
+    },
+    {
+      "num": "5.3.1",
+      "title": "Overview",
+      "page": 21
+    },
+    {
+      "num": "5.3.2",
+      "title": "Features",
+      "page": 21
+    },
+    {
+      "num": "5.3.3",
+      "title": "General Requirements",
+      "page": 21
+    },
+    {
+      "num": "5.3.4",
+      "title": "Validation Process",
+      "page": 22
+    },
+    {
+      "num": "5.4",
+      "title": "Extensions Dictionary",
+      "page": 22
+    },
+    {
+      "num": "Annex A",
+      "title": "Matching of Basic PAdES-LTV XAdES-based profiles to XAdES",
+      "page": 23,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Change history",
+      "page": 25,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Bibliography",
+      "page": 26,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 27,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 27,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

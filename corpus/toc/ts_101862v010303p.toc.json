@@ -1,0 +1,116 @@
+{
+  "stem": "ts_101862v010303p",
+  "pdf": "downloads/specs/TS/ts_101862v010303p.pdf",
+  "title": "(2006-01)",
+  "reference": "ts_101862v010303p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Abbreviations",
+      "page": 5
+    },
+    {
+      "num": "4",
+      "title": "Document structure",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Certificate Profile",
+      "page": 6
+    },
+    {
+      "num": "5.1",
+      "title": "Issuer field",
+      "page": 6
+    },
+    {
+      "num": "5.2",
+      "title": "Qualified Certificate Statements",
+      "page": 6
+    },
+    {
+      "num": "5.2.1",
+      "title": "Statement claiming that the certificates is a Qualified Certificate",
+      "page": 6
+    },
+    {
+      "num": "5.2.2",
+      "title": "Statement regarding limits on the value of transactions",
+      "page": 7
+    },
+    {
+      "num": "5.3",
+      "title": "Qualified Certificate Indication",
+      "page": 8
+    },
+    {
+      "num": "Annex A",
+      "title": "Relationship with the Directive",
+      "page": 9,
+      "annex_type": "informative"
+    },
+    {
+      "num": "A.1",
+      "title": "Annex I of the Directive",
+      "page": 9
+    },
+    {
+      "num": "A.2",
+      "title": "Annex II of the Directive",
+      "page": 10
+    },
+    {
+      "num": "Annex B",
+      "title": "ASN.1 declarations",
+      "page": 11,
+      "annex_type": "normative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 13,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 13,
+  "toc_pages": [
+    3
+  ]
+}

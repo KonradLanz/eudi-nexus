@@ -1,0 +1,518 @@
+{
+  "stem": "tr_11947901v010101p",
+  "pdf": "downloads/specs/TR/tr_11947901v010101p.pdf",
+  "title": "(2026-05)",
+  "reference": "tr_11947901v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 9
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 9
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 9
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 10
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 12
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 12
+    },
+    {
+      "num": "4",
+      "title": "Conceptual considerations",
+      "page": 12
+    },
+    {
+      "num": "4.1",
+      "title": "Source of attributes",
+      "page": 12
+    },
+    {
+      "num": "4.2",
+      "title": "EAA distribution",
+      "page": 13
+    },
+    {
+      "num": "4.3",
+      "title": "Multiple subjects",
+      "page": 13
+    },
+    {
+      "num": "4.4",
+      "title": "Binding",
+      "page": 14
+    },
+    {
+      "num": "4.4.1",
+      "title": "Identity Binding",
+      "page": 14
+    },
+    {
+      "num": "4.4.2",
+      "title": "Wallet Binding",
+      "page": 14
+    },
+    {
+      "num": "4.4.3",
+      "title": "Certificate binding",
+      "page": 14
+    },
+    {
+      "num": "4.5",
+      "title": "EAA Policy and EAA Service Policy",
+      "page": 15
+    },
+    {
+      "num": "4.6",
+      "title": "Vaults",
+      "page": 15
+    },
+    {
+      "num": "4.7",
+      "title": "Hybrid EAA",
+      "page": 16
+    },
+    {
+      "num": "5",
+      "title": "EAA trust service overview",
+      "page": 17
+    },
+    {
+      "num": "5.1",
+      "title": "Attestations in eIDAS",
+      "page": 17
+    },
+    {
+      "num": "5.2",
+      "title": "EAA Service actors",
+      "page": 17
+    },
+    {
+      "num": "5.2.1",
+      "title": "Overview",
+      "page": 17
+    },
+    {
+      "num": "5.2.2",
+      "title": "EAA Service Provider",
+      "page": 18
+    },
+    {
+      "num": "5.2.3",
+      "title": "Subscriber",
+      "page": 19
+    },
+    {
+      "num": "5.2.4",
+      "title": "Attribute subject(s)",
+      "page": 19
+    },
+    {
+      "num": "5.2.5",
+      "title": "Source",
+      "page": 20
+    },
+    {
+      "num": "5.2.5.1",
+      "title": "Authentic source",
+      "page": 20
+    },
+    {
+      "num": "5.2.5.2",
+      "title": "Authoritative source",
+      "page": 20
+    },
+    {
+      "num": "5.2.6",
+      "title": "Wallet Holder",
+      "page": 21
+    },
+    {
+      "num": "5.2.7",
+      "title": "Vault Holder",
+      "page": 21
+    },
+    {
+      "num": "5.2.8",
+      "title": "EAA Recipient",
+      "page": 21
+    },
+    {
+      "num": "5.2.9",
+      "title": "Authorized Party",
+      "page": 22
+    },
+    {
+      "num": "5.2.10",
+      "title": "RP Intermediary",
+      "page": 22
+    },
+    {
+      "num": "5.2.11",
+      "title": "Relying party",
+      "page": 23
+    },
+    {
+      "num": "5.3",
+      "title": "EAA Service Provider components",
+      "page": 24
+    },
+    {
+      "num": "5.4",
+      "title": "EAA Policy",
+      "page": 25
+    },
+    {
+      "num": "5.4.1",
+      "title": "Context",
+      "page": 25
+    },
+    {
+      "num": "5.4.2",
+      "title": "EAA policy governance model",
+      "page": 26
+    },
+    {
+      "num": "5.4.3",
+      "title": "Establishing EAA Policies",
+      "page": 28
+    },
+    {
+      "num": "5.5",
+      "title": "Business processes",
+      "page": 30
+    },
+    {
+      "num": "5.5.1",
+      "title": "Overview",
+      "page": 30
+    },
+    {
+      "num": "5.5.2",
+      "title": "EAA registration",
+      "page": 31
+    },
+    {
+      "num": "5.5.3",
+      "title": "Identity proofing",
+      "page": 32
+    },
+    {
+      "num": "5.5.4",
+      "title": "Collection from or verification against Authoritative source(s)",
+      "page": 32
+    },
+    {
+      "num": "5.5.5",
+      "title": "EAA Issuance",
+      "page": 33
+    },
+    {
+      "num": "5.5.6",
+      "title": "Wallet/key binding",
+      "page": 33
+    },
+    {
+      "num": "5.5.7",
+      "title": "Sign/seal certificate binding",
+      "page": 34
+    },
+    {
+      "num": "5.5.8",
+      "title": "Handover",
+      "page": 34
+    },
+    {
+      "num": "5.5.9",
+      "title": "Revocation request",
+      "page": 35
+    },
+    {
+      "num": "5.5.10",
+      "title": "EAA Status information",
+      "page": 35
+    },
+    {
+      "num": "6",
+      "title": "EAA trust ecosystem",
+      "page": 35
+    },
+    {
+      "num": "6.1",
+      "title": "Scope",
+      "page": 35
+    },
+    {
+      "num": "6.2",
+      "title": "General provision on policies and practices",
+      "page": 36
+    },
+    {
+      "num": "6.3",
+      "title": "EAA Policy trust",
+      "page": 36
+    },
+    {
+      "num": "6.4",
+      "title": "Registration of EAA request",
+      "page": 36
+    },
+    {
+      "num": "6.5",
+      "title": "Attributes aggregation",
+      "page": 37
+    },
+    {
+      "num": "6.6",
+      "title": "Identity proofing & authorization",
+      "page": 37
+    },
+    {
+      "num": "6.7",
+      "title": "EAA Issuance",
+      "page": 38
+    },
+    {
+      "num": "6.8",
+      "title": "EAA Dissemination",
+      "page": 38
+    },
+    {
+      "num": "6.9",
+      "title": "EAA Lifecycle management",
+      "page": 38
+    },
+    {
+      "num": "6.10",
+      "title": "Embedded disclosure policy",
+      "page": 38
+    },
+    {
+      "num": "6.11",
+      "title": "Longevity of EAA",
+      "page": 39
+    },
+    {
+      "num": "6.11.1",
+      "title": "Short lived",
+      "page": 39
+    },
+    {
+      "num": "6.11.2",
+      "title": "Long Lived",
+      "page": 39
+    },
+    {
+      "num": "6.11.3",
+      "title": "Impact on revocation technology",
+      "page": 39
+    },
+    {
+      "num": "6.11.4",
+      "title": "Timestamping of EAA",
+      "page": 39
+    },
+    {
+      "num": "A.1",
+      "title": "Scope",
+      "page": 40
+    },
+    {
+      "num": "A.2",
+      "title": "Digital Product Passport (DPP)",
+      "page": 40
+    },
+    {
+      "num": "A.2.1",
+      "title": "Description of the use case",
+      "page": 40
+    },
+    {
+      "num": "A.2.2",
+      "title": "Trust Service Actors",
+      "page": 40
+    },
+    {
+      "num": "A.2.3",
+      "title": "Business processes",
+      "page": 40
+    },
+    {
+      "num": "A.2.4",
+      "title": "Technical implications",
+      "page": 41
+    },
+    {
+      "num": "A.3",
+      "title": "Mandate of natural person on European Business Wallet (EUBW)",
+      "page": 41
+    },
+    {
+      "num": "A.3.1",
+      "title": "Description of the use case",
+      "page": 41
+    },
+    {
+      "num": "A.3.2",
+      "title": "Trust Service Actors",
+      "page": 41
+    },
+    {
+      "num": "A.3.3",
+      "title": "Business processes",
+      "page": 41
+    },
+    {
+      "num": "A.3.4",
+      "title": "Technical implications",
+      "page": 42
+    },
+    {
+      "num": "A.4",
+      "title": "EAA included in a signature",
+      "page": 42
+    },
+    {
+      "num": "A.4.1",
+      "title": "Description of the use case",
+      "page": 42
+    },
+    {
+      "num": "A.4.2",
+      "title": "Trust Service Actors",
+      "page": 42
+    },
+    {
+      "num": "A.4.3",
+      "title": "Business processes",
+      "page": 42
+    },
+    {
+      "num": "A.4.4",
+      "title": "Technical implications",
+      "page": 43
+    },
+    {
+      "num": "A.5",
+      "title": "Vehicle documents",
+      "page": 43
+    },
+    {
+      "num": "A.5.1",
+      "title": "Description of the use case",
+      "page": 43
+    },
+    {
+      "num": "A.5.2",
+      "title": "Trust Service Actors",
+      "page": 43
+    },
+    {
+      "num": "A.5.3",
+      "title": "Business processes",
+      "page": 44
+    },
+    {
+      "num": "B.1",
+      "title": "Impact on ETSI Standards",
+      "page": 45
+    },
+    {
+      "num": "B.2",
+      "title": "Impact on standards related to the European Business Wallet",
+      "page": 45
+    },
+    {
+      "num": "B.3",
+      "title": "Other impact on existing standards",
+      "page": 46
+    },
+    {
+      "num": "B.4",
+      "title": "Suggested new work items",
+      "page": 47
+    },
+    {
+      "num": "B.5",
+      "title": "Topics requiring further discussion",
+      "page": 47
+    },
+    {
+      "num": "Annex C",
+      "title": "Bibliography",
+      "page": 48,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 49,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 49,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

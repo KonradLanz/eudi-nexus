@@ -1,0 +1,398 @@
+{
+  "stem": "ts_11914202v010001p",
+  "pdf": "downloads/specs/TS/ts_11914202v010001p.pdf",
+  "title": "(2015-07)",
+  "reference": "ts_11914202v010001p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "Profile for CMS digital signatures in PDF",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Features",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Requirements of Profile for CMS Signatures in PDF",
+      "page": 9
+    },
+    {
+      "num": "4.2.1",
+      "title": "Requirements on PDF signatures",
+      "page": 9
+    },
+    {
+      "num": "4.2.2",
+      "title": "Requirements on PDF signature handlers",
+      "page": 10
+    },
+    {
+      "num": "4.2.3",
+      "title": "Requirements on signature validation",
+      "page": 10
+    },
+    {
+      "num": "4.2.4",
+      "title": "Requirements on Time Stamping",
+      "page": 10
+    },
+    {
+      "num": "4.2.4.1",
+      "title": "Requirements on electronic time-stamp creation",
+      "page": 10
+    },
+    {
+      "num": "4.2.4.2",
+      "title": "Requirements on electronic time-stamp validation",
+      "page": 11
+    },
+    {
+      "num": "4.2.5",
+      "title": "Requirements on revocation checking",
+      "page": 11
+    },
+    {
+      "num": "4.2.6",
+      "title": "Requirements on Seed Values",
+      "page": 11
+    },
+    {
+      "num": "4.2.7",
+      "title": "Requirements on encryption",
+      "page": 11
+    },
+    {
+      "num": "5",
+      "title": "Extended PAdES signature profiles",
+      "page": 11
+    },
+    {
+      "num": "5.1",
+      "title": "Features",
+      "page": 11
+    },
+    {
+      "num": "5.2",
+      "title": "General Requirements",
+      "page": 11
+    },
+    {
+      "num": "5.2.1",
+      "title": "Requirements from Part 1",
+      "page": 11
+    },
+    {
+      "num": "5.2.2",
+      "title": "Notation of Requirements",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "PAdES-E-BES Level",
+      "page": 12
+    },
+    {
+      "num": "5.4",
+      "title": "PAdES-E-EPES Level",
+      "page": 14
+    },
+    {
+      "num": "5.5",
+      "title": "PAdES-E-LTV Level",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "Profiles for XAdES Signatures signing XML content in PDF",
+      "page": 14
+    },
+    {
+      "num": "6.1",
+      "title": "Features",
+      "page": 14
+    },
+    {
+      "num": "6.2",
+      "title": "Profiles for XAdES signatures of signed XML documents embedded in PDF containers",
+      "page": 14
+    },
+    {
+      "num": "6.2.1",
+      "title": "Overview",
+      "page": 14
+    },
+    {
+      "num": "6.2.2",
+      "title": "Profile for Basic XAdES signatures of XML documents embedded in PDF containers",
+      "page": 16
+    },
+    {
+      "num": "6.2.2.1",
+      "title": "Features",
+      "page": 16
+    },
+    {
+      "num": "6.2.2.2",
+      "title": "General syntax and requirements",
+      "page": 17
+    },
+    {
+      "num": "6.2.2.3",
+      "title": "Requirements for applications generating signed XML document to be embedded",
+      "page": 17
+    },
+    {
+      "num": "6.2.2.4",
+      "title": "Mandatory operations",
+      "page": 18
+    },
+    {
+      "num": "6.2.2.4.1",
+      "title": "Protecting the signing certificate",
+      "page": 18
+    },
+    {
+      "num": "6.2.2.5",
+      "title": "Requirements on XAdES optional properties",
+      "page": 18
+    },
+    {
+      "num": "6.2.2.6",
+      "title": "Serial Signatures",
+      "page": 18
+    },
+    {
+      "num": "6.2.2.7",
+      "title": "Parallel Signatures",
+      "page": 18
+    },
+    {
+      "num": "6.2.2.8",
+      "title": "PAdES Signatures",
+      "page": 19
+    },
+    {
+      "num": "6.2.3.1",
+      "title": "Features",
+      "page": 19
+    },
+    {
+      "num": "6.2.3.2",
+      "title": "Augmentation mechanism",
+      "page": 19
+    },
+    {
+      "num": "6.2.3.3",
+      "title": "Optional properties",
+      "page": 19
+    },
+    {
+      "num": "6.2.3.4",
+      "title": "Validation Process",
+      "page": 19
+    },
+    {
+      "num": "6.3",
+      "title": "Profiles for XAdES signatures on XFA Forms",
+      "page": 19
+    },
+    {
+      "num": "6.3.1",
+      "title": "Overview",
+      "page": 19
+    },
+    {
+      "num": "6.3.2",
+      "title": "Profile for Basic XAdES signatures on XFA forms",
+      "page": 22
+    },
+    {
+      "num": "6.3.2.1",
+      "title": "Features",
+      "page": 22
+    },
+    {
+      "num": "6.3.2.2",
+      "title": "General syntax and requirements",
+      "page": 22
+    },
+    {
+      "num": "6.3.2.3",
+      "title": "Mandatory operations",
+      "page": 23
+    },
+    {
+      "num": "6.3.2.3.1",
+      "title": "Protecting the signing certificate",
+      "page": 23
+    },
+    {
+      "num": "6.3.2.4",
+      "title": "Requirements on XAdES optional properties",
+      "page": 23
+    },
+    {
+      "num": "6.3.2.5",
+      "title": "Serial Signatures",
+      "page": 24
+    },
+    {
+      "num": "6.3.2.6",
+      "title": "Parallel Signatures",
+      "page": 25
+    },
+    {
+      "num": "6.3.3",
+      "title": "Profile for long-term validation XAdES signatures on XFA forms",
+      "page": 25
+    },
+    {
+      "num": "6.3.3.1",
+      "title": "Overview",
+      "page": 25
+    },
+    {
+      "num": "6.3.3.2",
+      "title": "Features",
+      "page": 25
+    },
+    {
+      "num": "6.3.3.3",
+      "title": "General Requirements",
+      "page": 25
+    },
+    {
+      "num": "6.3.4",
+      "title": "Extensions Dictionary",
+      "page": 25
+    },
+    {
+      "num": "Annex A",
+      "title": "General Features",
+      "page": 26,
+      "annex_type": "informative"
+    },
+    {
+      "num": "A.1",
+      "title": "PDF signatures",
+      "page": 26
+    },
+    {
+      "num": "A.2",
+      "title": "PDF Signature types",
+      "page": 27
+    },
+    {
+      "num": "A.3",
+      "title": "PDF Signature Handlers",
+      "page": 27
+    },
+    {
+      "num": "A.4",
+      "title": "PDF serial signatures",
+      "page": 27
+    },
+    {
+      "num": "A.5",
+      "title": "PDF signature Validation and Time-stamping",
+      "page": 28
+    },
+    {
+      "num": "A.6",
+      "title": "ISO 19005-1: 2005 (PDF/A-1)",
+      "page": 28
+    },
+    {
+      "num": "A.7",
+      "title": "ISO 19005-2: 2008 (PDF/A-2)",
+      "page": 29
+    },
+    {
+      "num": "A.8",
+      "title": "Seed Values and Signature Policies",
+      "page": 29
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 30,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 30,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

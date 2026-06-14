@@ -1,0 +1,212 @@
+{
+  "stem": "ts_119401v020001p",
+  "pdf": "downloads/specs/TS/ts_119401v020001p.pdf",
+  "title": "(2015-07)",
+  "reference": "ts_119401v020001p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Risk Assesment",
+      "page": 7
+    },
+    {
+      "num": "6",
+      "title": "Policies and practices",
+      "page": 7
+    },
+    {
+      "num": "6.1",
+      "title": "Trust Service Practice (TSP) statement",
+      "page": 7
+    },
+    {
+      "num": "6.2",
+      "title": "Terms and Conditions",
+      "page": 8
+    },
+    {
+      "num": "6.3",
+      "title": "Information security policy",
+      "page": 8
+    },
+    {
+      "num": "7",
+      "title": "TSP management and operation",
+      "page": 9
+    },
+    {
+      "num": "7.1",
+      "title": "Internal organization",
+      "page": 9
+    },
+    {
+      "num": "7.1.1",
+      "title": "Organization reliability",
+      "page": 9
+    },
+    {
+      "num": "7.1.2",
+      "title": "Segregation of duties",
+      "page": 9
+    },
+    {
+      "num": "7.2",
+      "title": "Human resources",
+      "page": 9
+    },
+    {
+      "num": "7.3",
+      "title": "Asset management",
+      "page": 11
+    },
+    {
+      "num": "7.3.1",
+      "title": "General requirements",
+      "page": 11
+    },
+    {
+      "num": "7.3.2",
+      "title": "Media handling",
+      "page": 11
+    },
+    {
+      "num": "7.4",
+      "title": "Access control",
+      "page": 11
+    },
+    {
+      "num": "7.5",
+      "title": "Cryptographic controls",
+      "page": 11
+    },
+    {
+      "num": "7.6",
+      "title": "Physical and environmental security",
+      "page": 11
+    },
+    {
+      "num": "7.7",
+      "title": "Operation security",
+      "page": 12
+    },
+    {
+      "num": "7.8",
+      "title": "Network security",
+      "page": 13
+    },
+    {
+      "num": "7.9",
+      "title": "Incident management",
+      "page": 13
+    },
+    {
+      "num": "7.10",
+      "title": "Collection of evidence",
+      "page": 14
+    },
+    {
+      "num": "7.11",
+      "title": "Business continuity management",
+      "page": 15
+    },
+    {
+      "num": "7.12",
+      "title": "TSP termination and termination plans",
+      "page": 15
+    },
+    {
+      "num": "7.13",
+      "title": "Compliance",
+      "page": 15
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 17,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 18,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 18,
+  "toc_pages": [
+    3
+  ]
+}

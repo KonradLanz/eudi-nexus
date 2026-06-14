@@ -1,0 +1,337 @@
+{
+  "stem": "sr_019020v010102p",
+  "pdf": "downloads/specs/Other/sr_019020v010102p.pdf",
+  "title": "(2016-08)",
+  "reference": "sr_019020v010102p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 8
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 10
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 11
+    },
+    {
+      "num": "4",
+      "title": "Usage scenarios for signing",
+      "page": 12
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction",
+      "page": 12
+    },
+    {
+      "num": "4.2",
+      "title": "Actors",
+      "page": 12
+    },
+    {
+      "num": "4.3",
+      "title": "Features",
+      "page": 13
+    },
+    {
+      "num": "4.4",
+      "title": "Local signing scenarios",
+      "page": 14
+    },
+    {
+      "num": "4.4.1",
+      "title": "Local signing scenarios - general introduction",
+      "page": 14
+    },
+    {
+      "num": "4.4.2",
+      "title": "L1: Digital signature value generation in personal device",
+      "page": 14
+    },
+    {
+      "num": "4.4.4",
+      "title": "L3: AdES completely generated in a personal device",
+      "page": 17
+    },
+    {
+      "num": "4.5",
+      "title": "Server signing scenarios",
+      "page": 19
+    },
+    {
+      "num": "4.5.1",
+      "title": "Server signing scenarios - general introduction",
+      "page": 19
+    },
+    {
+      "num": "4.5.2",
+      "title": "S1: Generation of AdES in a server",
+      "page": 20
+    },
+    {
+      "num": "4.5.3",
+      "title": "S2: Generation of AdES in a server with multi-channel",
+      "page": 21
+    },
+    {
+      "num": "4.6",
+      "title": "LS: Split local and server signing scenario (threshold cryptography)",
+      "page": 23
+    },
+    {
+      "num": "5",
+      "title": "VS: validation service scenario",
+      "page": 24
+    },
+    {
+      "num": "6",
+      "title": "Further standardization requirements",
+      "page": 25
+    },
+    {
+      "num": "6.1",
+      "title": "Requirements on protocols for signing and validation",
+      "page": 25
+    },
+    {
+      "num": "6.2",
+      "title": "Requirements related to service life cycle management",
+      "page": 27
+    },
+    {
+      "num": "6.2.1",
+      "title": "Use cases for life cycle of user subscription to MSSP/SSP",
+      "page": 27
+    },
+    {
+      "num": "6.2.2",
+      "title": "Use cases for events related to mobile device and MNO",
+      "page": 27
+    },
+    {
+      "num": "6.3",
+      "title": "Standardization requirements and rationalized framework",
+      "page": 28
+    },
+    {
+      "num": "6.4",
+      "title": "Scope of new standards identified",
+      "page": 28
+    },
+    {
+      "num": "6.4.1",
+      "title": "Overview",
+      "page": 28
+    },
+    {
+      "num": "6.4.2",
+      "title": "ETSI TS 119 152: Architecture for digital signatures in distributed environments",
+      "page": 29
+    },
+    {
+      "num": "6.4.3",
+      "title": "CEN EN 419 241: Trustworthy Systems Supporting Server Signing",
+      "page": 29
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 32
+    },
+    {
+      "num": "A.2",
+      "title": "OASIS DSS and DSS-X specifications",
+      "page": 32
+    },
+    {
+      "num": "A.2.1",
+      "title": "Introduction",
+      "page": 32
+    },
+    {
+      "num": "A.2.2",
+      "title": "OASIS DSS Core specification",
+      "page": 32
+    },
+    {
+      "num": "A.2.2.1",
+      "title": "SignRequest/SignResponse protocol",
+      "page": 32
+    },
+    {
+      "num": "A.2.2.2",
+      "title": "VerifyRequest/VerifyResponse protocol",
+      "page": 33
+    },
+    {
+      "num": "A.2.3",
+      "title": "AdES profile",
+      "page": 33
+    },
+    {
+      "num": "A.2.3.1",
+      "title": "Introduction",
+      "page": 33
+    },
+    {
+      "num": "A.2.3.2",
+      "title": "SignRequest/SignResponse protocol",
+      "page": 33
+    },
+    {
+      "num": "A.2.3.3",
+      "title": "VerifyRequest/VerifyResponse protocol",
+      "page": 34
+    },
+    {
+      "num": "A.2.4",
+      "title": "Asynchronous profile",
+      "page": 34
+    },
+    {
+      "num": "A.2.5",
+      "title": "Visible signature profile",
+      "page": 34
+    },
+    {
+      "num": "A.2.6",
+      "title": "Local signature computation profile",
+      "page": 35
+    },
+    {
+      "num": "A.2.7",
+      "title": "Profile for comprehensive multi-signature verification reports",
+      "page": 35
+    },
+    {
+      "num": "A.2.8",
+      "title": "Usability of DSS profiles within the analysed scenarios",
+      "page": 35
+    },
+    {
+      "num": "A.3",
+      "title": "ETSI M-COMM specifications",
+      "page": 36
+    },
+    {
+      "num": "A.3.1",
+      "title": "Introduction",
+      "page": 36
+    },
+    {
+      "num": "A.3.2",
+      "title": "Mobile signature service",
+      "page": 36
+    },
+    {
+      "num": "A.3.3",
+      "title": "Mobile signature service - web service",
+      "page": 37
+    },
+    {
+      "num": "A.3.3.1",
+      "title": "Introduction",
+      "page": 37
+    },
+    {
+      "num": "A.3.3.2",
+      "title": "MSS_Signature",
+      "page": 37
+    },
+    {
+      "num": "A.3.3.3",
+      "title": "MSS_Status",
+      "page": 38
+    },
+    {
+      "num": "A.3.3.4",
+      "title": "MSS_Receipt",
+      "page": 38
+    },
+    {
+      "num": "A.3.3.5",
+      "title": "MSS_Registration",
+      "page": 38
+    },
+    {
+      "num": "A.3.3.6",
+      "title": "MSS_Handshake",
+      "page": 38
+    },
+    {
+      "num": "A.3.4",
+      "title": "Mobile signature roaming service",
+      "page": 38
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 40,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 40,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "stem": "tr_102040v010301p",
+  "pdf": "downloads/specs/TR/tr_102040v010301p.pdf",
+  "title": "(2005-03)",
+  "reference": "tr_102040v010301p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Objective",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Relevant activities",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "IETF PKIX policy and practices framework",
+      "page": 7
+    },
+    {
+      "num": "5.3",
+      "title": "ABA PKI assessment guidelines",
+      "page": 7
+    },
+    {
+      "num": "5.4",
+      "title": "US Federal PKI",
+      "page": 8
+    },
+    {
+      "num": "5.5",
+      "title": "APEC TEL eSTG",
+      "page": 8
+    },
+    {
+      "num": "5.6",
+      "title": "ANSI X9.79 - PKI policy and practices framework",
+      "page": 9
+    },
+    {
+      "num": "5.7",
+      "title": "ISO TC68 - PKI policy and practices framework",
+      "page": 9
+    },
+    {
+      "num": "5.8",
+      "title": "OECD",
+      "page": 9
+    },
+    {
+      "num": "6",
+      "title": "Recommendations",
+      "page": 9
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 13,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 13,
+  "toc_pages": [
+    3
+  ]
+}

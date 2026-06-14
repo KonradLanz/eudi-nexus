@@ -1,0 +1,1009 @@
+{
+  "stem": "ts_101733v020201p",
+  "pdf": "downloads/specs/TS/ts_101733v020201p.pdf",
+  "title": "(2013-04)",
+  "reference": "ts_101733v020201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 9
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 9
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 10
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 12
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 12
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 13
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 15
+    },
+    {
+      "num": "4.1",
+      "title": "Major Parties",
+      "page": 15
+    },
+    {
+      "num": "4.2",
+      "title": "Signature Policies",
+      "page": 16
+    },
+    {
+      "num": "4.3",
+      "title": "Electronic Signature Formats",
+      "page": 17
+    },
+    {
+      "num": "4.3.1",
+      "title": "CAdES Basic Electronic Signature (CAdES-BES)",
+      "page": 17
+    },
+    {
+      "num": "4.3.2",
+      "title": "CAdES Explicit Policy-based Electronic Signatures (CAdES-EPES)",
+      "page": 19
+    },
+    {
+      "num": "4.4",
+      "title": "Electronic Signature Formats with Validation Data",
+      "page": 19
+    },
+    {
+      "num": "4.4.1",
+      "title": "Electronic Signature with Time (CAdES-T)",
+      "page": 19
+    },
+    {
+      "num": "4.4.2",
+      "title": "ES with Complete Validation Data References (CAdES-C)",
+      "page": 20
+    },
+    {
+      "num": "4.4.3",
+      "title": "Extended Electronic Signature Formats",
+      "page": 22
+    },
+    {
+      "num": "4.4.3.1",
+      "title": "EXtended Long Electronic Signature (CAdES-X Long)",
+      "page": 22
+    },
+    {
+      "num": "4.4.3.2",
+      "title": "EXtended Electronic Signature with Time Type 1 (CAdES-X Type 1)",
+      "page": 22
+    },
+    {
+      "num": "4.4.3.3",
+      "title": "EXtended Electronic Signature with Time Type 2 (CAdES-X Type 2)",
+      "page": 23
+    },
+    {
+      "num": "4.4.3.4",
+      "title": "EXtended Long Electronic Signature with Time (CAdES-X Long Type 1 or 2)",
+      "page": 23
+    },
+    {
+      "num": "4.4.4",
+      "title": "Archival Electronic Signature (CAdES-A)",
+      "page": 24
+    },
+    {
+      "num": "4.4.4.1",
+      "title": "CAdES-A with archive-time-stamp (ATSv2) attribute",
+      "page": 24
+    },
+    {
+      "num": "4.4.4.2",
+      "title": "CAdES-A with archive-time-stamp (ATSv3) attribute",
+      "page": 25
+    },
+    {
+      "num": "4.4.5",
+      "title": "Long-Term Electronic Signature (CAdES-LT)",
+      "page": 25
+    },
+    {
+      "num": "4.5",
+      "title": "Arbitration",
+      "page": 26
+    },
+    {
+      "num": "4.6",
+      "title": "Validation Process",
+      "page": 26
+    },
+    {
+      "num": "5",
+      "title": "Electronic Signature Attributes",
+      "page": 26
+    },
+    {
+      "num": "5.1",
+      "title": "General Syntax",
+      "page": 27
+    },
+    {
+      "num": "5.2",
+      "title": "Data Content Type",
+      "page": 27
+    },
+    {
+      "num": "5.3",
+      "title": "Signed-data Content Type",
+      "page": 27
+    },
+    {
+      "num": "5.4",
+      "title": "SignedData Type",
+      "page": 27
+    },
+    {
+      "num": "5.5",
+      "title": "EncapsulatedContentInfo Type",
+      "page": 27
+    },
+    {
+      "num": "5.6",
+      "title": "SignerInfo Type",
+      "page": 28
+    },
+    {
+      "num": "5.6.1",
+      "title": "Message Digest Calculation Process",
+      "page": 28
+    },
+    {
+      "num": "5.6.2",
+      "title": "Signature Generation Process",
+      "page": 28
+    },
+    {
+      "num": "5.6.3",
+      "title": "Signature Verification Process",
+      "page": 28
+    },
+    {
+      "num": "5.7",
+      "title": "Basic ES Mandatory Present Attributes",
+      "page": 28
+    },
+    {
+      "num": "5.7.1",
+      "title": "content-type",
+      "page": 28
+    },
+    {
+      "num": "5.7.2",
+      "title": "Message Digest",
+      "page": 28
+    },
+    {
+      "num": "5.7.3",
+      "title": "Signing Certificate Reference Attributes",
+      "page": 29
+    },
+    {
+      "num": "5.7.3.1",
+      "title": "ESS signing-certificate Attribute Definition",
+      "page": 29
+    },
+    {
+      "num": "5.7.3.2",
+      "title": "ESS signing-certificate-v2 Attribute Definition",
+      "page": 29
+    },
+    {
+      "num": "5.7.3.3",
+      "title": "Other signing-certificate Attribute Definition",
+      "page": 30
+    },
+    {
+      "num": "5.8",
+      "title": "Additional Mandatory Attributes for Explicit Policy-based Electronic Signatures",
+      "page": 30
+    },
+    {
+      "num": "5.8.1",
+      "title": "signature-policy-identifier",
+      "page": 30
+    },
+    {
+      "num": "5.9",
+      "title": "CMS Imported Optional Attributes",
+      "page": 32
+    },
+    {
+      "num": "5.9.1",
+      "title": "signing-time",
+      "page": 32
+    },
+    {
+      "num": "5.9.2",
+      "title": "countersignature",
+      "page": 32
+    },
+    {
+      "num": "5.10",
+      "title": "ESS-Imported Optional Attributes",
+      "page": 32
+    },
+    {
+      "num": "5.10.1",
+      "title": "content-reference Attribute",
+      "page": 32
+    },
+    {
+      "num": "5.10.2",
+      "title": "content-identifier Attribute",
+      "page": 32
+    },
+    {
+      "num": "5.10.3",
+      "title": "content-hints Attribute",
+      "page": 33
+    },
+    {
+      "num": "5.11",
+      "title": "Additional Optional Attributes Defined in the Present Document",
+      "page": 33
+    },
+    {
+      "num": "5.11.1",
+      "title": "commitment-type-indication Attribute",
+      "page": 33
+    },
+    {
+      "num": "5.11.2",
+      "title": "signer-location Attribute",
+      "page": 34
+    },
+    {
+      "num": "5.11.3",
+      "title": "signer-attributes Attribute",
+      "page": 35
+    },
+    {
+      "num": "5.11.4",
+      "title": "content-time-stamp Attribute",
+      "page": 35
+    },
+    {
+      "num": "5.11.5",
+      "title": "mime-type Attribute",
+      "page": 36
+    },
+    {
+      "num": "5.12",
+      "title": "Support for Multiple Signatures",
+      "page": 36
+    },
+    {
+      "num": "5.12.1",
+      "title": "Independent Signatures",
+      "page": 36
+    },
+    {
+      "num": "5.12.2",
+      "title": "Embedded Signatures",
+      "page": 36
+    },
+    {
+      "num": "6",
+      "title": "Additional Electronic Signature Validation Attributes",
+      "page": 37
+    },
+    {
+      "num": "6.1",
+      "title": "signature time-stamp Attribute (CAdES-T)",
+      "page": 38
+    },
+    {
+      "num": "6.1.1",
+      "title": "signature-time-stamp Attribute Definition",
+      "page": 38
+    },
+    {
+      "num": "6.2",
+      "title": "Complete Validation Data References (CAdES-C)",
+      "page": 39
+    },
+    {
+      "num": "6.2.1",
+      "title": "complete-certificate-references Attribute Definition",
+      "page": 39
+    },
+    {
+      "num": "6.2.2",
+      "title": "complete-revocation-references Attribute Definition",
+      "page": 39
+    },
+    {
+      "num": "6.2.3",
+      "title": "attribute-certificate-references Attribute Definition",
+      "page": 41
+    },
+    {
+      "num": "6.2.4",
+      "title": "attribute-revocation-references Attribute Definition",
+      "page": 41
+    },
+    {
+      "num": "6.3",
+      "title": "Extended Validation Data (CAdES-X)",
+      "page": 41
+    },
+    {
+      "num": "6.3.1",
+      "title": "Time-Stamped Validation Data (CAdES-X Type 1 or Type 2)",
+      "page": 42
+    },
+    {
+      "num": "6.3.2",
+      "title": "Long Validation Data (CAdES-X Long, CAdES-X Long Type 1 or 2)",
+      "page": 42
+    },
+    {
+      "num": "6.3.3",
+      "title": "certificate-values Attribute Definition",
+      "page": 42
+    },
+    {
+      "num": "6.3.4",
+      "title": "revocation-values Attribute Definition",
+      "page": 43
+    },
+    {
+      "num": "6.3.5",
+      "title": "CAdES-C-time-stamp Attribute Definition",
+      "page": 43
+    },
+    {
+      "num": "6.3.6",
+      "title": "time-stamped-certs-crls-references Attribute Definition",
+      "page": 44
+    },
+    {
+      "num": "6.4",
+      "title": "Archive Validation Data",
+      "page": 45
+    },
+    {
+      "num": "6.4.1",
+      "title": "archive-time-stamp Attribute Definition",
+      "page": 45
+    },
+    {
+      "num": "6.4.2",
+      "title": "ats-hash-index Attribute",
+      "page": 46
+    },
+    {
+      "num": "6.4.3",
+      "title": "archive-time-stamp-v3 Attribute",
+      "page": 47
+    },
+    {
+      "num": "6.5",
+      "title": "Long-term Validation Data",
+      "page": 49
+    },
+    {
+      "num": "6.5.1",
+      "title": "long-term-validation Attribute Definition",
+      "page": 49
+    },
+    {
+      "num": "7",
+      "title": "Other Standard Data Structures",
+      "page": 52
+    },
+    {
+      "num": "7.1",
+      "title": "Public Key Certificate Format",
+      "page": 52
+    },
+    {
+      "num": "7.2",
+      "title": "Certificate Revocation List Format",
+      "page": 52
+    },
+    {
+      "num": "7.3",
+      "title": "OCSP Response Format",
+      "page": 52
+    },
+    {
+      "num": "7.4",
+      "title": "Time-Stamp Token Format",
+      "page": 52
+    },
+    {
+      "num": "7.5",
+      "title": "Name and Attribute Formats",
+      "page": 53
+    },
+    {
+      "num": "7.6",
+      "title": "Attribute Certificate",
+      "page": 53
+    },
+    {
+      "num": "7.7",
+      "title": "Evidence Record",
+      "page": 53
+    },
+    {
+      "num": "8",
+      "title": "Conformance Requirements",
+      "page": 53
+    },
+    {
+      "num": "8.1",
+      "title": "CAdES-Basic Electronic Signature (CAdES-BES)",
+      "page": 54
+    },
+    {
+      "num": "8.2",
+      "title": "CAdES-Explicit Policy-based Electronic Signature",
+      "page": 54
+    },
+    {
+      "num": "8.3",
+      "title": "Verification Using Time-Stamping",
+      "page": 54
+    },
+    {
+      "num": "8.4",
+      "title": "Verification Using Secure Records",
+      "page": 55
+    },
+    {
+      "num": "Annex A",
+      "title": "ASN.1 Definitions",
+      "page": 56,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Signature Format Definitions Using X.208 ASN.1 Syntax",
+      "page": 56
+    },
+    {
+      "num": "A.2",
+      "title": "Signature Format Definitions Using X.680 ASN.1 Syntax",
+      "page": 62
+    },
+    {
+      "num": "Annex B",
+      "title": "Extended Forms of Electronic Signatures",
+      "page": 69,
+      "annex_type": "informative"
+    },
+    {
+      "num": "B.1",
+      "title": "Extended Forms of Validation Data",
+      "page": 69
+    },
+    {
+      "num": "B.1.1",
+      "title": "CAdES-X Long",
+      "page": 69
+    },
+    {
+      "num": "B.1.2",
+      "title": "CAdES-X Type 1",
+      "page": 70
+    },
+    {
+      "num": "B.1.3",
+      "title": "CAdES-X Type 2",
+      "page": 71
+    },
+    {
+      "num": "B.1.4",
+      "title": "CAdES-X Long Type 1 and CAdES-X Long Type 2",
+      "page": 72
+    },
+    {
+      "num": "B.2",
+      "title": "Time-Stamp Extensions",
+      "page": 73
+    },
+    {
+      "num": "B.3",
+      "title": "Archive Validation Data (CAdES-A)",
+      "page": 73
+    },
+    {
+      "num": "B.4",
+      "title": "Example Validation Sequence",
+      "page": 76
+    },
+    {
+      "num": "B.5",
+      "title": "Additional Optional Features",
+      "page": 80
+    },
+    {
+      "num": "Annex C",
+      "title": "General Description",
+      "page": 81,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "The Signature Policy",
+      "page": 81
+    },
+    {
+      "num": "C.2",
+      "title": "Signed Information",
+      "page": 82
+    },
+    {
+      "num": "C.3",
+      "title": "Components of an Electronic Signature",
+      "page": 82
+    },
+    {
+      "num": "C.3.1",
+      "title": "Reference to the Signature Policy",
+      "page": 82
+    },
+    {
+      "num": "C.3.2",
+      "title": "Commitment Type Indication",
+      "page": 82
+    },
+    {
+      "num": "C.3.3",
+      "title": "Certificate Identifier from the Signer",
+      "page": 83
+    },
+    {
+      "num": "C.3.4",
+      "title": "Role Attributes",
+      "page": 83
+    },
+    {
+      "num": "C.3.4.1",
+      "title": "Claimed Role",
+      "page": 83
+    },
+    {
+      "num": "C.3.4.2",
+      "title": "Certified Role",
+      "page": 83
+    },
+    {
+      "num": "C.3.5",
+      "title": "Signer Location",
+      "page": 84
+    },
+    {
+      "num": "C.3.6",
+      "title": "Signing Time",
+      "page": 84
+    },
+    {
+      "num": "C.3.7",
+      "title": "Content Format",
+      "page": 84
+    },
+    {
+      "num": "C.3.8",
+      "title": "content-hints",
+      "page": 84
+    },
+    {
+      "num": "C.3.9",
+      "title": "content-hints",
+      "page": 84
+    },
+    {
+      "num": "C.3.10",
+      "title": "Content Cross-Referencing",
+      "page": 84
+    },
+    {
+      "num": "C.4",
+      "title": "Components of Validation Data",
+      "page": 85
+    },
+    {
+      "num": "C.4.1",
+      "title": "Revocation Status Information",
+      "page": 85
+    },
+    {
+      "num": "C.4.1.1",
+      "title": "CRL Information",
+      "page": 85
+    },
+    {
+      "num": "C.4.1.2",
+      "title": "OCSP Information",
+      "page": 85
+    },
+    {
+      "num": "C.4.2",
+      "title": "Certification Path",
+      "page": 86
+    },
+    {
+      "num": "C.4.3",
+      "title": "Time-Stamping for Long Life of Signatures",
+      "page": 86
+    },
+    {
+      "num": "C.4.4",
+      "title": "Time-Stamping for Long Life of Signature before CA Key Compromises",
+      "page": 87
+    },
+    {
+      "num": "C.4.4.1",
+      "title": "Time-Stamping the ES with Complete Validation Data (CAdES-X Type 1)",
+      "page": 87
+    },
+    {
+      "num": "C.4.5",
+      "title": "Time-Stamping for Archive of Signature",
+      "page": 88
+    },
+    {
+      "num": "C.4.6",
+      "title": "Reference to Additional Data",
+      "page": 89
+    },
+    {
+      "num": "C.4.7",
+      "title": "Time-Stamping for Mutual Recognition",
+      "page": 89
+    },
+    {
+      "num": "C.4.8",
+      "title": "TSA Key Compromise",
+      "page": 89
+    },
+    {
+      "num": "C.5",
+      "title": "Multiple Signatures",
+      "page": 90
+    },
+    {
+      "num": "Annex D",
+      "title": "Data Protocols to Interoperate with TSPs",
+      "page": 91,
+      "annex_type": "informative"
+    },
+    {
+      "num": "D.1",
+      "title": "Operational Protocols",
+      "page": 91
+    },
+    {
+      "num": "D.1.1",
+      "title": "Certificate Retrieval",
+      "page": 91
+    },
+    {
+      "num": "D.1.2",
+      "title": "CRL Retrieval",
+      "page": 91
+    },
+    {
+      "num": "D.1.3",
+      "title": "Online Certificate Status",
+      "page": 91
+    },
+    {
+      "num": "D.1.4",
+      "title": "Time-Stamping",
+      "page": 91
+    },
+    {
+      "num": "D.2",
+      "title": "Management Protocols",
+      "page": 91
+    },
+    {
+      "num": "D.2.1",
+      "title": "Request for Certificate Revocation",
+      "page": 91
+    },
+    {
+      "num": "Annex E",
+      "title": "Security Considerations",
+      "page": 92,
+      "annex_type": "informative"
+    },
+    {
+      "num": "E.1",
+      "title": "Protection of Private Key",
+      "page": 92
+    },
+    {
+      "num": "E.2",
+      "title": "Choice of Algorithms",
+      "page": 92
+    },
+    {
+      "num": "Annex F",
+      "title": "Example Structured Contents and MIME",
+      "page": 93,
+      "annex_type": "informative"
+    },
+    {
+      "num": "F.1",
+      "title": "Use of MIME to Encode Data",
+      "page": 93
+    },
+    {
+      "num": "F.1.1",
+      "title": "Header Information",
+      "page": 93
+    },
+    {
+      "num": "F.1.2",
+      "title": "Content Encoding",
+      "page": 94
+    },
+    {
+      "num": "F.1.3",
+      "title": "Multi-Part Content",
+      "page": 94
+    },
+    {
+      "num": "F.2",
+      "title": "S/MIME",
+      "page": 95
+    },
+    {
+      "num": "F.2.1",
+      "title": "Using application/pkcs7-mime",
+      "page": 95
+    },
+    {
+      "num": "F.2.2",
+      "title": "Using application/pkcs7-signature",
+      "page": 96
+    },
+    {
+      "num": "Annex G",
+      "title": "Relationship to the European Directive and EESSI",
+      "page": 97,
+      "annex_type": "informative"
+    },
+    {
+      "num": "G.1",
+      "title": "Introduction",
+      "page": 97
+    },
+    {
+      "num": "G.2",
+      "title": "Electronic Signatures and the Directive",
+      "page": 97
+    },
+    {
+      "num": "G.3",
+      "title": "ETSI Electronic Signature Formats and the Directive",
+      "page": 98
+    },
+    {
+      "num": "G.4",
+      "title": "EESSI Standards and Classes of Electronic Signature",
+      "page": 98
+    },
+    {
+      "num": "G.4.1",
+      "title": "Structure of EESSI Standardization",
+      "page": 98
+    },
+    {
+      "num": "G.4.2",
+      "title": "Classes of Electronic Signatures",
+      "page": 98
+    },
+    {
+      "num": "G.4.3",
+      "title": "Electronic Signature Classes and the ETSI Electronic Signature Format",
+      "page": 99
+    },
+    {
+      "num": "H.1",
+      "title": "Data Framing",
+      "page": 100
+    },
+    {
+      "num": "H.2",
+      "title": "IDUP-GSS-APIs Defined by the IETF",
+      "page": 101
+    },
+    {
+      "num": "H.3",
+      "title": "CORBA Security Interfaces Defined by the OMG",
+      "page": 102
+    },
+    {
+      "num": "Annex I",
+      "title": "Cryptographic Algorithms",
+      "page": 103,
+      "annex_type": "informative"
+    },
+    {
+      "num": "I.1",
+      "title": "Digest Algorithms",
+      "page": 103
+    },
+    {
+      "num": "I.1.1",
+      "title": "SHA-1",
+      "page": 103
+    },
+    {
+      "num": "I.1.2",
+      "title": "General",
+      "page": 103
+    },
+    {
+      "num": "I.2",
+      "title": "Digital Signature Algorithms",
+      "page": 104
+    },
+    {
+      "num": "I.2.1",
+      "title": "DSA",
+      "page": 104
+    },
+    {
+      "num": "I.2.2",
+      "title": "RSA",
+      "page": 104
+    },
+    {
+      "num": "I.2.3",
+      "title": "General",
+      "page": 104
+    },
+    {
+      "num": "Annex J",
+      "title": "Guidance on Naming",
+      "page": 106,
+      "annex_type": "informative"
+    },
+    {
+      "num": "J.1",
+      "title": "Allocation of Names",
+      "page": 106
+    },
+    {
+      "num": "J.2",
+      "title": "Providing Access to Registration Information",
+      "page": 106
+    },
+    {
+      "num": "J.3",
+      "title": "Naming Schemes",
+      "page": 107
+    },
+    {
+      "num": "J.3.1",
+      "title": "Naming Schemes for Individual Citizens",
+      "page": 107
+    },
+    {
+      "num": "J.3.2",
+      "title": "Naming Schemes for Employees of an Organization",
+      "page": 107
+    },
+    {
+      "num": "Annex K",
+      "title": "Time-stamp hash calculation",
+      "page": 108,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex L",
+      "title": "Changes from the previous version",
+      "page": 110,
+      "annex_type": "informative"
+    },
+    {
+      "num": "L.1",
+      "title": "Changes before 1.7.4",
+      "page": 110
+    },
+    {
+      "num": "L.2",
+      "title": "Changes between 1.7.4 and 1.8.1",
+      "page": 110
+    },
+    {
+      "num": "L.3",
+      "title": "Changes between 1.8.1 and 1.8.3",
+      "page": 110
+    },
+    {
+      "num": "L.4",
+      "title": "Changes between 1.8.3 and 2.1.1",
+      "page": 111
+    },
+    {
+      "num": "L.5",
+      "title": "Changes between 2.1.1 and 2.2.1",
+      "page": 111
+    },
+    {
+      "num": "Annex M",
+      "title": "Bibliography",
+      "page": 112,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 113,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 113,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6
+  ]
+}

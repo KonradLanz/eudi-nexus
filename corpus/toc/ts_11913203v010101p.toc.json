@@ -1,0 +1,187 @@
+{
+  "stem": "ts_11913203v010101p",
+  "pdf": "downloads/specs/TS/ts_11913203v010101p.pdf",
+  "title": "(2021-01)",
+  "reference": "ts_11913203v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "General requirements",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "XML Namespaces",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "Electronic time-stamps in evidence-records",
+      "page": 7
+    },
+    {
+      "num": "4.3",
+      "title": "Placement of validation data of time-stamp tokens",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "The xadesen:SealingEvidenceRecords qualifying property",
+      "page": 8
+    },
+    {
+      "num": "5.1",
+      "title": "Semantics",
+      "page": 8
+    },
+    {
+      "num": "5.1.1",
+      "title": "Data time-stamped by time-stamp tokens",
+      "page": 8
+    },
+    {
+      "num": "5.1.2",
+      "title": "Incorporation of validation data during the life cycle of evidence records",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Syntax",
+      "page": 10
+    },
+    {
+      "num": "5.2.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "General requirements",
+      "page": 10
+    },
+    {
+      "num": "5.2.2.2",
+      "title": "Contribution of unsigned qualifying properties directly incorporated",
+      "page": 12
+    },
+    {
+      "num": "5.2.2.3",
+      "title": "Contribution of unsigned qualifying properties indirectly incorporated",
+      "page": 12
+    },
+    {
+      "num": "6",
+      "title": "XAdES signature level including ERS",
+      "page": 12
+    },
+    {
+      "num": "6.1",
+      "title": "Overview",
+      "page": 12
+    },
+    {
+      "num": "6.2",
+      "title": "General requirements",
+      "page": 12
+    },
+    {
+      "num": "6.3",
+      "title": "XAdES-E-ERS",
+      "page": 12
+    },
+    {
+      "num": "7",
+      "title": "Legacy XAdES baseline signatures",
+      "page": 15
+    },
+    {
+      "num": "Annex A",
+      "title": "XML Schema file",
+      "page": 16,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "XML Schema file location for namespace http://uri.etsi.org/19132/v1.1.1#",
+      "page": 16
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 17,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 18,
+  "toc_pages": [
+    3
+  ]
+}

@@ -1,0 +1,917 @@
+{
+  "stem": "ts_119432v010301p",
+  "pdf": "downloads/specs/TS/ts_119432v010301p.pdf",
+  "title": "(2026-03)",
+  "reference": "ts_119432v010301p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 10
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 10
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 10
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 11
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 12
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 12
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 14
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 14
+    },
+    {
+      "num": "4",
+      "title": "Signature creation process, service decomposition",
+      "page": 16
+    },
+    {
+      "num": "4.1",
+      "title": "Signature creation process steps and data elements",
+      "page": 16
+    },
+    {
+      "num": "4.2",
+      "title": "Service main components and interfaces",
+      "page": 17
+    },
+    {
+      "num": "4.3",
+      "title": "Signature Creation Application",
+      "page": 17
+    },
+    {
+      "num": "4.3.1",
+      "title": "Signer's document and hashing",
+      "page": 17
+    },
+    {
+      "num": "4.3.2",
+      "title": "DTBS composition and formatting",
+      "page": 17
+    },
+    {
+      "num": "4.3.3",
+      "title": "DTBS preparation",
+      "page": 18
+    },
+    {
+      "num": "4.3.4",
+      "title": "SDO composer",
+      "page": 18
+    },
+    {
+      "num": "4.4",
+      "title": "Server Signing Application",
+      "page": 18
+    },
+    {
+      "num": "4.4.1",
+      "title": "Signature creation",
+      "page": 18
+    },
+    {
+      "num": "4.4.1.1",
+      "title": "Introduction",
+      "page": 18
+    },
+    {
+      "num": "4.4.1.2",
+      "title": "Signature activation",
+      "page": 18
+    },
+    {
+      "num": "4.4.1.3",
+      "title": "Signature creation by SCDev",
+      "page": 19
+    },
+    {
+      "num": "5",
+      "title": "Authentication and authorization",
+      "page": 19
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 19
+    },
+    {
+      "num": "5.2",
+      "title": "Service authorization",
+      "page": 19
+    },
+    {
+      "num": "5.2.1",
+      "title": "Overview",
+      "page": 19
+    },
+    {
+      "num": "5.2.2",
+      "title": "HTTP Basic Authentication and HTTP Digest Authentication",
+      "page": 19
+    },
+    {
+      "num": "5.2.3",
+      "title": "OAuth 2.0",
+      "page": 21
+    },
+    {
+      "num": "5.2.4",
+      "title": "Other authentication mechanisms",
+      "page": 23
+    },
+    {
+      "num": "5.3",
+      "title": "Signatures creation authorization",
+      "page": 24
+    },
+    {
+      "num": "5.3.1",
+      "title": "Overview",
+      "page": 24
+    },
+    {
+      "num": "5.3.3",
+      "title": "Create a remote signature with a credential protected by OAuth2",
+      "page": 26
+    },
+    {
+      "num": "5.4",
+      "title": "Credential creation authorization",
+      "page": 27
+    },
+    {
+      "num": "5.5",
+      "title": "Credential deletion authorization",
+      "page": 29
+    },
+    {
+      "num": "6",
+      "title": "Architectures and use cases for server signing",
+      "page": 29
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 29
+    },
+    {
+      "num": "6.4.1",
+      "title": "Overview",
+      "page": 33
+    },
+    {
+      "num": "6.4.2",
+      "title": "EUDIW as authentication and authorization layer for creating remote signatures",
+      "page": 34
+    },
+    {
+      "num": "6.4.3",
+      "title": "EUDIW participating in the signature creation process",
+      "page": 42
+    },
+    {
+      "num": "6.4.4",
+      "title": "EUDIW registration and authentication to authorization servers",
+      "page": 44
+    },
+    {
+      "num": "6.4.4.1",
+      "title": "Introduction",
+      "page": 44
+    },
+    {
+      "num": "6.4.4.2",
+      "title": "EUDIW registration",
+      "page": 44
+    },
+    {
+      "num": "6.4.4.3",
+      "title": "EUDIW authentication",
+      "page": 45
+    },
+    {
+      "num": "6.4.4.4",
+      "title": "Security requirements",
+      "page": 46
+    },
+    {
+      "num": "6.4.4.5",
+      "title": "Examples",
+      "page": 46
+    },
+    {
+      "num": "6.4.4.5.1",
+      "title": "Dynamic Client Registration request payload (JSON)",
+      "page": 46
+    },
+    {
+      "num": "6.4.4.5.2",
+      "title": "Authorization server response",
+      "page": 46
+    },
+    {
+      "num": "6.4.4.5.3",
+      "title": "EUDIW authorization request payload (JSON)",
+      "page": 47
+    },
+    {
+      "num": "6.4.4.5.4",
+      "title": "PAR Response (from AS to EUDIW)",
+      "page": 48
+    },
+    {
+      "num": "6.4.4.5.5",
+      "title": "Authorization Request (from EUDIW to authorization endpoint)",
+      "page": 48
+    },
+    {
+      "num": "6.4.4.5.6",
+      "title": "Authorization server redirects back with authorization code",
+      "page": 48
+    },
+    {
+      "num": "6.4.5",
+      "title": "DA / SCA registration and authentication to authorization servers",
+      "page": 48
+    },
+    {
+      "num": "6.4.5.1",
+      "title": "Introduction",
+      "page": 48
+    },
+    {
+      "num": "6.4.5.2",
+      "title": "client registration",
+      "page": 48
+    },
+    {
+      "num": "7",
+      "title": "Remote signatures creation service API",
+      "page": 50
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 50
+    },
+    {
+      "num": "7.2",
+      "title": "Service information API",
+      "page": 50
+    },
+    {
+      "num": "7.2.1",
+      "title": "Description",
+      "page": 50
+    },
+    {
+      "num": "7.2.2",
+      "title": "Request message",
+      "page": 50
+    },
+    {
+      "num": "7.2.2.1",
+      "title": "Component for requesting service information",
+      "page": 50
+    },
+    {
+      "num": "7.2.3",
+      "title": "Response message",
+      "page": 50
+    },
+    {
+      "num": "7.2.3.1",
+      "title": "Component for responding to service information requests",
+      "page": 50
+    },
+    {
+      "num": "7.3",
+      "title": "Credentials list API",
+      "page": 51
+    },
+    {
+      "num": "7.3.1",
+      "title": "Description",
+      "page": 51
+    },
+    {
+      "num": "7.3.2",
+      "title": "Request message",
+      "page": 51
+    },
+    {
+      "num": "7.3.2.1",
+      "title": "Component for requesting credentials list",
+      "page": 51
+    },
+    {
+      "num": "7.3.3",
+      "title": "Response message",
+      "page": 51
+    },
+    {
+      "num": "7.3.3.1",
+      "title": "Component for responding to credentials list requests",
+      "page": 51
+    },
+    {
+      "num": "7.4",
+      "title": "Credentials info API",
+      "page": 51
+    },
+    {
+      "num": "7.4.1",
+      "title": "Description",
+      "page": 51
+    },
+    {
+      "num": "7.4.2",
+      "title": "Request message",
+      "page": 51
+    },
+    {
+      "num": "7.4.2.1",
+      "title": "Component for requesting credential information",
+      "page": 51
+    },
+    {
+      "num": "7.4.3",
+      "title": "Response message",
+      "page": 52
+    },
+    {
+      "num": "7.4.3.1",
+      "title": "Component for responding to credential information requests",
+      "page": 52
+    },
+    {
+      "num": "7.5",
+      "title": "Hash(es) signing API",
+      "page": 52
+    },
+    {
+      "num": "7.5.1",
+      "title": "Description",
+      "page": 52
+    },
+    {
+      "num": "7.5.2",
+      "title": "Request message",
+      "page": 52
+    },
+    {
+      "num": "7.5.2.1",
+      "title": "Component for requesting hash(es) signature creation",
+      "page": 52
+    },
+    {
+      "num": "7.5.3",
+      "title": "Response message",
+      "page": 52
+    },
+    {
+      "num": "7.5.3.1",
+      "title": "Component for responding to hash(es) signature creation requests",
+      "page": 52
+    },
+    {
+      "num": "7.6",
+      "title": "Document(s) signing API",
+      "page": 52
+    },
+    {
+      "num": "7.6.1",
+      "title": "Description",
+      "page": 52
+    },
+    {
+      "num": "7.6.2",
+      "title": "Request message",
+      "page": 52
+    },
+    {
+      "num": "7.6.2.1",
+      "title": "Component for requesting documents signature creation",
+      "page": 52
+    },
+    {
+      "num": "7.6.3",
+      "title": "Response message",
+      "page": 53
+    },
+    {
+      "num": "7.6.3.1",
+      "title": "Component for responding to documents signature creation requests",
+      "page": 53
+    },
+    {
+      "num": "7.7",
+      "title": "Signature(s) creation polling API",
+      "page": 53
+    },
+    {
+      "num": "7.7.1",
+      "title": "Description",
+      "page": 53
+    },
+    {
+      "num": "7.7.2",
+      "title": "Request message",
+      "page": 53
+    },
+    {
+      "num": "7.7.2.1",
+      "title": "Component for polling previous signature creation requests",
+      "page": 53
+    },
+    {
+      "num": "7.7.3",
+      "title": "Response message",
+      "page": 53
+    },
+    {
+      "num": "7.7.3.1",
+      "title": "Component for responding to polling previous signature creation requests",
+      "page": 53
+    },
+    {
+      "num": "7.8",
+      "title": "Credentials creation API",
+      "page": 53
+    },
+    {
+      "num": "7.8.1",
+      "title": "Description",
+      "page": 53
+    },
+    {
+      "num": "7.8.2",
+      "title": "Request message",
+      "page": 53
+    },
+    {
+      "num": "7.8.2.1",
+      "title": "Component for requesting credential creation",
+      "page": 53
+    },
+    {
+      "num": "7.8.3",
+      "title": "Response message",
+      "page": 54
+    },
+    {
+      "num": "7.8.3.1",
+      "title": "Component for responding to credential creation requests",
+      "page": 54
+    },
+    {
+      "num": "7.8.4",
+      "title": "Subject distinguished name of the new credential certificate",
+      "page": 54
+    },
+    {
+      "num": "7.9",
+      "title": "Credentials deletion API",
+      "page": 54
+    },
+    {
+      "num": "7.9.1",
+      "title": "Description",
+      "page": 54
+    },
+    {
+      "num": "7.9.2",
+      "title": "Request message",
+      "page": 54
+    },
+    {
+      "num": "7.9.2.1",
+      "title": "Component for requesting credential creation",
+      "page": 54
+    },
+    {
+      "num": "7.9.3",
+      "title": "Response message",
+      "page": 54
+    },
+    {
+      "num": "7.9.3.1",
+      "title": "Component for responding to credential deletion requests",
+      "page": 54
+    },
+    {
+      "num": "8",
+      "title": "Remote signatures creation service API based on OASIS DSS-X",
+      "page": 55
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction and General Provisions",
+      "page": 55
+    },
+    {
+      "num": "8.2",
+      "title": "Service information API",
+      "page": 55
+    },
+    {
+      "num": "8.2.1",
+      "title": "Description",
+      "page": 55
+    },
+    {
+      "num": "8.3",
+      "title": "Credentials list API",
+      "page": 56
+    },
+    {
+      "num": "8.3.1",
+      "title": "Description",
+      "page": 56
+    },
+    {
+      "num": "8.4",
+      "title": "Credentials info API",
+      "page": 56
+    },
+    {
+      "num": "8.4.1",
+      "title": "Description",
+      "page": 56
+    },
+    {
+      "num": "8.5",
+      "title": "Hash(es) signing API",
+      "page": 56
+    },
+    {
+      "num": "8.5.1",
+      "title": "Description",
+      "page": 56
+    },
+    {
+      "num": "8.6",
+      "title": "Document(s) signing API",
+      "page": 56
+    },
+    {
+      "num": "8.6.1",
+      "title": "Description",
+      "page": 56
+    },
+    {
+      "num": "8.7",
+      "title": "Signature(s) creation polling API",
+      "page": 57
+    },
+    {
+      "num": "8.7.1",
+      "title": "Description",
+      "page": 57
+    },
+    {
+      "num": "8.8",
+      "title": "Credentials creation API",
+      "page": 57
+    },
+    {
+      "num": "8.8.1",
+      "title": "Description",
+      "page": 57
+    },
+    {
+      "num": "Annex A",
+      "title": "OpenID4VP EUDIW-centric signing flow profile",
+      "page": 58,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Overview",
+      "page": 58
+    },
+    {
+      "num": "A.2",
+      "title": "Roles & Standards",
+      "page": 58
+    },
+    {
+      "num": "A.3",
+      "title": "Profile scope & transport",
+      "page": 59
+    },
+    {
+      "num": "A.4",
+      "title": "Profile identifiers",
+      "page": 59
+    },
+    {
+      "num": "A.5",
+      "title": "High-level interaction models",
+      "page": 59
+    },
+    {
+      "num": "A.5.1",
+      "title": "EUDIW: RP EUDIW, EUDIW QTSP",
+      "page": 59
+    },
+    {
+      "num": "A.5.2",
+      "title": "QTSP: QTSP EUDIW",
+      "page": 59
+    },
+    {
+      "num": "A.6",
+      "title": "Request construction (RP EUDIW)",
+      "page": 59
+    },
+    {
+      "num": "A.6.1",
+      "title": "Introduction",
+      "page": 59
+    },
+    {
+      "num": "A.6.2",
+      "title": "Required parameters (OpenID4VP layer)",
+      "page": 60
+    },
+    {
+      "num": "A.6.3",
+      "title": "dcql_query (selecting an acceptable signing certificate)",
+      "page": 60
+    },
+    {
+      "num": "A.6.4",
+      "title": "transaction_data (the QES transaction)",
+      "page": 61
+    },
+    {
+      "num": "A.7",
+      "title": "Response handling (EUDIW RP)",
+      "page": 62
+    },
+    {
+      "num": "A.7.1",
+      "title": "Inline (VP Token) - x509PresentationResponse",
+      "page": 62
+    },
+    {
+      "num": "A.7.2",
+      "title": "Out of band (HTTP POST to responseURI)",
+      "page": 62
+    },
+    {
+      "num": "A.7.3",
+      "title": "EUDIW processing",
+      "page": 62
+    },
+    {
+      "num": "A.8",
+      "title": "Transaction data processing & UX rendering (EUDIW)",
+      "page": 63
+    },
+    {
+      "num": "A.9",
+      "title": "Complementary approval flow",
+      "page": 63
+    },
+    {
+      "num": "A.10",
+      "title": "Security & privacy requirements",
+      "page": 63
+    },
+    {
+      "num": "A.11",
+      "title": "Conformance checklist (RP)",
+      "page": 64
+    },
+    {
+      "num": "A.12",
+      "title": "Examples",
+      "page": 64
+    },
+    {
+      "num": "A.12.1",
+      "title": "Authorization request (core parameters)",
+      "page": 64
+    },
+    {
+      "num": "A.12.2",
+      "title": "Example 'qesRequest' (transaction_data before base64url encoding)",
+      "page": 64
+    },
+    {
+      "num": "A.12.3",
+      "title": "VP Token (inline) - PAdES result",
+      "page": 65
+    },
+    {
+      "num": "A.12.4",
+      "title": "Out of band POST to responseURI",
+      "page": 65
+    },
+    {
+      "num": "Annex B",
+      "title": "EUDIW QES creation approval profile",
+      "page": 67,
+      "annex_type": "normative"
+    },
+    {
+      "num": "B.1",
+      "title": "Overview",
+      "page": 67
+    },
+    {
+      "num": "B.2",
+      "title": "Roles and architecture",
+      "page": 67
+    },
+    {
+      "num": "B.3",
+      "title": "Signature authorization attestation",
+      "page": 67
+    },
+    {
+      "num": "B.4",
+      "title": "Profile scope & transport",
+      "page": 68
+    },
+    {
+      "num": "B.5",
+      "title": "Profile identifiers",
+      "page": 68
+    },
+    {
+      "num": "B.6",
+      "title": "Data model for approval",
+      "page": 68
+    },
+    {
+      "num": "B.6.1",
+      "title": "Introduction",
+      "page": 68
+    },
+    {
+      "num": "B.6.2",
+      "title": "qesApprovalRequest",
+      "page": 68
+    },
+    {
+      "num": "B.6.3",
+      "title": "Computing qesApproval (EUDIW)",
+      "page": 69
+    },
+    {
+      "num": "B.7",
+      "title": "OpenID4VP request (QTSP Wallet)",
+      "page": 70
+    },
+    {
+      "num": "B.8",
+      "title": "EUDIW response (EUDIW QTSP)",
+      "page": 70
+    },
+    {
+      "num": "B.8.1",
+      "title": "VP Token / DC API response",
+      "page": 70
+    },
+    {
+      "num": "B.8.2",
+      "title": "Using qesApproval at the AS/SCSP",
+      "page": 71
+    },
+    {
+      "num": "B.9",
+      "title": "Processing & rendering requirements (EUDIW)",
+      "page": 71
+    },
+    {
+      "num": "B.10",
+      "title": "Security & privacy",
+      "page": 71
+    },
+    {
+      "num": "B.11",
+      "title": "Conformance checklist (SCSP)",
+      "page": 71
+    },
+    {
+      "num": "B.12",
+      "title": "Working sequence",
+      "page": 71
+    },
+    {
+      "num": "C.1",
+      "title": "Introduction",
+      "page": 72
+    },
+    {
+      "num": "C.2",
+      "title": "Separation of Responsibilities",
+      "page": 72
+    },
+    {
+      "num": "C.3",
+      "title": "Authentication and Authorization Layer",
+      "page": 72
+    },
+    {
+      "num": "C.4",
+      "title": "Signature Creation Service",
+      "page": 72
+    },
+    {
+      "num": "C.5",
+      "title": "Strong Binding Between Consent and DTBS",
+      "page": 72
+    },
+    {
+      "num": "C.6",
+      "title": "Use of FAPI 2.0 for EUDIW-Based Clients",
+      "page": 72
+    },
+    {
+      "num": "C.7",
+      "title": "SCS API Security Recommendations",
+      "page": 72
+    },
+    {
+      "num": "Annex D",
+      "title": "Change history",
+      "page": 73,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 74,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 10,
+  "total_pages": 74,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6
+  ]
+}

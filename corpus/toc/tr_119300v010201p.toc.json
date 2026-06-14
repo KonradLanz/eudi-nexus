@@ -1,0 +1,199 @@
+{
+  "stem": "tr_119300v010201p",
+  "pdf": "downloads/specs/TR/tr_119300v010201p.pdf",
+  "title": "(2016-03)",
+  "reference": "tr_119300v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Introduction to cryptographic suites",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "General",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "Digital signatures",
+      "page": 7
+    },
+    {
+      "num": "4.3",
+      "title": "Signature creation and verification",
+      "page": 8
+    },
+    {
+      "num": "4.4",
+      "title": "Cryptographic algorithms",
+      "page": 8
+    },
+    {
+      "num": "4.4.1",
+      "title": "Hash functions",
+      "page": 8
+    },
+    {
+      "num": "4.4.2",
+      "title": "Message encoding and random numbers",
+      "page": 8
+    },
+    {
+      "num": "4.4.3",
+      "title": "Asymmetric signature algorithms",
+      "page": 8
+    },
+    {
+      "num": "4.4.4",
+      "title": "Security bits",
+      "page": 9
+    },
+    {
+      "num": "4.5",
+      "title": "Standardization",
+      "page": 9
+    },
+    {
+      "num": "4.5.1",
+      "title": "Standardization bodies",
+      "page": 9
+    },
+    {
+      "num": "4.5.2",
+      "title": "Technical specifications",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Selecting an appropriate signature suite",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Evaluating pre-conditions",
+      "page": 10
+    },
+    {
+      "num": "5.2.1",
+      "title": "Trust level",
+      "page": 10
+    },
+    {
+      "num": "5.2.2",
+      "title": "Trust period",
+      "page": 10
+    },
+    {
+      "num": "5.2.3",
+      "title": "Hardware security",
+      "page": 10
+    },
+    {
+      "num": "5.2.4",
+      "title": "Attack potential",
+      "page": 10
+    },
+    {
+      "num": "5.3",
+      "title": "Guidance to selection",
+      "page": 10
+    },
+    {
+      "num": "5.3.1",
+      "title": "National supervisory bodies",
+      "page": 10
+    },
+    {
+      "num": "5.3.2",
+      "title": "Trust service providers",
+      "page": 11
+    },
+    {
+      "num": "5.3.3",
+      "title": "Manufacturers of security devices",
+      "page": 11
+    },
+    {
+      "num": "5.3.4",
+      "title": "Information to end users",
+      "page": 11
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 13,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 13,
+  "toc_pages": [
+    3
+  ]
+}

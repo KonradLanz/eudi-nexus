@@ -1,0 +1,232 @@
+{
+  "stem": "sr_019050v010101p",
+  "pdf": "downloads/specs/Other/sr_019050v010101p.pdf",
+  "title": "(2015-06)",
+  "reference": "sr_019050v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 10
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 11
+    },
+    {
+      "num": "4",
+      "title": "Methodology",
+      "page": 12
+    },
+    {
+      "num": "5",
+      "title": "Features",
+      "page": 13
+    },
+    {
+      "num": "6",
+      "title": "Electronic registered delivery service model",
+      "page": 15
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 15
+    },
+    {
+      "num": "6.2",
+      "title": "Basic service model",
+      "page": 15
+    },
+    {
+      "num": "6.3",
+      "title": "Distributed service model",
+      "page": 17
+    },
+    {
+      "num": "6.4",
+      "title": "Extended electronic registered delivery service model",
+      "page": 18
+    },
+    {
+      "num": "6.5",
+      "title": "Roles in electronic registered delivery management domains",
+      "page": 20
+    },
+    {
+      "num": "6.6",
+      "title": "Implications to standardization activities",
+      "page": 22
+    },
+    {
+      "num": "6.6.1",
+      "title": "Introduction",
+      "page": 22
+    },
+    {
+      "num": "6.6.2",
+      "title": "Routing",
+      "page": 23
+    },
+    {
+      "num": "6.6.3",
+      "title": "Capabilities/Requirements",
+      "page": 24
+    },
+    {
+      "num": "6.6.4",
+      "title": "Trust Establishment",
+      "page": 24
+    },
+    {
+      "num": "6.6.5",
+      "title": "Payload Delivery",
+      "page": 24
+    },
+    {
+      "num": "6.6.6",
+      "title": "Meta-information Exchange",
+      "page": 24
+    },
+    {
+      "num": "6.6.7",
+      "title": "User Identity Exchange",
+      "page": 24
+    },
+    {
+      "num": "6.6.8",
+      "title": "Evidence Exchange",
+      "page": 25
+    },
+    {
+      "num": "7",
+      "title": "Inventory of existing specifications",
+      "page": 25
+    },
+    {
+      "num": "8.1",
+      "title": "Electronic registered delivery standardization classification scheme",
+      "page": 25
+    },
+    {
+      "num": "9",
+      "title": "Analysis and work plan",
+      "page": 30
+    },
+    {
+      "num": "9.1",
+      "title": "Methodology",
+      "page": 30
+    },
+    {
+      "num": "9.2",
+      "title": "Analysis and work plan for trust application service providers area",
+      "page": 30
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 38
+    },
+    {
+      "num": "A.2",
+      "title": "SPOCS LSP",
+      "page": 38
+    },
+    {
+      "num": "A.3",
+      "title": "e-SENS LSP",
+      "page": 39
+    },
+    {
+      "num": "A.4",
+      "title": "ePSOS",
+      "page": 40
+    },
+    {
+      "num": "A.5",
+      "title": "PEPPOL",
+      "page": 41
+    },
+    {
+      "num": "A.6",
+      "title": "eCODEX",
+      "page": 43
+    },
+    {
+      "num": "A.7",
+      "title": "e-Trustex",
+      "page": 44
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 49,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 49,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

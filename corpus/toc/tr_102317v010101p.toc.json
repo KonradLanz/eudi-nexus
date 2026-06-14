@@ -1,0 +1,395 @@
+{
+  "stem": "tr_102317v010101p",
+  "pdf": "downloads/specs/TR/tr_102317v010101p.pdf",
+  "title": "(2004-06)",
+  "reference": "tr_102317v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Maintenance activity",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "History of the TC ESI maintenance activity",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "Revised maintenance process",
+      "page": 7
+    },
+    {
+      "num": "4.2.1",
+      "title": "General description",
+      "page": 7
+    },
+    {
+      "num": "4.2.2",
+      "title": "Tracking stage",
+      "page": 8
+    },
+    {
+      "num": "4.2.3",
+      "title": "Pre-processing stage",
+      "page": 8
+    },
+    {
+      "num": "4.2.4",
+      "title": "Processing stage",
+      "page": 8
+    },
+    {
+      "num": "4.3",
+      "title": "Maintenance report",
+      "page": 9
+    },
+    {
+      "num": "4.3.1",
+      "title": "Maintenance report and its role in the maintenance process",
+      "page": 9
+    },
+    {
+      "num": "4.3.2",
+      "title": "Structure of the maintenance report",
+      "page": 9
+    },
+    {
+      "num": "4.3.2.1",
+      "title": "General structure",
+      "page": 9
+    },
+    {
+      "num": "4.3.2.2",
+      "title": "Clause 5: fields and structure",
+      "page": 9
+    },
+    {
+      "num": "4.3.2.3",
+      "title": "Annex A: fields and structure",
+      "page": 10
+    },
+    {
+      "num": "5",
+      "title": "Maintenance tools",
+      "page": 11
+    },
+    {
+      "num": "5.1",
+      "title": "Description of the tools",
+      "page": 11
+    },
+    {
+      "num": "5.2",
+      "title": "Requirements",
+      "page": 12
+    },
+    {
+      "num": "5.3",
+      "title": "How to install the tools",
+      "page": 12
+    },
+    {
+      "num": "5.4",
+      "title": "How to use the tools",
+      "page": 13
+    },
+    {
+      "num": "5.4.1",
+      "title": "Maintenance process and general instructions",
+      "page": 13
+    },
+    {
+      "num": "5.4.2",
+      "title": "Inserting the elementary comments into the database",
+      "page": 13
+    },
+    {
+      "num": "5.4.3",
+      "title": "Creating the body of the maintenance report",
+      "page": 15
+    },
+    {
+      "num": "5.4.4",
+      "title": "Finishing the maintenance report",
+      "page": 17
+    },
+    {
+      "num": "5.5",
+      "title": "How the tools work",
+      "page": 17
+    },
+    {
+      "num": "5.5.1",
+      "title": "Mail Merge database",
+      "page": 17
+    },
+    {
+      "num": "5.5.2",
+      "title": "Mail Merge Word feature and template",
+      "page": 18
+    },
+    {
+      "num": "5.5.3",
+      "title": "Macro producing the maintenance report target file",
+      "page": 18
+    },
+    {
+      "num": "5.6",
+      "title": "Generalized use of the maintenance tools",
+      "page": 18
+    },
+    {
+      "num": "6",
+      "title": "Tools improvements",
+      "page": 19
+    },
+    {
+      "num": "6.1",
+      "title": "Adding some automatic formatting capabilities",
+      "page": 19
+    },
+    {
+      "num": "6.2",
+      "title": "Improving the database structure",
+      "page": 19
+    },
+    {
+      "num": "6.3",
+      "title": "Improving the database insertion form",
+      "page": 19
+    },
+    {
+      "num": "6.4",
+      "title": "Making the tools corporate",
+      "page": 19
+    },
+    {
+      "num": "A.1",
+      "title": "Tables",
+      "page": 20
+    },
+    {
+      "num": "A.1.1",
+      "title": "Table \"tComments\"",
+      "page": 20
+    },
+    {
+      "num": "A.1.1.1",
+      "title": "Columns",
+      "page": 20
+    },
+    {
+      "num": "A.1.2",
+      "title": "Table \"tCommentType\"",
+      "page": 20
+    },
+    {
+      "num": "A.1.2.1",
+      "title": "Columns",
+      "page": 20
+    },
+    {
+      "num": "A.1.2.2",
+      "title": "Predefined records",
+      "page": 20
+    },
+    {
+      "num": "A.1.3",
+      "title": "Table \"tResolutionStatus\"",
+      "page": 21
+    },
+    {
+      "num": "A.1.3.1",
+      "title": "Columns",
+      "page": 21
+    },
+    {
+      "num": "A.1.3.2",
+      "title": "Predefined records",
+      "page": 21
+    },
+    {
+      "num": "A.2",
+      "title": "Relationships' diagram",
+      "page": 21
+    },
+    {
+      "num": "A.3",
+      "title": "Queries",
+      "page": 22
+    },
+    {
+      "num": "B.1",
+      "title": "VBA sources",
+      "page": 23
+    },
+    {
+      "num": "B.1.1",
+      "title": "Module \"modCode\"",
+      "page": 23
+    },
+    {
+      "num": "B.1.2",
+      "title": "Module \"frmMenu\"",
+      "page": 27
+    },
+    {
+      "num": "B.1.3",
+      "title": "Module \"frmInfo\"",
+      "page": 29
+    },
+    {
+      "num": "B.2",
+      "title": "VBA forms",
+      "page": 30
+    },
+    {
+      "num": "B.2.1",
+      "title": "Form \"frmMenu\"",
+      "page": 30
+    },
+    {
+      "num": "B.2.2",
+      "title": "Form \"frmInfo\"",
+      "page": 30
+    },
+    {
+      "num": "C.1",
+      "title": "Introduction",
+      "page": 31
+    },
+    {
+      "num": "C.2",
+      "title": "Procedures for maintenance tools recreation",
+      "page": 31
+    },
+    {
+      "num": "C.2.1",
+      "title": "Mail Merge database",
+      "page": 31
+    },
+    {
+      "num": "C.2.2",
+      "title": "VBA macros",
+      "page": 31
+    },
+    {
+      "num": "C.2.3",
+      "title": "Mail Merge template",
+      "page": 32
+    },
+    {
+      "num": "D.1",
+      "title": "Sample of Mail Merge template",
+      "page": 33
+    },
+    {
+      "num": "D.2",
+      "title": "Sample of clause 5 of the maintenance report base file",
+      "page": 34
+    },
+    {
+      "num": "D.3",
+      "title": "Samples of elementary comments within clause 5 of the maintenance report",
+      "page": 34
+    },
+    {
+      "num": "D.3.1",
+      "title": "Introduction",
+      "page": 34
+    },
+    {
+      "num": "D.3.2",
+      "title": "Example n. 1",
+      "page": 35
+    },
+    {
+      "num": "D.3.3",
+      "title": "Example n. 2",
+      "page": 36
+    },
+    {
+      "num": "D.4",
+      "title": "Samples of contribution with metadata within annex A of the maintenance report",
+      "page": 36
+    },
+    {
+      "num": "D.4.1",
+      "title": "Introduction",
+      "page": 36
+    },
+    {
+      "num": "D.4.2",
+      "title": "Example n. 1",
+      "page": 37
+    },
+    {
+      "num": "D.4.3",
+      "title": "Example n. 2",
+      "page": 38
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 39,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 39,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

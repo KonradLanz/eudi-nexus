@@ -1,0 +1,757 @@
+{
+  "stem": "ts_119612v020401p",
+  "pdf": "downloads/specs/TS/ts_119612v020401p.pdf",
+  "title": "(2025-08)",
+  "reference": "ts_119612v020401p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 9
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 9
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 9
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 10
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 11
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 11
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 13
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 13
+    },
+    {
+      "num": "4",
+      "title": "Overall structure of trusted lists",
+      "page": 14
+    },
+    {
+      "num": "5",
+      "title": "Trusted list format and content",
+      "page": 17
+    },
+    {
+      "num": "5.1",
+      "title": "General principles for trusted lists",
+      "page": 17
+    },
+    {
+      "num": "5.1.1",
+      "title": "Trusted List Format",
+      "page": 17
+    },
+    {
+      "num": "5.1.2",
+      "title": "Use of Uniform Resource Identifiers",
+      "page": 17
+    },
+    {
+      "num": "5.1.3",
+      "title": "Date-time indication",
+      "page": 17
+    },
+    {
+      "num": "5.1.4",
+      "title": "Language support",
+      "page": 17
+    },
+    {
+      "num": "5.1.5",
+      "title": "Value of Country Code fields",
+      "page": 18
+    },
+    {
+      "num": "5.2",
+      "title": "Trusted List tag",
+      "page": 18
+    },
+    {
+      "num": "5.2.1",
+      "title": "TSL Tag",
+      "page": 18
+    },
+    {
+      "num": "5.3",
+      "title": "Scheme information",
+      "page": 18
+    },
+    {
+      "num": "5.3.1",
+      "title": "TSL version identifier",
+      "page": 18
+    },
+    {
+      "num": "5.3.2",
+      "title": "TSL sequence number",
+      "page": 19
+    },
+    {
+      "num": "5.3.3",
+      "title": "TSL type",
+      "page": 19
+    },
+    {
+      "num": "5.3.4",
+      "title": "Scheme operator name",
+      "page": 20
+    },
+    {
+      "num": "5.3.5",
+      "title": "Scheme operator address",
+      "page": 20
+    },
+    {
+      "num": "5.3.5.0",
+      "title": "General",
+      "page": 20
+    },
+    {
+      "num": "5.3.5.1",
+      "title": "Scheme operator postal address",
+      "page": 20
+    },
+    {
+      "num": "5.3.5.2",
+      "title": "Scheme operator electronic address",
+      "page": 21
+    },
+    {
+      "num": "5.3.6",
+      "title": "Scheme name",
+      "page": 21
+    },
+    {
+      "num": "5.3.7",
+      "title": "Scheme information URI",
+      "page": 22
+    },
+    {
+      "num": "5.3.8",
+      "title": "Status determination approach",
+      "page": 22
+    },
+    {
+      "num": "5.3.9",
+      "title": "Scheme type/community/rules",
+      "page": 23
+    },
+    {
+      "num": "5.3.10",
+      "title": "Scheme territory",
+      "page": 24
+    },
+    {
+      "num": "5.3.11",
+      "title": "TSL policy/legal notice",
+      "page": 24
+    },
+    {
+      "num": "5.3.12",
+      "title": "Historical information period",
+      "page": 24
+    },
+    {
+      "num": "5.3.13",
+      "title": "Pointers to other TSLs",
+      "page": 24
+    },
+    {
+      "num": "5.3.14",
+      "title": "List issue date and time",
+      "page": 25
+    },
+    {
+      "num": "5.3.15",
+      "title": "Next update",
+      "page": 25
+    },
+    {
+      "num": "5.3.16",
+      "title": "Distribution points",
+      "page": 26
+    },
+    {
+      "num": "5.3.17",
+      "title": "Scheme extensions",
+      "page": 26
+    },
+    {
+      "num": "5.3.18",
+      "title": "Trust Service Provider List",
+      "page": 26
+    },
+    {
+      "num": "5.4",
+      "title": "TSP information",
+      "page": 27
+    },
+    {
+      "num": "5.4.1",
+      "title": "TSP name",
+      "page": 27
+    },
+    {
+      "num": "5.4.2",
+      "title": "TSP trade name",
+      "page": 27
+    },
+    {
+      "num": "5.4.3",
+      "title": "TSP address",
+      "page": 28
+    },
+    {
+      "num": "5.4.3.0",
+      "title": "General",
+      "page": 28
+    },
+    {
+      "num": "5.4.3.1",
+      "title": "TSP postal address",
+      "page": 28
+    },
+    {
+      "num": "5.4.3.2",
+      "title": "TSP electronic address",
+      "page": 28
+    },
+    {
+      "num": "5.4.4",
+      "title": "TSP information URI",
+      "page": 29
+    },
+    {
+      "num": "5.4.5",
+      "title": "TSP information extensions",
+      "page": 29
+    },
+    {
+      "num": "5.4.6",
+      "title": "TSP Services (list of services)",
+      "page": 29
+    },
+    {
+      "num": "5.5",
+      "title": "Service information",
+      "page": 30
+    },
+    {
+      "num": "5.5.1",
+      "title": "Service type identifier",
+      "page": 30
+    },
+    {
+      "num": "5.5.1.0",
+      "title": "General requirements",
+      "page": 30
+    },
+    {
+      "num": "5.5.1.1",
+      "title": "Regulation (EU) No 910/2014 qualified trust service types",
+      "page": 31
+    },
+    {
+      "num": "5.5.1.2",
+      "title": "Regulation (EU) No 910/2014 non qualified trust service types",
+      "page": 34
+    },
+    {
+      "num": "5.5.2",
+      "title": "Service name",
+      "page": 39
+    },
+    {
+      "num": "5.5.3",
+      "title": "Service digital identity",
+      "page": 39
+    },
+    {
+      "num": "5.5.4",
+      "title": "Service current status",
+      "page": 41
+    },
+    {
+      "num": "5.5.5",
+      "title": "Current status starting date and time",
+      "page": 42
+    },
+    {
+      "num": "5.5.6",
+      "title": "Scheme service definition URI",
+      "page": 42
+    },
+    {
+      "num": "5.5.7",
+      "title": "Service supply points",
+      "page": 43
+    },
+    {
+      "num": "5.5.8",
+      "title": "TSP service definition URI",
+      "page": 43
+    },
+    {
+      "num": "5.5.9",
+      "title": "Service information extensions",
+      "page": 43
+    },
+    {
+      "num": "5.5.9.0",
+      "title": "General",
+      "page": 43
+    },
+    {
+      "num": "5.5.9.1",
+      "title": "expiredCertsRevocationInfo Extension",
+      "page": 44
+    },
+    {
+      "num": "5.5.9.2",
+      "title": "Qualifications Extension",
+      "page": 45
+    },
+    {
+      "num": "5.5.9.2.0",
+      "title": "General",
+      "page": 45
+    },
+    {
+      "num": "5.5.9.2.1",
+      "title": "QualificationElement",
+      "page": 45
+    },
+    {
+      "num": "5.5.9.2.2",
+      "title": "CriteriaList",
+      "page": 45
+    },
+    {
+      "num": "5.5.9.2.3",
+      "title": "Qualifier",
+      "page": 47
+    },
+    {
+      "num": "5.5.9.3",
+      "title": "TakenOverBy Extension",
+      "page": 48
+    },
+    {
+      "num": "5.5.9.4",
+      "title": "additionalServiceInformation Extension",
+      "page": 49
+    },
+    {
+      "num": "5.5.10",
+      "title": "Service history",
+      "page": 50
+    },
+    {
+      "num": "5.6",
+      "title": "Service history instance",
+      "page": 50
+    },
+    {
+      "num": "5.6.1",
+      "title": "Service type identifier",
+      "page": 50
+    },
+    {
+      "num": "5.6.2",
+      "title": "Service name",
+      "page": 50
+    },
+    {
+      "num": "5.6.3",
+      "title": "Service digital identity",
+      "page": 50
+    },
+    {
+      "num": "5.6.4",
+      "title": "Service previous status",
+      "page": 50
+    },
+    {
+      "num": "5.6.5",
+      "title": "Previous status starting date and time",
+      "page": 50
+    },
+    {
+      "num": "5.6.6",
+      "title": "Service information extensions",
+      "page": 51
+    },
+    {
+      "num": "5.7",
+      "title": "Digital signature",
+      "page": 51
+    },
+    {
+      "num": "5.7.1",
+      "title": "Digitally signed Trusted List",
+      "page": 51
+    },
+    {
+      "num": "5.7.2",
+      "title": "Digital signature algorithm identifier",
+      "page": 51
+    },
+    {
+      "num": "5.7.3",
+      "title": "Digital signature value",
+      "page": 52
+    },
+    {
+      "num": "6",
+      "title": "Operations",
+      "page": 52
+    },
+    {
+      "num": "6.1",
+      "title": "TL publication",
+      "page": 52
+    },
+    {
+      "num": "6.2",
+      "title": "Transport Protocols",
+      "page": 52
+    },
+    {
+      "num": "6.2.1",
+      "title": "HTTP-Transport",
+      "page": 52
+    },
+    {
+      "num": "6.2.1.1",
+      "title": "HTTP-Media Type",
+      "page": 52
+    },
+    {
+      "num": "6.2.2",
+      "title": "MIME registrations",
+      "page": 53
+    },
+    {
+      "num": "6.3",
+      "title": "TL Distribution Points in trust service tokens",
+      "page": 53
+    },
+    {
+      "num": "6.4",
+      "title": "TL availability",
+      "page": 53
+    },
+    {
+      "num": "6.5",
+      "title": "TLSO practices",
+      "page": 53
+    },
+    {
+      "num": "Annex A",
+      "title": "Authenticating and trusting trusted lists",
+      "page": 54,
+      "annex_type": "informative"
+    },
+    {
+      "num": "A.1",
+      "title": "Authenticating and trusting a TL",
+      "page": 54
+    },
+    {
+      "num": "A.2",
+      "title": "Ensuring continuity in TL authentication",
+      "page": 55
+    },
+    {
+      "num": "Annex B",
+      "title": "Implementation in XML",
+      "page": 57,
+      "annex_type": "normative"
+    },
+    {
+      "num": "B.0",
+      "title": "General requirements",
+      "page": 57
+    },
+    {
+      "num": "B.1",
+      "title": "The Signature element",
+      "page": 57
+    },
+    {
+      "num": "B.1.0",
+      "title": "General",
+      "page": 57
+    },
+    {
+      "num": "B.1.1",
+      "title": "The scheme operator identifier in XAdES signatures",
+      "page": 58
+    },
+    {
+      "num": "B.1.2",
+      "title": "Algorithm and parameters",
+      "page": 58
+    },
+    {
+      "num": "Annex C",
+      "title": "XML schema",
+      "page": 59,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Registered Uniform Resource Identifiers",
+      "page": 60,
+      "annex_type": "normative"
+    },
+    {
+      "num": "D.0",
+      "title": "General",
+      "page": 60
+    },
+    {
+      "num": "D.1",
+      "title": "URIs registered within the present document",
+      "page": 60
+    },
+    {
+      "num": "D.2",
+      "title": "ETSI Common Domain URIs",
+      "page": 60
+    },
+    {
+      "num": "D.3",
+      "title": "Scheme registered URIs",
+      "page": 60
+    },
+    {
+      "num": "D.4",
+      "title": "Common trusted lists URIs",
+      "page": 61
+    },
+    {
+      "num": "D.5",
+      "title": "EU specific trusted lists URIs",
+      "page": 61
+    },
+    {
+      "num": "D.5.1",
+      "title": "TSL Type",
+      "page": 61
+    },
+    {
+      "num": "D.5.2",
+      "title": "Status determination approach",
+      "page": 62
+    },
+    {
+      "num": "D.5.3",
+      "title": "Scheme type/community/rules",
+      "page": 62
+    },
+    {
+      "num": "D.5.4",
+      "title": "Service information extensions/Qualifications Extension/Qualifiers",
+      "page": 62
+    },
+    {
+      "num": "D.5.5",
+      "title": "Service information extensions/additionalServiceInformation Extension",
+      "page": 64
+    },
+    {
+      "num": "D.5.6",
+      "title": "Service current and previous statuses",
+      "page": 65
+    },
+    {
+      "num": "D.6",
+      "title": "Non-EU specific trusted lists URIs",
+      "page": 67
+    },
+    {
+      "num": "Annex E",
+      "title": "Implementation requirements for multilingual support",
+      "page": 68,
+      "annex_type": "normative"
+    },
+    {
+      "num": "E.1",
+      "title": "General rules",
+      "page": 68
+    },
+    {
+      "num": "E.2",
+      "title": "Multilingual character string",
+      "page": 69
+    },
+    {
+      "num": "E.3",
+      "title": "Multilingual pointer",
+      "page": 69
+    },
+    {
+      "num": "E.4",
+      "title": "Overall requirements",
+      "page": 70
+    },
+    {
+      "num": "Annex F",
+      "title": "TL manual/auto field usage",
+      "page": 71,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex G",
+      "title": "Management and policy considerations",
+      "page": 72,
+      "annex_type": "normative"
+    },
+    {
+      "num": "G.0",
+      "title": "General",
+      "page": 72
+    },
+    {
+      "num": "G.1",
+      "title": "Change of scheme administrative information",
+      "page": 72
+    },
+    {
+      "num": "G.2",
+      "title": "Trust-service identification",
+      "page": 72
+    },
+    {
+      "num": "G.3",
+      "title": "Change of trust service status",
+      "page": 72
+    },
+    {
+      "num": "G.4",
+      "title": "Change in trust service digital identity",
+      "page": 72
+    },
+    {
+      "num": "G.5",
+      "title": "Amendment response times",
+      "page": 73
+    },
+    {
+      "num": "G.6",
+      "title": "On-going verification of authenticity",
+      "page": 73
+    },
+    {
+      "num": "G.7",
+      "title": "User reference to TL",
+      "page": 73
+    },
+    {
+      "num": "G.8",
+      "title": "TL size",
+      "page": 73
+    },
+    {
+      "num": "Annex H",
+      "title": "Locating a TL",
+      "page": 74,
+      "annex_type": "informative"
+    },
+    {
+      "num": "H.1",
+      "title": "Introduction",
+      "page": 74
+    },
+    {
+      "num": "H.2",
+      "title": "Locating a TL",
+      "page": 74
+    },
+    {
+      "num": "Annex I",
+      "title": "Usage of trusted lists",
+      "page": 75,
+      "annex_type": "informative"
+    },
+    {
+      "num": "I.1",
+      "title": "Introduction",
+      "page": 75
+    },
+    {
+      "num": "I.3",
+      "title": "Policy elements for trust anchor management",
+      "page": 76
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 81,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 9,
+  "total_pages": 81,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

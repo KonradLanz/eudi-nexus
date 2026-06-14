@@ -1,0 +1,129 @@
+{
+  "stem": "ts_11914402v020101p",
+  "pdf": "downloads/specs/TS/ts_11914402v020101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11914402v020101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Testing interoperability of PAdES-B-B signatures",
+      "page": 6
+    },
+    {
+      "num": "6",
+      "title": "Testing interoperability of PAdES-B-T signatures",
+      "page": 9
+    },
+    {
+      "num": "7",
+      "title": "Testing interoperability of PAdES-B-LT signatures",
+      "page": 11
+    },
+    {
+      "num": "8",
+      "title": "Testing interoperability of PAdES-B-LTA signatures",
+      "page": 12
+    },
+    {
+      "num": "9",
+      "title": "Testing PAdES baseline signatures augmentation interoperability",
+      "page": 15
+    },
+    {
+      "num": "10",
+      "title": "Testing negative PAdES baseline signatures",
+      "page": 17
+    },
+    {
+      "num": "10.1",
+      "title": "PAdES-B-B signatures test cases",
+      "page": 17
+    },
+    {
+      "num": "10.2",
+      "title": "PAdES-B-T signatures test cases",
+      "page": 17
+    },
+    {
+      "num": "10.3",
+      "title": "PAdES-B-LTA signatures test cases",
+      "page": 17
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 18,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 18,
+  "toc_pages": [
+    3
+  ]
+}

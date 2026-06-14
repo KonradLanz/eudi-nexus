@@ -1,0 +1,170 @@
+{
+  "stem": "ts_11916402v020101p",
+  "pdf": "downloads/specs/TS/ts_11916402v020101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11916402v020101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "ASiC baseline container interoperability test specification overview",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Test suite for testing interoperability of ASiC-S baseline containers",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction to testing ASiC-S baseline containers",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Test cases common to all ASiC-S forms and levels",
+      "page": 7
+    },
+    {
+      "num": "5.3",
+      "title": "Test cases for ASiC-S baseline containers with CAdES signatures",
+      "page": 8
+    },
+    {
+      "num": "5.3.1",
+      "title": "Positive test cases",
+      "page": 8
+    },
+    {
+      "num": "5.3.2",
+      "title": "Negative test cases for ASiC-S baseline containers with CAdES signatures",
+      "page": 8
+    },
+    {
+      "num": "5.4",
+      "title": "Test cases for ASiC-S baseline containers with XAdES signatures",
+      "page": 9
+    },
+    {
+      "num": "5.4.1",
+      "title": "Positive test cases",
+      "page": 9
+    },
+    {
+      "num": "5.4.2",
+      "title": "Negative test cases for ASiC-S baseline containers with XAdES signatures",
+      "page": 9
+    },
+    {
+      "num": "6",
+      "title": "Test suite for testing interoperability of ASiC-E baseline containers",
+      "page": 10
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction to testing ASiC-E baseline containers",
+      "page": 10
+    },
+    {
+      "num": "6.2",
+      "title": "Test cases common to all ASiC-E forms and levels",
+      "page": 10
+    },
+    {
+      "num": "6.3",
+      "title": "Test cases for ASiC-E baseline containers with XAdES signatures",
+      "page": 11
+    },
+    {
+      "num": "6.3.1",
+      "title": "Positive test cases",
+      "page": 11
+    },
+    {
+      "num": "6.3.2",
+      "title": "Negative test cases for ASiC-E baseline containers with XAdES signatures",
+      "page": 12
+    },
+    {
+      "num": "7",
+      "title": "Test-suite for augmentation of ASiC baseline containers",
+      "page": 12
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 13,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 14,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 14,
+  "toc_pages": [
+    3
+  ]
+}

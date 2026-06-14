@@ -1,0 +1,201 @@
+{
+  "stem": "tr_11952001v010101p",
+  "pdf": "downloads/specs/TR/tr_11952001v010101p.pdf",
+  "title": "(2024-04)",
+  "reference": "tr_11952001v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "(Q)ERDS/(Q)ERDSP inputs for a new rationalized standardization framework",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "General",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Cross-border interoperability",
+      "page": 10
+    },
+    {
+      "num": "4.2.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "4.2.2",
+      "title": "ETSI ERDS baseline",
+      "page": 11
+    },
+    {
+      "num": "4.2.2.1",
+      "title": "General Requirements",
+      "page": 11
+    },
+    {
+      "num": "4.2.2.2",
+      "title": "Application to the entire ERDS standard",
+      "page": 11
+    },
+    {
+      "num": "4.2.2.3",
+      "title": "General needs identified to define ERDS baseline",
+      "page": 11
+    },
+    {
+      "num": "4.2.2.4",
+      "title": "Packaging",
+      "page": 13
+    },
+    {
+      "num": "4.2.2.5",
+      "title": "Transport",
+      "page": 13
+    },
+    {
+      "num": "4.2.2.6",
+      "title": "ERDS baseline and REM baseline: functional relationships",
+      "page": 14
+    },
+    {
+      "num": "4.2.3",
+      "title": "ETSI ERDS baseline - inheritances from REM baseline",
+      "page": 17
+    },
+    {
+      "num": "4.2.3.1",
+      "title": "General considerations",
+      "page": 17
+    },
+    {
+      "num": "4.2.3.2",
+      "title": "ERDS baseline and REM baseline: editorial relationships",
+      "page": 17
+    },
+    {
+      "num": "4.2.4",
+      "title": "ETSI ERDS baseline - cross-interoperability",
+      "page": 18
+    },
+    {
+      "num": "4.3",
+      "title": "Implications of the eIDAS2 Regulation to (Q)ERDS/(Q)ERDSP",
+      "page": 19
+    },
+    {
+      "num": "4.3.1",
+      "title": "Impact of the eIDAS2 in ERDS",
+      "page": 19
+    },
+    {
+      "num": "4.4",
+      "title": "Impact of emerging technologies and models on ERDS/REM models",
+      "page": 20
+    },
+    {
+      "num": "4.5",
+      "title": "New policy and security requirements for (Q)ERDS/(Q)ERDSP",
+      "page": 21
+    },
+    {
+      "num": "5",
+      "title": "Proposal for a new (Q)ERDS/(Q)ERDSP standardization rationalized framework",
+      "page": 22
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 22
+    },
+    {
+      "num": "5.2",
+      "title": "Proposal on simplification and rationalization of ERDS standards",
+      "page": 25
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 91,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 91,
+  "toc_pages": [
+    3
+  ]
+}

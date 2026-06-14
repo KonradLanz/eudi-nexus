@@ -1,0 +1,129 @@
+{
+  "stem": "ts_11916405v010101p",
+  "pdf": "downloads/specs/TS/ts_11916405v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11916405v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "ASiC additional container conformity test specification overview",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Testing Simple Associated Signature Containers (ASiC-S)",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Test Assertions for ASiC-S",
+      "page": 7
+    },
+    {
+      "num": "5.1.1",
+      "title": "ASiC-S test assertions for Additional Container Structure",
+      "page": 7
+    },
+    {
+      "num": "5.1.2",
+      "title": "ASiC-S test assertions for Additional Container Syntactical Conformance",
+      "page": 8
+    },
+    {
+      "num": "5.1.3",
+      "title": "Test assertions for ASiC-S ACST conformance",
+      "page": 9
+    },
+    {
+      "num": "6",
+      "title": "Testing Extended Associated Signature Containers (ASiC-E)",
+      "page": 12
+    },
+    {
+      "num": "6.1",
+      "title": "Test Assertions for ASiC-E",
+      "page": 12
+    },
+    {
+      "num": "6.1.1",
+      "title": "ASiC-E test assertions for Additional Container Structure",
+      "page": 12
+    },
+    {
+      "num": "6.1.2",
+      "title": "ASiC-E test assertions for Additional Container Syntactical Conformance",
+      "page": 13
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 17,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 17,
+  "toc_pages": [
+    3
+  ]
+}

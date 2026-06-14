@@ -1,0 +1,293 @@
+{
+  "stem": "tr_102044v010101p",
+  "pdf": "downloads/specs/TR/tr_102044v010101p.pdf",
+  "title": "(2002-12)",
+  "reference": "tr_102044v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Implications from the requirements of the Directive",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "European surveys",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Personnel certification",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Currently implemented attribute certificate usage",
+      "page": 9
+    },
+    {
+      "num": "6",
+      "title": "Various kinds of attributes",
+      "page": 10
+    },
+    {
+      "num": "6.1",
+      "title": "Group memberships",
+      "page": 10
+    },
+    {
+      "num": "6.2",
+      "title": "Roles",
+      "page": 10
+    },
+    {
+      "num": "6.3",
+      "title": "Other authorization information",
+      "page": 12
+    },
+    {
+      "num": "6.3.1",
+      "title": "Proxies",
+      "page": 12
+    },
+    {
+      "num": "6.3.2",
+      "title": "Capabilities",
+      "page": 12
+    },
+    {
+      "num": "7",
+      "title": "Claimed and certified attributes",
+      "page": 13
+    },
+    {
+      "num": "7.1",
+      "title": "Claimed attributes",
+      "page": 13
+    },
+    {
+      "num": "7.2",
+      "title": "Certified Attributes",
+      "page": 13
+    },
+    {
+      "num": "7.2.1",
+      "title": "The Attribute Issuing Authority",
+      "page": 13
+    },
+    {
+      "num": "7.2.2",
+      "title": "Directly certified attributes",
+      "page": 14
+    },
+    {
+      "num": "7.2.3",
+      "title": "Verified attributes",
+      "page": 14
+    },
+    {
+      "num": "8",
+      "title": "Attribute meaning and representation",
+      "page": 15
+    },
+    {
+      "num": "8.1",
+      "title": "Attribute meaning",
+      "page": 15
+    },
+    {
+      "num": "8.2",
+      "title": "Attribute representation",
+      "page": 15
+    },
+    {
+      "num": "8.2.1",
+      "title": "Group membership",
+      "page": 15
+    },
+    {
+      "num": "8.2.2",
+      "title": "Role",
+      "page": 15
+    },
+    {
+      "num": "9",
+      "title": "Other Attribute characteristics",
+      "page": 16
+    },
+    {
+      "num": "9.1",
+      "title": "Attribute life span",
+      "page": 16
+    },
+    {
+      "num": "9.2",
+      "title": "Attribute certification period",
+      "page": 16
+    },
+    {
+      "num": "9.3",
+      "title": "Attribute certificate validity period",
+      "page": 16
+    },
+    {
+      "num": "9.4",
+      "title": "Attribute revocation and Attribute Certificate revocation",
+      "page": 16
+    },
+    {
+      "num": "9.5",
+      "title": "Attribute privacy",
+      "page": 17
+    },
+    {
+      "num": "9.6",
+      "title": "Ways to acquire attributes",
+      "page": 17
+    },
+    {
+      "num": "9.7",
+      "title": "Delegable attributes",
+      "page": 17
+    },
+    {
+      "num": "10",
+      "title": "Placement of attributes in certificates",
+      "page": 18
+    },
+    {
+      "num": "10.1",
+      "title": "Using Public Key Certificates",
+      "page": 18
+    },
+    {
+      "num": "10.2",
+      "title": "Using Attribute Certificates",
+      "page": 19
+    },
+    {
+      "num": "11",
+      "title": "Attribute Certificates management",
+      "page": 20
+    },
+    {
+      "num": "11.1",
+      "title": "Attribute verification by the ACA",
+      "page": 20
+    },
+    {
+      "num": "11.2",
+      "title": "Link with a PKC",
+      "page": 20
+    },
+    {
+      "num": "11.3",
+      "title": "Attribute Certificate revocation management",
+      "page": 23
+    },
+    {
+      "num": "11.4",
+      "title": "Attribute Certificate acquisition",
+      "page": 23
+    },
+    {
+      "num": "11.5",
+      "title": "Attribute delegation management",
+      "page": 24
+    },
+    {
+      "num": "12",
+      "title": "Recommendations",
+      "page": 24
+    },
+    {
+      "num": "12.1",
+      "title": "Requirements for Attribute Certificate Policies",
+      "page": 24
+    },
+    {
+      "num": "12.1.1",
+      "title": "Requirements for ACAs",
+      "page": 24
+    },
+    {
+      "num": "12.1.2",
+      "title": "Requirements for AAs",
+      "page": 25
+    },
+    {
+      "num": "12.2",
+      "title": "Definition of cross-European roles",
+      "page": 26
+    },
+    {
+      "num": "12.3",
+      "title": "Attribute Certificate Profile for Electronic Signatures",
+      "page": 26
+    },
+    {
+      "num": "12.4",
+      "title": "Attribute Certificate Acquisition Protocol",
+      "page": 27
+    },
+    {
+      "num": "12.5",
+      "title": "Criteria for using PKCs or ACs",
+      "page": 27
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 47,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 47,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

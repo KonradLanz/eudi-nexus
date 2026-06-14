@@ -1,0 +1,13 @@
+{
+  "id": "ietf-sd-jwt",
+  "type": "external_standard",
+  "label": "IETF SD-JWT (draft-ietf-oauth-selective-disclosure-jwt)",
+  "url": "https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/",
+  "format": "html",
+  "scope": "external",
+  "stf": null,
+  "wki_ids": [],
+  "note": "Referenced by TS 119 476 series for SD-JWT credential format",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.860553+00:00"
+}

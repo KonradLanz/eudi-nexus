@@ -1,0 +1,369 @@
+{
+  "stem": "ts_119478v010101p",
+  "pdf": "downloads/specs/TS/ts_119478v010101p.pdf",
+  "title": "(2026-01)",
+  "reference": "ts_119478v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notation",
+      "page": 10
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 10
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 13
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 14
+    },
+    {
+      "num": "3.4",
+      "title": "Notation",
+      "page": 14
+    },
+    {
+      "num": "4",
+      "title": "System Architecture",
+      "page": 15
+    },
+    {
+      "num": "4.1",
+      "title": "Overview",
+      "page": 15
+    },
+    {
+      "num": "4.2",
+      "title": "Common Services",
+      "page": 15
+    },
+    {
+      "num": "4.3",
+      "title": "Authentic Source",
+      "page": 16
+    },
+    {
+      "num": "4.4",
+      "title": "Authorization Server",
+      "page": 16
+    },
+    {
+      "num": "4.5",
+      "title": "User",
+      "page": 17
+    },
+    {
+      "num": "4.6",
+      "title": "Trust Service Providers",
+      "page": 17
+    },
+    {
+      "num": "5",
+      "title": "Discover Interface",
+      "page": 18
+    },
+    {
+      "num": "5.1",
+      "title": "I1 (Discover)",
+      "page": 18
+    },
+    {
+      "num": "5.2",
+      "title": "Find Attributes (search)",
+      "page": 18
+    },
+    {
+      "num": "5.2.1",
+      "title": "Overview and example for search",
+      "page": 18
+    },
+    {
+      "num": "5.2.2",
+      "title": "Input parameters for search",
+      "page": 18
+    },
+    {
+      "num": "5.2.3",
+      "title": "Output parameters for search",
+      "page": 20
+    },
+    {
+      "num": "5.3",
+      "title": "Find Data Services for Attributes (retrieve)",
+      "page": 21
+    },
+    {
+      "num": "5.3.1",
+      "title": "Overview and example for retrieve",
+      "page": 21
+    },
+    {
+      "num": "5.3.2",
+      "title": "Input parameters for retrieve",
+      "page": 21
+    },
+    {
+      "num": "5.3.3",
+      "title": "Output parameters for retrieve",
+      "page": 22
+    },
+    {
+      "num": "5.4",
+      "title": "Use of HTTP and response format selection",
+      "page": 24
+    },
+    {
+      "num": "6",
+      "title": "Authentic Source Interface",
+      "page": 24
+    },
+    {
+      "num": "6.1",
+      "title": "Authentic Source Interface based on HTTP / OAuth",
+      "page": 24
+    },
+    {
+      "num": "6.1.1",
+      "title": "I2 (Verify)",
+      "page": 24
+    },
+    {
+      "num": "6.1.1.1",
+      "title": "Verify Request",
+      "page": 24
+    },
+    {
+      "num": "6.1.1.2",
+      "title": "Verify Response",
+      "page": 26
+    },
+    {
+      "num": "6.1.2",
+      "title": "I3 (Retrieve)",
+      "page": 28
+    },
+    {
+      "num": "6.1.2.1",
+      "title": "Retrieve Request",
+      "page": 28
+    },
+    {
+      "num": "6.1.2.2",
+      "title": "Retrieve Response",
+      "page": 29
+    },
+    {
+      "num": "6.1.3",
+      "title": "I4 (Authorize)",
+      "page": 29
+    },
+    {
+      "num": "6.1.3.1",
+      "title": "Overview and general requirements",
+      "page": 29
+    },
+    {
+      "num": "6.1.3.2",
+      "title": "Dynamic Client Registration (IETF RFC 7591)",
+      "page": 30
+    },
+    {
+      "num": "6.1.3.3",
+      "title": "Authorization Code Flow (IETF RFC 6749)",
+      "page": 31
+    },
+    {
+      "num": "6.1.3.4",
+      "title": "Security considerations for the Authorization Server",
+      "page": 33
+    },
+    {
+      "num": "6.2",
+      "title": "Authentic Source Interface based on ISO 15000",
+      "page": 33
+    },
+    {
+      "num": "6.2.1",
+      "title": "Overview",
+      "page": 33
+    },
+    {
+      "num": "6.2.2",
+      "title": "Protocol Binding",
+      "page": 34
+    },
+    {
+      "num": "6.2.3",
+      "title": "I2 (Verify)",
+      "page": 34
+    },
+    {
+      "num": "6.2.3.1",
+      "title": "Verify Request",
+      "page": 34
+    },
+    {
+      "num": "6.2.3.2",
+      "title": "Verify Response",
+      "page": 37
+    },
+    {
+      "num": "6.2.3.2.1",
+      "title": "Successful Verify Response",
+      "page": 37
+    },
+    {
+      "num": "6.2.3.2.2",
+      "title": "Failure Error Response",
+      "page": 40
+    },
+    {
+      "num": "6.2.3.2.3",
+      "title": "Deferred Response",
+      "page": 41
+    },
+    {
+      "num": "6.2.4",
+      "title": "I3 (Retrieve)",
+      "page": 41
+    },
+    {
+      "num": "6.2.4.1",
+      "title": "Overview",
+      "page": 41
+    },
+    {
+      "num": "6.2.4.2",
+      "title": "Retrieve Request",
+      "page": 42
+    },
+    {
+      "num": "6.2.4.3",
+      "title": "Retrieve Response",
+      "page": 43
+    },
+    {
+      "num": "6.2.4.3.1",
+      "title": "Successful Retrieve Response",
+      "page": 43
+    },
+    {
+      "num": "6.2.4.3.2",
+      "title": "Failure Error Response",
+      "page": 44
+    },
+    {
+      "num": "6.2.4.3.3",
+      "title": "Deferred Response",
+      "page": 44
+    },
+    {
+      "num": "Annex A",
+      "title": "OpenAPI Specification for Discover Interface",
+      "page": 45,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex B",
+      "title": "OpenAPI Specification for Authentic Source Interface",
+      "page": 46,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex C",
+      "title": "XML-Schemata for PID and RIM binding",
+      "page": 47,
+      "annex_type": "normative"
+    },
+    {
+      "num": "C.1",
+      "title": "General",
+      "page": 47
+    },
+    {
+      "num": "C.2",
+      "title": "Person Identification Data (PID) schema",
+      "page": 47
+    },
+    {
+      "num": "C.3",
+      "title": "Interface Details schema",
+      "page": 47
+    },
+    {
+      "num": "C.4",
+      "title": "Interface Details RIM Binding schema",
+      "page": 47
+    },
+    {
+      "num": "Annex D",
+      "title": "XML-Examples",
+      "page": 48,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 49,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 49,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

@@ -1,0 +1,315 @@
+{
+  "stem": "sr_003186v020101p",
+  "pdf": "downloads/specs/Other/sr_003186v020101p.pdf",
+  "title": "(2016-04)",
+  "reference": "sr_003186v020101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "Technical Approach and Methodology for Conformance and Interoperability testing",
+      "page": 10
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction to conformance and interoperability testing",
+      "page": 10
+    },
+    {
+      "num": "4.2",
+      "title": "Gathering inputs",
+      "page": 10
+    },
+    {
+      "num": "4.3",
+      "title": "Standards to be targeted by testing events and criteria to identify them",
+      "page": 11
+    },
+    {
+      "num": "4.4",
+      "title": "Criteria to identify the scope of testing events",
+      "page": 11
+    },
+    {
+      "num": "4.5",
+      "title": "Rules to identify priorities in the testing event scheduling",
+      "page": 12
+    },
+    {
+      "num": "5",
+      "title": "Standards targeted for Testing and Testing Specifications",
+      "page": 12
+    },
+    {
+      "num": "5.0",
+      "title": "Introduction",
+      "page": 12
+    },
+    {
+      "num": "5.2",
+      "title": "List of Technical Specifications for Testing Conformance and Interoperability",
+      "page": 13
+    },
+    {
+      "num": "5.2.0",
+      "title": "Introduction",
+      "page": 13
+    },
+    {
+      "num": "5.2.1",
+      "title": "CAdES Testing Conformance and Interoperability",
+      "page": 13
+    },
+    {
+      "num": "5.2.2",
+      "title": "XAdES Testing Conformance and Interoperability",
+      "page": 14
+    },
+    {
+      "num": "5.2.3",
+      "title": "PAdES Testing Conformance and Interoperability",
+      "page": 14
+    },
+    {
+      "num": "5.2.4",
+      "title": "ASiC Testing Conformance and Interoperability",
+      "page": 14
+    },
+    {
+      "num": "5.2.5",
+      "title": "Testing Conformance of Trusted Lists",
+      "page": 15
+    },
+    {
+      "num": "6",
+      "title": "Planning of identified activities",
+      "page": 15
+    },
+    {
+      "num": "6.1",
+      "title": "Proposed scheduling and scoping of testing events",
+      "page": 15
+    },
+    {
+      "num": "6.2.0",
+      "title": "Introduction",
+      "page": 16
+    },
+    {
+      "num": "6.2.1",
+      "title": "Deliverable D1: Stable Draft for TB Review (SPR)",
+      "page": 16
+    },
+    {
+      "num": "6.2.2",
+      "title": "Deliverables D2: Final Draft for approval (FTB)",
+      "page": 18
+    },
+    {
+      "num": "6.2.3",
+      "title": "Deliverables D3: Publication (PTS)",
+      "page": 18
+    },
+    {
+      "num": "6.3",
+      "title": "Production plan for conformity testing tools development",
+      "page": 19
+    },
+    {
+      "num": "A.1",
+      "title": "AdES Signature Plugtests",
+      "page": 20
+    },
+    {
+      "num": "A.2",
+      "title": "TSL Plugtests and Conformance tools",
+      "page": 21
+    },
+    {
+      "num": "B.1",
+      "title": "Plugtest Portal",
+      "page": 22
+    },
+    {
+      "num": "B.1.0",
+      "title": "Introduction",
+      "page": 22
+    },
+    {
+      "num": "B.1.1",
+      "title": "Public part of the portal",
+      "page": 22
+    },
+    {
+      "num": "B.1.2",
+      "title": "Private part of the portal",
+      "page": 23
+    },
+    {
+      "num": "B.1.2.0",
+      "title": "Introduction",
+      "page": 23
+    },
+    {
+      "num": "B.1.2.1",
+      "title": "Contents of Common area of Private part",
+      "page": 24
+    },
+    {
+      "num": "B.1.2.1.1",
+      "title": "Conducting Plugtests information pages",
+      "page": 24
+    },
+    {
+      "num": "B.1.2.1.2",
+      "title": "Cryptographic material pages",
+      "page": 24
+    },
+    {
+      "num": "B.1.2.1.3",
+      "title": "Online PKI-related services pages",
+      "page": 25
+    },
+    {
+      "num": "B.1.2.1.4",
+      "title": "Attribute certificate issuance page",
+      "page": 25
+    },
+    {
+      "num": "B.1.2.2",
+      "title": "Contents of Signatures Interop Specific areas of Private part",
+      "page": 25
+    },
+    {
+      "num": "B.1.2.2.0",
+      "title": "Introduction",
+      "page": 25
+    },
+    {
+      "num": "B.1.2.2.1",
+      "title": "Test Cases Definition Language",
+      "page": 25
+    },
+    {
+      "num": "B.1.2.2.2",
+      "title": "Test Cases pages",
+      "page": 25
+    },
+    {
+      "num": "B.1.2.2.3",
+      "title": "Individual verification reports",
+      "page": 26
+    },
+    {
+      "num": "B.1.2.2.4",
+      "title": "Upload pages",
+      "page": 26
+    },
+    {
+      "num": "B.1.2.2.5",
+      "title": "Download pages",
+      "page": 26
+    },
+    {
+      "num": "B.1.2.2.6",
+      "title": "Test data directory pages",
+      "page": 26
+    },
+    {
+      "num": "B.2",
+      "title": "Conducting ETSI/ESI Plugtests",
+      "page": 26
+    },
+    {
+      "num": "B.2.1",
+      "title": "Introduction",
+      "page": 26
+    },
+    {
+      "num": "B.2.2",
+      "title": "Generation and Cross-verification",
+      "page": 27
+    },
+    {
+      "num": "B.2.3",
+      "title": "Only Verification",
+      "page": 28
+    },
+    {
+      "num": "B.2.4",
+      "title": "Upgrade and Arbitration test",
+      "page": 28
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 31,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 31,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

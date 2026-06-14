@@ -1,0 +1,817 @@
+{
+  "stem": "tr_102046v010201p",
+  "pdf": "downloads/specs/TR/tr_102046v010201p.pdf",
+  "title": "(2004-06)",
+  "reference": "tr_102046v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "Role and structure of the present document",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Role of the present document in the maintenance process",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Structure of the present document",
+      "page": 10
+    },
+    {
+      "num": "4.2.1",
+      "title": "Clause 5: fields and structure",
+      "page": 10
+    },
+    {
+      "num": "4.2.2",
+      "title": "Annex A: Fields and structure",
+      "page": 11
+    },
+    {
+      "num": "5",
+      "title": "Comments",
+      "page": 12
+    },
+    {
+      "num": "5.1",
+      "title": "TS 101 456 - Qualified certificate policy",
+      "page": 12
+    },
+    {
+      "num": "5.2",
+      "title": "TS 101 733 - ES electronic signature formats",
+      "page": 41
+    },
+    {
+      "num": "5.3",
+      "title": "TS 101 861 - Time stamping profile",
+      "page": 53
+    },
+    {
+      "num": "5.4",
+      "title": "TS 101 862 - Qualified certificate profile",
+      "page": 56
+    },
+    {
+      "num": "5.5",
+      "title": "TS 101 903 - XML advanced electronic signatures (XAdES)",
+      "page": 61
+    },
+    {
+      "num": "5.6",
+      "title": "TS 102 023 - Time stamping policy",
+      "page": 79
+    },
+    {
+      "num": "5.7",
+      "title": "TR 102 038 - XML format for signature policies",
+      "page": 93
+    },
+    {
+      "num": "5.8",
+      "title": "TR 102 041 - Signature policies report",
+      "page": 94
+    },
+    {
+      "num": "5.9",
+      "title": "TS 102 042 - PKC certificate policy",
+      "page": 95
+    },
+    {
+      "num": "A.1",
+      "title": "Comments from a TC-ESI member",
+      "page": 111
+    },
+    {
+      "num": "A.1.1",
+      "title": "TS 101 456 - Qualified certificate policy",
+      "page": 111
+    },
+    {
+      "num": "A.1.1.1",
+      "title": "Proposed amendments from CEN/ISSS area M on system backup and recovery",
+      "page": 111
+    },
+    {
+      "num": "A.1.1.2",
+      "title": "Auditor's view of system logs",
+      "page": 111
+    },
+    {
+      "num": "A.1.1.3",
+      "title": "Export of the CA private key",
+      "page": 112
+    },
+    {
+      "num": "A.1.1.4",
+      "title": "Mapping with RFC 2527",
+      "page": 112
+    },
+    {
+      "num": "A.1.2",
+      "title": "TS 102 042 - Normalized certificate policy",
+      "page": 114
+    },
+    {
+      "num": "A.1.2.1",
+      "title": "Export of the CA private key",
+      "page": 114
+    },
+    {
+      "num": "A.1.2.2",
+      "title": "Mapping with RFC 2527",
+      "page": 114
+    },
+    {
+      "num": "A.1.3",
+      "title": "TS 102 023 - Time-stamping policy",
+      "page": 115
+    },
+    {
+      "num": "A.1.3.1",
+      "title": "Export of the CA private key",
+      "page": 115
+    },
+    {
+      "num": "A.2",
+      "title": "Comments and proposed amendments from UNINFO-STT (Italy)",
+      "page": 116
+    },
+    {
+      "num": "A.2.1",
+      "title": "Proposed amendments on TS 101 456",
+      "page": 116
+    },
+    {
+      "num": "A.2.2",
+      "title": "Proposed amendments on TS 102 042",
+      "page": 119
+    },
+    {
+      "num": "A.2.3",
+      "title": "Early informal comments on TS 101 733 from STT-A2 WG (September 2002)",
+      "page": 122
+    },
+    {
+      "num": "A.2.4",
+      "title": "Stable informal comments on TS 101 733 from STT-A2 WG (February 2003)",
+      "page": 122
+    },
+    {
+      "num": "A.2.4.1",
+      "title": "Proposals about the document contents",
+      "page": 122
+    },
+    {
+      "num": "A.2.4.2",
+      "title": "Proposals about the document structure",
+      "page": 123
+    },
+    {
+      "num": "A.2.4.3",
+      "title": "Proposals for some additional explanatory documents",
+      "page": 123
+    },
+    {
+      "num": "A.2.5",
+      "title": "Proposed amendments to TS 101 862 from STT-A4 WG",
+      "page": 123
+    },
+    {
+      "num": "A.2.5.1",
+      "title": "References to be updated",
+      "page": 123
+    },
+    {
+      "num": "A.2.5.2",
+      "title": "CSP identifier",
+      "page": 123
+    },
+    {
+      "num": "A.2.5.3",
+      "title": "Identity of the signer",
+      "page": 124
+    },
+    {
+      "num": "A.2.5.4",
+      "title": "Pseudonyms",
+      "page": 125
+    },
+    {
+      "num": "A.2.5.5",
+      "title": "SerialNumber attribute",
+      "page": 125
+    },
+    {
+      "num": "A.2.5.6",
+      "title": "The key usage",
+      "page": 125
+    },
+    {
+      "num": "A.2.6",
+      "title": "Proposed amendments to TS 102 023 - Time-stamping policy",
+      "page": 126
+    },
+    {
+      "num": "A.3",
+      "title": "Comments and proposed amendments from Japan and China PKI forums",
+      "page": 128
+    },
+    {
+      "num": "A.3.1",
+      "title": "Proposed amendments on TS 101 456",
+      "page": 128
+    },
+    {
+      "num": "A.3.1.1",
+      "title": "Comment #1, page 10",
+      "page": 129
+    },
+    {
+      "num": "A.3.1.2",
+      "title": "Comment #2, page 18",
+      "page": 129
+    },
+    {
+      "num": "A.3.1.3",
+      "title": "Comment #3, page 18",
+      "page": 129
+    },
+    {
+      "num": "A.3.2",
+      "title": "Proposed amendments on TS 101 733",
+      "page": 129
+    },
+    {
+      "num": "A.3.2.1",
+      "title": "Rationale: Some comments regarding EESSI signature policy",
+      "page": 129
+    },
+    {
+      "num": "A.3.2.2",
+      "title": "Comment #1, pages 49, 67 and 76",
+      "page": 132
+    },
+    {
+      "num": "A.3.2.3",
+      "title": "Comment #2, pages 16 and 17",
+      "page": 132
+    },
+    {
+      "num": "A.3.2.4",
+      "title": "Comment #3, clause 8.9.1",
+      "page": 132
+    },
+    {
+      "num": "A.3.2.5",
+      "title": "Comment #4, clause 11.1",
+      "page": 132
+    },
+    {
+      "num": "A.3.2.6",
+      "title": "Comment #5, clause 11.11",
+      "page": 132
+    },
+    {
+      "num": "A.3.2.7",
+      "title": "Comment #6, clause 5.4.2",
+      "page": 132
+    },
+    {
+      "num": "A.3.2.8",
+      "title": "Comment #7, clauses 5.4.5 and 5.4.7",
+      "page": 133
+    },
+    {
+      "num": "A.3.3",
+      "title": "Proposed amendments on TS 101 903",
+      "page": 133
+    },
+    {
+      "num": "A.3.3.1",
+      "title": "Rationale: \"Some comments regarding EESSI Signature Policy\"",
+      "page": 133
+    },
+    {
+      "num": "A.3.3.2",
+      "title": "Comment #1, page 17",
+      "page": 133
+    },
+    {
+      "num": "A.3.3.3",
+      "title": "Comment #2",
+      "page": 133
+    },
+    {
+      "num": "A.3.3.4",
+      "title": "Comment #3",
+      "page": 133
+    },
+    {
+      "num": "A.3.4",
+      "title": "Proposed amendments on TS 101 861 - Time stamping profile",
+      "page": 134
+    },
+    {
+      "num": "A.3.4.1",
+      "title": "Comment #1, clause 5.1.2",
+      "page": 134
+    },
+    {
+      "num": "A.3.4.2",
+      "title": "Comment #2, clause 5.2.3",
+      "page": 134
+    },
+    {
+      "num": "A.3.4.3",
+      "title": "Comment #3",
+      "page": 134
+    },
+    {
+      "num": "A.3.5",
+      "title": "Comments and proposed amendments on TS 102 023",
+      "page": 134
+    },
+    {
+      "num": "A.3.5.1",
+      "title": "Comment #1, clause 4.2",
+      "page": 134
+    },
+    {
+      "num": "A.3.5.2",
+      "title": "Comment #2, clause 4.2",
+      "page": 135
+    },
+    {
+      "num": "A.3.5.3",
+      "title": "Comment #3, clause 7.1.2 d)",
+      "page": 135
+    },
+    {
+      "num": "A.3.5.4",
+      "title": "Comment #4, clause 7.1.2 j)",
+      "page": 135
+    },
+    {
+      "num": "A.3.5.5",
+      "title": "Comment #5, clause 7.2.1 b)",
+      "page": 135
+    },
+    {
+      "num": "A.3.5.6",
+      "title": "Comment #6, clause 7.2.2 a)",
+      "page": 135
+    },
+    {
+      "num": "A.3.5.7",
+      "title": "Comment #7, clause 7.2.2 b)",
+      "page": 135
+    },
+    {
+      "num": "A.3.5.8",
+      "title": "Comment #8, clause 7.2.4",
+      "page": 135
+    },
+    {
+      "num": "A.3.5.9",
+      "title": "Comment #9, clause 7.3.1 e)",
+      "page": 135
+    },
+    {
+      "num": "A.3.5.10",
+      "title": "Comment #10, clause 7.3.2 a)",
+      "page": 136
+    },
+    {
+      "num": "A.3.5.11",
+      "title": "Comment #11, clause 7.3.2 d)",
+      "page": 136
+    },
+    {
+      "num": "A.3.5.12",
+      "title": "Comment #12, clause 7.4.8",
+      "page": 136
+    },
+    {
+      "num": "A.3.5.13",
+      "title": "Comment #13, clause 7.4.8 c)",
+      "page": 136
+    },
+    {
+      "num": "A.3.5.14",
+      "title": "Comment #14",
+      "page": 136
+    },
+    {
+      "num": "A.3.6",
+      "title": "Comments and proposed amendments on TR 102 038",
+      "page": 137
+    },
+    {
+      "num": "A.3.6.1",
+      "title": "Comment #1",
+      "page": 137
+    },
+    {
+      "num": "A.3.7",
+      "title": "Comments and proposed amendments on TR 102 041",
+      "page": 137
+    },
+    {
+      "num": "A.3.7.1",
+      "title": "Comment #1, clause 8.3.1 - Signature validation policy",
+      "page": 137
+    },
+    {
+      "num": "A.3.7.2",
+      "title": "Comment #2, clause 8.3.2 - Signature validation information",
+      "page": 137
+    },
+    {
+      "num": "A.4",
+      "title": "Comments and proposed amendments from a TC-ESI member",
+      "page": 138
+    },
+    {
+      "num": "A.4.1",
+      "title": "Proposed amendments on TS 101 456 - Qualified certificate policy",
+      "page": 138
+    },
+    {
+      "num": "A.4.1.1",
+      "title": "Keys certified under multiple policies",
+      "page": 138
+    },
+    {
+      "num": "A.4.2",
+      "title": "Proposed amendments on TS 102 042 - Normalized certificate policy",
+      "page": 140
+    },
+    {
+      "num": "A.4.2.1",
+      "title": "Keys certified under multiple policies",
+      "page": 140
+    },
+    {
+      "num": "A.5",
+      "title": "Comments and proposed amendments from Pink Roccade (Netherlands)",
+      "page": 142
+    },
+    {
+      "num": "A.5.1",
+      "title": "Proposed amendments on TS 101 456 - Qualified certificate policy",
+      "page": 142
+    },
+    {
+      "num": "A.6",
+      "title": "Comments and proposed amendments from EESSI evaluation",
+      "page": 143
+    },
+    {
+      "num": "A.7.1",
+      "title": "Proposed amendments on TS 102 023 - Time-stamping policy",
+      "page": 144
+    },
+    {
+      "num": "A.8",
+      "title": "Other comments and proposed amendments",
+      "page": 144
+    },
+    {
+      "num": "A.8.1",
+      "title": "Proposed amendments on TS 101 456 - Qualified certificate policy",
+      "page": 144
+    },
+    {
+      "num": "A.8.1.1",
+      "title": "Advise on use of SSCD",
+      "page": 144
+    },
+    {
+      "num": "A.8.1.2",
+      "title": "Use of CA key for multiple policies",
+      "page": 145
+    },
+    {
+      "num": "A.8.1.3",
+      "title": "Reference to CWA 14167-1 in clause 7.4.7",
+      "page": 145
+    },
+    {
+      "num": "A.8.1.4",
+      "title": "When a new policy OID is required",
+      "page": 146
+    },
+    {
+      "num": "A.8.2",
+      "title": "Proposed amendments on TS 102 042 - Normalized certificate policy",
+      "page": 146
+    },
+    {
+      "num": "A.8.2.1",
+      "title": "Advise on use of SSCD",
+      "page": 146
+    },
+    {
+      "num": "A.8.2.2",
+      "title": "Use of CA key for multiple policies",
+      "page": 146
+    },
+    {
+      "num": "A.8.2.3",
+      "title": "Reference to CWA 14167-1 in clause 7.4.7",
+      "page": 147
+    },
+    {
+      "num": "A.8.2.4",
+      "title": "When A new Policy OID is required",
+      "page": 147
+    },
+    {
+      "num": "A.8.3",
+      "title": "Proposed amendments on TS 101 733 - Electronic signature formats",
+      "page": 148
+    },
+    {
+      "num": "A.8.3.1",
+      "title": "Archive timestamp",
+      "page": 148
+    },
+    {
+      "num": "A.8.4",
+      "title": "Proposed amendments on TS 101 861 - Time stamping profile",
+      "page": 148
+    },
+    {
+      "num": "A.8.4.1",
+      "title": "Clause 5.2.1 - Accuracy and precision of time",
+      "page": 148
+    },
+    {
+      "num": "A.8.4.2",
+      "title": "Clause 5.2.1 - Ordering",
+      "page": 149
+    },
+    {
+      "num": "A.8.4.3",
+      "title": "Clause 6 mandate support for store and forward",
+      "page": 149
+    },
+    {
+      "num": "A.8.4.4",
+      "title": "Clause 7.1.1",
+      "page": 149
+    },
+    {
+      "num": "A.8.5",
+      "title": "Proposed amendments on TS 101 862 - Qualified certificates profile",
+      "page": 150
+    },
+    {
+      "num": "A.8.5.1",
+      "title": "Country Name",
+      "page": 150
+    },
+    {
+      "num": "A.9",
+      "title": "Comments and proposed amendments from a TC-ESI member",
+      "page": 150
+    },
+    {
+      "num": "A.9.1",
+      "title": "Proposed amendments on TS 101 862 and related discussion threads",
+      "page": 150
+    },
+    {
+      "num": "A.9.2",
+      "title": "Proposed amendments on TS 102 023 and related discussion threads",
+      "page": 152
+    },
+    {
+      "num": "A.10",
+      "title": "Comments and proposed amendments from ETSI STF-220 - Task 4",
+      "page": 153
+    },
+    {
+      "num": "A.10.1",
+      "title": "TS 101 456 - Qualified certificate policy",
+      "page": 153
+    },
+    {
+      "num": "A.10.1.1",
+      "title": "Proposed amendments related to section \"Introduction\"",
+      "page": 153
+    },
+    {
+      "num": "A.10.1.2",
+      "title": "Proposed amendments related to clause 2 \"Reference\"",
+      "page": 153
+    },
+    {
+      "num": "A.10.1.3",
+      "title": "Proposed amendments related to clause 3.1 \"Definitions\"",
+      "page": 154
+    },
+    {
+      "num": "A.10.1.4",
+      "title": "Proposed amendments related to clause 4.1\"Certification authority\"",
+      "page": 154
+    },
+    {
+      "num": "A.10.1.5",
+      "title": "Proposed amendments related to clause 4.3.4 \"Other CA Statements\"",
+      "page": 154
+    },
+    {
+      "num": "A.10.1.6",
+      "title": "Proposed clause to be added: 4.5 \"Certified attributes\"",
+      "page": 154
+    },
+    {
+      "num": "A.10.1.7",
+      "title": "Proposed clause to be added: 4.6 \"Attribute semantics\"",
+      "page": 155
+    },
+    {
+      "num": "A.10.1.9",
+      "title": "Proposed amendments related to clause 7.3.1 \"Subject initial registration\"",
+      "page": 155
+    },
+    {
+      "num": "A.10.1.12",
+      "title": "Proposed amendments related to \"Annex E (informative): Bibliography\"",
+      "page": 156
+    },
+    {
+      "num": "A.11",
+      "title": "Proposed amendments from ETSI STF-220 Task 2",
+      "page": 157
+    },
+    {
+      "num": "A.11.1",
+      "title": "TS 101 456 - Qualified certificate policy",
+      "page": 157
+    },
+    {
+      "num": "A.12",
+      "title": "Proposed amendments from XadES-PLUGTESTS",
+      "page": 158
+    },
+    {
+      "num": "A.12.1",
+      "title": "Proposed amendments on TS 101 903",
+      "page": 158
+    },
+    {
+      "num": "A.12.1.1",
+      "title": "Issue #1 – <EncapsulatedOCSPValues>",
+      "page": 158
+    },
+    {
+      "num": "A.12.1.2",
+      "title": "Issue #2 – <TimeStampType> Data Type",
+      "page": 159
+    },
+    {
+      "num": "A.12.1.3",
+      "title": "Issue #3 – <ArchiveTimeStamp>",
+      "page": 160
+    },
+    {
+      "num": "A.12.1.4",
+      "title": "Issue #4 – Requirement Levels (RFC2119)",
+      "page": 161
+    },
+    {
+      "num": "A.12.1.5",
+      "title": "Issue #5 – <QualityingProperties>",
+      "page": 162
+    },
+    {
+      "num": "A.12.1.6",
+      "title": "Issue #6 – ASN.1 Encoding",
+      "page": 162
+    },
+    {
+      "num": "A.12.1.7",
+      "title": "Issue #7 – Trust Status Lists",
+      "page": 162
+    },
+    {
+      "num": "A.12.1.8",
+      "title": "Issue #8 – <SigningCertificate>",
+      "page": 162
+    },
+    {
+      "num": "A.12.1.9",
+      "title": "Issue #9 – XAdES forms",
+      "page": 162
+    },
+    {
+      "num": "A.12.1.10",
+      "title": "Issue #10 – archival forms",
+      "page": 163
+    },
+    {
+      "num": "A.12.1.11",
+      "title": "Issue #11 – <AnyType> Data Type",
+      "page": 163
+    },
+    {
+      "num": "A.12.1.12",
+      "title": "Issue #12 – <CertID>",
+      "page": 163
+    },
+    {
+      "num": "A.12.1.13",
+      "title": "Issue #13 – .NET validating parser",
+      "page": 163
+    },
+    {
+      "num": "A.12.1.14",
+      "title": "Issue #14 – XAdES schema",
+      "page": 164
+    },
+    {
+      "num": "A.12.1.15",
+      "title": "Issue #15 – <QualifyingPropertiesReferenceType> data type",
+      "page": 164
+    },
+    {
+      "num": "A.12.1.16",
+      "title": "Issue #16 – XAdES examples",
+      "page": 164
+    },
+    {
+      "num": "A.12.1.17",
+      "title": "Issue #17 – <DataObjectFormat>",
+      "page": 164
+    },
+    {
+      "num": "A.12.1.18",
+      "title": "Issue #18 – <CertificateValues>",
+      "page": 165
+    },
+    {
+      "num": "A.12.1.19",
+      "title": "Issue #19 – <CompleteCertificateRefs>",
+      "page": 166
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 167,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 167,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6
+  ]
+}

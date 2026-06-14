@@ -1,0 +1,117 @@
+{
+  "stem": "tr_11916401v010101p",
+  "pdf": "downloads/specs/TR/tr_11916401v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "tr_11916401v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Testing Conformance and Interoperability",
+      "page": 6
+    },
+    {
+      "num": "4.1",
+      "title": "Part 2: Test suites for testing interoperability of ASiC baseline containers",
+      "page": 6
+    },
+    {
+      "num": "4.2",
+      "title": "Part 3: Test suites for testing interoperability of additional ASiC containers",
+      "page": 7
+    },
+    {
+      "num": "4.3",
+      "title": "Part 4: Testing Conformance for ASiC baseline containers",
+      "page": 7
+    },
+    {
+      "num": "4.4",
+      "title": "Part 5: Testing Conformance for additional ASiC containers",
+      "page": 7
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 8,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 9,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 9,
+  "toc_pages": [
+    3
+  ]
+}

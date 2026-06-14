@@ -1,0 +1,667 @@
+{
+  "stem": "ts_11952401v010201p",
+  "pdf": "downloads/specs/TS/ts_11952401v010201p.pdf",
+  "title": "(2023-12)",
+  "reference": "ts_11952401v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 9
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Test assertions for components that are used in metadata and in ERDS evidence",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Test assertions for instances auxiliary types",
+      "page": 11
+    },
+    {
+      "num": "5.2.1",
+      "title": "Introduction",
+      "page": 11
+    },
+    {
+      "num": "5.2.2",
+      "title": "Test assertions for instances of NonEmptyURIType type",
+      "page": 12
+    },
+    {
+      "num": "5.2.3",
+      "title": "Test assertions for instances of NonEmptyAttributedURIType type",
+      "page": 12
+    },
+    {
+      "num": "5.2.4",
+      "title": "Test assertions for instances of NonEmptyMultiLangURIType type",
+      "page": 13
+    },
+    {
+      "num": "5.2.5",
+      "title": "Test assertions for instances of NonEmptyMultiLangURIListType type",
+      "page": 14
+    },
+    {
+      "num": "5.2.6",
+      "title": "Test assertions for instances of NonEmptyStringType type",
+      "page": 14
+    },
+    {
+      "num": "5.2.7",
+      "title": "Test assertions for instances of AttributedNonEmptyStringType type",
+      "page": 15
+    },
+    {
+      "num": "5.2.8",
+      "title": "Test assertions for instances of xs:boolean type",
+      "page": 15
+    },
+    {
+      "num": "5.3",
+      "title": "Test assertions for instances of EntityIdentifierType type",
+      "page": 16
+    },
+    {
+      "num": "5.4",
+      "title": "Test assertions for instances of AssuranceLevelDetailsType type",
+      "page": 16
+    },
+    {
+      "num": "5.5",
+      "title": "Test assertions for instances of xs:dateTime type",
+      "page": 18
+    },
+    {
+      "num": "5.6",
+      "title": "Test assertions for instances of ERDSPolicyIDType type",
+      "page": 19
+    },
+    {
+      "num": "6",
+      "title": "Common test assertions for ERDS evidence",
+      "page": 20
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 20
+    },
+    {
+      "num": "6.2",
+      "title": "Test assertions for Evidence element",
+      "page": 20
+    },
+    {
+      "num": "6.2.1",
+      "title": "XML children of Evidence per type of Evidence",
+      "page": 20
+    },
+    {
+      "num": "6.3",
+      "title": "Test assertions for EvidenceIdentifier element",
+      "page": 23
+    },
+    {
+      "num": "6.4",
+      "title": "Test assertions for ERDSEventId element",
+      "page": 23
+    },
+    {
+      "num": "6.5",
+      "title": "Test assertions for EventReasons element",
+      "page": 24
+    },
+    {
+      "num": "6.6",
+      "title": "Test assertions for EventTime element",
+      "page": 25
+    },
+    {
+      "num": "6.7",
+      "title": "Test assertions for EvidenceIssuerPolidyID element",
+      "page": 26
+    },
+    {
+      "num": "6.8",
+      "title": "Test assertions for EvidenceIssuerDetails element",
+      "page": 26
+    },
+    {
+      "num": "6.9",
+      "title": "Test assertions for SenderDetails element",
+      "page": 26
+    },
+    {
+      "num": "6.10",
+      "title": "Test assertions for SenderDelegateDetails element",
+      "page": 26
+    },
+    {
+      "num": "6.11",
+      "title": "Test assertions for RecipientDetails element",
+      "page": 26
+    },
+    {
+      "num": "6.12",
+      "title": "Test assertions for RecipientsDelegateDetails element",
+      "page": 26
+    },
+    {
+      "num": "6.13",
+      "title": "Test assertions for SubmissionTime element",
+      "page": 26
+    },
+    {
+      "num": "6.14",
+      "title": "Test assertions for EvidenceRefersToRecipient element",
+      "page": 26
+    },
+    {
+      "num": "6.15",
+      "title": "Test assertions for MessageIdentifier element",
+      "page": 27
+    },
+    {
+      "num": "6.16",
+      "title": "Test assertions for UserContentInfo element",
+      "page": 27
+    },
+    {
+      "num": "6.17",
+      "title": "Test assertions for ExtenalERDSDetails element",
+      "page": 30
+    },
+    {
+      "num": "6.18",
+      "title": "Test assertions for ExtenalSystem element",
+      "page": 30
+    },
+    {
+      "num": "6.19",
+      "title": "Test assertions for TransactionLogInformation element",
+      "page": 31
+    },
+    {
+      "num": "6.20",
+      "title": "Test assertions for ds:Signature element",
+      "page": 31
+    },
+    {
+      "num": "6.21",
+      "title": "Test assertions for Extensions element",
+      "page": 31
+    },
+    {
+      "num": "6.21.1",
+      "title": "Introduction",
+      "page": 31
+    },
+    {
+      "num": "6.21.2",
+      "title": "Test assertions for GeneralEvidenceInfo child of Extension element",
+      "page": 32
+    },
+    {
+      "num": "6.21.3",
+      "title": "Test assertions for RelayEvidenceInfo child of Extension element",
+      "page": 33
+    },
+    {
+      "num": "6.22",
+      "title": "Test assertions for XML types",
+      "page": 33
+    },
+    {
+      "num": "6.22.1",
+      "title": "Test assertions for instances of EntityDetailsType type",
+      "page": 33
+    },
+    {
+      "num": "6.22.1.1",
+      "title": "Introduction",
+      "page": 33
+    },
+    {
+      "num": "6.22.1.3",
+      "title": "Test assertions for CertificateDetails in instances of EntityDetailsType type",
+      "page": 35
+    },
+    {
+      "num": "6.22.1.3.1",
+      "title": "Test assertions for CertificateDetails child element",
+      "page": 35
+    },
+    {
+      "num": "6.22.1.3.2",
+      "title": "Test assertions for X509Certificate child element of CertificateDetails",
+      "page": 35
+    },
+    {
+      "num": "6.22.1.3.3",
+      "title": "Test assertions for CertID child element of CertificateDetails",
+      "page": 36
+    },
+    {
+      "num": "6.22.2",
+      "title": "Test assertions for instances of UserDetailsType type",
+      "page": 40
+    },
+    {
+      "num": "6.22.2.1",
+      "title": "Introduction",
+      "page": 40
+    },
+    {
+      "num": "6.22.2.2",
+      "title": "Test assertions for Identity child element",
+      "page": 40
+    },
+    {
+      "num": "6.22.2.3",
+      "title": "Test assertions for Identifier child element",
+      "page": 40
+    },
+    {
+      "num": "6.22.2.4",
+      "title": "Test assertions for AssuranceLevelsDetails child element",
+      "page": 40
+    },
+    {
+      "num": "6.22.3",
+      "title": "Test assertions for instances of RecipientsDelegateDetailsType type",
+      "page": 40
+    },
+    {
+      "num": "6.22.4",
+      "title": "Test assertions for instances of AssuranceLevelsDetailsType type",
+      "page": 42
+    },
+    {
+      "num": "6.22.4.1",
+      "title": "Introduction",
+      "page": 42
+    },
+    {
+      "num": "6.22.4.2",
+      "title": "Test assertions for GlobalAssuranceLevel child element",
+      "page": 42
+    },
+    {
+      "num": "6.22.4.3",
+      "title": "Test assertions for AuthenticationDetails child element",
+      "page": 42
+    },
+    {
+      "num": "6.22.4.4",
+      "title": "Test assertions for AuthenticationDetsAndAssuranceLevel child element",
+      "page": 43
+    },
+    {
+      "num": "6.22.4.5",
+      "title": "Test assertions for IdentityProofAssuranceLevel child element",
+      "page": 44
+    },
+    {
+      "num": "6.22.4.6",
+      "title": "Test assertions for FederationAssuranceLevel child element",
+      "page": 45
+    },
+    {
+      "num": "7",
+      "title": "Test assertions for ERDS metadata structure and contents",
+      "page": 45
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 45
+    },
+    {
+      "num": "7.2",
+      "title": "Test assertions for RelayMetadata element",
+      "page": 46
+    },
+    {
+      "num": "7.3",
+      "title": "Test assertions for MessageIdentifier element",
+      "page": 46
+    },
+    {
+      "num": "7.4",
+      "title": "Test assertions for ERDMessageType element",
+      "page": 46
+    },
+    {
+      "num": "7.5",
+      "title": "Test assertions for InReplyTo element",
+      "page": 47
+    },
+    {
+      "num": "7.6",
+      "title": "Test assertions for RelayTime element",
+      "page": 47
+    },
+    {
+      "num": "7.7",
+      "title": "Test assertions for ExpirationTime element",
+      "page": 47
+    },
+    {
+      "num": "7.8",
+      "title": "Test assertions for ScheduledDeliveryTime element",
+      "page": 47
+    },
+    {
+      "num": "7.9",
+      "title": "Test assertions for SenderId element",
+      "page": 47
+    },
+    {
+      "num": "7.10",
+      "title": "Test assertions for ReplyTo element",
+      "page": 47
+    },
+    {
+      "num": "7.11",
+      "title": "Test assertions for RecipientId element",
+      "page": 47
+    },
+    {
+      "num": "7.12",
+      "title": "Test assertions for UserContentInfo element",
+      "page": 47
+    },
+    {
+      "num": "7.13",
+      "title": "Test assertions for RequiredAssuranceLevel element",
+      "page": 48
+    },
+    {
+      "num": "7.14",
+      "title": "Test assertions for ApplicablePolicy element",
+      "page": 48
+    },
+    {
+      "num": "7.15",
+      "title": "Test assertions for RequestedConsignmentMode element",
+      "page": 48
+    },
+    {
+      "num": "7.16",
+      "title": "Test assertions for Extensions element",
+      "page": 48
+    },
+    {
+      "num": "7.17",
+      "title": "Test assertions for ds:Signature element",
+      "page": 49
+    },
+    {
+      "num": "8",
+      "title": "Test assertions for ERDS AS4-profile messages",
+      "page": 49
+    },
+    {
+      "num": "8.1",
+      "title": "8Test assertions for generic requirements",
+      "page": 49
+    },
+    {
+      "num": "8.2",
+      "title": "Test assertions for signing and encryption of the AS4 message",
+      "page": 54
+    },
+    {
+      "num": "8.3",
+      "title": "Test assertions for binding of ERD Dispatch",
+      "page": 55
+    },
+    {
+      "num": "8.4",
+      "title": "Test assertions for binding of ERDS Receipt",
+      "page": 56
+    },
+    {
+      "num": "8.5",
+      "title": "Test assertions for binding of ERD ServiceInfo",
+      "page": 57
+    },
+    {
+      "num": "8.6",
+      "title": "Test assertions for binding of ERD Payload",
+      "page": 57
+    },
+    {
+      "num": "9",
+      "title": "Test assertions for signatures",
+      "page": 59
+    },
+    {
+      "num": "10",
+      "title": "Test assertions for Common Services Interface",
+      "page": 61
+    },
+    {
+      "num": "10.1",
+      "title": "Test assertions of BDXL binding for capability metadata location",
+      "page": 61
+    },
+    {
+      "num": "10.2",
+      "title": "Test assertions of SMP binding for metadata publishing",
+      "page": 63
+    },
+    {
+      "num": "10.2.1",
+      "title": "Test assertions for ERDS capabilities metadata format",
+      "page": 63
+    },
+    {
+      "num": "10.2.1.1",
+      "title": "Test assertions for ERDSMetadata element",
+      "page": 63
+    },
+    {
+      "num": "10.2.1.2",
+      "title": "Test assertions for ERDSId element",
+      "page": 63
+    },
+    {
+      "num": "10.2.1.3",
+      "title": "Test assertions for ERDSDomain element",
+      "page": 63
+    },
+    {
+      "num": "10.2.1.4",
+      "title": "Test assertions for ERDSGoverningBody element",
+      "page": 63
+    },
+    {
+      "num": "10.2.1.5",
+      "title": "Test assertions for ERDSProfileSupported element",
+      "page": 63
+    },
+    {
+      "num": "10.2.1.6",
+      "title": "Test assertions for ERDSMetadataRepository element",
+      "page": 64
+    },
+    {
+      "num": "10.2.1.7",
+      "title": "Test assertions for ERDSEUQualifiedIndicator element",
+      "page": 64
+    },
+    {
+      "num": "10.2.1.8",
+      "title": "Test assertions for ERDSTLLocation element",
+      "page": 64
+    },
+    {
+      "num": "10.2.1.9",
+      "title": "Test assertions for ERDSRootCACertLocation element",
+      "page": 64
+    },
+    {
+      "num": "10.2.1.10",
+      "title": "Test assertions for ERDSExpiryDateAndTimeSupport element",
+      "page": 64
+    },
+    {
+      "num": "10.2.1.11",
+      "title": "Test assertions for ERDSScheduledDeliverySupport element",
+      "page": 64
+    },
+    {
+      "num": "10.2.1.12",
+      "title": "Test assertions for ERDSAssuranceLevelsSupported element",
+      "page": 64
+    },
+    {
+      "num": "10.2.1.13",
+      "title": "Test assertions for ERDSPolicySupport element",
+      "page": 64
+    },
+    {
+      "num": "10.2.1.14",
+      "title": "Test assertions for ERDSSupportedConsignmentModes element",
+      "page": 64
+    },
+    {
+      "num": "10.2.2",
+      "title": "Test assertions for metadata publishing",
+      "page": 65
+    },
+    {
+      "num": "10.3",
+      "title": "Test assertions for trust information binding",
+      "page": 66
+    },
+    {
+      "num": "11",
+      "title": "Test assertions for provision of the service",
+      "page": 68
+    },
+    {
+      "num": "11.1",
+      "title": "Introduction",
+      "page": 68
+    },
+    {
+      "num": "11.2",
+      "title": "Test assertions on generation of ERDS evidence in response to events",
+      "page": 68
+    },
+    {
+      "num": "11.3",
+      "title": "Test assertions on ERDS interfaces",
+      "page": 73
+    },
+    {
+      "num": "11.3.1",
+      "title": "Introduction",
+      "page": 73
+    },
+    {
+      "num": "11.3.2",
+      "title": "Security measures on ERDS interfaces",
+      "page": 73
+    },
+    {
+      "num": "11.3.3",
+      "title": "Test assertions on provision of ERDS interfaces",
+      "page": 76
+    },
+    {
+      "num": "Annex A",
+      "title": "Change History",
+      "page": 77,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 78,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 78,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

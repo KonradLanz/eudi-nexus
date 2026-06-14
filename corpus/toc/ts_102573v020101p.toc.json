@@ -1,0 +1,177 @@
+{
+  "stem": "ts_102573v020101p",
+  "pdf": "downloads/specs/TS/ts_102573v020101p.pdf",
+  "title": "(2012-04)",
+  "reference": "ts_102573v020101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Notation",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "General concepts",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "ISO/IEC 27001 ISMS and \"Policy Requirements\"",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Fiscally Relevant Provisions",
+      "page": 9
+    },
+    {
+      "num": "5.2.1",
+      "title": "Fiscally Relevant Data objects",
+      "page": 9
+    },
+    {
+      "num": "5.2.2",
+      "title": "Basic Model for Fiscally Relevant Data Objects",
+      "page": 10
+    },
+    {
+      "num": "5.2.3",
+      "title": "Commonly Acceptable Practices for Trusted Service Providers",
+      "page": 10
+    },
+    {
+      "num": "5.3",
+      "title": "Normalized and Extended Policy Requirements",
+      "page": 11
+    },
+    {
+      "num": "5.4",
+      "title": "User Community and Applicability",
+      "page": 11
+    },
+    {
+      "num": "5.5",
+      "title": "Conformance requirements",
+      "page": 12
+    },
+    {
+      "num": "6",
+      "title": "Obligations",
+      "page": 12
+    },
+    {
+      "num": "6.1",
+      "title": "Trust service providers obligations",
+      "page": 12
+    },
+    {
+      "num": "6.2",
+      "title": "Trust service providers organizational requirements",
+      "page": 13
+    },
+    {
+      "num": "6.3",
+      "title": "Subscriber obligations",
+      "page": 13
+    },
+    {
+      "num": "6.4",
+      "title": "Information for trading partner",
+      "page": 14
+    },
+    {
+      "num": "6.5",
+      "title": "Information for auditor/regulatory/tax authorities",
+      "page": 14
+    },
+    {
+      "num": "Annex A",
+      "title": "Objectives and controls - signature and storage",
+      "page": 15,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Objectives and controls - information security management",
+      "page": 21,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Change history",
+      "page": 27,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 28,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 28,
+  "toc_pages": [
+    3
+  ]
+}

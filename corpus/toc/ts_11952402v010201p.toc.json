@@ -1,0 +1,332 @@
+{
+  "stem": "ts_11952402v010201p",
+  "pdf": "downloads/specs/TS/ts_11952402v010201p.pdf",
+  "title": "(2023-12)",
+  "reference": "ts_11952402v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 7
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Technical approach",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Components of test cases and their identifiers",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Adding new test cases to the test suite",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Scenarios",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Abbreviations used in tables defining scenarios",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "Black-box model scenarios",
+      "page": 12
+    },
+    {
+      "num": "5.3.1",
+      "title": "Introduction",
+      "page": 12
+    },
+    {
+      "num": "5.3.2",
+      "title": "Scenarios without notification for acceptance",
+      "page": 13
+    },
+    {
+      "num": "5.3.3",
+      "title": "Scenarios with notification for acceptance",
+      "page": 23
+    },
+    {
+      "num": "5.4",
+      "title": "Scenarios for 4-corner model",
+      "page": 30
+    },
+    {
+      "num": "5.4.1",
+      "title": "Introduction",
+      "page": 30
+    },
+    {
+      "num": "5.4.2",
+      "title": "Scenarios where RERDS does not use notification for acceptance",
+      "page": 30
+    },
+    {
+      "num": "5.4.3",
+      "title": "Scenarios where RERDS uses notification for acceptance",
+      "page": 44
+    },
+    {
+      "num": "5.5",
+      "title": "Scenarios for extended model",
+      "page": 57
+    },
+    {
+      "num": "5.5.1",
+      "title": "Introduction",
+      "page": 57
+    },
+    {
+      "num": "5.5.2",
+      "title": "Scenarios where RERDS does not use notification for acceptance",
+      "page": 57
+    },
+    {
+      "num": "5.5.3",
+      "title": "Scenarios where RERDS uses notification for acceptance",
+      "page": 73
+    },
+    {
+      "num": "6",
+      "title": "ERD Messages instances",
+      "page": 83
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction and technical approach",
+      "page": 83
+    },
+    {
+      "num": "6.2",
+      "title": "Combinations of fields for headers in ERD envelopes",
+      "page": 83
+    },
+    {
+      "num": "6.2.1",
+      "title": "Introduction",
+      "page": 83
+    },
+    {
+      "num": "6.2.2",
+      "title": "Combinations of AS4 metadata profiled in ETSI EN 319 522-4",
+      "page": 83
+    },
+    {
+      "num": "6.2.3",
+      "title": "Combinations of components of relay metadata",
+      "page": 84
+    },
+    {
+      "num": "6.2.4",
+      "title": "Combinations of AS4 metadata profiled and relay metadata",
+      "page": 88
+    },
+    {
+      "num": "6.3",
+      "title": "Instances of ERD payload",
+      "page": 89
+    },
+    {
+      "num": "6.4",
+      "title": "Instances of ERDS receipts",
+      "page": 89
+    },
+    {
+      "num": "6.5",
+      "title": "Instances of ERD dispatch",
+      "page": 89
+    },
+    {
+      "num": "7",
+      "title": "Other named sets",
+      "page": 90
+    },
+    {
+      "num": "7.1",
+      "title": "Named sets of participating ERDSs",
+      "page": 90
+    },
+    {
+      "num": "7.2",
+      "title": "Named sets of additional requirements",
+      "page": 90
+    },
+    {
+      "num": "7.3",
+      "title": "Named sets of entities in receiving side",
+      "page": 90
+    },
+    {
+      "num": "8",
+      "title": "Test cases definition",
+      "page": 90
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction",
+      "page": 90
+    },
+    {
+      "num": "8.1.1",
+      "title": "General",
+      "page": 90
+    },
+    {
+      "num": "8.1.2",
+      "title": "Notation for black box model scenarios",
+      "page": 91
+    },
+    {
+      "num": "8.1.3",
+      "title": "Notation for 4 corner and extended models scenarios",
+      "page": 91
+    },
+    {
+      "num": "8.1.4",
+      "title": "Reasons for Failures",
+      "page": 93
+    },
+    {
+      "num": "8.2",
+      "title": "Test cases for black box model",
+      "page": 93
+    },
+    {
+      "num": "8.3",
+      "title": "Test cases for 4-cornel and extended models",
+      "page": 93
+    },
+    {
+      "num": "8.3.1",
+      "title": "General",
+      "page": 93
+    },
+    {
+      "num": "8.3.2",
+      "title": "Rules for parametrizing ERD dispatches",
+      "page": 93
+    },
+    {
+      "num": "8.3.3",
+      "title": "Rules for parametrizing ERD payloads",
+      "page": 94
+    },
+    {
+      "num": "8.3.4",
+      "title": "Rules for parametrizing ERDS receipts",
+      "page": 94
+    },
+    {
+      "num": "8.3.5",
+      "title": "Rules for parametrizing entities at receiving side",
+      "page": 94
+    },
+    {
+      "num": "8.3.6",
+      "title": "Rules for parametrizing failure reasons",
+      "page": 94
+    },
+    {
+      "num": "8.3.7",
+      "title": "Rules for parametrizing additional requirements",
+      "page": 94
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 95,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Change History",
+      "page": 96,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 97,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 97,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

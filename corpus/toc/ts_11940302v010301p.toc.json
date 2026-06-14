@@ -1,0 +1,128 @@
+{
+  "stem": "ts_11940302v010301p",
+  "pdf": "downloads/specs/TS/ts_11940302v010301p.pdf",
+  "title": "(2023-03)",
+  "reference": "ts_11940302v010301p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 7
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Requirements for CABs auditing TSPs that issue PTCs",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "General",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "Audit Frequency (see ETSI EN 319 403-1, clause 7.4.5)",
+      "page": 8
+    },
+    {
+      "num": "4.3",
+      "title": "Audit Attestation",
+      "page": 8
+    },
+    {
+      "num": "4.4",
+      "title": "Audit Scope",
+      "page": 9
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 10,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Change History",
+      "page": 11,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 12,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 12,
+  "toc_pages": [
+    3
+  ]
+}

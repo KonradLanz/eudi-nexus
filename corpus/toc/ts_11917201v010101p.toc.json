@@ -1,0 +1,350 @@
+{
+  "stem": "ts_11917201v010101p",
+  "pdf": "downloads/specs/TS/ts_11917201v010101p.pdf",
+  "title": "(2015-07)",
+  "reference": "ts_11917201v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 11
+    },
+    {
+      "num": "4",
+      "title": "Signature policies and signature policy document",
+      "page": 12
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 14
+    },
+    {
+      "num": "A.1.1",
+      "title": "Overview",
+      "page": 14
+    },
+    {
+      "num": "A.1.2",
+      "title": "Business or Application Domain",
+      "page": 14
+    },
+    {
+      "num": "A.1.2.1",
+      "title": "Scope and boundaries of signature policy",
+      "page": 14
+    },
+    {
+      "num": "A.1.2.2",
+      "title": "Domain of applications",
+      "page": 14
+    },
+    {
+      "num": "A.1.2.3",
+      "title": "Transactional context",
+      "page": 14
+    },
+    {
+      "num": "A.1.3",
+      "title": "Document and policy(ies) names, identification and conformance rules",
+      "page": 15
+    },
+    {
+      "num": "A.1.3.1",
+      "title": "Signature policy document and signature policy(ies) names",
+      "page": 15
+    },
+    {
+      "num": "A.1.3.2",
+      "title": "Signature policy document and signature policy(ies) identifier(s)",
+      "page": 15
+    },
+    {
+      "num": "A.1.3.3",
+      "title": "Conformance rules",
+      "page": 15
+    },
+    {
+      "num": "A.1.3.4",
+      "title": "Distribution points",
+      "page": 15
+    },
+    {
+      "num": "A.1.4",
+      "title": "Signature policy document administration",
+      "page": 15
+    },
+    {
+      "num": "A.1.4.1",
+      "title": "Signature policy authority",
+      "page": 15
+    },
+    {
+      "num": "A.1.4.2",
+      "title": "Contact person",
+      "page": 16
+    },
+    {
+      "num": "A.1.4.3",
+      "title": "Approval procedures",
+      "page": 16
+    },
+    {
+      "num": "A.1.5",
+      "title": "Definitions and Acronyms",
+      "page": 16
+    },
+    {
+      "num": "A.2",
+      "title": "Signature application practices statements",
+      "page": 16
+    },
+    {
+      "num": "A.3",
+      "title": "Business scoping parameters",
+      "page": 16
+    },
+    {
+      "num": "A.3.1",
+      "title": "BSPs mainly related to the concerned application/business process",
+      "page": 16
+    },
+    {
+      "num": "A.3.1.1",
+      "title": "BSP (a): Workflow (sequencing and timing) of signatures",
+      "page": 16
+    },
+    {
+      "num": "A.3.1.2",
+      "title": "BSP (b): Data to be signed",
+      "page": 17
+    },
+    {
+      "num": "A.3.1.3",
+      "title": "BSP (c): The relationship between signed data and signature(s)",
+      "page": 18
+    },
+    {
+      "num": "A.3.1.4",
+      "title": "BSP (d): Targeted community",
+      "page": 18
+    },
+    {
+      "num": "A.3.1.5",
+      "title": "BSP (e): Allocation of responsibility for signature validation and augmentation",
+      "page": 18
+    },
+    {
+      "num": "A.3.2.1",
+      "title": "BSP (f): Legal type of the signatures",
+      "page": 19
+    },
+    {
+      "num": "A.3.2.2",
+      "title": "BSP (g): Commitment assumed by the signer",
+      "page": 19
+    },
+    {
+      "num": "A.3.2.3",
+      "title": "BSP (h): Level of assurance on timing evidences",
+      "page": 20
+    },
+    {
+      "num": "A.3.2.4",
+      "title": "BSP (i): Formalities of signing",
+      "page": 20
+    },
+    {
+      "num": "A.3.2.5",
+      "title": "BSP (j): Longevity and resilience to change",
+      "page": 21
+    },
+    {
+      "num": "A.3.2.6",
+      "title": "BSP (k): Archival",
+      "page": 21
+    },
+    {
+      "num": "A.3.3.1",
+      "title": "BSP (l): Identity (and roles/attributes) of the signers",
+      "page": 21
+    },
+    {
+      "num": "A.3.3.2",
+      "title": "BSP (m): Level of assurance required for the authentication of the signer",
+      "page": 22
+    },
+    {
+      "num": "A.3.3.3",
+      "title": "BSP (n): Signature creation devices",
+      "page": 22
+    },
+    {
+      "num": "A.3.4",
+      "title": "Other BSPs",
+      "page": 22
+    },
+    {
+      "num": "A.3.4.1",
+      "title": "BSP (o): Other information to be associated with the signature",
+      "page": 22
+    },
+    {
+      "num": "A.3.4.2",
+      "title": "BSP (p): Cryptographic suites",
+      "page": 22
+    },
+    {
+      "num": "A.3.4.3",
+      "title": "BSP (q): Technological environment",
+      "page": 23
+    },
+    {
+      "num": "A.4",
+      "title": "Requirements / statements on technical mechanisms and standards implementation",
+      "page": 23
+    },
+    {
+      "num": "A.4.1",
+      "title": "Technical counterparts of BSPs - Statement summary",
+      "page": 23
+    },
+    {
+      "num": "A.5",
+      "title": "Other business and legal matters",
+      "page": 38
+    },
+    {
+      "num": "A.6",
+      "title": "Compliance audit and other assessments",
+      "page": 39
+    },
+    {
+      "num": "Annex B",
+      "title": "Commitment types",
+      "page": 40,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Constraints in the context of EU legislation",
+      "page": 41,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Signature application practices statements",
+      "page": 42,
+      "annex_type": "normative"
+    },
+    {
+      "num": "D.1",
+      "title": "General requirements",
+      "page": 42
+    },
+    {
+      "num": "D.2",
+      "title": "Signature application practices statements",
+      "page": 42
+    },
+    {
+      "num": "D.2.1",
+      "title": "Legal driven policy requirements",
+      "page": 42
+    },
+    {
+      "num": "D.2.2",
+      "title": "Information security (management system) requirements",
+      "page": 42
+    },
+    {
+      "num": "D.2.3",
+      "title": "Signature Creation and Signature Validation processes requirements",
+      "page": 43
+    },
+    {
+      "num": "D.2.4",
+      "title": "Development & coding policy requirements",
+      "page": 43
+    },
+    {
+      "num": "D.2.5",
+      "title": "General requirements",
+      "page": 44
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 45,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 45,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

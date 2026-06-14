@@ -1,0 +1,782 @@
+{
+  "stem": "ts_11961401v010101p",
+  "pdf": "downloads/specs/TS/ts_11961401v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11961401v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "Testing Trusted Lists",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Testing auxiliary types",
+      "page": 9
+    },
+    {
+      "num": "5.1.1",
+      "title": "Testing multilingual string types",
+      "page": 9
+    },
+    {
+      "num": "5.1.1.1",
+      "title": "Testing lang attribute",
+      "page": 9
+    },
+    {
+      "num": "5.1.1.2",
+      "title": "Testing tsl:NonEmptyString type",
+      "page": 9
+    },
+    {
+      "num": "5.1.1.3",
+      "title": "Testing tsl:NonEmptyNormalizedString type",
+      "page": 10
+    },
+    {
+      "num": "5.1.1.4",
+      "title": "Testing tsl:MultiLangStringType type",
+      "page": 10
+    },
+    {
+      "num": "5.1.1.5",
+      "title": "Testing tsl:MultiLangNormStringType type",
+      "page": 11
+    },
+    {
+      "num": "5.1.2",
+      "title": "Testing tsl:InternationalNamesType type",
+      "page": 11
+    },
+    {
+      "num": "5.1.3",
+      "title": "Testing tsl:InternationalNamesType type",
+      "page": 11
+    },
+    {
+      "num": "5.1.4",
+      "title": "Testing types for managing URIs",
+      "page": 11
+    },
+    {
+      "num": "5.1.4.1",
+      "title": "Testing tsl:NonEmptyURIType type",
+      "page": 11
+    },
+    {
+      "num": "5.1.4.2",
+      "title": "Testing tsl:NonEmptyURIListType type",
+      "page": 12
+    },
+    {
+      "num": "5.1.4.3",
+      "title": "Testing tsl:NonEmptyMultiLangURIType type",
+      "page": 12
+    },
+    {
+      "num": "5.1.4.4",
+      "title": "Testing tsl:NonEmptyMultiLangURIListType type",
+      "page": 12
+    },
+    {
+      "num": "5.1.5",
+      "title": "Testing Country Codes",
+      "page": 12
+    },
+    {
+      "num": "5.1.5.2",
+      "title": "Test assertions for non EUMS Trusted Lists",
+      "page": 12
+    },
+    {
+      "num": "5.1.5.3",
+      "title": "Test assertions for exceptions within EUMS Trusted Lists",
+      "page": 13
+    },
+    {
+      "num": "5.1.6",
+      "title": "Testing tsl:AddressType type",
+      "page": 13
+    },
+    {
+      "num": "5.1.6.1",
+      "title": "Introduction",
+      "page": 13
+    },
+    {
+      "num": "5.1.6.2",
+      "title": "Testing tsl:PostalAddressListType type",
+      "page": 13
+    },
+    {
+      "num": "5.1.6.3",
+      "title": "Testing tsl:ElectronicAddressType type",
+      "page": 13
+    },
+    {
+      "num": "5.2",
+      "title": "Testing the elements of the XML representation of the Trusted List",
+      "page": 14
+    },
+    {
+      "num": "5.2.1",
+      "title": "Introduction",
+      "page": 14
+    },
+    {
+      "num": "5.2.2",
+      "title": "Testing TSLTag attribute",
+      "page": 14
+    },
+    {
+      "num": "5.2.3",
+      "title": "Testing tsl:SchemeInformation element",
+      "page": 14
+    },
+    {
+      "num": "5.2.3.1",
+      "title": "Testing tsl:TSLVersionIdentifier element",
+      "page": 14
+    },
+    {
+      "num": "5.2.3.2",
+      "title": "Testing tsl:TSLSequenceNumber element",
+      "page": 14
+    },
+    {
+      "num": "5.2.3.3",
+      "title": "Testing tsl:TSLType element",
+      "page": 15
+    },
+    {
+      "num": "5.2.3.3.1",
+      "title": "Test assertions for EUMS Trusted Lists",
+      "page": 15
+    },
+    {
+      "num": "5.2.3.3.2",
+      "title": "Test assertions for EC List of Lists",
+      "page": 15
+    },
+    {
+      "num": "5.2.3.3.3",
+      "title": "Test assertions for non EUMS Trusted Lists",
+      "page": 15
+    },
+    {
+      "num": "5.2.3.4",
+      "title": "Testing tsl:SchemeOperatorName element",
+      "page": 16
+    },
+    {
+      "num": "5.2.3.5",
+      "title": "Testing tsl:SchemeOperatorAddress element",
+      "page": 16
+    },
+    {
+      "num": "5.2.3.6",
+      "title": "Testing tsl:SchemeName element",
+      "page": 16
+    },
+    {
+      "num": "5.2.3.7",
+      "title": "Testing tsl:SchemeInformationURI element",
+      "page": 16
+    },
+    {
+      "num": "5.2.3.8",
+      "title": "Testing tsl:StatusDeterminationApproach element",
+      "page": 17
+    },
+    {
+      "num": "5.2.3.8.1",
+      "title": "Testing tsl:StatusDeterminationApproach for EUMS Trusted Lists",
+      "page": 17
+    },
+    {
+      "num": "5.2.3.8.2",
+      "title": "Testing tsl:StatusDeterminationApproach for non-EUMS Trusted Lists",
+      "page": 17
+    },
+    {
+      "num": "5.2.3.9",
+      "title": "Testing tsl:SchemeTypeCommunityRules element",
+      "page": 17
+    },
+    {
+      "num": "5.2.3.9.1",
+      "title": "Introduction",
+      "page": 17
+    },
+    {
+      "num": "5.2.3.9.2",
+      "title": "Test assertions specific to EUMS Trusted Lists",
+      "page": 18
+    },
+    {
+      "num": "5.2.3.9.3",
+      "title": "Test assertions specific to EC List of Trusted Lists",
+      "page": 18
+    },
+    {
+      "num": "5.2.3.9.4",
+      "title": "Test assertions specific to no EUMS Trusted Lists",
+      "page": 18
+    },
+    {
+      "num": "5.2.3.10",
+      "title": "Testing tsl:SchemeTerritory element",
+      "page": 18
+    },
+    {
+      "num": "5.2.3.11",
+      "title": "Testing tsl:PolicyOrLegalNotice element",
+      "page": 18
+    },
+    {
+      "num": "5.2.3.12",
+      "title": "Testing HistoricalInformationPeriod element",
+      "page": 18
+    },
+    {
+      "num": "5.2.3.13",
+      "title": "Testing tsl:PointersToOtherTSL element",
+      "page": 19
+    },
+    {
+      "num": "5.2.3.14",
+      "title": "Testing tsl:ListIssueDateTime element",
+      "page": 19
+    },
+    {
+      "num": "5.2.3.15",
+      "title": "Testing tsl:NextUpdate element",
+      "page": 19
+    },
+    {
+      "num": "5.2.3.16",
+      "title": "Testing tsl:DistributionPoints element",
+      "page": 19
+    },
+    {
+      "num": "5.2.3.17",
+      "title": "Testing tsl:SchemeExtensions element",
+      "page": 20
+    },
+    {
+      "num": "5.2.3.17.1",
+      "title": "Test assertions for EUMS Trusted Lists",
+      "page": 20
+    },
+    {
+      "num": "5.2.3.17.2",
+      "title": "Test assertions for non EUMS Trusted Lists",
+      "page": 20
+    },
+    {
+      "num": "5.3",
+      "title": "Testing tsl:TSPInformation element",
+      "page": 20
+    },
+    {
+      "num": "5.3.1",
+      "title": "Testing tsl:TSPName element",
+      "page": 20
+    },
+    {
+      "num": "5.3.2",
+      "title": "Testing tsl:TSPTradeName element",
+      "page": 20
+    },
+    {
+      "num": "5.3.3",
+      "title": "Testing tsl:TSPAddress element",
+      "page": 21
+    },
+    {
+      "num": "5.3.4",
+      "title": "Testing tsl:TSPInformationURI element",
+      "page": 21
+    },
+    {
+      "num": "5.3.5",
+      "title": "Testing tsl:TSPInformationExtensions element",
+      "page": 21
+    },
+    {
+      "num": "5.3.5.1",
+      "title": "Test assertions for EUMS Trusted Lists",
+      "page": 21
+    },
+    {
+      "num": "5.4",
+      "title": "Testing ServiceInformation element",
+      "page": 21
+    },
+    {
+      "num": "5.4.1",
+      "title": "Testing tsl:ServiceTypeIdentifier element",
+      "page": 21
+    },
+    {
+      "num": "5.4.2",
+      "title": "Testing tsl:ServiceName element",
+      "page": 22
+    },
+    {
+      "num": "5.4.3",
+      "title": "Testing tsl:ServiceDigitalIdentity element",
+      "page": 22
+    },
+    {
+      "num": "5.4.3.1",
+      "title": "Test assertions common to any tsl:ServiceDigitalIdentity element",
+      "page": 22
+    },
+    {
+      "num": "5.4.4",
+      "title": "Testing tsl:ServiceStatus element",
+      "page": 25
+    },
+    {
+      "num": "5.4.4.1",
+      "title": "Introduction",
+      "page": 25
+    },
+    {
+      "num": "5.4.4.2",
+      "title": "Test assertions common to any tsl:ServiceStatus element",
+      "page": 25
+    },
+    {
+      "num": "5.4.4.3",
+      "title": "Test assertions specific to tsl:ServiceStatus child element of tsl:TSPService",
+      "page": 25
+    },
+    {
+      "num": "5.4.5",
+      "title": "Testing tsl:StatusStartingTime element",
+      "page": 25
+    },
+    {
+      "num": "5.4.5.1",
+      "title": "Test assertions common to any tsl:StatusStartingTime element",
+      "page": 25
+    },
+    {
+      "num": "5.4.5.2",
+      "title": "Test assertions specific tsl:StatusStartingTime child element of tsl:TSPService",
+      "page": 26
+    },
+    {
+      "num": "5.4.6",
+      "title": "Testing tsl:SchemeServiceDefinitionURI element",
+      "page": 26
+    },
+    {
+      "num": "5.4.7",
+      "title": "Testing tsl:ServiceSupplyPoints element",
+      "page": 26
+    },
+    {
+      "num": "5.4.8",
+      "title": "Testing tsl:TSPServiceDefinitionURI element",
+      "page": 26
+    },
+    {
+      "num": "5.4.9",
+      "title": "Testing tsl:ServiceInformationExtensions element",
+      "page": 26
+    },
+    {
+      "num": "5.4.9.1",
+      "title": "Testing tsl:ExpiredCertsRevocationInfo element",
+      "page": 26
+    },
+    {
+      "num": "5.4.9.2",
+      "title": "Testing sie:Qualifications element",
+      "page": 27
+    },
+    {
+      "num": "5.4.9.3",
+      "title": "Testing tslx:TakenOverBy element",
+      "page": 28
+    },
+    {
+      "num": "5.4.9.4",
+      "title": "Testing tsl:AdditionalServiceInformation element",
+      "page": 29
+    },
+    {
+      "num": "5.5",
+      "title": "Testing tsl:ServiceHistory element",
+      "page": 29
+    },
+    {
+      "num": "5.5.1",
+      "title": "Testing tsl:ServiceTypeIdentifier element",
+      "page": 29
+    },
+    {
+      "num": "5.5.2",
+      "title": "Testing tsl:ServiceName element",
+      "page": 30
+    },
+    {
+      "num": "5.5.3",
+      "title": "Testing tsl:ServiceDigitalIdentity element",
+      "page": 30
+    },
+    {
+      "num": "5.5.4",
+      "title": "Testing tsl:ServiceStatus element",
+      "page": 31
+    },
+    {
+      "num": "5.5.5",
+      "title": "Testing tsl:StatusStartingTime element",
+      "page": 31
+    },
+    {
+      "num": "5.5.6",
+      "title": "Testing tsl:ServiceInformationExtensions element",
+      "page": 31
+    },
+    {
+      "num": "5.6",
+      "title": "Testing ds:Signature element",
+      "page": 32
+    },
+    {
+      "num": "Annex A",
+      "title": "Test assertions derived from XML Schema",
+      "page": 35,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 35
+    },
+    {
+      "num": "A.2",
+      "title": "Testing auxiliary types contents",
+      "page": 35
+    },
+    {
+      "num": "A.2.1",
+      "title": "Introduction",
+      "page": 35
+    },
+    {
+      "num": "A.2.2",
+      "title": "Testing tsl:NonEmptyNormalizedString instances",
+      "page": 35
+    },
+    {
+      "num": "A.2.3",
+      "title": "Testing tsl:NonEmptyString instances",
+      "page": 36
+    },
+    {
+      "num": "A.2.4",
+      "title": "Testing tsl:MultiLangStringType instances",
+      "page": 36
+    },
+    {
+      "num": "A.2.5",
+      "title": "Testing tsl:MultiLangNormStringType instances",
+      "page": 36
+    },
+    {
+      "num": "A.2.6",
+      "title": "Testing tsl:InternationalNamesType instances",
+      "page": 36
+    },
+    {
+      "num": "A.2.7",
+      "title": "Testing tsl:NonEmptyURIType instances",
+      "page": 37
+    },
+    {
+      "num": "A.2.8",
+      "title": "Testing tsl:NonEmptyURIListType instances",
+      "page": 37
+    },
+    {
+      "num": "A.2.9",
+      "title": "Testing tsl:NonEmptyMultiLangURIType instances",
+      "page": 38
+    },
+    {
+      "num": "A.2.10",
+      "title": "Testing tsl:NonEmptyMultiLangURIListType instances",
+      "page": 38
+    },
+    {
+      "num": "A.2.11",
+      "title": "Testing tsl:AttributedNonEmptyURIType instances",
+      "page": 38
+    },
+    {
+      "num": "A.2.12",
+      "title": "Testing tsl:AddressType instances",
+      "page": 39
+    },
+    {
+      "num": "A.2.12.1",
+      "title": "Testing structure",
+      "page": 39
+    },
+    {
+      "num": "A.2.12.2",
+      "title": "Testing tsl: PostalAddressListType instances",
+      "page": 39
+    },
+    {
+      "num": "A.2.12.2.1",
+      "title": "Testing tsl:PostalAddressListType instances",
+      "page": 39
+    },
+    {
+      "num": "A.2.12.2.2",
+      "title": "Testing tsl:PostalAddressType instances",
+      "page": 40
+    },
+    {
+      "num": "A.2.12.3",
+      "title": "Testing tsl: ElectronicAddressType instances",
+      "page": 40
+    },
+    {
+      "num": "A.2.13",
+      "title": "Testing tsl:ExtensionType instances",
+      "page": 40
+    },
+    {
+      "num": "A.2.14",
+      "title": "Testing tsl:ExtensionsListType instances",
+      "page": 40
+    },
+    {
+      "num": "A.3",
+      "title": "Testing Trusted List structure",
+      "page": 41
+    },
+    {
+      "num": "A.3.1",
+      "title": "Testing tsl:TrustServiceStatusList element",
+      "page": 41
+    },
+    {
+      "num": "A.3.2",
+      "title": "Testing tsl:SchemeInformation element",
+      "page": 41
+    },
+    {
+      "num": "A.3.3",
+      "title": "Testing tsl:PolicyOrLegalNoticeType type",
+      "page": 42
+    },
+    {
+      "num": "A.3.4",
+      "title": "Testing tsl:OtherTSLPointersType type",
+      "page": 42
+    },
+    {
+      "num": "A.3.5",
+      "title": "Testing tsl:ServiceDigitalIdentityListType type",
+      "page": 43
+    },
+    {
+      "num": "A.3.6",
+      "title": "Testing tsl:DigitalIdentityListType type",
+      "page": 43
+    },
+    {
+      "num": "A.3.7",
+      "title": "Testing tsl:DigitalIdentityType type",
+      "page": 43
+    },
+    {
+      "num": "A.3.8",
+      "title": "Testing tsl:AdditionalInformationType type",
+      "page": 44
+    },
+    {
+      "num": "A.3.9",
+      "title": "Testing tsl:TrustServiceProviderList",
+      "page": 44
+    },
+    {
+      "num": "A.3.10",
+      "title": "Testing tsl:TSPType type",
+      "page": 44
+    },
+    {
+      "num": "A.3.11",
+      "title": "Testing tsl:TSPInformationType",
+      "page": 45
+    },
+    {
+      "num": "A.3.12",
+      "title": "Testing tsl:TSPServicesListType",
+      "page": 45
+    },
+    {
+      "num": "A.3.13",
+      "title": "Testing tsl:TSPServiceType",
+      "page": 45
+    },
+    {
+      "num": "A.3.14",
+      "title": "Testing tsl:TSPServiceInformationType",
+      "page": 46
+    },
+    {
+      "num": "A.3.15",
+      "title": "Testing tsl:ServiceSupplyPointsType",
+      "page": 46
+    },
+    {
+      "num": "A.3.16",
+      "title": "Testing tsl:ServiceHistoryType",
+      "page": 47
+    },
+    {
+      "num": "A.3.17",
+      "title": "Testing tsl:ServiceHistoryInstanceType",
+      "page": 47
+    },
+    {
+      "num": "A.3.18",
+      "title": "Testing Extensions",
+      "page": 48
+    },
+    {
+      "num": "A.3.18.1",
+      "title": "Testing tsl:AdditionalServiceInformationType type",
+      "page": 48
+    },
+    {
+      "num": "A.3.18.2",
+      "title": "Testing sie:QualificationsType type",
+      "page": 48
+    },
+    {
+      "num": "A.2.18.2.1",
+      "title": "Testing sie:QualificationsType",
+      "page": 48
+    },
+    {
+      "num": "A.3.18.2.2",
+      "title": "Testing sie:QualificationElement element",
+      "page": 48
+    },
+    {
+      "num": "A.3.18.2.3",
+      "title": "Testing sie:Qualifiers element",
+      "page": 49
+    },
+    {
+      "num": "A.3.18.2.4",
+      "title": "Testing sie:CriteriaListType type",
+      "page": 49
+    },
+    {
+      "num": "A.3.18.3",
+      "title": "Testing tslx:ExtendedKeyUsageType type",
+      "page": 50
+    },
+    {
+      "num": "A.3.18.4",
+      "title": "Testing tslx:TakenOverByType type",
+      "page": 50
+    },
+    {
+      "num": "A.3.18.5",
+      "title": "Testing tslx:CertSubjectDNAttribute",
+      "page": 51
+    },
+    {
+      "num": "A.3.18.6",
+      "title": "Testing tslx:MimeType",
+      "page": 51
+    },
+    {
+      "num": "A.4",
+      "title": "Test assertions for xades:ObjectIdentifierType",
+      "page": 51
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 53,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 53,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

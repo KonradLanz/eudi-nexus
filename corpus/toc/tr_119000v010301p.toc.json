@@ -1,0 +1,166 @@
+{
+  "stem": "tr_119000v010301p",
+  "pdf": "downloads/specs/TR/tr_119000v010301p.pdf",
+  "title": "(2023-05)",
+  "reference": "tr_119000v010301p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 13
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 13
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 13
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 13
+    },
+    {
+      "num": "4.1",
+      "title": "Classification scheme",
+      "page": 13
+    },
+    {
+      "num": "4.1.1",
+      "title": "Functional areas",
+      "page": 13
+    },
+    {
+      "num": "4.1.2",
+      "title": "Document types",
+      "page": 14
+    },
+    {
+      "num": "4.1.3",
+      "title": "Structure with sub-areas",
+      "page": 15
+    },
+    {
+      "num": "4.1.4",
+      "title": "Numbering scheme",
+      "page": 15
+    },
+    {
+      "num": "4.1.5",
+      "title": "Guidance documents addressing the framework functional areas",
+      "page": 16
+    },
+    {
+      "num": "4.2",
+      "title": "The framework by area",
+      "page": 19
+    },
+    {
+      "num": "4.2.0",
+      "title": "Foreword",
+      "page": 19
+    },
+    {
+      "num": "4.2.1",
+      "title": "Introductory documents",
+      "page": 19
+    },
+    {
+      "num": "4.2.2",
+      "title": "Signature creation & validation",
+      "page": 20
+    },
+    {
+      "num": "4.2.3",
+      "title": "Signature creation and other related devices",
+      "page": 27
+    },
+    {
+      "num": "4.2.4",
+      "title": "Cryptographic suites",
+      "page": 32
+    },
+    {
+      "num": "4.2.5",
+      "title": "TSPs supporting digital signatures and related services",
+      "page": 33
+    },
+    {
+      "num": "4.2.6",
+      "title": "Trust application service providers",
+      "page": 38
+    },
+    {
+      "num": "4.2.7",
+      "title": "Trust service status lists providers",
+      "page": 42
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 44,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 44,
+  "toc_pages": [
+    3
+  ]
+}

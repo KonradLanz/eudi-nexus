@@ -1,0 +1,13 @@
+{
+  "id": "esi-work-program",
+  "type": "work_program",
+  "label": "ETSI ESI Work Programme (all work items)",
+  "url": "https://portal.etsi.org/webapp/WorkProgram/Frame_WorkItemList.asp?qSORT=HIGHVERSION&qETSI_ALL=&SearchPage=TRUE&qTB_ID=607%3BESI&qINCLUDE_SUB_TB=True&qINCLUDE_MOVED_ON=&qSTOP_FLG=&qKEYWORD_BOOLEAN=&qCLUSTER_BOOLEAN=&qFREQUENCIES_BOOLEAN=&qSTOPPING_OUTDATED=&butSimple=Search&includeNonActiveTB=FALSE&includeSubProjectCode=&qREPORT_TYPE=SUMMARY&qOFFSET=0&qNB_TO_DISPLAY=999",
+  "format": "html",
+  "scope": "tc",
+  "stf": null,
+  "wki_ids": [],
+  "note": "Full ESI work programme list (581 items as of 2026-06)",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.859740+00:00"
+}

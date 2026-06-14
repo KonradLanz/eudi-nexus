@@ -1,0 +1,416 @@
+{
+  "stem": "ts_102734v010101p",
+  "pdf": "downloads/specs/TS/ts_102734v010101p.pdf",
+  "title": "(2007-02)",
+  "reference": "ts_102734v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "General requirements",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Algorithm requirements",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Compliance requirements",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "CAdES profile for e-Invoicing",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Elements defined in CMS",
+      "page": 10
+    },
+    {
+      "num": "5.1.1",
+      "title": "Placement of the signature",
+      "page": 10
+    },
+    {
+      "num": "5.1.2",
+      "title": "Signer identifier",
+      "page": 10
+    },
+    {
+      "num": "5.1.3",
+      "title": "Content type",
+      "page": 10
+    },
+    {
+      "num": "5.1.4",
+      "title": "Message digest",
+      "page": 10
+    },
+    {
+      "num": "5.1.5",
+      "title": "Signing time",
+      "page": 10
+    },
+    {
+      "num": "5.1.6",
+      "title": "Countersignature",
+      "page": 11
+    },
+    {
+      "num": "5.1.7",
+      "title": "Parallel signatures",
+      "page": 11
+    },
+    {
+      "num": "5.2",
+      "title": "Elements defined in ESS",
+      "page": 11
+    },
+    {
+      "num": "5.2.1",
+      "title": "Signing certificate",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "Additional attributes defined in CAdES",
+      "page": 12
+    },
+    {
+      "num": "5.3.1",
+      "title": "Signature time-stamp / time-mark",
+      "page": 12
+    },
+    {
+      "num": "5.4",
+      "title": "Additional attributes defined in CAdES for long term signatures",
+      "page": 12
+    },
+    {
+      "num": "5.4.1",
+      "title": "Certificate references",
+      "page": 12
+    },
+    {
+      "num": "5.4.2",
+      "title": "Revocation status references",
+      "page": 12
+    },
+    {
+      "num": "5.4.3",
+      "title": "Certificate values",
+      "page": 13
+    },
+    {
+      "num": "5.4.4",
+      "title": "Revocation status values",
+      "page": 13
+    },
+    {
+      "num": "5.4.5",
+      "title": "Archive time-stamp",
+      "page": 14
+    },
+    {
+      "num": "5.5",
+      "title": "Other standards",
+      "page": 14
+    },
+    {
+      "num": "5.5.1",
+      "title": "X.509 Certificates",
+      "page": 14
+    },
+    {
+      "num": "5.5.2",
+      "title": "Certificate key usage for e-Invoicing",
+      "page": 14
+    },
+    {
+      "num": "5.5.3",
+      "title": "Naming",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "CAdES profile for e-Government",
+      "page": 15
+    },
+    {
+      "num": "6.1",
+      "title": "Elements defined in CMS",
+      "page": 15
+    },
+    {
+      "num": "6.1.1",
+      "title": "Placement of the signature",
+      "page": 15
+    },
+    {
+      "num": "6.1.2",
+      "title": "Signer identifier",
+      "page": 16
+    },
+    {
+      "num": "6.1.3",
+      "title": "Content type",
+      "page": 16
+    },
+    {
+      "num": "6.1.4",
+      "title": "Message digest",
+      "page": 16
+    },
+    {
+      "num": "6.1.5",
+      "title": "Signing time",
+      "page": 16
+    },
+    {
+      "num": "6.1.6",
+      "title": "Countersignature",
+      "page": 16
+    },
+    {
+      "num": "6.1.7",
+      "title": "Parallel signatures",
+      "page": 17
+    },
+    {
+      "num": "6.2",
+      "title": "Elements defined in ESS",
+      "page": 17
+    },
+    {
+      "num": "6.2.1",
+      "title": "Signing certificate",
+      "page": 17
+    },
+    {
+      "num": "6.3",
+      "title": "Additional attributes defined in CAdES",
+      "page": 17
+    },
+    {
+      "num": "6.3.1",
+      "title": "Signature time-stamp / time-mark",
+      "page": 17
+    },
+    {
+      "num": "6.4",
+      "title": "Additional attributes defined in CAdES for long term signatures",
+      "page": 18
+    },
+    {
+      "num": "6.4.1",
+      "title": "Certificate references",
+      "page": 18
+    },
+    {
+      "num": "6.4.2",
+      "title": "Revocation status references",
+      "page": 18
+    },
+    {
+      "num": "6.4.3",
+      "title": "Certificate values",
+      "page": 19
+    },
+    {
+      "num": "6.4.4",
+      "title": "Revocation status values",
+      "page": 19
+    },
+    {
+      "num": "6.4.5",
+      "title": "Archive time-stamp",
+      "page": 19
+    },
+    {
+      "num": "6.5",
+      "title": "Other standards",
+      "page": 20
+    },
+    {
+      "num": "6.5.1",
+      "title": "X.509 Certificates",
+      "page": 20
+    },
+    {
+      "num": "7",
+      "title": "CAdES baseline profile",
+      "page": 20
+    },
+    {
+      "num": "7.1",
+      "title": "Elements defined in CMS",
+      "page": 20
+    },
+    {
+      "num": "7.1.1",
+      "title": "Placement of the signature",
+      "page": 20
+    },
+    {
+      "num": "7.1.2",
+      "title": "Signer identifier",
+      "page": 20
+    },
+    {
+      "num": "7.1.3",
+      "title": "Content type",
+      "page": 20
+    },
+    {
+      "num": "7.1.4",
+      "title": "Message digest",
+      "page": 21
+    },
+    {
+      "num": "7.1.5",
+      "title": "Signing time",
+      "page": 21
+    },
+    {
+      "num": "7.1.6",
+      "title": "Countersignature",
+      "page": 21
+    },
+    {
+      "num": "7.1.7",
+      "title": "Parallel signatures",
+      "page": 21
+    },
+    {
+      "num": "7.2",
+      "title": "Elements defined in ESS",
+      "page": 22
+    },
+    {
+      "num": "7.2.1",
+      "title": "Signing certificate",
+      "page": 22
+    },
+    {
+      "num": "7.3",
+      "title": "Additional attributes defined in CAdES",
+      "page": 22
+    },
+    {
+      "num": "7.3.1",
+      "title": "Signature time-stamp / time-mark",
+      "page": 22
+    },
+    {
+      "num": "7.4",
+      "title": "Additional attributes defined in CAdES for long term signatures",
+      "page": 22
+    },
+    {
+      "num": "7.4.1",
+      "title": "Certificate references",
+      "page": 22
+    },
+    {
+      "num": "7.4.2",
+      "title": "Revocation status references",
+      "page": 23
+    },
+    {
+      "num": "7.4.3",
+      "title": "Certificate values",
+      "page": 23
+    },
+    {
+      "num": "7.4.4",
+      "title": "Revocation status values",
+      "page": 24
+    },
+    {
+      "num": "7.4.5",
+      "title": "Archive time-stamp",
+      "page": 24
+    },
+    {
+      "num": "7.5",
+      "title": "Other standards",
+      "page": 24
+    },
+    {
+      "num": "7.5.1",
+      "title": "X.509 Certificates",
+      "page": 24
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 26,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 27,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 27,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

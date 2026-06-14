@@ -1,0 +1,246 @@
+{
+  "stem": "tr_11941109v010101p",
+  "pdf": "downloads/specs/TR/tr_11941109v010101p.pdf",
+  "title": "(2026-03)",
+  "reference": "tr_11941109v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 7
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Certificate Transparency",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "Objectives of Certificate Transparency",
+      "page": 7
+    },
+    {
+      "num": "4.3",
+      "title": "Functionality and participants in the CT ecosystem",
+      "page": 8
+    },
+    {
+      "num": "4.3.1",
+      "title": "Functional Overview",
+      "page": 8
+    },
+    {
+      "num": "4.3.2",
+      "title": "Ecosystem Roles",
+      "page": 9
+    },
+    {
+      "num": "4.4",
+      "title": "Policies, norms, standards and initiatives",
+      "page": 9
+    },
+    {
+      "num": "4.4.1",
+      "title": "Policies",
+      "page": 9
+    },
+    {
+      "num": "4.4.2",
+      "title": "Norms and standards",
+      "page": 9
+    },
+    {
+      "num": "4.4.3",
+      "title": "Initiatives",
+      "page": 10
+    },
+    {
+      "num": "5",
+      "title": "Certificate Transparency",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Use of Certificate Transparency with TLS",
+      "page": 10
+    },
+    {
+      "num": "5.1.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "5.1.2",
+      "title": "Precertificate and SCT Workflow",
+      "page": 10
+    },
+    {
+      "num": "5.1.3",
+      "title": "SCT Delivery Methods",
+      "page": 11
+    },
+    {
+      "num": "5.1.4",
+      "title": "Log Requirements and Client Validation",
+      "page": 11
+    },
+    {
+      "num": "5.1.5",
+      "title": "Browser Enforcement Policies",
+      "page": 11
+    },
+    {
+      "num": "5.2",
+      "title": "Certificate Transparency Log Incidents - Observations, Causes",
+      "page": 12
+    },
+    {
+      "num": "5.2.1",
+      "title": "Background",
+      "page": 12
+    },
+    {
+      "num": "5.2.2",
+      "title": "Incident taxonomy (operator-neutral)",
+      "page": 12
+    },
+    {
+      "num": "5.2.3",
+      "title": "Chronology of representative incidents (anonymized)",
+      "page": 12
+    },
+    {
+      "num": "5.3",
+      "title": "Summary",
+      "page": 13
+    },
+    {
+      "num": "6.2",
+      "title": "Recommendation for the use of existing standards, norms and initiatives",
+      "page": 14
+    },
+    {
+      "num": "6.2.1",
+      "title": "Recommendation for the use of existing standards",
+      "page": 14
+    },
+    {
+      "num": "6.2.2",
+      "title": "Recommendation to consider Static-CT-API (tiled logs)",
+      "page": 14
+    },
+    {
+      "num": "6.3.1",
+      "title": "Introduction",
+      "page": 14
+    },
+    {
+      "num": "6.3.3",
+      "title": "Policy Framework for Relying Parties",
+      "page": 15
+    },
+    {
+      "num": "6.3.4",
+      "title": "Policy Framework for Supervisory Bodies",
+      "page": 15
+    },
+    {
+      "num": "6.3.5",
+      "title": "Policy Framework for CT Log Operators",
+      "page": 15
+    },
+    {
+      "num": "6.3.6",
+      "title": "Policy Framework for CT Monitors",
+      "page": 15
+    },
+    {
+      "num": "6.3.7",
+      "title": "Policy Framework for CT Log Auditors",
+      "page": 16
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 17,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 17,
+  "toc_pages": [
+    3
+  ]
+}

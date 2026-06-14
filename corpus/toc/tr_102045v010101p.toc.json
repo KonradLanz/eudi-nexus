@@ -1,0 +1,435 @@
+{
+  "stem": "tr_102045v010101p",
+  "pdf": "downloads/specs/TR/tr_102045v010101p.pdf",
+  "title": "(2003-03)",
+  "reference": "tr_102045v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Background research",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Implications of the Electronic Signatures Directive 1999/93/EC",
+      "page": 10
+    },
+    {
+      "num": "4.3",
+      "title": "Extended business model",
+      "page": 12
+    },
+    {
+      "num": "4.4",
+      "title": "Signature scenarios",
+      "page": 12
+    },
+    {
+      "num": "4.5",
+      "title": "Introduction to signature policies",
+      "page": 12
+    },
+    {
+      "num": "4.5.1",
+      "title": "Signature policies in the \"paper\" world",
+      "page": 13
+    },
+    {
+      "num": "4.5.1.1",
+      "title": "Statutory signature policies",
+      "page": 13
+    },
+    {
+      "num": "4.5.1.2",
+      "title": "Customary signature policies",
+      "page": 13
+    },
+    {
+      "num": "4.5.2",
+      "title": "\"Real world\" signature policy example - Banking",
+      "page": 14
+    },
+    {
+      "num": "4.5.3",
+      "title": "Electronic signature policies",
+      "page": 15
+    },
+    {
+      "num": "5",
+      "title": "Analysis of signature issues",
+      "page": 16
+    },
+    {
+      "num": "5.1",
+      "title": "Transactional context/field of application",
+      "page": 16
+    },
+    {
+      "num": "5.2",
+      "title": "Formalities of signing/intention to sign",
+      "page": 17
+    },
+    {
+      "num": "5.3",
+      "title": "Identity of signer",
+      "page": 17
+    },
+    {
+      "num": "5.4",
+      "title": "Roles and attributes of signer",
+      "page": 18
+    },
+    {
+      "num": "5.5",
+      "title": "Signature commitment types",
+      "page": 18
+    },
+    {
+      "num": "5.6",
+      "title": "Timing and sequence",
+      "page": 18
+    },
+    {
+      "num": "5.7",
+      "title": "Location",
+      "page": 19
+    },
+    {
+      "num": "5.8",
+      "title": "Longevity",
+      "page": 19
+    },
+    {
+      "num": "5.9",
+      "title": "Technical and security considerations",
+      "page": 20
+    },
+    {
+      "num": "5.10",
+      "title": "Multiple signatures",
+      "page": 20
+    },
+    {
+      "num": "5.10.1",
+      "title": "Countersignatures",
+      "page": 21
+    },
+    {
+      "num": "5.10.2",
+      "title": "Witnesses",
+      "page": 22
+    },
+    {
+      "num": "5.10.3",
+      "title": "Notarial signatures",
+      "page": 22
+    },
+    {
+      "num": "6",
+      "title": "Formalities of signing",
+      "page": 23
+    },
+    {
+      "num": "7",
+      "title": "Roles and attributes",
+      "page": 23
+    },
+    {
+      "num": "7.1",
+      "title": "Meaning of \"role\" \"attribute\" and \"privilege\"",
+      "page": 23
+    },
+    {
+      "num": "7.2",
+      "title": "Claimed versus certified business roles or attributes",
+      "page": 24
+    },
+    {
+      "num": "7.3",
+      "title": "Authority as an attribute",
+      "page": 24
+    },
+    {
+      "num": "7.3.1",
+      "title": "Delegated authority",
+      "page": 24
+    },
+    {
+      "num": "7.3.2",
+      "title": "Restricted authority",
+      "page": 25
+    },
+    {
+      "num": "7.4",
+      "title": "Categorization of roles",
+      "page": 25
+    },
+    {
+      "num": "7.4.1",
+      "title": "Business roles",
+      "page": 25
+    },
+    {
+      "num": "7.4.2",
+      "title": "Transactional roles in international trade",
+      "page": 26
+    },
+    {
+      "num": "7.4.3",
+      "title": "Signing roles",
+      "page": 26
+    },
+    {
+      "num": "8",
+      "title": "Commitment types in electronic signatures",
+      "page": 26
+    },
+    {
+      "num": "8.1",
+      "title": "Real world commitment types",
+      "page": 26
+    },
+    {
+      "num": "8.2",
+      "title": "Electronic commitment types",
+      "page": 28
+    },
+    {
+      "num": "8.2.1",
+      "title": "E-notary signatures",
+      "page": 29
+    },
+    {
+      "num": "8.2.2",
+      "title": "Electronic signatures as part of a validation process",
+      "page": 29
+    },
+    {
+      "num": "8.2.3",
+      "title": "Simple administrative e-signature",
+      "page": 30
+    },
+    {
+      "num": "9",
+      "title": "Multiple signatures",
+      "page": 30
+    },
+    {
+      "num": "9.1",
+      "title": "Parallel signatures",
+      "page": 30
+    },
+    {
+      "num": "9.2",
+      "title": "Sequential (parallel) signatures",
+      "page": 31
+    },
+    {
+      "num": "9.3",
+      "title": "Embedded signatures",
+      "page": 31
+    },
+    {
+      "num": "9.4",
+      "title": "Multiple signature management",
+      "page": 32
+    },
+    {
+      "num": "9.4.1",
+      "title": "Signing roles",
+      "page": 32
+    },
+    {
+      "num": "9.4.2",
+      "title": "Commitment types for electronic signatures",
+      "page": 33
+    },
+    {
+      "num": "9.5",
+      "title": "Multiple signature validation",
+      "page": 34
+    },
+    {
+      "num": "10",
+      "title": "Signature policies",
+      "page": 35
+    },
+    {
+      "num": "10.1",
+      "title": "Legal effect of signature policies",
+      "page": 36
+    },
+    {
+      "num": "10.2",
+      "title": "Implicit or express signature polices",
+      "page": 36
+    },
+    {
+      "num": "10.3",
+      "title": "Drafting a signature policy",
+      "page": 37
+    },
+    {
+      "num": "10.4",
+      "title": "Significant elements of a signature policy",
+      "page": 38
+    },
+    {
+      "num": "10.4.1",
+      "title": "Business rules",
+      "page": 39
+    },
+    {
+      "num": "10.4.2",
+      "title": "Signature policy rules",
+      "page": 41
+    },
+    {
+      "num": "10.5",
+      "title": "Illustrations for signature policy rules",
+      "page": 43
+    },
+    {
+      "num": "10.5.1",
+      "title": "Countersignatures for authorization",
+      "page": 43
+    },
+    {
+      "num": "10.5.2",
+      "title": "Countersignatures in a document flow",
+      "page": 45
+    },
+    {
+      "num": "10.5.3",
+      "title": "Delegated authority",
+      "page": 45
+    },
+    {
+      "num": "10.5.4",
+      "title": "Notarial signatures",
+      "page": 45
+    },
+    {
+      "num": "11",
+      "title": "Conclusions",
+      "page": 46
+    },
+    {
+      "num": "11.1",
+      "title": "Recommended changes to the signature policy formats",
+      "page": 47
+    },
+    {
+      "num": "11.2",
+      "title": "Recommendations for future work",
+      "page": 47
+    },
+    {
+      "num": "A.1",
+      "title": "General",
+      "page": 49
+    },
+    {
+      "num": "A.2",
+      "title": "Purchase of life insurance",
+      "page": 49
+    },
+    {
+      "num": "A.2.1",
+      "title": "Use Case",
+      "page": 49
+    },
+    {
+      "num": "A.2.2",
+      "title": "Sequence Diagram",
+      "page": 50
+    },
+    {
+      "num": "A.3",
+      "title": "Supply chain (illustrated via linked service level agreements)",
+      "page": 51
+    },
+    {
+      "num": "A.4",
+      "title": "Land purchase",
+      "page": 52
+    },
+    {
+      "num": "A.4.1",
+      "title": "Use case",
+      "page": 52
+    },
+    {
+      "num": "A.4.2",
+      "title": "Illustrative document set",
+      "page": 58
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 63,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 63,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

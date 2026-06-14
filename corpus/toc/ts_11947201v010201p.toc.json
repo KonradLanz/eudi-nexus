@@ -1,0 +1,1302 @@
+{
+  "stem": "ts_11947201v010201p",
+  "pdf": "downloads/specs/TS/ts_11947201v010201p.pdf",
+  "title": "(2026-02)",
+  "reference": "ts_11947201v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 9,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 10
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 10
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 10
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 12
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 12
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 12
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 13
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 13
+    },
+    {
+      "num": "3.4",
+      "title": "Notation",
+      "page": 14
+    },
+    {
+      "num": "4",
+      "title": "Semantics of Electronic Attestation of Attributes",
+      "page": 15
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction. Semantic areas for EAA",
+      "page": 15
+    },
+    {
+      "num": "4.2",
+      "title": "EAA metadata",
+      "page": 15
+    },
+    {
+      "num": "4.2.1",
+      "title": "EAA specification",
+      "page": 15
+    },
+    {
+      "num": "4.2.1.1",
+      "title": "Introduction",
+      "page": 15
+    },
+    {
+      "num": "4.2.1.2",
+      "title": "EAA type",
+      "page": 15
+    },
+    {
+      "num": "4.2.1.3",
+      "title": "EAA context",
+      "page": 15
+    },
+    {
+      "num": "4.2.1.4",
+      "title": "EAA schema",
+      "page": 16
+    },
+    {
+      "num": "4.2.2",
+      "title": "EAA category",
+      "page": 16
+    },
+    {
+      "num": "4.2.2.1",
+      "title": "General requirements",
+      "page": 16
+    },
+    {
+      "num": "4.2.2.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 16
+    },
+    {
+      "num": "4.2.3",
+      "title": "EAA identifier",
+      "page": 16
+    },
+    {
+      "num": "4.2.4",
+      "title": "EAA issuer identifier",
+      "page": 17
+    },
+    {
+      "num": "4.2.4.1",
+      "title": "General requirements",
+      "page": 17
+    },
+    {
+      "num": "4.2.4.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 17
+    },
+    {
+      "num": "4.2.5",
+      "title": "EAA issued on behalf",
+      "page": 18
+    },
+    {
+      "num": "4.2.6",
+      "title": "EAA subject and attribute subject identifiers and pseudonyms",
+      "page": 19
+    },
+    {
+      "num": "4.2.6.1",
+      "title": "Introduction",
+      "page": 19
+    },
+    {
+      "num": "4.2.6.2",
+      "title": "The EAA subject identifier",
+      "page": 19
+    },
+    {
+      "num": "4.2.6.3",
+      "title": "The EAA subject pseudonym",
+      "page": 19
+    },
+    {
+      "num": "4.2.6.4",
+      "title": "The attribute subject identifier",
+      "page": 19
+    },
+    {
+      "num": "4.2.6.5",
+      "title": "The attribute subject pseudonym",
+      "page": 20
+    },
+    {
+      "num": "4.2.6.6",
+      "title": "Additional requirements",
+      "page": 20
+    },
+    {
+      "num": "4.2.6.7",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 20
+    },
+    {
+      "num": "4.2.7",
+      "title": "EAA issuance",
+      "page": 20
+    },
+    {
+      "num": "4.2.7.1",
+      "title": "General requirements",
+      "page": 20
+    },
+    {
+      "num": "4.2.7.2",
+      "title": "Time indication content",
+      "page": 21
+    },
+    {
+      "num": "4.2.8",
+      "title": "EAA validity periods",
+      "page": 21
+    },
+    {
+      "num": "4.2.8.1",
+      "title": "Introduction",
+      "page": 21
+    },
+    {
+      "num": "4.2.8.2",
+      "title": "Common requirements for administrative and technical validity periods",
+      "page": 21
+    },
+    {
+      "num": "4.2.8.3",
+      "title": "Specific requirements for the EAA technical validity period",
+      "page": 21
+    },
+    {
+      "num": "4.2.8.4",
+      "title": "Specific requirements for the EAA administrative validity period",
+      "page": 21
+    },
+    {
+      "num": "4.2.9",
+      "title": "Data constraining the usage of EAA",
+      "page": 21
+    },
+    {
+      "num": "4.2.9.1",
+      "title": "Introduction",
+      "page": 21
+    },
+    {
+      "num": "4.2.9.2",
+      "title": "EAA audience",
+      "page": 21
+    },
+    {
+      "num": "4.2.9.3",
+      "title": "Signal of one-time use",
+      "page": 22
+    },
+    {
+      "num": "4.2.10",
+      "title": "Attributes evidence",
+      "page": 22
+    },
+    {
+      "num": "4.2.11",
+      "title": "EAA status service",
+      "page": 23
+    },
+    {
+      "num": "4.2.11.1",
+      "title": "General requirements",
+      "page": 23
+    },
+    {
+      "num": "4.2.11.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 23
+    },
+    {
+      "num": "4.2.12",
+      "title": "EAA renewal service",
+      "page": 23
+    },
+    {
+      "num": "4.2.13",
+      "title": "EAA short-lived",
+      "page": 23
+    },
+    {
+      "num": "4.3",
+      "title": "Attested attributes",
+      "page": 24
+    },
+    {
+      "num": "4.4",
+      "title": "Attested attributes metadata",
+      "page": 24
+    },
+    {
+      "num": "4.4.1",
+      "title": "Introduction",
+      "page": 24
+    },
+    {
+      "num": "4.4.2",
+      "title": "Support to selective disclosure of attested attributes",
+      "page": 24
+    },
+    {
+      "num": "4.4.2.1",
+      "title": "Introduction",
+      "page": 24
+    },
+    {
+      "num": "4.4.2.2",
+      "title": "Disclosure schema identifier",
+      "page": 25
+    },
+    {
+      "num": "4.4.2.3",
+      "title": "Disclosure",
+      "page": 25
+    },
+    {
+      "num": "4.4.2.4",
+      "title": "Disclosure reference",
+      "page": 25
+    },
+    {
+      "num": "4.4.2.5",
+      "title": "Disclosure algorithm identifier",
+      "page": 25
+    },
+    {
+      "num": "4.5",
+      "title": "EAA data for key binding",
+      "page": 26
+    },
+    {
+      "num": "4.6",
+      "title": "EAA digital signature",
+      "page": 26
+    },
+    {
+      "num": "4.6.1",
+      "title": "General requirements",
+      "page": 26
+    },
+    {
+      "num": "4.6.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 26
+    },
+    {
+      "num": "5",
+      "title": "Implementation of EAA based on SD-JWT VC",
+      "page": 27
+    },
+    {
+      "num": "5.1",
+      "title": "General requirements",
+      "page": 27
+    },
+    {
+      "num": "5.2",
+      "title": "EAA metadata",
+      "page": 27
+    },
+    {
+      "num": "5.2.1",
+      "title": "EAA specification",
+      "page": 27
+    },
+    {
+      "num": "5.2.1.1",
+      "title": "Introduction",
+      "page": 27
+    },
+    {
+      "num": "5.2.1.2",
+      "title": "EAA type",
+      "page": 27
+    },
+    {
+      "num": "5.2.1.3",
+      "title": "EAA context",
+      "page": 28
+    },
+    {
+      "num": "5.2.1.4",
+      "title": "EAA schema",
+      "page": 28
+    },
+    {
+      "num": "5.2.2",
+      "title": "EAA category",
+      "page": 28
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "General requirements",
+      "page": 28
+    },
+    {
+      "num": "5.2.2.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 28
+    },
+    {
+      "num": "5.2.3",
+      "title": "EAA identifier",
+      "page": 28
+    },
+    {
+      "num": "5.2.4",
+      "title": "EAA issuer identifier",
+      "page": 28
+    },
+    {
+      "num": "5.2.4.1",
+      "title": "General requirements",
+      "page": 28
+    },
+    {
+      "num": "5.2.4.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 29
+    },
+    {
+      "num": "5.2.5",
+      "title": "EAA and attribute subject identifiers and pseudonyms",
+      "page": 30
+    },
+    {
+      "num": "5.2.5.1",
+      "title": "The EAA subject identifier",
+      "page": 30
+    },
+    {
+      "num": "5.2.5.2",
+      "title": "The EAA subject pseudonym",
+      "page": 30
+    },
+    {
+      "num": "5.2.5.3",
+      "title": "The attribute subject identifier",
+      "page": 30
+    },
+    {
+      "num": "5.2.5.4",
+      "title": "The attribute subject pseudonym",
+      "page": 30
+    },
+    {
+      "num": "5.2.5.5",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 30
+    },
+    {
+      "num": "5.2.6",
+      "title": "EAA issuance",
+      "page": 30
+    },
+    {
+      "num": "5.2.7",
+      "title": "EAA validity periods",
+      "page": 31
+    },
+    {
+      "num": "5.2.7.1",
+      "title": "Specific requirements for the EAA technical validity period",
+      "page": 31
+    },
+    {
+      "num": "5.2.7.2",
+      "title": "Specific requirements for the EAA administrative validity period",
+      "page": 31
+    },
+    {
+      "num": "5.2.8",
+      "title": "Components constraining the usage of EAA",
+      "page": 31
+    },
+    {
+      "num": "5.2.8.1",
+      "title": "EAA audience",
+      "page": 31
+    },
+    {
+      "num": "5.2.8.2",
+      "title": "Signal of one-time use",
+      "page": 31
+    },
+    {
+      "num": "5.2.9",
+      "title": "Attributes evidence",
+      "page": 32
+    },
+    {
+      "num": "5.2.10",
+      "title": "EAA status service",
+      "page": 32
+    },
+    {
+      "num": "5.2.10.1",
+      "title": "General requirements",
+      "page": 32
+    },
+    {
+      "num": "5.2.10.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 32
+    },
+    {
+      "num": "5.2.11",
+      "title": "EAA renewal service",
+      "page": 32
+    },
+    {
+      "num": "5.2.12",
+      "title": "EAA short-lived (shortLived)",
+      "page": 33
+    },
+    {
+      "num": "5.3",
+      "title": "Attested Attributes",
+      "page": 33
+    },
+    {
+      "num": "5.4",
+      "title": "Attested Attributes metadata",
+      "page": 33
+    },
+    {
+      "num": "5.4.1",
+      "title": "Support to selective disclosure of attested attributes",
+      "page": 33
+    },
+    {
+      "num": "5.4.1.1",
+      "title": "General requirements",
+      "page": 33
+    },
+    {
+      "num": "5.4.1.2",
+      "title": "Disclosure schema identifier",
+      "page": 33
+    },
+    {
+      "num": "5.4.1.3",
+      "title": "Disclosure",
+      "page": 33
+    },
+    {
+      "num": "5.4.1.4",
+      "title": "Disclosure reference",
+      "page": 33
+    },
+    {
+      "num": "5.4.1.5",
+      "title": "Disclosure algorithm identifier (_sd_alg)",
+      "page": 34
+    },
+    {
+      "num": "5.5",
+      "title": "EAA data for key binding",
+      "page": 34
+    },
+    {
+      "num": "5.6",
+      "title": "EAA digital signature",
+      "page": 34
+    },
+    {
+      "num": "5.6.1",
+      "title": "General requirements",
+      "page": 34
+    },
+    {
+      "num": "5.6.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 34
+    },
+    {
+      "num": "6",
+      "title": "Implementation of EAA based on ISO/IEC-mdoc",
+      "page": 35
+    },
+    {
+      "num": "6.1",
+      "title": "General requirements",
+      "page": 35
+    },
+    {
+      "num": "6.2",
+      "title": "EAA metadata",
+      "page": 36
+    },
+    {
+      "num": "6.2.1",
+      "title": "EAA specification",
+      "page": 36
+    },
+    {
+      "num": "6.2.1.1",
+      "title": "EAA type",
+      "page": 36
+    },
+    {
+      "num": "6.2.1.2",
+      "title": "EAA context",
+      "page": 36
+    },
+    {
+      "num": "6.2.1.3",
+      "title": "EAA schema",
+      "page": 36
+    },
+    {
+      "num": "6.2.2",
+      "title": "EAA category",
+      "page": 36
+    },
+    {
+      "num": "6.2.2.1",
+      "title": "General requirements",
+      "page": 36
+    },
+    {
+      "num": "6.2.2.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 36
+    },
+    {
+      "num": "6.2.3",
+      "title": "EAA identifier",
+      "page": 37
+    },
+    {
+      "num": "6.2.4",
+      "title": "EAA issuer identifier",
+      "page": 37
+    },
+    {
+      "num": "6.2.4.1",
+      "title": "General requirements",
+      "page": 37
+    },
+    {
+      "num": "6.2.4.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 38
+    },
+    {
+      "num": "6.2.5",
+      "title": "EAA subject and attribute subject identifiers and pseudonyms",
+      "page": 38
+    },
+    {
+      "num": "6.2.5.1",
+      "title": "EAA subject identifier",
+      "page": 38
+    },
+    {
+      "num": "6.2.5.2",
+      "title": "EAA subject pseudonym",
+      "page": 39
+    },
+    {
+      "num": "6.2.5.3",
+      "title": "Attribute subject identifier",
+      "page": 39
+    },
+    {
+      "num": "6.2.5.4",
+      "title": "Attribute subject pseudonym",
+      "page": 39
+    },
+    {
+      "num": "6.2.5.5",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 39
+    },
+    {
+      "num": "6.2.6",
+      "title": "EAA issuance",
+      "page": 39
+    },
+    {
+      "num": "6.2.7",
+      "title": "EAA validity periods",
+      "page": 39
+    },
+    {
+      "num": "6.2.7.1",
+      "title": "Specific requirements for the EAA technical validity period",
+      "page": 39
+    },
+    {
+      "num": "6.2.7.2",
+      "title": "Specific requirements for the EAA administrative validity period",
+      "page": 40
+    },
+    {
+      "num": "6.2.8",
+      "title": "Components constraining the usage of EAA",
+      "page": 40
+    },
+    {
+      "num": "6.2.8.1",
+      "title": "EAA audience",
+      "page": 40
+    },
+    {
+      "num": "6.2.8.2",
+      "title": "Signal of one-time use",
+      "page": 40
+    },
+    {
+      "num": "6.2.9",
+      "title": "Attributes evidence",
+      "page": 40
+    },
+    {
+      "num": "6.2.10",
+      "title": "EAA status service",
+      "page": 40
+    },
+    {
+      "num": "6.2.10.1",
+      "title": "General requirements",
+      "page": 40
+    },
+    {
+      "num": "6.2.10.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 41
+    },
+    {
+      "num": "6.2.11",
+      "title": "EAA renewal service",
+      "page": 41
+    },
+    {
+      "num": "6.2.12",
+      "title": "EAA short-lived",
+      "page": 41
+    },
+    {
+      "num": "6.3",
+      "title": "Attested attributes",
+      "page": 41
+    },
+    {
+      "num": "6.4",
+      "title": "Attested Attributes metadata",
+      "page": 42
+    },
+    {
+      "num": "6.4.1",
+      "title": "Support to selective disclosure of attested attributes",
+      "page": 42
+    },
+    {
+      "num": "6.4.1.1",
+      "title": "Introduction",
+      "page": 42
+    },
+    {
+      "num": "6.4.1.2",
+      "title": "Disclosure schema identifier",
+      "page": 42
+    },
+    {
+      "num": "6.4.1.3",
+      "title": "Disclosure",
+      "page": 42
+    },
+    {
+      "num": "6.4.1.4",
+      "title": "Disclosure reference",
+      "page": 42
+    },
+    {
+      "num": "6.4.1.5",
+      "title": "Disclosure algorithm identifier",
+      "page": 42
+    },
+    {
+      "num": "6.5",
+      "title": "EAA data for Key Binding",
+      "page": 42
+    },
+    {
+      "num": "6.6",
+      "title": "EAA digital signature",
+      "page": 43
+    },
+    {
+      "num": "6.6.1",
+      "title": "General requirements",
+      "page": 43
+    },
+    {
+      "num": "6.6.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 43
+    },
+    {
+      "num": "7",
+      "title": "Implementation of EAA based on W3C Verifiable Credentials (JSON-LD W3C-VC)",
+      "page": 43
+    },
+    {
+      "num": "7.1",
+      "title": "General requirements",
+      "page": 43
+    },
+    {
+      "num": "7.2",
+      "title": "EAA metadata",
+      "page": 44
+    },
+    {
+      "num": "7.2.1",
+      "title": "EAA specification",
+      "page": 44
+    },
+    {
+      "num": "7.2.1.1",
+      "title": "EAA type",
+      "page": 44
+    },
+    {
+      "num": "7.2.1.2",
+      "title": "EAA context",
+      "page": 44
+    },
+    {
+      "num": "7.2.1.3",
+      "title": "EAA schema",
+      "page": 44
+    },
+    {
+      "num": "7.2.2",
+      "title": "EAA category",
+      "page": 45
+    },
+    {
+      "num": "7.2.2.1",
+      "title": "General requirements",
+      "page": 45
+    },
+    {
+      "num": "7.2.2.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 45
+    },
+    {
+      "num": "7.2.3",
+      "title": "EAA identifier",
+      "page": 45
+    },
+    {
+      "num": "7.2.4",
+      "title": "EAA issuer identifier",
+      "page": 45
+    },
+    {
+      "num": "7.2.4.1",
+      "title": "General requirements",
+      "page": 45
+    },
+    {
+      "num": "7.2.4.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 46
+    },
+    {
+      "num": "7.2.5",
+      "title": "EAA issued on behalf",
+      "page": 46
+    },
+    {
+      "num": "7.2.6",
+      "title": "EAA and attribute subject identifiers and pseudonyms",
+      "page": 47
+    },
+    {
+      "num": "7.2.6.1",
+      "title": "General requirements",
+      "page": 47
+    },
+    {
+      "num": "7.2.6.2",
+      "title": "The EAA subject identifier",
+      "page": 47
+    },
+    {
+      "num": "7.2.6.3",
+      "title": "The EAA subject pseudonym",
+      "page": 47
+    },
+    {
+      "num": "7.2.6.4",
+      "title": "The attribute subject identifier",
+      "page": 47
+    },
+    {
+      "num": "7.2.6.5",
+      "title": "The attribute subject pseudonym",
+      "page": 48
+    },
+    {
+      "num": "7.2.6.6",
+      "title": "Requirements for subject(s) names",
+      "page": 48
+    },
+    {
+      "num": "7.2.6.7",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 48
+    },
+    {
+      "num": "7.2.7",
+      "title": "EAA issuance",
+      "page": 48
+    },
+    {
+      "num": "7.2.8",
+      "title": "EAA validity periods",
+      "page": 49
+    },
+    {
+      "num": "7.2.8.1",
+      "title": "Specific requirements for technical validity period",
+      "page": 49
+    },
+    {
+      "num": "7.2.8.2",
+      "title": "Specific requirements for administrative validity period",
+      "page": 49
+    },
+    {
+      "num": "7.2.9",
+      "title": "Components constraining the usage of EAA",
+      "page": 49
+    },
+    {
+      "num": "7.2.9.1",
+      "title": "EAA audience",
+      "page": 49
+    },
+    {
+      "num": "7.2.9.2",
+      "title": "Signal of one-time use",
+      "page": 49
+    },
+    {
+      "num": "7.2.9.3",
+      "title": "Terms of use",
+      "page": 49
+    },
+    {
+      "num": "7.2.10",
+      "title": "Attributes evidence",
+      "page": 50
+    },
+    {
+      "num": "7.2.11",
+      "title": "EAA status service",
+      "page": 50
+    },
+    {
+      "num": "7.2.11.1",
+      "title": "General requirements",
+      "page": 50
+    },
+    {
+      "num": "7.2.11.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 50
+    },
+    {
+      "num": "7.2.12",
+      "title": "EAA renewal service",
+      "page": 51
+    },
+    {
+      "num": "7.2.13",
+      "title": "EAA short-lived",
+      "page": 51
+    },
+    {
+      "num": "7.3",
+      "title": "Attested Attributes",
+      "page": 51
+    },
+    {
+      "num": "7.4",
+      "title": "Attested Attributes metadata",
+      "page": 51
+    },
+    {
+      "num": "7.5",
+      "title": "EAA data for key binding",
+      "page": 51
+    },
+    {
+      "num": "7.6",
+      "title": "EAA digital signature",
+      "page": 52
+    },
+    {
+      "num": "7.6.1",
+      "title": "General requirements",
+      "page": 52
+    },
+    {
+      "num": "7.6.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 52
+    },
+    {
+      "num": "7.6.4",
+      "title": "Requirements the JSON-LD W3C-VC EAA secured with enveloping proofs",
+      "page": 53
+    },
+    {
+      "num": "7.6.4.1",
+      "title": "General requirements",
+      "page": 53
+    },
+    {
+      "num": "7.6.4.2",
+      "title": "Additional requirements for JSON-LD W3C VC JOSE EAAs",
+      "page": 53
+    },
+    {
+      "num": "7.6.4.3",
+      "title": "Requirements for JSON-LD W3C VC SD-JWT EAAs",
+      "page": 53
+    },
+    {
+      "num": "7.6.4.4",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 54
+    },
+    {
+      "num": "7.6.5",
+      "title": "Requirements for JSON-LD W3C-VC EAA with embedded proofs",
+      "page": 54
+    },
+    {
+      "num": "7.6.5.1",
+      "title": "General requirements",
+      "page": 54
+    },
+    {
+      "num": "8",
+      "title": "Implementation of EAA based on X.509 Attribute Certificates (X.509-AC)",
+      "page": 54
+    },
+    {
+      "num": "8.1",
+      "title": "General requirements",
+      "page": 54
+    },
+    {
+      "num": "8.2",
+      "title": "EAA metadata",
+      "page": 54
+    },
+    {
+      "num": "8.2.1",
+      "title": "EAA specification",
+      "page": 54
+    },
+    {
+      "num": "8.2.1.1",
+      "title": "EAA type",
+      "page": 54
+    },
+    {
+      "num": "8.2.1.2",
+      "title": "EAA context",
+      "page": 55
+    },
+    {
+      "num": "8.2.1.3",
+      "title": "EAA schema",
+      "page": 55
+    },
+    {
+      "num": "8.2.2",
+      "title": "EAA category",
+      "page": 55
+    },
+    {
+      "num": "8.2.2.1",
+      "title": "General requirements",
+      "page": 55
+    },
+    {
+      "num": "8.2.2.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 55
+    },
+    {
+      "num": "8.2.3",
+      "title": "EAA identifier",
+      "page": 56
+    },
+    {
+      "num": "8.2.4",
+      "title": "EAA issuer identifier",
+      "page": 56
+    },
+    {
+      "num": "8.2.4.1",
+      "title": "General requirements",
+      "page": 56
+    },
+    {
+      "num": "8.2.4.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 57
+    },
+    {
+      "num": "8.2.5",
+      "title": "EAA and attribute subject identifiers and pseudonyms",
+      "page": 57
+    },
+    {
+      "num": "8.2.5.1",
+      "title": "EAA subject identifier",
+      "page": 57
+    },
+    {
+      "num": "8.2.5.2",
+      "title": "EAA subject pseudonym",
+      "page": 58
+    },
+    {
+      "num": "8.2.5.3",
+      "title": "The attribute subject identifier",
+      "page": 58
+    },
+    {
+      "num": "8.2.5.4",
+      "title": "The attribute subject pseudonym",
+      "page": 58
+    },
+    {
+      "num": "8.2.5.5",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 58
+    },
+    {
+      "num": "8.2.6",
+      "title": "EAA issuance",
+      "page": 58
+    },
+    {
+      "num": "8.2.7",
+      "title": "EAA validity periods",
+      "page": 58
+    },
+    {
+      "num": "8.2.7.1",
+      "title": "Specific requirements for the EAA technical validity period",
+      "page": 58
+    },
+    {
+      "num": "8.2.7.2",
+      "title": "Specific requirements for the EAA administrative validity period",
+      "page": 58
+    },
+    {
+      "num": "8.2.8",
+      "title": "Components constraining the usage of the EAA",
+      "page": 59
+    },
+    {
+      "num": "8.2.8.1",
+      "title": "EAA audience",
+      "page": 59
+    },
+    {
+      "num": "8.2.8.2",
+      "title": "Signal of one-time use",
+      "page": 59
+    },
+    {
+      "num": "8.2.9",
+      "title": "Attributes evidence",
+      "page": 59
+    },
+    {
+      "num": "8.2.10",
+      "title": "EAA status service",
+      "page": 59
+    },
+    {
+      "num": "8.2.10.1",
+      "title": "General requirements",
+      "page": 59
+    },
+    {
+      "num": "8.2.10.2",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 59
+    },
+    {
+      "num": "8.2.11",
+      "title": "EAA renewal service",
+      "page": 60
+    },
+    {
+      "num": "8.2.12",
+      "title": "EAA short-lived",
+      "page": 60
+    },
+    {
+      "num": "8.3",
+      "title": "Attested attributes",
+      "page": 60
+    },
+    {
+      "num": "8.3.1",
+      "title": "General requirements",
+      "page": 60
+    },
+    {
+      "num": "8.3.2",
+      "title": "Attested attributes for X.509 AC/JSON implementation",
+      "page": 61
+    },
+    {
+      "num": "8.3.3",
+      "title": "Attested attributes for X.509 AC/ASN.1 implementation",
+      "page": 61
+    },
+    {
+      "num": "8.4",
+      "title": "Attested attributes metadata",
+      "page": 62
+    },
+    {
+      "num": "8.4.1",
+      "title": "Implementation of support to selective disclosure of Attested Attributes",
+      "page": 62
+    },
+    {
+      "num": "8.5",
+      "title": "EAA data for key binding",
+      "page": 62
+    },
+    {
+      "num": "8.6",
+      "title": "EAA digital signature",
+      "page": 62
+    },
+    {
+      "num": "8.6.1",
+      "title": "Requirements for EU Qualified EAA (QEAA)",
+      "page": 62
+    },
+    {
+      "num": "Annex A",
+      "title": "Data elements and namespaces for ISO/IEC-mdoc EAA realization",
+      "page": 63,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Location of file with ASN.1 definitions for X.509-AC EAAs",
+      "page": 65,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Change history",
+      "page": 66,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 68,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 10,
+  "total_pages": 68,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
+}

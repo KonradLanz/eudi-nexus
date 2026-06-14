@@ -1,0 +1,144 @@
+{
+  "stem": "ts_10277802v010201p",
+  "pdf": "downloads/specs/TS/ts_10277802v010201p.pdf",
+  "title": "(2009-07)",
+  "reference": "ts_10277802v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative References",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Description of Profile for CMS Signatures in PDF",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Features",
+      "page": 8
+    },
+    {
+      "num": "4.3",
+      "title": "Time Stamping",
+      "page": 8
+    },
+    {
+      "num": "4.4",
+      "title": "Revocation Checking",
+      "page": 9
+    },
+    {
+      "num": "4.5",
+      "title": "Seed Values and Signature Policies",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Requirements of Profile for CMS Signatures in PDF",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Requirements on PDF Signatures",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Requirements on PDF Conforming signature handlers",
+      "page": 10
+    },
+    {
+      "num": "5.3",
+      "title": "Requirements on Signature Validation",
+      "page": 10
+    },
+    {
+      "num": "5.4",
+      "title": "Requirements on Time Stamping",
+      "page": 10
+    },
+    {
+      "num": "5.5",
+      "title": "Requirements on Revocation Checking",
+      "page": 11
+    },
+    {
+      "num": "5.6",
+      "title": "Requirements on Seed Values",
+      "page": 11
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 12,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 12,
+  "toc_pages": [
+    3
+  ]
+}

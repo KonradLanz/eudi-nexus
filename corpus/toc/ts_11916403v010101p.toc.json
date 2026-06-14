@@ -1,0 +1,189 @@
+{
+  "stem": "ts_11916403v010101p",
+  "pdf": "downloads/specs/TS/ts_11916403v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11916403v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "ASiC additional container interoperability test specification overview",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Test suite for testing interoperability of ASiC-S containers",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction to testing ASiC-S containers",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Test cases common to all ASiC-S forms",
+      "page": 7
+    },
+    {
+      "num": "5.3",
+      "title": "Test cases for ASiC-S containers with CAdES extended signatures",
+      "page": 8
+    },
+    {
+      "num": "5.3.1",
+      "title": "Positive test cases",
+      "page": 8
+    },
+    {
+      "num": "5.3.2",
+      "title": "Negative test cases",
+      "page": 9
+    },
+    {
+      "num": "5.4",
+      "title": "Test cases for ASiC-S containers with extended XAdES signature",
+      "page": 9
+    },
+    {
+      "num": "5.4.1",
+      "title": "Positive test cases",
+      "page": 9
+    },
+    {
+      "num": "5.4.2",
+      "title": "Negative test cases",
+      "page": 11
+    },
+    {
+      "num": "5.5",
+      "title": "Test cases for ASiC-S with Time assertion",
+      "page": 11
+    },
+    {
+      "num": "5.5.1",
+      "title": "Positive test cases",
+      "page": 11
+    },
+    {
+      "num": "5.5.2",
+      "title": "Negative test cases",
+      "page": 12
+    },
+    {
+      "num": "6",
+      "title": "Test suite for testing interoperability of ASiC-E containers",
+      "page": 13
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction to testing ASiC-E containers",
+      "page": 13
+    },
+    {
+      "num": "6.2",
+      "title": "Container structure test cases common to all ASiC-E forms",
+      "page": 13
+    },
+    {
+      "num": "6.3",
+      "title": "Testing ASiC-E with extended XAdES interoperability",
+      "page": 14
+    },
+    {
+      "num": "6.3.1",
+      "title": "Test cases for syntactical conformance",
+      "page": 14
+    },
+    {
+      "num": "6.3.2",
+      "title": "Test cases for extended XAdES signatures",
+      "page": 15
+    },
+    {
+      "num": "6.4",
+      "title": "Testing ASiC-E with CAdES - time assertion additional container interoperability",
+      "page": 15
+    },
+    {
+      "num": "6.4.1",
+      "title": "Test cases for ASiC-E with CAdES",
+      "page": 15
+    },
+    {
+      "num": "6.4.2",
+      "title": "Test cases for ASiC-E with time assertion",
+      "page": 16
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 18,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 18,
+  "toc_pages": [
+    3
+  ]
+}

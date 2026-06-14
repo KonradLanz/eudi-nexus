@@ -1,0 +1,151 @@
+{
+  "stem": "tr_119600v010201p",
+  "pdf": "downloads/specs/TR/tr_119600v010201p.pdf",
+  "title": "(2016-03)",
+  "reference": "tr_119600v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual property rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Introduction to trusted lists, trust services status lists and their providers",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Trust service and trust service provider",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Trust service status lists and trusted lists",
+      "page": 8
+    },
+    {
+      "num": "4.2.1",
+      "title": "Trust service status lists",
+      "page": 8
+    },
+    {
+      "num": "4.2.2",
+      "title": "Trusted lists",
+      "page": 8
+    },
+    {
+      "num": "4.3",
+      "title": "TSL/TL trust model",
+      "page": 10
+    },
+    {
+      "num": "4.4",
+      "title": "Providers of trust service status list or trusted lists",
+      "page": 10
+    },
+    {
+      "num": "4.5",
+      "title": "Aspects of TSL/TL provisioning services subject to standardization",
+      "page": 10
+    },
+    {
+      "num": "5",
+      "title": "Guidance on the implementation of TSLs/TLs and selection of standards",
+      "page": 11
+    },
+    {
+      "num": "5.1",
+      "title": "Business requirements analysis",
+      "page": 11
+    },
+    {
+      "num": "5.2",
+      "title": "Policy and security requirements analysis",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "Business scoping parameters",
+      "page": 11
+    },
+    {
+      "num": "5.4",
+      "title": "Technical implementation and further selection of standards",
+      "page": 12
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 14,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual property rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 14,
+  "toc_pages": [
+    3
+  ]
+}

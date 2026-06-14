@@ -1,0 +1,134 @@
+{
+  "stem": "ts_11916404v010101p",
+  "pdf": "downloads/specs/TS/ts_11916404v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11916404v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "ASiC baseline container conformity test specification overview",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Testing conformance to ASiC-S baseline containers",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Testing ASiC-S baseline containers",
+      "page": 7
+    },
+    {
+      "num": "5.1.1",
+      "title": "Test assertions for ASiC-S baseline container structure",
+      "page": 7
+    },
+    {
+      "num": "5.1.2",
+      "title": "Test assertions for ASiC-S baseline container syntactical conformance",
+      "page": 8
+    },
+    {
+      "num": "5.1.3",
+      "title": "Test assertions for ASiC-S signature conformance",
+      "page": 8
+    },
+    {
+      "num": "6",
+      "title": "Testing conformance to ASiC-E baseline containers",
+      "page": 10
+    },
+    {
+      "num": "6.1",
+      "title": "Testing ASiC-E baseline containers",
+      "page": 10
+    },
+    {
+      "num": "6.1.1",
+      "title": "Test assertions for ASiC-E baseline container structure",
+      "page": 10
+    },
+    {
+      "num": "6.1.2",
+      "title": "ASiC-E test assertions for syntactical conformance",
+      "page": 11
+    },
+    {
+      "num": "6.1.3",
+      "title": "Test assertions for ASiC-E signature conformance",
+      "page": 11
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 13,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 13,
+  "toc_pages": [
+    3
+  ]
+}

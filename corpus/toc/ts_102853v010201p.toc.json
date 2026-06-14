@@ -1,0 +1,657 @@
+{
+  "stem": "ts_102853v010201p",
+  "pdf": "downloads/specs/TS/ts_102853v010201p.pdf",
+  "title": "(2014-12)",
+  "reference": "ts_102853v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "4",
+      "title": "Introduction to signature validation",
+      "page": 11
+    },
+    {
+      "num": "4.1",
+      "title": "Status indication of the signature validation process",
+      "page": 11
+    },
+    {
+      "num": "4.2",
+      "title": "Validation Constraints",
+      "page": 15
+    },
+    {
+      "num": "4.3",
+      "title": "X.509 certificate meta-data",
+      "page": 16
+    },
+    {
+      "num": "4.4",
+      "title": "Trust Management",
+      "page": 16
+    },
+    {
+      "num": "4.5",
+      "title": "The concept of revocation freshness",
+      "page": 16
+    },
+    {
+      "num": "5",
+      "title": "Basic Building Blocks",
+      "page": 17
+    },
+    {
+      "num": "5.1",
+      "title": "Identification of the Signer's Certificate (ISC)",
+      "page": 18
+    },
+    {
+      "num": "5.1.1",
+      "title": "Description",
+      "page": 18
+    },
+    {
+      "num": "5.1.2",
+      "title": "Inputs",
+      "page": 18
+    },
+    {
+      "num": "5.1.3",
+      "title": "Outputs",
+      "page": 18
+    },
+    {
+      "num": "5.1.4",
+      "title": "Processing",
+      "page": 19
+    },
+    {
+      "num": "5.1.4.1",
+      "title": "XAdES processing",
+      "page": 19
+    },
+    {
+      "num": "5.1.4.2",
+      "title": "CAdES processing",
+      "page": 19
+    },
+    {
+      "num": "5.1.4.3",
+      "title": "PAdES processing",
+      "page": 20
+    },
+    {
+      "num": "5.2",
+      "title": "Validation Context Initialization (VCI)",
+      "page": 20
+    },
+    {
+      "num": "5.2.1",
+      "title": "Description",
+      "page": 20
+    },
+    {
+      "num": "5.2.2",
+      "title": "Inputs",
+      "page": 20
+    },
+    {
+      "num": "5.2.3",
+      "title": "Outputs",
+      "page": 20
+    },
+    {
+      "num": "5.2.4",
+      "title": "Processing",
+      "page": 20
+    },
+    {
+      "num": "5.2.4.1",
+      "title": "Processing commitment type indication",
+      "page": 21
+    },
+    {
+      "num": "5.2.4.1.1",
+      "title": "XAdES Processing",
+      "page": 21
+    },
+    {
+      "num": "5.2.4.2",
+      "title": "Processing Signature Policy Identifier",
+      "page": 21
+    },
+    {
+      "num": "5.3",
+      "title": "X.509 Certificate Validation (XCV)",
+      "page": 22
+    },
+    {
+      "num": "5.3.1",
+      "title": "Description",
+      "page": 22
+    },
+    {
+      "num": "5.3.2",
+      "title": "Inputs",
+      "page": 22
+    },
+    {
+      "num": "5.3.3",
+      "title": "Outputs",
+      "page": 22
+    },
+    {
+      "num": "5.3.4",
+      "title": "Processing",
+      "page": 22
+    },
+    {
+      "num": "5.4",
+      "title": "Cryptographic Verification (CV)",
+      "page": 23
+    },
+    {
+      "num": "5.4.1",
+      "title": "Description",
+      "page": 23
+    },
+    {
+      "num": "5.4.2",
+      "title": "Inputs",
+      "page": 23
+    },
+    {
+      "num": "5.4.3",
+      "title": "Outputs",
+      "page": 24
+    },
+    {
+      "num": "5.4.4",
+      "title": "Processing",
+      "page": 24
+    },
+    {
+      "num": "5.5",
+      "title": "Signature Acceptance Validation (SAV)",
+      "page": 24
+    },
+    {
+      "num": "5.5.1",
+      "title": "Description",
+      "page": 24
+    },
+    {
+      "num": "5.5.2",
+      "title": "Inputs",
+      "page": 24
+    },
+    {
+      "num": "5.5.3",
+      "title": "Outputs",
+      "page": 25
+    },
+    {
+      "num": "5.5.4",
+      "title": "Processing",
+      "page": 25
+    },
+    {
+      "num": "5.5.4.1",
+      "title": "Processing AdES properties/attributes",
+      "page": 26
+    },
+    {
+      "num": "5.5.4.2",
+      "title": "Processing signing certificate reference constraint",
+      "page": 26
+    },
+    {
+      "num": "5.5.4.3",
+      "title": "Processing claimed signing time",
+      "page": 26
+    },
+    {
+      "num": "5.5.4.4",
+      "title": "Processing signed data object format",
+      "page": 26
+    },
+    {
+      "num": "5.5.4.5",
+      "title": "Processing indication of production place of the signature",
+      "page": 26
+    },
+    {
+      "num": "5.5.4.6",
+      "title": "Processing Time-stamps on signed data objects",
+      "page": 27
+    },
+    {
+      "num": "5.5.4.7",
+      "title": "Processing Countersignatures",
+      "page": 27
+    },
+    {
+      "num": "5.5.4.8",
+      "title": "Processing signer attributes/roles",
+      "page": 27
+    },
+    {
+      "num": "6",
+      "title": "Basic Validation Process",
+      "page": 27
+    },
+    {
+      "num": "6.1",
+      "title": "Description",
+      "page": 27
+    },
+    {
+      "num": "6.2",
+      "title": "Inputs",
+      "page": 28
+    },
+    {
+      "num": "6.3",
+      "title": "Outputs",
+      "page": 28
+    },
+    {
+      "num": "6.4",
+      "title": "Processing",
+      "page": 28
+    },
+    {
+      "num": "7",
+      "title": "Validation Process for Time-Stamps",
+      "page": 29
+    },
+    {
+      "num": "7.1",
+      "title": "Description",
+      "page": 29
+    },
+    {
+      "num": "7.2",
+      "title": "Inputs",
+      "page": 30
+    },
+    {
+      "num": "7.3",
+      "title": "Outputs",
+      "page": 30
+    },
+    {
+      "num": "7.4",
+      "title": "Processing",
+      "page": 30
+    },
+    {
+      "num": "8",
+      "title": "Validation Process for AdES-T",
+      "page": 30
+    },
+    {
+      "num": "8.1",
+      "title": "Description",
+      "page": 30
+    },
+    {
+      "num": "8.2",
+      "title": "Inputs",
+      "page": 30
+    },
+    {
+      "num": "8.3",
+      "title": "Outputs",
+      "page": 31
+    },
+    {
+      "num": "8.4",
+      "title": "Processing",
+      "page": 31
+    },
+    {
+      "num": "8.4.1",
+      "title": "Message Imprint Verification of the signature-timestamp for XAdES",
+      "page": 32
+    },
+    {
+      "num": "8.4.2",
+      "title": "Message Imprint Verification of the signature-time-stamp for CAdES/PAdES",
+      "page": 32
+    },
+    {
+      "num": "9",
+      "title": "Validation of LTV forms",
+      "page": 32
+    },
+    {
+      "num": "9.1",
+      "title": "The concept of Proof Of Existence (POE)",
+      "page": 33
+    },
+    {
+      "num": "9.2",
+      "title": "Additional Building blocks",
+      "page": 33
+    },
+    {
+      "num": "9.2.1",
+      "title": "Past certificate validation",
+      "page": 33
+    },
+    {
+      "num": "9.2.1.1",
+      "title": "Description",
+      "page": 33
+    },
+    {
+      "num": "9.2.1.2",
+      "title": "Input",
+      "page": 34
+    },
+    {
+      "num": "9.2.1.3",
+      "title": "Output",
+      "page": 34
+    },
+    {
+      "num": "9.2.1.4",
+      "title": "Processing",
+      "page": 34
+    },
+    {
+      "num": "9.2.2",
+      "title": "Control-time sliding process",
+      "page": 34
+    },
+    {
+      "num": "9.2.2.1",
+      "title": "Description",
+      "page": 34
+    },
+    {
+      "num": "9.2.2.2",
+      "title": "Input",
+      "page": 35
+    },
+    {
+      "num": "9.2.2.3",
+      "title": "Output",
+      "page": 35
+    },
+    {
+      "num": "9.2.2.4",
+      "title": "Processing",
+      "page": 35
+    },
+    {
+      "num": "9.2.3",
+      "title": "POE extraction",
+      "page": 36
+    },
+    {
+      "num": "9.2.3.1",
+      "title": "Description",
+      "page": 36
+    },
+    {
+      "num": "9.2.3.2",
+      "title": "Input",
+      "page": 36
+    },
+    {
+      "num": "9.2.3.3",
+      "title": "Output",
+      "page": 36
+    },
+    {
+      "num": "9.2.3.4",
+      "title": "Processing",
+      "page": 37
+    },
+    {
+      "num": "9.2.3.4.1",
+      "title": "Extraction from a time-stamp on the signature",
+      "page": 37
+    },
+    {
+      "num": "9.2.3.4.2",
+      "title": "Extraction from a time-stamp on certificates and revocation references",
+      "page": 37
+    },
+    {
+      "num": "9.2.3.4.4",
+      "title": "Extraction from an archive-time-stamp",
+      "page": 37
+    },
+    {
+      "num": "9.2.3.4.5",
+      "title": "Extraction from a long-term-validation attribute",
+      "page": 37
+    },
+    {
+      "num": "9.2.3.4.6",
+      "title": "Extraction from a PDF document time-stamp",
+      "page": 38
+    },
+    {
+      "num": "9.2.4",
+      "title": "Past signature validation process",
+      "page": 38
+    },
+    {
+      "num": "9.2.4.1",
+      "title": "Description",
+      "page": 38
+    },
+    {
+      "num": "9.2.4.2",
+      "title": "Input",
+      "page": 38
+    },
+    {
+      "num": "9.2.4.3",
+      "title": "Output",
+      "page": 38
+    },
+    {
+      "num": "9.2.4.4",
+      "title": "Processing",
+      "page": 39
+    },
+    {
+      "num": "9.3",
+      "title": "Long Term Validation Process",
+      "page": 39
+    },
+    {
+      "num": "9.3.1",
+      "title": "Description",
+      "page": 39
+    },
+    {
+      "num": "9.3.2",
+      "title": "Input",
+      "page": 40
+    },
+    {
+      "num": "9.3.3",
+      "title": "Output",
+      "page": 40
+    },
+    {
+      "num": "9.3.4",
+      "title": "Processing",
+      "page": 40
+    },
+    {
+      "num": "Annex A",
+      "title": "Validation Constraints",
+      "page": 43,
+      "annex_type": "informative"
+    },
+    {
+      "num": "A.1",
+      "title": "X.509 Certificate path validation constraints",
+      "page": 43
+    },
+    {
+      "num": "A.2",
+      "title": "Constraints on X.509 Certificate meta-data",
+      "page": 45
+    },
+    {
+      "num": "A.3",
+      "title": "Cryptographic Constraints",
+      "page": 46
+    },
+    {
+      "num": "A.4",
+      "title": "Constraints on Signature Elements",
+      "page": 46
+    },
+    {
+      "num": "Annex B",
+      "title": "Certificate Meta-Data",
+      "page": 47,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Validation Examples",
+      "page": 48,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "General remarks and assumptions",
+      "page": 48
+    },
+    {
+      "num": "C.2",
+      "title": "Symbols",
+      "page": 49
+    },
+    {
+      "num": "C.3",
+      "title": "Example 1: Revoked certificate",
+      "page": 49
+    },
+    {
+      "num": "C.3.1",
+      "title": "AdES-BES/EPES",
+      "page": 50
+    },
+    {
+      "num": "C.3.2",
+      "title": "AdES-T",
+      "page": 50
+    },
+    {
+      "num": "C.4",
+      "title": "Example 2: Revoked CA certificate",
+      "page": 51
+    },
+    {
+      "num": "C.4.1",
+      "title": "AdES-BES/EPES",
+      "page": 51
+    },
+    {
+      "num": "C.4.2",
+      "title": "AdES-T",
+      "page": 52
+    },
+    {
+      "num": "C.4.3",
+      "title": "LTV",
+      "page": 52
+    },
+    {
+      "num": "Annex D",
+      "title": "Validation process versus signature conformance levels",
+      "page": 55,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 56,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 56,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

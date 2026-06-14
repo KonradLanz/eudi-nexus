@@ -1,0 +1,199 @@
+{
+  "stem": "ts_11913403v010101p",
+  "pdf": "downloads/specs/TS/ts_11913403v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11913403v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions, symbols and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Test suites for testing interoperability of extended XAdES signatures",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Testing interoperability of XAdES-E-BES signatures",
+      "page": 7
+    },
+    {
+      "num": "5.3",
+      "title": "Test-suite for testing interoperability of XAdES-E-EPES signatures",
+      "page": 9
+    },
+    {
+      "num": "5.4",
+      "title": "Test-suite for testing interoperability of XAdES-E-T signatures",
+      "page": 11
+    },
+    {
+      "num": "5.5",
+      "title": "Test-suite for testing interoperability of XAdES-E-C signatures",
+      "page": 14
+    },
+    {
+      "num": "5.6",
+      "title": "Test-suite for testing interoperability of XAdES-E-X signatures",
+      "page": 17
+    },
+    {
+      "num": "5.7",
+      "title": "Test-suite for testing interoperability of XAdES-E-X-Long signatures",
+      "page": 20
+    },
+    {
+      "num": "5.8",
+      "title": "Test-suite for testing interoperability of XAdES-E-X-L signatures",
+      "page": 23
+    },
+    {
+      "num": "5.9",
+      "title": "Test-suite for testing interoperability of XAdES-E-A signatures",
+      "page": 26
+    },
+    {
+      "num": "6",
+      "title": "Test-suite for augmentation of extended XAdES signatures",
+      "page": 32
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 32
+    },
+    {
+      "num": "6.2",
+      "title": "Augmentation to XAdES-E-C signatures",
+      "page": 32
+    },
+    {
+      "num": "6.3",
+      "title": "Augmentation to XAdES-E-X signatures",
+      "page": 34
+    },
+    {
+      "num": "6.4",
+      "title": "Augmentation to XAdES-E-X-L signatures",
+      "page": 36
+    },
+    {
+      "num": "6.3",
+      "title": "Augmentation to XAdES-E-A signatures",
+      "page": 39
+    },
+    {
+      "num": "7",
+      "title": "Test suites with negative test cases",
+      "page": 42
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 42
+    },
+    {
+      "num": "7.2",
+      "title": "Test cases generating non XAdES signatures",
+      "page": 42
+    },
+    {
+      "num": "7.3",
+      "title": "Test cases for XAdES-E-BES signatures",
+      "page": 42
+    },
+    {
+      "num": "7.4",
+      "title": "Test cases generating non valid XAdES-E-EPES signatures",
+      "page": 44
+    },
+    {
+      "num": "7.5",
+      "title": "Test cases generating non valid XAdES-E-T signatures",
+      "page": 44
+    },
+    {
+      "num": "7.6",
+      "title": "Test cases generating non valid XAdES-E-A signatures",
+      "page": 47
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 50,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 50,
+  "toc_pages": [
+    3
+  ]
+}

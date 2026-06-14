@@ -1,0 +1,613 @@
+{
+  "stem": "tr_119100v010101p",
+  "pdf": "downloads/specs/TR/tr_119100v010101p.pdf",
+  "title": "(2016-03)",
+  "reference": "tr_119100v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 10
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 12
+    },
+    {
+      "num": "4",
+      "title": "Introduction to the guided implementation process",
+      "page": 13
+    },
+    {
+      "num": "4.1",
+      "title": "How to use the present document",
+      "page": 13
+    },
+    {
+      "num": "4.2",
+      "title": "An overview of the guided implementation process",
+      "page": 13
+    },
+    {
+      "num": "5",
+      "title": "Analysing the Business Requirements",
+      "page": 16
+    },
+    {
+      "num": "6",
+      "title": "Managing the policy and security requirements",
+      "page": 17
+    },
+    {
+      "num": "7",
+      "title": "Business scoping parameters",
+      "page": 17
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 17
+    },
+    {
+      "num": "7.2",
+      "title": "Business scoping parameters mainly related with the business process",
+      "page": 18
+    },
+    {
+      "num": "7.2.1",
+      "title": "Introduction",
+      "page": 18
+    },
+    {
+      "num": "7.2.2",
+      "title": "BSP (a): Workflow (sequencing and timing) of digital signatures",
+      "page": 18
+    },
+    {
+      "num": "7.2.2.1",
+      "title": "Introduction",
+      "page": 18
+    },
+    {
+      "num": "7.2.2.2",
+      "title": "Multiple signatures",
+      "page": 18
+    },
+    {
+      "num": "7.2.2.3",
+      "title": "Timing and sequencing",
+      "page": 19
+    },
+    {
+      "num": "7.2.3",
+      "title": "BSP (b): Data Object(s) to be signed",
+      "page": 20
+    },
+    {
+      "num": "7.2.4",
+      "title": "BSP (c): Relationships of signatures with signed data object(s) and signature(s)",
+      "page": 20
+    },
+    {
+      "num": "7.2.5",
+      "title": "BSP (d): Targeted community",
+      "page": 21
+    },
+    {
+      "num": "7.2.6",
+      "title": "BSP (e): Allocation of responsibility of signatures validation and augmentation",
+      "page": 21
+    },
+    {
+      "num": "7.3.1",
+      "title": "Introduction",
+      "page": 21
+    },
+    {
+      "num": "7.3.2",
+      "title": "BSP (f): Legal Effect of the signatures",
+      "page": 21
+    },
+    {
+      "num": "7.3.3",
+      "title": "BSP (g): Commitment assumed by signer",
+      "page": 22
+    },
+    {
+      "num": "7.3.4",
+      "title": "BSP (h): Level of assurance of timing evidences",
+      "page": 23
+    },
+    {
+      "num": "7.3.5",
+      "title": "BSP (i): Formalities of signing",
+      "page": 23
+    },
+    {
+      "num": "7.3.6",
+      "title": "BSP (j): Longevity and resilience to change",
+      "page": 24
+    },
+    {
+      "num": "7.3.7",
+      "title": "BSP (k): Archival",
+      "page": 24
+    },
+    {
+      "num": "7.4.1",
+      "title": "BSP (l): Identity (and roles/attributes) of the signer",
+      "page": 24
+    },
+    {
+      "num": "7.4.2",
+      "title": "BSP (m): Level of assurance required for the authentication of the signer",
+      "page": 25
+    },
+    {
+      "num": "7.4.3",
+      "title": "BSP (n): Signature creation devices",
+      "page": 25
+    },
+    {
+      "num": "7.5",
+      "title": "Other Business scoping parameters",
+      "page": 25
+    },
+    {
+      "num": "7.5.1",
+      "title": "Introduction",
+      "page": 25
+    },
+    {
+      "num": "7.5.2",
+      "title": "BSP (o): Other information to be included within the signatures",
+      "page": 25
+    },
+    {
+      "num": "7.5.3",
+      "title": "BSP (p): Cryptographic suites",
+      "page": 26
+    },
+    {
+      "num": "7.5.4",
+      "title": "BSP (q): Technological environment",
+      "page": 26
+    },
+    {
+      "num": "8",
+      "title": "Selecting the most appropriate standards, options, and technical mechanisms",
+      "page": 26
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction",
+      "page": 26
+    },
+    {
+      "num": "8.2",
+      "title": "Format of signatures: CAdES, XAdES or PAdES",
+      "page": 27
+    },
+    {
+      "num": "8.2.1",
+      "title": "Introduction",
+      "page": 27
+    },
+    {
+      "num": "8.2.2",
+      "title": "Format of the document",
+      "page": 27
+    },
+    {
+      "num": "8.2.3",
+      "title": "Relative placement of signatures and signed data objects",
+      "page": 28
+    },
+    {
+      "num": "8.2.3.1",
+      "title": "Introduction",
+      "page": 28
+    },
+    {
+      "num": "8.2.3.2",
+      "title": "Enveloped signatures",
+      "page": 28
+    },
+    {
+      "num": "8.2.3.3",
+      "title": "Enveloping signatures",
+      "page": 28
+    },
+    {
+      "num": "8.2.3.4",
+      "title": "Detached signatures",
+      "page": 29
+    },
+    {
+      "num": "8.2.3.5",
+      "title": "Simultaneous multiple relative positions",
+      "page": 29
+    },
+    {
+      "num": "8.2.4",
+      "title": "Number of signatures and signed data objects",
+      "page": 29
+    },
+    {
+      "num": "8.2.4.1",
+      "title": "Introduction",
+      "page": 29
+    },
+    {
+      "num": "8.2.4.2",
+      "title": "One document is signed by only one signature",
+      "page": 29
+    },
+    {
+      "num": "8.2.4.3",
+      "title": "One document is signed by more than one signature",
+      "page": 29
+    },
+    {
+      "num": "8.2.4.4",
+      "title": "One signature is required to sign more than one data object",
+      "page": 30
+    },
+    {
+      "num": "8.3",
+      "title": "A container for packaging together signatures and detached signed data objects",
+      "page": 30
+    },
+    {
+      "num": "8.4",
+      "title": "Baseline or extended/additional?",
+      "page": 31
+    },
+    {
+      "num": "8.5",
+      "title": "Selecting the proper quality of the signature",
+      "page": 31
+    },
+    {
+      "num": "8.6",
+      "title": "Mapping formalities of signing to the electronic domain",
+      "page": 32
+    },
+    {
+      "num": "8.7",
+      "title": "Satisfying timing and sequencing requirements",
+      "page": 32
+    },
+    {
+      "num": "8.7.1",
+      "title": "Satisfying sequencing requirements",
+      "page": 32
+    },
+    {
+      "num": "8.7.1.1",
+      "title": "Introduction",
+      "page": 32
+    },
+    {
+      "num": "8.7.1.2",
+      "title": "Including counter-signatures",
+      "page": 32
+    },
+    {
+      "num": "8.7.2",
+      "title": "Satisfying timing requirements",
+      "page": 33
+    },
+    {
+      "num": "8.7.2.1",
+      "title": "Introduction",
+      "page": 33
+    },
+    {
+      "num": "8.7.2.2",
+      "title": "Time-stamping the data objects to be signed before signature generation",
+      "page": 33
+    },
+    {
+      "num": "8.7.2.3",
+      "title": "Including claimed signing time",
+      "page": 33
+    },
+    {
+      "num": "8.7.2.4",
+      "title": "Including time-stamp token on the digital signature value",
+      "page": 34
+    },
+    {
+      "num": "8.8",
+      "title": "Including indication of commitments assumed by the signer",
+      "page": 35
+    },
+    {
+      "num": "8.9.1",
+      "title": "Including and protecting indication of signer's identity",
+      "page": 36
+    },
+    {
+      "num": "8.9.2",
+      "title": "Including signer's roles and/or attributes",
+      "page": 37
+    },
+    {
+      "num": "8.10",
+      "title": "Including additional signed information",
+      "page": 38
+    },
+    {
+      "num": "8.10.1",
+      "title": "Introduction",
+      "page": 38
+    },
+    {
+      "num": "8.10.2",
+      "title": "Including explicit indication of the signature policy",
+      "page": 38
+    },
+    {
+      "num": "8.10.3",
+      "title": "Including indication of the signed data object format",
+      "page": 39
+    },
+    {
+      "num": "8.10.4",
+      "title": "Including indication of the signature production place",
+      "page": 40
+    },
+    {
+      "num": "8.11",
+      "title": "Supporting signatures lifecycle",
+      "page": 40
+    },
+    {
+      "num": "8.11.1",
+      "title": "Introduction",
+      "page": 40
+    },
+    {
+      "num": "8.11.2",
+      "title": "Including time-stamp tokens on the digital signature value",
+      "page": 40
+    },
+    {
+      "num": "8.11.3",
+      "title": "Including references to validation data",
+      "page": 41
+    },
+    {
+      "num": "8.11.3.1",
+      "title": "Rationale",
+      "page": 41
+    },
+    {
+      "num": "8.11.3.2",
+      "title": "Including references to certificates",
+      "page": 42
+    },
+    {
+      "num": "8.11.3.3",
+      "title": "Including references to certificate status data",
+      "page": 42
+    },
+    {
+      "num": "8.11.4",
+      "title": "Time-stamping references to validation data",
+      "page": 43
+    },
+    {
+      "num": "8.11.5",
+      "title": "Enlarging longevity and resilience to change",
+      "page": 44
+    },
+    {
+      "num": "8.11.5.1",
+      "title": "Introduction",
+      "page": 44
+    },
+    {
+      "num": "8.11.5.2",
+      "title": "Incorporating containers for validation material",
+      "page": 46
+    },
+    {
+      "num": "8.11.6",
+      "title": "Digital signatures lifecycle",
+      "page": 49
+    },
+    {
+      "num": "8.11.6.1",
+      "title": "Generation, validation and augmentation of digital signatures",
+      "page": 49
+    },
+    {
+      "num": "8.11.6.2",
+      "title": "Lifecycle and levels of digital signatures",
+      "page": 55
+    },
+    {
+      "num": "8.11.6.3",
+      "title": "Transitions between levels of baseline signatures and containers",
+      "page": 60
+    },
+    {
+      "num": "8.11.6.4",
+      "title": "Transitions between levels of extended signatures",
+      "page": 61
+    },
+    {
+      "num": "8.11.7",
+      "title": "ASiC containers lifecycle",
+      "page": 65
+    },
+    {
+      "num": "8.12",
+      "title": "Selecting proper Signature Creation Devices",
+      "page": 73
+    },
+    {
+      "num": "8.13",
+      "title": "Selecting proper cryptographic suites",
+      "page": 74
+    },
+    {
+      "num": "8.14",
+      "title": "Signature generation, augmentation and validation applications",
+      "page": 74
+    },
+    {
+      "num": "8.14.1",
+      "title": "Introduction",
+      "page": 74
+    },
+    {
+      "num": "8.14.2",
+      "title": "Selecting the suitable Protection Profile",
+      "page": 74
+    },
+    {
+      "num": "8.14.3",
+      "title": "Implementing the signature generation and augmentation processes",
+      "page": 74
+    },
+    {
+      "num": "8.14.4",
+      "title": "Implementing the signature validation process",
+      "page": 75
+    },
+    {
+      "num": "9",
+      "title": "Signature creation and validation catalysing toolkit",
+      "page": 77
+    },
+    {
+      "num": "9.1",
+      "title": "Introduction",
+      "page": 77
+    },
+    {
+      "num": "9.2",
+      "title": "Technical Specifications",
+      "page": 77
+    },
+    {
+      "num": "9.3",
+      "title": "Conformance testing software tools",
+      "page": 78
+    },
+    {
+      "num": "9.4",
+      "title": "Interoperability test events",
+      "page": 78
+    },
+    {
+      "num": "10",
+      "title": "Evaluation processes",
+      "page": 79
+    },
+    {
+      "num": "11",
+      "title": "Corollary: the process within the context of the Standardization Framework",
+      "page": 80
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 81
+    },
+    {
+      "num": "A.2",
+      "title": "Securing detached objects signed with ds:SignedInfo",
+      "page": 81
+    },
+    {
+      "num": "A.3",
+      "title": "Detached objects signed with signed ds:Manifest",
+      "page": 81
+    },
+    {
+      "num": "A.3.1",
+      "title": "The initial situation",
+      "page": 81
+    },
+    {
+      "num": "A.3.3",
+      "title": "The solution: xadesv141:RenewedDigests element",
+      "page": 85
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 89,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 89,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

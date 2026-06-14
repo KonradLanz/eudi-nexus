@@ -1,0 +1,148 @@
+{
+  "stem": "ts_11917204v010201p",
+  "pdf": "downloads/specs/TS/ts_11917204v010201p.pdf",
+  "title": "(2026-02)",
+  "reference": "ts_11917204v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 8
+    },
+    {
+      "num": "4.0",
+      "title": "Introduction",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Signature applicability rules",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Validation constraints and validation procedures",
+      "page": 9
+    },
+    {
+      "num": "4.3",
+      "title": "Requirements on signature validation and applicability rules checking practices",
+      "page": 10
+    },
+    {
+      "num": "4.4",
+      "title": "Technical applicability (rules) checking process",
+      "page": 11
+    },
+    {
+      "num": "4.4.1",
+      "title": "Overview",
+      "page": 11
+    },
+    {
+      "num": "4.4.2",
+      "title": "Processing",
+      "page": 11
+    },
+    {
+      "num": "4.5",
+      "title": "Requirements on applicability rules checking report",
+      "page": 12
+    },
+    {
+      "num": "Annex A",
+      "title": "OIDs",
+      "page": 15,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Change history",
+      "page": 17,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 18,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 18,
+  "toc_pages": [
+    3
+  ]
+}

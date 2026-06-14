@@ -1,0 +1,254 @@
+{
+  "stem": "ts_11912405v010101p",
+  "pdf": "downloads/specs/TS/ts_11912405v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11912405v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Testing conformance to CAdES-E-BES extended signatures",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Testing CMSversion",
+      "page": 7
+    },
+    {
+      "num": "5.3",
+      "title": "Testing DigestAlgorithmIdentifiers",
+      "page": 8
+    },
+    {
+      "num": "5.4",
+      "title": "Testing EncapsulatedContentInfo",
+      "page": 8
+    },
+    {
+      "num": "5.5",
+      "title": "Testing SignedData.certificates",
+      "page": 8
+    },
+    {
+      "num": "5.6",
+      "title": "Testing SignedData.crls",
+      "page": 8
+    },
+    {
+      "num": "5.7",
+      "title": "Testing SignerInfos",
+      "page": 8
+    },
+    {
+      "num": "5.8",
+      "title": "Testing content-type",
+      "page": 8
+    },
+    {
+      "num": "5.9",
+      "title": "Testing message-digest",
+      "page": 8
+    },
+    {
+      "num": "5.10",
+      "title": "Testing signing-time",
+      "page": 8
+    },
+    {
+      "num": "5.11",
+      "title": "Testing Enhanced Security Services (ESS)",
+      "page": 9
+    },
+    {
+      "num": "5.12",
+      "title": "Testing commitment-type-indication",
+      "page": 9
+    },
+    {
+      "num": "5.13",
+      "title": "Testing signer-location",
+      "page": 9
+    },
+    {
+      "num": "5.14",
+      "title": "Testing signer-attributes-v2",
+      "page": 9
+    },
+    {
+      "num": "5.15",
+      "title": "Testing counter-signature",
+      "page": 9
+    },
+    {
+      "num": "5.16",
+      "title": "Testing content-time-stamp",
+      "page": 9
+    },
+    {
+      "num": "5.17",
+      "title": "Testing content-reference",
+      "page": 9
+    },
+    {
+      "num": "5.18",
+      "title": "Testing content-identifier",
+      "page": 9
+    },
+    {
+      "num": "5.19",
+      "title": "Testing content-hints",
+      "page": 9
+    },
+    {
+      "num": "5.20",
+      "title": "Testing mime-type",
+      "page": 10
+    },
+    {
+      "num": "6",
+      "title": "Testing conformance to CAdES-E-EPES extended signatures",
+      "page": 10
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "6.2",
+      "title": "Testing signature-policy-identifier",
+      "page": 10
+    },
+    {
+      "num": "6.3",
+      "title": "Testing signature-policy-store",
+      "page": 10
+    },
+    {
+      "num": "7",
+      "title": "Testing conformance to CAdES-E-T extended signatures",
+      "page": 10
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "7.2",
+      "title": "Testing SignatureTimeStamp",
+      "page": 10
+    },
+    {
+      "num": "8",
+      "title": "Testing conformance to CAdES-E-A extended signatures",
+      "page": 11
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction",
+      "page": 11
+    },
+    {
+      "num": "8.2",
+      "title": "Testing ArchiveTimeStampV3",
+      "page": 11
+    },
+    {
+      "num": "8.3",
+      "title": "Testing Certificate and Revocation references",
+      "page": 11
+    },
+    {
+      "num": "8.4",
+      "title": "Testing Certificate and Revocation values",
+      "page": 12
+    },
+    {
+      "num": "8.5",
+      "title": "Testing time-stamp attributes",
+      "page": 12
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 13,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 13,
+  "toc_pages": [
+    3
+  ]
+}

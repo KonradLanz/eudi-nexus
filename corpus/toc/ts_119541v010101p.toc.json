@@ -1,0 +1,359 @@
+{
+  "stem": "ts_119541v010101p",
+  "pdf": "downloads/specs/TS/ts_119541v010101p.pdf",
+  "title": "(2025-10)",
+  "reference": "ts_119541v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Policy framework introduction",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Risk Assessment",
+      "page": 10
+    },
+    {
+      "num": "6",
+      "title": "SC provider Policies and practices",
+      "page": 10
+    },
+    {
+      "num": "6.1",
+      "title": "SC provider Service Practice statement",
+      "page": 10
+    },
+    {
+      "num": "6.2",
+      "title": "Terms and Conditions",
+      "page": 11
+    },
+    {
+      "num": "6.3",
+      "title": "Information security policy",
+      "page": 12
+    },
+    {
+      "num": "7",
+      "title": "SC provider management and operation",
+      "page": 13
+    },
+    {
+      "num": "7.1",
+      "title": "Internal organization",
+      "page": 13
+    },
+    {
+      "num": "7.1.1",
+      "title": "General",
+      "page": 13
+    },
+    {
+      "num": "7.1.2",
+      "title": "Organization reliability",
+      "page": 13
+    },
+    {
+      "num": "7.1.3",
+      "title": "Segregation of duties",
+      "page": 13
+    },
+    {
+      "num": "7.2",
+      "title": "Human resources",
+      "page": 13
+    },
+    {
+      "num": "7.3",
+      "title": "Asset management",
+      "page": 13
+    },
+    {
+      "num": "7.3.1",
+      "title": "General requirements",
+      "page": 13
+    },
+    {
+      "num": "7.3.2",
+      "title": "Assets inventory and classification",
+      "page": 13
+    },
+    {
+      "num": "7.3.3",
+      "title": "Storage media handling",
+      "page": 13
+    },
+    {
+      "num": "7.4",
+      "title": "Access control",
+      "page": 14
+    },
+    {
+      "num": "7.5",
+      "title": "Cryptographic controls",
+      "page": 14
+    },
+    {
+      "num": "7.6",
+      "title": "Physical and environmental security",
+      "page": 14
+    },
+    {
+      "num": "7.7",
+      "title": "Operation security",
+      "page": 14
+    },
+    {
+      "num": "7.8",
+      "title": "Network security",
+      "page": 14
+    },
+    {
+      "num": "7.9",
+      "title": "Vulnerabilities and Incident management",
+      "page": 14
+    },
+    {
+      "num": "7.9.1",
+      "title": "Monitoring and logging",
+      "page": 14
+    },
+    {
+      "num": "7.9.2",
+      "title": "Incident response",
+      "page": 14
+    },
+    {
+      "num": "7.9.3",
+      "title": "Reporting",
+      "page": 14
+    },
+    {
+      "num": "7.9.4",
+      "title": "Event assessment and classification",
+      "page": 14
+    },
+    {
+      "num": "7.9.5",
+      "title": "Post-incident reviews",
+      "page": 15
+    },
+    {
+      "num": "7.10",
+      "title": "Collection of evidence",
+      "page": 15
+    },
+    {
+      "num": "7.11",
+      "title": "Business continuity management",
+      "page": 15
+    },
+    {
+      "num": "7.11.1",
+      "title": "General",
+      "page": 15
+    },
+    {
+      "num": "7.11.2",
+      "title": "Back up",
+      "page": 15
+    },
+    {
+      "num": "7.11.3",
+      "title": "Crisis management",
+      "page": 15
+    },
+    {
+      "num": "7.12",
+      "title": "Termination and termination plans",
+      "page": 15
+    },
+    {
+      "num": "7.13",
+      "title": "Compliance",
+      "page": 15
+    },
+    {
+      "num": "8",
+      "title": "SC Provider and SC Supply Chain Requirements",
+      "page": 15
+    },
+    {
+      "num": "8.1",
+      "title": "General",
+      "page": 15
+    },
+    {
+      "num": "8.2",
+      "title": "SC Publisher",
+      "page": 15
+    },
+    {
+      "num": "8.3",
+      "title": "SC Language Publisher and Supporting Tools Publishers",
+      "page": 16
+    },
+    {
+      "num": "8.4",
+      "title": "SC Provider",
+      "page": 16
+    },
+    {
+      "num": "8.5",
+      "title": "Electronic Ledger Provider(s)",
+      "page": 16
+    },
+    {
+      "num": "Annex A",
+      "title": "Security framework and requirements",
+      "page": 18,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Security analysis and justifications",
+      "page": 18
+    },
+    {
+      "num": "A.2",
+      "title": "Requirements for Confidentiality, Integrity and Availability (CIA)",
+      "page": 18
+    },
+    {
+      "num": "A.2.1",
+      "title": "Confidentiality requirements",
+      "page": 18
+    },
+    {
+      "num": "A.2.2",
+      "title": "Integrity requirement",
+      "page": 19
+    },
+    {
+      "num": "A.2.3",
+      "title": "Availability requirements",
+      "page": 19
+    },
+    {
+      "num": "A.3",
+      "title": "Non-repudiation requirements",
+      "page": 19
+    },
+    {
+      "num": "A.4",
+      "title": "GDPR risk and obligations",
+      "page": 19
+    },
+    {
+      "num": "Annex B",
+      "title": "Audit requirements",
+      "page": 21,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "CRA essential requirements and impact on SC",
+      "page": 22,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "Essential requirements identified in Annex I of the CRA",
+      "page": 22
+    },
+    {
+      "num": "C.2",
+      "title": "Requirements for vulnerability handling identified in Annex I of the CRA",
+      "page": 23
+    },
+    {
+      "num": "Annex D",
+      "title": "Bibliography",
+      "page": 25,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 26,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 26,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

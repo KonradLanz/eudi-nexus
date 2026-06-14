@@ -1,0 +1,13 @@
+{
+  "id": "eu-eudi-wallet-arfreqs",
+  "type": "regulation",
+  "label": "EU EUDI Wallet Architecture & Reference Framework",
+  "url": "https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/latest/",
+  "format": "html",
+  "scope": "external",
+  "stf": null,
+  "wki_ids": [],
+  "note": "EC ARF — primary requirements source that STF 705 standards implement",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.860075+00:00"
+}

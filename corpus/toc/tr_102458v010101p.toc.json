@@ -1,0 +1,114 @@
+{
+  "stem": "tr_102458v010101p",
+  "pdf": "downloads/specs/TR/tr_102458v010101p.pdf",
+  "title": "(2006-04)",
+  "reference": "tr_102458v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "PKI SUMMARIES",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "QCP",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "FBCA CP",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Mapping the FBCA CP to the QCP",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Rating",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Summary Assessment",
+      "page": 8
+    },
+    {
+      "num": "5.2.1",
+      "title": "Overview",
+      "page": 8
+    },
+    {
+      "num": "5.2.2",
+      "title": "Points of Note",
+      "page": 10
+    },
+    {
+      "num": "5.3",
+      "title": "Detailed Assessment",
+      "page": 10
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 57,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 57,
+  "toc_pages": [
+    3
+  ]
+}

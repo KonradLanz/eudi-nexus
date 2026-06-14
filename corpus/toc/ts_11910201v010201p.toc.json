@@ -1,0 +1,873 @@
+{
+  "stem": "ts_11910201v010201p",
+  "pdf": "downloads/specs/TS/ts_11910201v010201p.pdf",
+  "title": "(2018-08)",
+  "reference": "ts_11910201v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 8
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 9
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 10
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 13
+    },
+    {
+      "num": "4",
+      "title": "Signature creation",
+      "page": 13
+    },
+    {
+      "num": "4.1",
+      "title": "Signature creation model",
+      "page": 13
+    },
+    {
+      "num": "4.2",
+      "title": "Signature creation information model",
+      "page": 15
+    },
+    {
+      "num": "4.2.1",
+      "title": "Introduction",
+      "page": 15
+    },
+    {
+      "num": "4.2.2",
+      "title": "Signature Creation Constraints",
+      "page": 16
+    },
+    {
+      "num": "4.2.3",
+      "title": "Signer's document (SD)",
+      "page": 16
+    },
+    {
+      "num": "4.2.4",
+      "title": "Signer's document representation (SDR)",
+      "page": 17
+    },
+    {
+      "num": "4.2.5",
+      "title": "Signature attributes",
+      "page": 17
+    },
+    {
+      "num": "4.2.5.1",
+      "title": "General requirements",
+      "page": 17
+    },
+    {
+      "num": "4.2.5.2",
+      "title": "Signing certificate identifier",
+      "page": 17
+    },
+    {
+      "num": "4.2.5.3",
+      "title": "Signature policy identifier",
+      "page": 18
+    },
+    {
+      "num": "4.2.5.4",
+      "title": "Signature policy store",
+      "page": 18
+    },
+    {
+      "num": "4.2.5.5",
+      "title": "Data content type",
+      "page": 18
+    },
+    {
+      "num": "4.2.5.6",
+      "title": "Commitment type indication",
+      "page": 18
+    },
+    {
+      "num": "4.2.5.7",
+      "title": "Counter signatures",
+      "page": 19
+    },
+    {
+      "num": "4.2.5.8",
+      "title": "Claimed signing time",
+      "page": 19
+    },
+    {
+      "num": "4.2.5.9",
+      "title": "Claimed signer location",
+      "page": 19
+    },
+    {
+      "num": "4.2.5.10",
+      "title": "Signer's attributes",
+      "page": 19
+    },
+    {
+      "num": "4.2.6",
+      "title": "Data to be signed (DTBS)",
+      "page": 19
+    },
+    {
+      "num": "4.2.7",
+      "title": "Data to be signed (formatted) (DTBSF)",
+      "page": 20
+    },
+    {
+      "num": "4.2.8",
+      "title": "Data to be signed representation (DTBSR)",
+      "page": 20
+    },
+    {
+      "num": "4.2.9",
+      "title": "Signature",
+      "page": 20
+    },
+    {
+      "num": "4.2.10",
+      "title": "Signed data object (SDO)",
+      "page": 20
+    },
+    {
+      "num": "4.2.11",
+      "title": "Validation data",
+      "page": 20
+    },
+    {
+      "num": "4.3",
+      "title": "Signature Classes and Creation Processes",
+      "page": 21
+    },
+    {
+      "num": "4.3.1",
+      "title": "Introduction",
+      "page": 21
+    },
+    {
+      "num": "4.3.2",
+      "title": "Creation of Basic Signatures",
+      "page": 22
+    },
+    {
+      "num": "4.3.2.1",
+      "title": "Description",
+      "page": 22
+    },
+    {
+      "num": "4.3.2.2",
+      "title": "Inputs",
+      "page": 22
+    },
+    {
+      "num": "4.3.2.3",
+      "title": "Outputs",
+      "page": 22
+    },
+    {
+      "num": "4.3.2.4",
+      "title": "Processing",
+      "page": 23
+    },
+    {
+      "num": "4.3.2.4.1",
+      "title": "Selection of documents to sign",
+      "page": 23
+    },
+    {
+      "num": "4.3.2.4.2",
+      "title": "Signature attribute and parameters selection",
+      "page": 23
+    },
+    {
+      "num": "4.3.2.4.3",
+      "title": "Pre-signature presentation",
+      "page": 23
+    },
+    {
+      "num": "4.3.2.4.4",
+      "title": "Signature invocation",
+      "page": 24
+    },
+    {
+      "num": "4.3.2.4.5",
+      "title": "Signing",
+      "page": 24
+    },
+    {
+      "num": "4.3.2.4.6",
+      "title": "Signer authentication",
+      "page": 24
+    },
+    {
+      "num": "4.3.2.4.7",
+      "title": "SDO composition",
+      "page": 24
+    },
+    {
+      "num": "4.3.3",
+      "title": "Creation of a Signature with Time",
+      "page": 25
+    },
+    {
+      "num": "4.3.3.1",
+      "title": "Description",
+      "page": 25
+    },
+    {
+      "num": "4.3.3.2",
+      "title": "Inputs",
+      "page": 25
+    },
+    {
+      "num": "4.3.3.3",
+      "title": "Outputs",
+      "page": 25
+    },
+    {
+      "num": "4.3.3.4",
+      "title": "Process",
+      "page": 25
+    },
+    {
+      "num": "4.3.4",
+      "title": "Creation of Signatures with Long-Term Validation Material",
+      "page": 26
+    },
+    {
+      "num": "4.3.4.1",
+      "title": "Description",
+      "page": 26
+    },
+    {
+      "num": "4.3.4.2",
+      "title": "Inputs",
+      "page": 26
+    },
+    {
+      "num": "4.3.4.3",
+      "title": "Outputs",
+      "page": 26
+    },
+    {
+      "num": "4.3.4.4",
+      "title": "Process",
+      "page": 27
+    },
+    {
+      "num": "4.3.5.1",
+      "title": "Description",
+      "page": 27
+    },
+    {
+      "num": "4.3.5.2",
+      "title": "Inputs",
+      "page": 28
+    },
+    {
+      "num": "4.3.5.3",
+      "title": "Outputs",
+      "page": 28
+    },
+    {
+      "num": "4.3.5.4",
+      "title": "Process",
+      "page": 28
+    },
+    {
+      "num": "5",
+      "title": "Signature validation",
+      "page": 28
+    },
+    {
+      "num": "5.1",
+      "title": "Signature validation model",
+      "page": 28
+    },
+    {
+      "num": "5.1.1",
+      "title": "General requirements",
+      "page": 28
+    },
+    {
+      "num": "5.1.2",
+      "title": "Selecting validation processes",
+      "page": 31
+    },
+    {
+      "num": "5.1.4",
+      "title": "Validation constraints",
+      "page": 38
+    },
+    {
+      "num": "5.1.4.1",
+      "title": "General requirements",
+      "page": 38
+    },
+    {
+      "num": "5.1.4.2",
+      "title": "X.509 Validation Constraints",
+      "page": 39
+    },
+    {
+      "num": "5.1.4.3",
+      "title": "Cryptographic Constraints",
+      "page": 39
+    },
+    {
+      "num": "5.1.4.4",
+      "title": "Signature Elements Constraints",
+      "page": 39
+    },
+    {
+      "num": "5.2",
+      "title": "Basic building blocks",
+      "page": 39
+    },
+    {
+      "num": "5.2.1",
+      "title": "Description",
+      "page": 39
+    },
+    {
+      "num": "5.2.2",
+      "title": "Format Checking",
+      "page": 40
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "Description",
+      "page": 40
+    },
+    {
+      "num": "5.2.2.2",
+      "title": "Inputs",
+      "page": 40
+    },
+    {
+      "num": "5.2.2.3",
+      "title": "Outputs",
+      "page": 40
+    },
+    {
+      "num": "5.2.3",
+      "title": "Identification of the signing certificate",
+      "page": 40
+    },
+    {
+      "num": "5.2.3.1",
+      "title": "Description",
+      "page": 40
+    },
+    {
+      "num": "5.2.3.2",
+      "title": "Inputs",
+      "page": 40
+    },
+    {
+      "num": "5.2.3.3",
+      "title": "Outputs",
+      "page": 40
+    },
+    {
+      "num": "5.2.3.4",
+      "title": "Processing",
+      "page": 40
+    },
+    {
+      "num": "5.2.4",
+      "title": "Validation context initialization",
+      "page": 41
+    },
+    {
+      "num": "5.2.4.1",
+      "title": "Description",
+      "page": 41
+    },
+    {
+      "num": "5.2.4.2",
+      "title": "Inputs",
+      "page": 41
+    },
+    {
+      "num": "5.2.4.3",
+      "title": "Outputs",
+      "page": 41
+    },
+    {
+      "num": "5.2.4.4",
+      "title": "Processing",
+      "page": 42
+    },
+    {
+      "num": "5.2.5",
+      "title": "Revocation freshness checker",
+      "page": 42
+    },
+    {
+      "num": "5.2.5.1",
+      "title": "Description",
+      "page": 42
+    },
+    {
+      "num": "5.2.5.2",
+      "title": "Inputs",
+      "page": 42
+    },
+    {
+      "num": "5.2.5.3",
+      "title": "Output",
+      "page": 43
+    },
+    {
+      "num": "5.2.5.4",
+      "title": "Processing",
+      "page": 43
+    },
+    {
+      "num": "5.2.6",
+      "title": "X.509 certificate validation",
+      "page": 43
+    },
+    {
+      "num": "5.2.6.1",
+      "title": "Description",
+      "page": 43
+    },
+    {
+      "num": "5.2.6.2",
+      "title": "Inputs",
+      "page": 44
+    },
+    {
+      "num": "5.2.6.3",
+      "title": "Outputs",
+      "page": 44
+    },
+    {
+      "num": "5.2.6.4",
+      "title": "Processing",
+      "page": 44
+    },
+    {
+      "num": "5.2.7",
+      "title": "Cryptographic verification",
+      "page": 46
+    },
+    {
+      "num": "5.2.7.1",
+      "title": "Description",
+      "page": 46
+    },
+    {
+      "num": "5.2.7.2",
+      "title": "Inputs",
+      "page": 46
+    },
+    {
+      "num": "5.2.7.3",
+      "title": "Outputs",
+      "page": 47
+    },
+    {
+      "num": "5.2.7.4",
+      "title": "Processing",
+      "page": 47
+    },
+    {
+      "num": "5.2.8",
+      "title": "Signature acceptance validation (SAV)",
+      "page": 47
+    },
+    {
+      "num": "5.2.8.1",
+      "title": "Description",
+      "page": 47
+    },
+    {
+      "num": "5.2.8.2",
+      "title": "Inputs",
+      "page": 48
+    },
+    {
+      "num": "5.2.8.3",
+      "title": "Outputs",
+      "page": 48
+    },
+    {
+      "num": "5.2.8.4",
+      "title": "Processing",
+      "page": 48
+    },
+    {
+      "num": "5.2.8.4.1",
+      "title": "General requirements",
+      "page": 48
+    },
+    {
+      "num": "5.2.8.4.2",
+      "title": "Processing AdES attributes",
+      "page": 49
+    },
+    {
+      "num": "5.2.9",
+      "title": "Signature validation presentation building block",
+      "page": 50
+    },
+    {
+      "num": "5.3",
+      "title": "Validation process for Basic Signatures",
+      "page": 51
+    },
+    {
+      "num": "5.3.1",
+      "title": "Description",
+      "page": 51
+    },
+    {
+      "num": "5.3.2",
+      "title": "Inputs",
+      "page": 51
+    },
+    {
+      "num": "5.3.3",
+      "title": "Outputs",
+      "page": 51
+    },
+    {
+      "num": "5.3.4",
+      "title": "Processing",
+      "page": 51
+    },
+    {
+      "num": "5.4",
+      "title": "Time-stamp validation building block",
+      "page": 53
+    },
+    {
+      "num": "5.4.1",
+      "title": "Description",
+      "page": 53
+    },
+    {
+      "num": "5.4.2",
+      "title": "Inputs",
+      "page": 54
+    },
+    {
+      "num": "5.4.3",
+      "title": "Outputs",
+      "page": 54
+    },
+    {
+      "num": "5.4.4",
+      "title": "Processing",
+      "page": 54
+    },
+    {
+      "num": "5.5.1",
+      "title": "Description",
+      "page": 54
+    },
+    {
+      "num": "5.5.2",
+      "title": "Inputs",
+      "page": 55
+    },
+    {
+      "num": "5.5.3",
+      "title": "Outputs",
+      "page": 55
+    },
+    {
+      "num": "5.5.4",
+      "title": "Processing",
+      "page": 55
+    },
+    {
+      "num": "5.6.1",
+      "title": "Introduction",
+      "page": 58
+    },
+    {
+      "num": "5.6.2",
+      "title": "Additional building blocks",
+      "page": 58
+    },
+    {
+      "num": "5.6.2.1",
+      "title": "Past certificate validation",
+      "page": 58
+    },
+    {
+      "num": "5.6.2.1.1",
+      "title": "Description",
+      "page": 58
+    },
+    {
+      "num": "5.6.2.1.2",
+      "title": "Input",
+      "page": 59
+    },
+    {
+      "num": "5.6.2.1.3",
+      "title": "Output",
+      "page": 59
+    },
+    {
+      "num": "5.6.2.1.4",
+      "title": "Processing",
+      "page": 59
+    },
+    {
+      "num": "5.6.2.2",
+      "title": "Validation time sliding process",
+      "page": 60
+    },
+    {
+      "num": "5.6.2.2.1",
+      "title": "Description",
+      "page": 60
+    },
+    {
+      "num": "5.6.2.2.2",
+      "title": "Input",
+      "page": 60
+    },
+    {
+      "num": "5.6.2.2.3",
+      "title": "Output",
+      "page": 60
+    },
+    {
+      "num": "5.6.2.2.4",
+      "title": "Processing",
+      "page": 60
+    },
+    {
+      "num": "5.6.2.3",
+      "title": "POE extraction",
+      "page": 62
+    },
+    {
+      "num": "5.6.2.3.1",
+      "title": "Description",
+      "page": 62
+    },
+    {
+      "num": "5.6.2.3.2",
+      "title": "Input",
+      "page": 62
+    },
+    {
+      "num": "5.6.2.3.3",
+      "title": "Output",
+      "page": 62
+    },
+    {
+      "num": "5.6.2.3.4",
+      "title": "Processing",
+      "page": 62
+    },
+    {
+      "num": "5.6.2.4",
+      "title": "Past signature validation building block",
+      "page": 63
+    },
+    {
+      "num": "5.6.2.4.1",
+      "title": "Description",
+      "page": 63
+    },
+    {
+      "num": "5.6.2.4.2",
+      "title": "Input",
+      "page": 63
+    },
+    {
+      "num": "5.6.2.4.3",
+      "title": "Output",
+      "page": 63
+    },
+    {
+      "num": "5.6.2.4.4",
+      "title": "Processing",
+      "page": 63
+    },
+    {
+      "num": "5.6.3.1",
+      "title": "Description",
+      "page": 64
+    },
+    {
+      "num": "5.6.3.2",
+      "title": "Input",
+      "page": 64
+    },
+    {
+      "num": "5.6.3.3",
+      "title": "Output",
+      "page": 64
+    },
+    {
+      "num": "5.6.3.4",
+      "title": "Processing",
+      "page": 65
+    },
+    {
+      "num": "Annex A",
+      "title": "Validation examples",
+      "page": 68,
+      "annex_type": "informative"
+    },
+    {
+      "num": "A.1",
+      "title": "General remarks and assumptions",
+      "page": 68
+    },
+    {
+      "num": "A.2",
+      "title": "Symbols",
+      "page": 68
+    },
+    {
+      "num": "A.3",
+      "title": "Example 1: Revoked certificate",
+      "page": 69
+    },
+    {
+      "num": "A.3.1",
+      "title": "Introduction",
+      "page": 69
+    },
+    {
+      "num": "A.3.2",
+      "title": "Basic signature validation",
+      "page": 69
+    },
+    {
+      "num": "A.3.3",
+      "title": "Validating a Signature with Time",
+      "page": 70
+    },
+    {
+      "num": "A.3.4",
+      "title": "Example 2: Revoked CA certificate",
+      "page": 70
+    },
+    {
+      "num": "A.3.5",
+      "title": "Basic signature validation",
+      "page": 71
+    },
+    {
+      "num": "A.3.6",
+      "title": "Validation of a Signature with Time",
+      "page": 71
+    },
+    {
+      "num": "A.3.7",
+      "title": "Long-Term Validation",
+      "page": 72
+    },
+    {
+      "num": "Annex B",
+      "title": "Signature Classes and AdES Signatures",
+      "page": 75,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Applicability rules checking and format conformance check",
+      "page": 76,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "Applicability checking",
+      "page": 76
+    },
+    {
+      "num": "C.2",
+      "title": "Format conformance",
+      "page": 76
+    },
+    {
+      "num": "Annex D",
+      "title": "Change History",
+      "page": 78,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 79,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 79,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6
+  ]
+}

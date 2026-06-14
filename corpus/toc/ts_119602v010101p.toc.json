@@ -1,0 +1,791 @@
+{
+  "stem": "ts_119602v010101p",
+  "pdf": "downloads/specs/TS/ts_119602v010101p.pdf",
+  "title": "(2025-11)",
+  "reference": "ts_119602v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 8
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 9
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 9
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 10
+    },
+    {
+      "num": "4.1",
+      "title": "List of Trusted Entities (LoTE)",
+      "page": 10
+    },
+    {
+      "num": "4.2",
+      "title": "Approval scheme",
+      "page": 10
+    },
+    {
+      "num": "4.3",
+      "title": "Trusted entities",
+      "page": 10
+    },
+    {
+      "num": "4.4",
+      "title": "Trusted entity services",
+      "page": 10
+    },
+    {
+      "num": "4.5",
+      "title": "List of Trusted Entities Scheme Operator",
+      "page": 11
+    },
+    {
+      "num": "4.6",
+      "title": "Syntax bindings",
+      "page": 11
+    },
+    {
+      "num": "4.7",
+      "title": "LoTE profiles",
+      "page": 11
+    },
+    {
+      "num": "5",
+      "title": "Overall structure of lists of trusted entities",
+      "page": 11
+    },
+    {
+      "num": "6",
+      "title": "List of trusted entities components",
+      "page": 14
+    },
+    {
+      "num": "6.1",
+      "title": "General principles for lists of trusted entities",
+      "page": 14
+    },
+    {
+      "num": "6.1.1",
+      "title": "Formats of list of trusted entities",
+      "page": 14
+    },
+    {
+      "num": "6.1.2",
+      "title": "Use of Uniform Resource Identifiers",
+      "page": 14
+    },
+    {
+      "num": "6.1.3",
+      "title": "Date-time indication",
+      "page": 14
+    },
+    {
+      "num": "6.1.4",
+      "title": "Language support",
+      "page": 14
+    },
+    {
+      "num": "6.1.5",
+      "title": "Value of Country Code fields",
+      "page": 15
+    },
+    {
+      "num": "6.2",
+      "title": "List of trusted entities tag",
+      "page": 15
+    },
+    {
+      "num": "6.3",
+      "title": "List and scheme information",
+      "page": 15
+    },
+    {
+      "num": "6.3.0",
+      "title": "General",
+      "page": 15
+    },
+    {
+      "num": "6.3.1",
+      "title": "LoTE version identifier",
+      "page": 17
+    },
+    {
+      "num": "6.3.2",
+      "title": "LoTE sequence number",
+      "page": 17
+    },
+    {
+      "num": "6.3.3",
+      "title": "LoTE type",
+      "page": 18
+    },
+    {
+      "num": "6.3.4",
+      "title": "Scheme operator name",
+      "page": 18
+    },
+    {
+      "num": "6.3.5",
+      "title": "Scheme operator address",
+      "page": 18
+    },
+    {
+      "num": "6.3.5.0",
+      "title": "General",
+      "page": 18
+    },
+    {
+      "num": "6.3.5.1",
+      "title": "Scheme operator postal address",
+      "page": 19
+    },
+    {
+      "num": "6.3.5.2",
+      "title": "Scheme operator electronic address",
+      "page": 19
+    },
+    {
+      "num": "6.3.6",
+      "title": "Scheme name",
+      "page": 20
+    },
+    {
+      "num": "6.3.7",
+      "title": "Scheme information URI",
+      "page": 20
+    },
+    {
+      "num": "6.3.8",
+      "title": "Status determination approach",
+      "page": 21
+    },
+    {
+      "num": "6.3.9",
+      "title": "Scheme type/community/rules",
+      "page": 21
+    },
+    {
+      "num": "6.3.10",
+      "title": "Scheme territory",
+      "page": 22
+    },
+    {
+      "num": "6.3.11",
+      "title": "LoTE policy/legal notice",
+      "page": 22
+    },
+    {
+      "num": "6.3.12",
+      "title": "Historical information period",
+      "page": 22
+    },
+    {
+      "num": "6.3.13",
+      "title": "Pointers to other LoTEs",
+      "page": 22
+    },
+    {
+      "num": "6.3.14",
+      "title": "List issue date and time",
+      "page": 23
+    },
+    {
+      "num": "6.3.15",
+      "title": "Next update",
+      "page": 23
+    },
+    {
+      "num": "6.3.16",
+      "title": "Distribution points",
+      "page": 24
+    },
+    {
+      "num": "6.3.17",
+      "title": "Scheme extensions",
+      "page": 24
+    },
+    {
+      "num": "6.4",
+      "title": "Trusted Entities List",
+      "page": 24
+    },
+    {
+      "num": "6.4.0",
+      "title": "General",
+      "page": 24
+    },
+    {
+      "num": "6.4.1",
+      "title": "Trusted entity",
+      "page": 25
+    },
+    {
+      "num": "6.4.2",
+      "title": "Trusted entity services",
+      "page": 25
+    },
+    {
+      "num": "6.4.3",
+      "title": "Trusted entity service",
+      "page": 25
+    },
+    {
+      "num": "6.4.4",
+      "title": "Service history",
+      "page": 26
+    },
+    {
+      "num": "6.5",
+      "title": "Trusted entity information",
+      "page": 26
+    },
+    {
+      "num": "6.5.0",
+      "title": "General",
+      "page": 26
+    },
+    {
+      "num": "6.5.1",
+      "title": "TE name",
+      "page": 27
+    },
+    {
+      "num": "6.5.2",
+      "title": "TE trade name",
+      "page": 27
+    },
+    {
+      "num": "6.5.3",
+      "title": "TE address",
+      "page": 27
+    },
+    {
+      "num": "6.5.3.0",
+      "title": "General",
+      "page": 27
+    },
+    {
+      "num": "6.5.3.1",
+      "title": "TE postal address",
+      "page": 27
+    },
+    {
+      "num": "6.5.3.2",
+      "title": "TE electronic address",
+      "page": 28
+    },
+    {
+      "num": "6.5.4",
+      "title": "TE information URI",
+      "page": 28
+    },
+    {
+      "num": "6.5.5",
+      "title": "TE information extensions",
+      "page": 28
+    },
+    {
+      "num": "6.5.5.0",
+      "title": "General",
+      "page": 28
+    },
+    {
+      "num": "6.5.5.1",
+      "title": "Other associated bodies extension",
+      "page": 29
+    },
+    {
+      "num": "6.5.5.1.0",
+      "title": "General",
+      "page": 29
+    },
+    {
+      "num": "6.5.5.1.1",
+      "title": "Associated body",
+      "page": 29
+    },
+    {
+      "num": "6.5.5.1.2",
+      "title": "Associated body name",
+      "page": 30
+    },
+    {
+      "num": "6.5.5.1.3",
+      "title": "Associated Body trade name",
+      "page": 30
+    },
+    {
+      "num": "6.5.5.1.4",
+      "title": "Associated body address",
+      "page": 30
+    },
+    {
+      "num": "6.5.5.1.5",
+      "title": "Associated body information URI",
+      "page": 31
+    },
+    {
+      "num": "6.5.5.1.6",
+      "title": "Associated body type identifier",
+      "page": 31
+    },
+    {
+      "num": "6.5.5.1.7",
+      "title": "Associated body information extensions",
+      "page": 32
+    },
+    {
+      "num": "6.6",
+      "title": "Service information",
+      "page": 32
+    },
+    {
+      "num": "6.6.0",
+      "title": "General",
+      "page": 32
+    },
+    {
+      "num": "6.6.1",
+      "title": "Service type identifier",
+      "page": 33
+    },
+    {
+      "num": "6.6.2",
+      "title": "Service name",
+      "page": 33
+    },
+    {
+      "num": "6.6.3",
+      "title": "Service digital identity",
+      "page": 33
+    },
+    {
+      "num": "6.6.3.0",
+      "title": "General",
+      "page": 33
+    },
+    {
+      "num": "6.6.3.1",
+      "title": "X509 certificate",
+      "page": 34
+    },
+    {
+      "num": "6.6.3.2",
+      "title": "X509 subject name",
+      "page": 34
+    },
+    {
+      "num": "6.6.3.3",
+      "title": "Public key value",
+      "page": 34
+    },
+    {
+      "num": "6.6.3.4",
+      "title": "Subject key identifier",
+      "page": 35
+    },
+    {
+      "num": "6.6.3.5",
+      "title": "OtherId",
+      "page": 35
+    },
+    {
+      "num": "6.6.4",
+      "title": "Service current status",
+      "page": 35
+    },
+    {
+      "num": "6.6.5",
+      "title": "Current status starting date and time",
+      "page": 35
+    },
+    {
+      "num": "6.6.6",
+      "title": "Scheme service definition URI",
+      "page": 36
+    },
+    {
+      "num": "6.6.7",
+      "title": "Service supply points",
+      "page": 36
+    },
+    {
+      "num": "6.6.8",
+      "title": "TE service definition URI",
+      "page": 36
+    },
+    {
+      "num": "6.6.9",
+      "title": "Service information extensions",
+      "page": 36
+    },
+    {
+      "num": "6.6.9.0",
+      "title": "General",
+      "page": 36
+    },
+    {
+      "num": "6.6.9.1",
+      "title": "Service unique identifier extension",
+      "page": 37
+    },
+    {
+      "num": "6.7",
+      "title": "Service history instance",
+      "page": 37
+    },
+    {
+      "num": "6.8",
+      "title": "Digital signature",
+      "page": 38
+    },
+    {
+      "num": "6.8.0",
+      "title": "General",
+      "page": 38
+    },
+    {
+      "num": "6.8.1",
+      "title": "Signature component",
+      "page": 38
+    },
+    {
+      "num": "Annex A",
+      "title": "Bindings",
+      "page": 39,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "JSON bindings",
+      "page": 39
+    },
+    {
+      "num": "A.2",
+      "title": "XML bindings",
+      "page": 39
+    },
+    {
+      "num": "A.2.1",
+      "title": "Explicit scheme",
+      "page": 39
+    },
+    {
+      "num": "A.2.2",
+      "title": "ETSI TS 119 612 schema",
+      "page": 39
+    },
+    {
+      "num": "Annex B",
+      "title": "Implementation requirements for multilingual support",
+      "page": 41,
+      "annex_type": "normative"
+    },
+    {
+      "num": "B.1",
+      "title": "General rules",
+      "page": 41
+    },
+    {
+      "num": "B.2",
+      "title": "Multilingual character string",
+      "page": 42
+    },
+    {
+      "num": "B.3",
+      "title": "Multilingual pointer",
+      "page": 42
+    },
+    {
+      "num": "B.4",
+      "title": "Overall requirements",
+      "page": 43
+    },
+    {
+      "num": "Annex C",
+      "title": "Registered Uniform Resource Identifiers",
+      "page": 44,
+      "annex_type": "normative"
+    },
+    {
+      "num": "C.1",
+      "title": "Scheme registered URIs",
+      "page": 44
+    },
+    {
+      "num": "C.2",
+      "title": "EU specific LoTE profiles URIs",
+      "page": 44
+    },
+    {
+      "num": "C.2.1",
+      "title": "LoTE Type",
+      "page": 44
+    },
+    {
+      "num": "C.2.2",
+      "title": "Status determination approach",
+      "page": 45
+    },
+    {
+      "num": "C.2.3",
+      "title": "Scheme type/community/rules",
+      "page": 45
+    },
+    {
+      "num": "Annex D",
+      "title": "Profile for a list of providers of person identity data",
+      "page": 46,
+      "annex_type": "normative"
+    },
+    {
+      "num": "D.0",
+      "title": "Introduction",
+      "page": 46
+    },
+    {
+      "num": "D.1",
+      "title": "General requirements",
+      "page": 46
+    },
+    {
+      "num": "D.2",
+      "title": "Scheme information",
+      "page": 46
+    },
+    {
+      "num": "D.3",
+      "title": "List of trusted entities",
+      "page": 47
+    },
+    {
+      "num": "D.4",
+      "title": "Signature",
+      "page": 49
+    },
+    {
+      "num": "Annex E",
+      "title": "Profile for a list of wallet providers",
+      "page": 50,
+      "annex_type": "normative"
+    },
+    {
+      "num": "E.0",
+      "title": "Introduction",
+      "page": 50
+    },
+    {
+      "num": "E.1",
+      "title": "General requirements",
+      "page": 50
+    },
+    {
+      "num": "E.2",
+      "title": "Scheme information",
+      "page": 50
+    },
+    {
+      "num": "E.3",
+      "title": "List of trusted entities",
+      "page": 51
+    },
+    {
+      "num": "E.4",
+      "title": "Signature",
+      "page": 53
+    },
+    {
+      "num": "Annex F",
+      "title": "Profile for a list of providers of wallet relying party access certificates",
+      "page": 54,
+      "annex_type": "normative"
+    },
+    {
+      "num": "F.0",
+      "title": "Introduction",
+      "page": 54
+    },
+    {
+      "num": "F.1",
+      "title": "General requirements",
+      "page": 54
+    },
+    {
+      "num": "F.2",
+      "title": "Scheme information",
+      "page": 54
+    },
+    {
+      "num": "F.3",
+      "title": "List of trusted entities",
+      "page": 55
+    },
+    {
+      "num": "F.4",
+      "title": "Signature",
+      "page": 57
+    },
+    {
+      "num": "G.0",
+      "title": "Introduction",
+      "page": 58
+    },
+    {
+      "num": "G.1",
+      "title": "General requirements",
+      "page": 58
+    },
+    {
+      "num": "G.2",
+      "title": "Scheme information",
+      "page": 58
+    },
+    {
+      "num": "G.3",
+      "title": "List of trusted entities",
+      "page": 59
+    },
+    {
+      "num": "G.4",
+      "title": "Signature",
+      "page": 61
+    },
+    {
+      "num": "H.0",
+      "title": "Introduction",
+      "page": 62
+    },
+    {
+      "num": "H.1",
+      "title": "General requirements",
+      "page": 62
+    },
+    {
+      "num": "H.2",
+      "title": "Scheme information",
+      "page": 62
+    },
+    {
+      "num": "H.3",
+      "title": "List of trusted entities",
+      "page": 63
+    },
+    {
+      "num": "H.4",
+      "title": "Signature",
+      "page": 66
+    },
+    {
+      "num": "Annex I",
+      "title": "Profile for a list of registrars and registers",
+      "page": 67,
+      "annex_type": "normative"
+    },
+    {
+      "num": "I.0",
+      "title": "Introduction",
+      "page": 67
+    },
+    {
+      "num": "I.1",
+      "title": "General requirements",
+      "page": 67
+    },
+    {
+      "num": "I.2",
+      "title": "Scheme information",
+      "page": 67
+    },
+    {
+      "num": "I.3",
+      "title": "List of trusted entities",
+      "page": 68
+    },
+    {
+      "num": "I.4",
+      "title": "Signature",
+      "page": 69
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 70,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 70,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6
+  ]
+}

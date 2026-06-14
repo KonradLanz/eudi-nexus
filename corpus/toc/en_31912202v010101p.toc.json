@@ -1,0 +1,127 @@
+{
+  "stem": "en_31912202v010101p",
+  "pdf": "downloads/specs/EN/en_31912202v010101p.pdf",
+  "title": "(2016-04)",
+  "reference": "en_31912202v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Additional CAdES levels without references to validation data",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "Overview",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "General requirements",
+      "page": 7
+    },
+    {
+      "num": "4.3",
+      "title": "CAdES-E-BES, CAdES-E-EPES, CAdES-E-T and CAdES-E-A built on CAdES-E-T signatures",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "Legacy signatures",
+      "page": 12
+    },
+    {
+      "num": "Annex A",
+      "title": "CAdES levels with references to validation data",
+      "page": 13,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "CAdES-E-C, CAdES-E-X, CAdES-E-X-Long and CAdES-E-X-L signatures",
+      "page": 13
+    },
+    {
+      "num": "A.2",
+      "title": "CAdES-E-A signatures on CAdES signatures with references to validation data",
+      "page": 17
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 20,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 20,
+  "toc_pages": [
+    3
+  ]
+}

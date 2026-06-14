@@ -436,6 +436,68 @@ def mark_indexed(con: sqlite3.Connection, source_file: str) -> None:
     )
 
 
+def _reembed_missing_segments(
+    source_file: str,
+    con: sqlite3.Connection,
+    client,  # EmbeddingClient | None
+    verbose: bool = True,
+) -> int:
+    """
+    For an already-indexed file, find all segments with has_embedding=0
+    that belong to an EMBED_TYPE and (re-)embed them.
+    Returns number of segments newly embedded.
+    """
+    if client is None:
+        if verbose:
+            print(f"  ⏭️  {source_file}  (already indexed, no embed client)")
+        return 0
+
+    rows = con.execute(
+        "SELECT id, type, text FROM segments WHERE source_file = ? AND has_embedding = 0",
+        (source_file,),
+    ).fetchall()
+
+    # Filter to embeddable types only
+    to_embed = [
+        (row["id"], row["text"])
+        for row in rows
+        if row["type"] in EMBED_TYPES and row["text"].strip()
+    ]
+
+    if not to_embed:
+        if verbose:
+            print(f"  ✅  {source_file}  (already indexed, all embeddings present)")
+        return 0
+
+    if verbose:
+        print(f"  🔁  {source_file}  — {len(to_embed)} missing embedding(s), re-embedding …")
+
+    embedded = 0
+    for i in range(0, len(to_embed), EMBED_BATCH):
+        batch = to_embed[i : i + EMBED_BATCH]
+        ids   = [b[0] for b in batch]
+        texts = [b[1] for b in batch]
+        try:
+            vectors = client.embed_batch(texts)
+            for seg_id, vec in zip(ids, vectors):
+                con.execute(
+                    "INSERT OR REPLACE INTO segments_vec(segment_id, embedding) VALUES (?, ?)",
+                    (seg_id, floats_to_blob(vec)),
+                )
+                con.execute(
+                    "UPDATE segments SET has_embedding = 1 WHERE id = ?",
+                    (seg_id,),
+                )
+            embedded += len(batch)
+        except Exception as exc:
+            print(f"  [WARN] Embedding batch failed for {source_file}: {exc}", file=sys.stderr)
+
+    con.commit()
+    if verbose and embedded:
+        print(f"  ✅  {source_file}  — {embedded} embedding(s) added")
+    return embedded
+
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Vector serialisation
 # ──────────────────────────────────────────────────────────────────────────────
@@ -802,7 +864,8 @@ Examples:
   python3 scripts/build-index.py --dry-run         # no db writes
   python3 scripts/build-index.py --check-merge     # simulate merge quality gate
   python3 scripts/build-index.py --check-index     # verify every doc is in DB
-  python3 scripts/build-index.py --no-embed        # FTS-only (no LM Studio needed)
+  python3 scripts/build-index.py --no-embed              # FTS-only (no LM Studio needed)
+  python3 scripts/build-index.py --reembed-missing       # re-embed segments with has_embedding=0
   python3 scripts/build-index.py --model mxbai-embed-large
 """,
     )
@@ -810,6 +873,7 @@ Examples:
     parser.add_argument("--stats",        action="store_true", help="Print index statistics and exit")
     parser.add_argument("--dry-run",      action="store_true", help="Parse and embed but do not write to db")
     parser.add_argument("--no-embed",     action="store_true", help="Skip embedding (FTS / BM25 only)")
+    parser.add_argument("--reembed-missing", action="store_true", help="Re-embed segments where has_embedding=0 (skip already-embedded)")
     parser.add_argument("--check-merge",  action="store_true", help="Simulate merge, print quality gate, exit")
     parser.add_argument("--check-index",  action="store_true", help="Verify every segment file is fully in DB, exit")
     parser.add_argument("--model",        default=None,        help=f"Embedding model (default: {DEFAULT_MODEL})")
@@ -848,7 +912,8 @@ Examples:
         print(f"[INFO]  {len(seg_files)} segment file(s) found")
         print(f"[INFO]  DB: {db_path}")
         print(f"[INFO]  Model: {model}")
-        print(f"[INFO]  Mode: {'--rebuild' if args.rebuild else '--dry-run' if args.dry_run else 'idempotent'}\n")
+        reembed_label = " +--reembed-missing" if args.reembed_missing else ""
+        print(f"[INFO]  Mode: {'--rebuild' if args.rebuild else '--dry-run' if args.dry_run else 'idempotent'}{reembed_label}\n")
 
     con = _open_db(db_path)
 
@@ -880,8 +945,13 @@ Examples:
     for seg_file in seg_files:
         stem = seg_file.stem
         if not args.rebuild and not args.dry_run and already_indexed(con, stem):
-            if verbose:
-                print(f"  ⏭️  {stem}  (already indexed)")
+            if args.reembed_missing:
+                # File already indexed — but re-embed any segments with has_embedding=0
+                n = _reembed_missing_segments(stem, con, client, verbose=verbose)
+                total_stats["embedded"] += n
+            else:
+                if verbose:
+                    print(f"  ⏭️  {stem}  (already indexed)")
             continue
         if verbose:
             print(f"[🔄]  {seg_file.name}")

@@ -1,0 +1,371 @@
+{
+  "stem": "ts_102023v010202p",
+  "pdf": "downloads/specs/TS/ts_102023v010202p.pdf",
+  "title": "(2008-10)",
+  "reference": "ts_102023v010202p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Time-stamping services",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "Time-Stamping Authority (TSA)",
+      "page": 9
+    },
+    {
+      "num": "4.3",
+      "title": "Subscriber",
+      "page": 9
+    },
+    {
+      "num": "4.4",
+      "title": "Time-stamp policy and TSA practice statement",
+      "page": 9
+    },
+    {
+      "num": "4.4.1",
+      "title": "Purpose",
+      "page": 10
+    },
+    {
+      "num": "4.4.2",
+      "title": "Level of specificity",
+      "page": 10
+    },
+    {
+      "num": "4.4.3",
+      "title": "Approach",
+      "page": 10
+    },
+    {
+      "num": "5",
+      "title": "Time-stamp Policies",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Overview",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Identification",
+      "page": 10
+    },
+    {
+      "num": "5.3",
+      "title": "User Community and applicability",
+      "page": 11
+    },
+    {
+      "num": "5.4",
+      "title": "Conformance",
+      "page": 11
+    },
+    {
+      "num": "6",
+      "title": "Obligations and liability",
+      "page": 11
+    },
+    {
+      "num": "6.1",
+      "title": "TSA obligations",
+      "page": 11
+    },
+    {
+      "num": "6.1.1",
+      "title": "General",
+      "page": 11
+    },
+    {
+      "num": "6.1.2",
+      "title": "TSA obligations towards subscribers",
+      "page": 11
+    },
+    {
+      "num": "6.2",
+      "title": "Subscriber obligations",
+      "page": 11
+    },
+    {
+      "num": "6.3",
+      "title": "Relying party obligations",
+      "page": 12
+    },
+    {
+      "num": "6.4",
+      "title": "Liability",
+      "page": 12
+    },
+    {
+      "num": "7",
+      "title": "Requirements on TSA practices",
+      "page": 12
+    },
+    {
+      "num": "7.1",
+      "title": "Practice and Disclosure Statements",
+      "page": 12
+    },
+    {
+      "num": "7.1.1",
+      "title": "TSA Practice statement",
+      "page": 12
+    },
+    {
+      "num": "7.1.2",
+      "title": "TSA disclosure Statement",
+      "page": 13
+    },
+    {
+      "num": "7.2",
+      "title": "Key management life cycle",
+      "page": 14
+    },
+    {
+      "num": "7.2.1",
+      "title": "TSA key generation",
+      "page": 14
+    },
+    {
+      "num": "7.2.2",
+      "title": "TSU private key protection",
+      "page": 14
+    },
+    {
+      "num": "7.2.3",
+      "title": "TSU public key Distribution",
+      "page": 15
+    },
+    {
+      "num": "7.2.4",
+      "title": "Rekeying TSU's Key",
+      "page": 15
+    },
+    {
+      "num": "7.2.5",
+      "title": "End of TSU key life cycle",
+      "page": 15
+    },
+    {
+      "num": "7.2.6",
+      "title": "Life cycle management of cryptographic module used to sign time-stamps",
+      "page": 15
+    },
+    {
+      "num": "7.3",
+      "title": "Time-stamping",
+      "page": 16
+    },
+    {
+      "num": "7.3.1",
+      "title": "Time-stamp token",
+      "page": 16
+    },
+    {
+      "num": "7.3.2",
+      "title": "Clock Synchronization with UTC",
+      "page": 16
+    },
+    {
+      "num": "7.4",
+      "title": "TSA management and operation",
+      "page": 17
+    },
+    {
+      "num": "7.4.1",
+      "title": "Security management",
+      "page": 17
+    },
+    {
+      "num": "7.4.2",
+      "title": "Asset classification and management",
+      "page": 17
+    },
+    {
+      "num": "7.4.3",
+      "title": "Personnel security",
+      "page": 18
+    },
+    {
+      "num": "7.4.4",
+      "title": "Physical and environmental security",
+      "page": 19
+    },
+    {
+      "num": "7.4.5",
+      "title": "Operations management",
+      "page": 19
+    },
+    {
+      "num": "7.4.6",
+      "title": "System Access Management",
+      "page": 20
+    },
+    {
+      "num": "7.4.7",
+      "title": "Trustworthy Systems Deployment and Maintenance",
+      "page": 21
+    },
+    {
+      "num": "7.4.8",
+      "title": "Compromise of TSA Services",
+      "page": 21
+    },
+    {
+      "num": "7.4.9",
+      "title": "TSA termination",
+      "page": 22
+    },
+    {
+      "num": "7.4.10",
+      "title": "Compliance with Legal Requirements",
+      "page": 22
+    },
+    {
+      "num": "7.4.11",
+      "title": "Recording of information concerning operation of time-stamping service",
+      "page": 23
+    },
+    {
+      "num": "7.5",
+      "title": "Organizational",
+      "page": 24
+    },
+    {
+      "num": "Annex A",
+      "title": "Potential liability in the provision of time-stamping services",
+      "page": 25,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Model TSA disclosure statement",
+      "page": 26,
+      "annex_type": "informative"
+    },
+    {
+      "num": "B.1",
+      "title": "Introduction",
+      "page": 26
+    },
+    {
+      "num": "B.2",
+      "title": "The TSA disclosure statement structure",
+      "page": 27
+    },
+    {
+      "num": "Annex C",
+      "title": "Coordinated Universal Time (UTC)",
+      "page": 28,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Long term verification of time-stamp tokens",
+      "page": 29,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex E",
+      "title": "Possible for implementation architectures - time-stamping service",
+      "page": 30,
+      "annex_type": "informative"
+    },
+    {
+      "num": "E.1",
+      "title": "Managed time-stamping service",
+      "page": 30
+    },
+    {
+      "num": "E.2",
+      "title": "Selective Alternative Quality",
+      "page": 31
+    },
+    {
+      "num": "Annex F",
+      "title": "Bibliography",
+      "page": 32,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 33,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 33,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "stem": "ts_11914203v010101p",
+  "pdf": "downloads/specs/TS/ts_11914203v010101p.pdf",
+  "title": "(2016-12)",
+  "reference": "ts_11914203v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "General syntax",
+      "page": 6
+    },
+    {
+      "num": "4.1",
+      "title": "General requirements for PAdES-DTS signatures",
+      "page": 6
+    },
+    {
+      "num": "4.2",
+      "title": "Extending the validity of PAdES-DTS signatures",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Attributes syntax and semantics",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Extensions dictionary",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Requirements on encryption",
+      "page": 7
+    },
+    {
+      "num": "6",
+      "title": "PAdES-DTS signature profiles",
+      "page": 7
+    },
+    {
+      "num": "6.1",
+      "title": "Signature levels",
+      "page": 7
+    },
+    {
+      "num": "6.2",
+      "title": "General requirements",
+      "page": 7
+    },
+    {
+      "num": "6.2.1",
+      "title": "Requirements from Part 1",
+      "page": 7
+    },
+    {
+      "num": "6.2.2",
+      "title": "Notation for requirements",
+      "page": 8
+    },
+    {
+      "num": "6.3",
+      "title": "Requirements on components and services",
+      "page": 9
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 11,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 11,
+  "toc_pages": [
+    3
+  ]
+}

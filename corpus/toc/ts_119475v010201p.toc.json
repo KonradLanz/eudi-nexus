@@ -1,0 +1,584 @@
+{
+  "stem": "ts_119475v010201p",
+  "pdf": "downloads/specs/TS/ts_119475v010201p.pdf",
+  "title": "(2026-03)",
+  "reference": "ts_119475v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 8
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 9
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 11
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 11
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 11
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 12
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 12
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 13
+    },
+    {
+      "num": "4.1",
+      "title": "Wallet-Relying Parties Certificates",
+      "page": 13
+    },
+    {
+      "num": "4.2",
+      "title": "Wallet-Relying party roles",
+      "page": 13
+    },
+    {
+      "num": "4.3",
+      "title": "Wallet-Relying Party Access Certificates (WRPACs)",
+      "page": 14
+    },
+    {
+      "num": "4.4",
+      "title": "Wallet-Relying Party Registration Certificates (WRPRCs)",
+      "page": 14
+    },
+    {
+      "num": "4.5",
+      "title": "Registration and access certificate relation",
+      "page": 15
+    },
+    {
+      "num": "4.6",
+      "title": "Certificate issuance",
+      "page": 16
+    },
+    {
+      "num": "4.6.1",
+      "title": "General provisions",
+      "page": 16
+    },
+    {
+      "num": "4.6.2",
+      "title": "WRPAC and WRPRC policies",
+      "page": 16
+    },
+    {
+      "num": "4.6.3",
+      "title": "Identity proofing of WRPs",
+      "page": 17
+    },
+    {
+      "num": "5",
+      "title": "Certificate profile requirements",
+      "page": 17
+    },
+    {
+      "num": "5.1",
+      "title": "WRP Identification attributes matching",
+      "page": 17
+    },
+    {
+      "num": "5.1.1",
+      "title": "WRP Identification attributes",
+      "page": 17
+    },
+    {
+      "num": "5.1.2",
+      "title": "WRP Legal person identification attributes mapping",
+      "page": 18
+    },
+    {
+      "num": "5.1.3",
+      "title": "WRP Legal person semantic identifier mapping",
+      "page": 18
+    },
+    {
+      "num": "5.1.4",
+      "title": "WRP Natural person identification attributes mapping",
+      "page": 19
+    },
+    {
+      "num": "5.1.5",
+      "title": "WRP Natural person semantic identifier mapping",
+      "page": 20
+    },
+    {
+      "num": "5.2",
+      "title": "WRPRC profile requirements",
+      "page": 21
+    },
+    {
+      "num": "5.2.1",
+      "title": "Format",
+      "page": 21
+    },
+    {
+      "num": "5.2.2",
+      "title": "JWT Header Attributes",
+      "page": 21
+    },
+    {
+      "num": "5.2.3",
+      "title": "CWT Header Attributes",
+      "page": 21
+    },
+    {
+      "num": "5.2.4",
+      "title": "Payload Attributes",
+      "page": 22
+    },
+    {
+      "num": "6",
+      "title": "Policy requirements for WRPRC",
+      "page": 25
+    },
+    {
+      "num": "6.1",
+      "title": "General provisions for certificate providers",
+      "page": 25
+    },
+    {
+      "num": "6.1.1",
+      "title": "General requirements",
+      "page": 25
+    },
+    {
+      "num": "6.1.2",
+      "title": "Certification Practice Statement requirements",
+      "page": 25
+    },
+    {
+      "num": "6.1.3",
+      "title": "Certificate Policy name and identification",
+      "page": 25
+    },
+    {
+      "num": "6.1.4",
+      "title": "Participants",
+      "page": 25
+    },
+    {
+      "num": "6.1.5",
+      "title": "Certificate Usage",
+      "page": 25
+    },
+    {
+      "num": "6.2",
+      "title": "Trust Service Providers practice",
+      "page": 26
+    },
+    {
+      "num": "6.2.1",
+      "title": "Publication and Repository Responsibilities",
+      "page": 26
+    },
+    {
+      "num": "6.2.2",
+      "title": "Identification and Authentication",
+      "page": 26
+    },
+    {
+      "num": "6.2.2.1",
+      "title": "Naming",
+      "page": 26
+    },
+    {
+      "num": "6.2.2.2",
+      "title": "Initial identity validation",
+      "page": 26
+    },
+    {
+      "num": "6.2.2.3",
+      "title": "Identification and authentication for revocation requests",
+      "page": 26
+    },
+    {
+      "num": "6.2.3",
+      "title": "Certificate Life-Cycle Operational Requirements",
+      "page": 27
+    },
+    {
+      "num": "6.2.3.1",
+      "title": "Certificate Application",
+      "page": 27
+    },
+    {
+      "num": "6.2.3.2",
+      "title": "Certificate application processing",
+      "page": 27
+    },
+    {
+      "num": "6.2.3.3",
+      "title": "Certificate issuance",
+      "page": 27
+    },
+    {
+      "num": "6.2.3.4",
+      "title": "Certificate acceptance",
+      "page": 27
+    },
+    {
+      "num": "6.2.3.5",
+      "title": "Key Pair and Certificate Usage",
+      "page": 27
+    },
+    {
+      "num": "6.2.3.6",
+      "title": "Certificate Renewal",
+      "page": 27
+    },
+    {
+      "num": "6.2.3.7",
+      "title": "Certificate Re-key",
+      "page": 27
+    },
+    {
+      "num": "6.2.3.8",
+      "title": "Certificate Modification",
+      "page": 28
+    },
+    {
+      "num": "6.2.3.9",
+      "title": "Certificate Revocation and Suspension",
+      "page": 28
+    },
+    {
+      "num": "6.2.3.10",
+      "title": "Certificate Status Services",
+      "page": 28
+    },
+    {
+      "num": "6.2.3.11",
+      "title": "End of Subscription",
+      "page": 28
+    },
+    {
+      "num": "6.2.3.12",
+      "title": "Key Escrow and Recovery",
+      "page": 29
+    },
+    {
+      "num": "6.2.4",
+      "title": "Facility, Management and Operational Controls",
+      "page": 29
+    },
+    {
+      "num": "6.2.5",
+      "title": "Technical Security Controls",
+      "page": 29
+    },
+    {
+      "num": "6.2.6",
+      "title": "Certificate, Status List Profiles",
+      "page": 29
+    },
+    {
+      "num": "6.2.6.1",
+      "title": "Certificate Profile",
+      "page": 29
+    },
+    {
+      "num": "6.2.6.2",
+      "title": "Status List Profile",
+      "page": 29
+    },
+    {
+      "num": "6.2.7",
+      "title": "Compliance Audit and Other Assessment",
+      "page": 30
+    },
+    {
+      "num": "6.2.8",
+      "title": "Other Business and Legal Matters",
+      "page": 30
+    },
+    {
+      "num": "6.2.9",
+      "title": "Other Provisions",
+      "page": 30
+    },
+    {
+      "num": "Annex A",
+      "title": "WRP identifiers",
+      "page": 31,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "OID identifiers",
+      "page": 31
+    },
+    {
+      "num": "A.2",
+      "title": "WRP entitlement identifiers",
+      "page": 31
+    },
+    {
+      "num": "A.2.1",
+      "title": "Service_Provider",
+      "page": 31
+    },
+    {
+      "num": "A.2.2",
+      "title": "QEAA_Provider",
+      "page": 31
+    },
+    {
+      "num": "A.2.3",
+      "title": "Non_Q_EAA_Provider",
+      "page": 31
+    },
+    {
+      "num": "A.2.4",
+      "title": "PUB_EAA_Provider",
+      "page": 31
+    },
+    {
+      "num": "A.2.5",
+      "title": "PID_Provider",
+      "page": 31
+    },
+    {
+      "num": "A.2.6",
+      "title": "QCert_for_ESeal_Provider",
+      "page": 32
+    },
+    {
+      "num": "A.2.7",
+      "title": "QCert_for_ESig_Provider",
+      "page": 32
+    },
+    {
+      "num": "A.2.8",
+      "title": "rQSealCDs_Provider",
+      "page": 32
+    },
+    {
+      "num": "A.2.9",
+      "title": "rQSigCDs_Provider",
+      "page": 32
+    },
+    {
+      "num": "A.2.10",
+      "title": "ESig_ESeal_Creation_Provider",
+      "page": 32
+    },
+    {
+      "num": "A.3",
+      "title": "Service provider sub-entitlements identifiers",
+      "page": 33
+    },
+    {
+      "num": "A.3.1",
+      "title": "Payment Service Provider Identifiers",
+      "page": 33
+    },
+    {
+      "num": "Annex B",
+      "title": "Wallet-Relying Party Attributes",
+      "page": 34,
+      "annex_type": "normative"
+    },
+    {
+      "num": "B.1",
+      "title": "Introduction",
+      "page": 34
+    },
+    {
+      "num": "B.2",
+      "title": "Wallet-Relying Party Attributes Classes",
+      "page": 34
+    },
+    {
+      "num": "B.2.1",
+      "title": "Class WalletRelyingParty",
+      "page": 34
+    },
+    {
+      "num": "B.2.2",
+      "title": "Class LegalEntity",
+      "page": 35
+    },
+    {
+      "num": "B.2.3",
+      "title": "Class LegalPerson",
+      "page": 35
+    },
+    {
+      "num": "B.2.4",
+      "title": "Class NaturalPerson",
+      "page": 36
+    },
+    {
+      "num": "B.2.5",
+      "title": "Class Identifier",
+      "page": 36
+    },
+    {
+      "num": "B.2.6",
+      "title": "Class MultiLangString",
+      "page": 37
+    },
+    {
+      "num": "B.2.7",
+      "title": "Class IntendedUse",
+      "page": 37
+    },
+    {
+      "num": "B.2.8",
+      "title": "Class Policy",
+      "page": 37
+    },
+    {
+      "num": "B.2.9",
+      "title": "Class Credential",
+      "page": 38
+    },
+    {
+      "num": "B.2.10",
+      "title": "Class Claim",
+      "page": 38
+    },
+    {
+      "num": "B.2.11",
+      "title": "Class Law",
+      "page": 38
+    },
+    {
+      "num": "Annex C",
+      "title": "Registration Certificate example",
+      "page": 39,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "WRP registration use cases",
+      "page": 41,
+      "annex_type": "informative"
+    },
+    {
+      "num": "D.1",
+      "title": "Use case 1: Integrated model",
+      "page": 41
+    },
+    {
+      "num": "D.2",
+      "title": "Use case 2: Registrar-initiated issuance",
+      "page": 41
+    },
+    {
+      "num": "D.3",
+      "title": "Use case 3: RP-initiated issuance post-registration",
+      "page": 41
+    },
+    {
+      "num": "D.4",
+      "title": "Use case 4: Provider-assisted registration",
+      "page": 41
+    },
+    {
+      "num": "Annex E",
+      "title": "Regulatory requirements for WRP certificate providers",
+      "page": 42,
+      "annex_type": "informative"
+    },
+    {
+      "num": "E.1",
+      "title": "Wallet-Relying Party Access Certificates (WRPAC)",
+      "page": 42
+    },
+    {
+      "num": "E.2",
+      "title": "Wallet-Relying Party Registration Certificates (WRPRC)",
+      "page": 42
+    },
+    {
+      "num": "E.3",
+      "title": "Registration and access certificate relation",
+      "page": 43
+    },
+    {
+      "num": "Annex F",
+      "title": "Change history",
+      "page": 45,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 46,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 46,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

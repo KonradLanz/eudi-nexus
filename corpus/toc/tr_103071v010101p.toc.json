@@ -1,0 +1,282 @@
+{
+  "stem": "tr_103071v010101p",
+  "pdf": "downloads/specs/TR/tr_103071v010101p.pdf",
+  "title": "(2011-09)",
+  "reference": "tr_103071v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Testing Evidence Formats",
+      "page": 6
+    },
+    {
+      "num": "4.1",
+      "title": "Testing senderAuthenticationDetails component",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "Testing recipientAuthenticationDetails component",
+      "page": 8
+    },
+    {
+      "num": "4.3",
+      "title": "Testing SubmissionAcceptanceRejection evidence",
+      "page": 9
+    },
+    {
+      "num": "4.4",
+      "title": "Testing RelayREMMDAcceptanceRejection evidence",
+      "page": 10
+    },
+    {
+      "num": "4.5",
+      "title": "Testing RelayREMMFailure evidence",
+      "page": 11
+    },
+    {
+      "num": "4.6",
+      "title": "Testing DeliveryNonDeliveryToRecipient evidence",
+      "page": 12
+    },
+    {
+      "num": "4.7",
+      "title": "Testing DownloadNonDownloadByRecipient evidence",
+      "page": 14
+    },
+    {
+      "num": "4.8",
+      "title": "Testing RetrievalNonRetrievalByRecipient evidence",
+      "page": 16
+    },
+    {
+      "num": "4.9",
+      "title": "Testing AcceptanceRejectionByRecipient evidence",
+      "page": 17
+    },
+    {
+      "num": "4.10",
+      "title": "Testing RelayToNonREMSystem evidence",
+      "page": 18
+    },
+    {
+      "num": "4.11",
+      "title": "Testing ReceivedFromNonREMSystem evidence",
+      "page": 18
+    },
+    {
+      "num": "5",
+      "title": "Testing REM-MD Envelope Formats",
+      "page": 19
+    },
+    {
+      "num": "5.1",
+      "title": "REM-MDs using S/MIME on SMTP",
+      "page": 19
+    },
+    {
+      "num": "5.1.1",
+      "title": "Testing REM-MD Envelope with REM-MD Introduction section",
+      "page": 21
+    },
+    {
+      "num": "5.1.2",
+      "title": "Testing REM-MD Envelope with REM-MD Evidence",
+      "page": 21
+    },
+    {
+      "num": "5.1.3",
+      "title": "Testing REM-MD Envelope with Original Message",
+      "page": 23
+    },
+    {
+      "num": "5.1.4",
+      "title": "Testing REM-MD Envelope with parts of different types",
+      "page": 23
+    },
+    {
+      "num": "5.1.4.1",
+      "title": "Testing REM-MD Envelope with Original Message and Evidence sections",
+      "page": 23
+    },
+    {
+      "num": "5.1.4.2",
+      "title": "Testing REM-MD Envelope with Introduction and Evidence sections",
+      "page": 24
+    },
+    {
+      "num": "5.2",
+      "title": "REM-MDs using SOAP on HTTP",
+      "page": 25
+    },
+    {
+      "num": "5.2.1",
+      "title": "Testing <REMDispatch> without Evidence list",
+      "page": 26
+    },
+    {
+      "num": "5.2.2",
+      "title": "Testing <REMDispatch> with Evidence list",
+      "page": 28
+    },
+    {
+      "num": "5.2.3",
+      "title": "Testing <REMMDMessage> with Evidence list",
+      "page": 28
+    },
+    {
+      "num": "6",
+      "title": "Testing REM-MD Signatures",
+      "page": 29
+    },
+    {
+      "num": "6.1",
+      "title": "Testing REM-MD Signatures on individual REM-MD Evidence",
+      "page": 30
+    },
+    {
+      "num": "6.2",
+      "title": "Testing REM-MD S/MIME Signatures",
+      "page": 30
+    },
+    {
+      "num": "6.3",
+      "title": "Testing XAdES signatures on SOAP based REM-MD Envelope",
+      "page": 31
+    },
+    {
+      "num": "7",
+      "title": "Testing REM Objects flows",
+      "page": 33
+    },
+    {
+      "num": "7.1",
+      "title": "Testing intra REM-MD REM Objects flows",
+      "page": 35
+    },
+    {
+      "num": "7.1.1",
+      "title": "Testing Store and Forward Mode of Operation",
+      "page": 35
+    },
+    {
+      "num": "7.1.1.1",
+      "title": "Testing flows with mandatory set of evidence",
+      "page": 36
+    },
+    {
+      "num": "7.1.1.2",
+      "title": "Testing flows with mandatory and optional sets of evidence",
+      "page": 42
+    },
+    {
+      "num": "7.1.2",
+      "title": "Testing Store and Notify Mode of Operation",
+      "page": 45
+    },
+    {
+      "num": "7.1.2.1",
+      "title": "Testing flows with mandatory set of evidence",
+      "page": 45
+    },
+    {
+      "num": "7.1.2.2",
+      "title": "Testing flows with mandatory and optional sets of evidence",
+      "page": 51
+    },
+    {
+      "num": "7.2",
+      "title": "Testing Object flows between REM-MD and Non REM System",
+      "page": 53
+    },
+    {
+      "num": "7.3",
+      "title": "Testing cross REM-MD REM Objects flows",
+      "page": 54
+    },
+    {
+      "num": "7.3.1",
+      "title": "Sender's and Recipient's REM-MDs under Store and Forward Mode of Operation",
+      "page": 56
+    },
+    {
+      "num": "7.3.2",
+      "title": "Recipient's REM-MD under Store and Notify Mode of Operation",
+      "page": 64
+    },
+    {
+      "num": "7.3.3",
+      "title": "Sender's REM-MD under Store and Notify Mode of Operation",
+      "page": 74
+    },
+    {
+      "num": "6",
+      "title": "Test Suite for REM-MD UPU PReM Interoperability Profile",
+      "page": 84
+    },
+    {
+      "num": "6.1",
+      "title": "Test cases for scenario where sender is subscribed to REM-MD",
+      "page": 84
+    },
+    {
+      "num": "6.2",
+      "title": "Test cases for scenario where sender is subscribed to a UPU DO",
+      "page": 89
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 93,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 93,
+  "toc_pages": [
+    3
+  ]
+}

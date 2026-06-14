@@ -1,0 +1,13 @@
+{
+  "id": "eu-implementing-acts",
+  "type": "regulation",
+  "label": "EC Implementing Acts for EUDI Wallet",
+  "url": "https://digital-strategy.ec.europa.eu/en/policies/eudi-wallet-implementation",
+  "format": "html",
+  "scope": "external",
+  "stf": null,
+  "wki_ids": [],
+  "note": "Commission implementing decisions that mandate specific ESI standards",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.860280+00:00"
+}

@@ -1,0 +1,282 @@
+{
+  "stem": "ts_11947203v010101p",
+  "pdf": "downloads/specs/TS/ts_11947203v010101p.pdf",
+  "title": "(2026-03)",
+  "reference": "ts_11947203v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.4",
+      "title": "Notation",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "EAA issuance flows",
+      "page": 10
+    },
+    {
+      "num": "4.1",
+      "title": "General requirements",
+      "page": 10
+    },
+    {
+      "num": "4.2",
+      "title": "Requirements for Issuer Metadata (PID/EAA Provider Metadata)",
+      "page": 10
+    },
+    {
+      "num": "4.2.1",
+      "title": "General requirements",
+      "page": 10
+    },
+    {
+      "num": "4.2.2",
+      "title": "Provision of access certificates of PID/EAA Provider to EUDI Wallet",
+      "page": 10
+    },
+    {
+      "num": "4.2.3",
+      "title": "Provision of registration certificates of PID/EAA Provider to EUDI Wallet",
+      "page": 11
+    },
+    {
+      "num": "4.2.4",
+      "title": "Provision of PID/EAA reuse policy",
+      "page": 12
+    },
+    {
+      "num": "4.2.4.1",
+      "title": "General requirements",
+      "page": 12
+    },
+    {
+      "num": "4.2.4.2",
+      "title": "ARF pre-defined PID/EAA reuse policy",
+      "page": 12
+    },
+    {
+      "num": "4.2.5",
+      "title": "Provision of Embedded Disclosure Policy",
+      "page": 14
+    },
+    {
+      "num": "4.2.5.1",
+      "title": "Introduction (informative)",
+      "page": 14
+    },
+    {
+      "num": "4.2.5.2",
+      "title": "Requirements for the data model of Embedded Disclosure Policy",
+      "page": 15
+    },
+    {
+      "num": "4.3",
+      "title": "Requirements for the Credential Offer",
+      "page": 16
+    },
+    {
+      "num": "4.4",
+      "title": "Requirements for the Pushed Authorisation Request",
+      "page": 16
+    },
+    {
+      "num": "4.4.1",
+      "title": "Scope of application",
+      "page": 16
+    },
+    {
+      "num": "4.4.2",
+      "title": "Requirements for contents of the Pushed Authorisation Request",
+      "page": 16
+    },
+    {
+      "num": "4.4.3",
+      "title": "Requirements for processing the Pushed Authorisation Request",
+      "page": 17
+    },
+    {
+      "num": "4.5",
+      "title": "Requirements for the Token Request",
+      "page": 17
+    },
+    {
+      "num": "4.5.1",
+      "title": "Requirements for contents of the Token Request",
+      "page": 17
+    },
+    {
+      "num": "4.5.2",
+      "title": "Requirements for processing the Token Request",
+      "page": 17
+    },
+    {
+      "num": "4.6",
+      "title": "Requirements for the Credential Request",
+      "page": 17
+    },
+    {
+      "num": "4.6.1",
+      "title": "Requirements for contents of the Credential Request",
+      "page": 17
+    },
+    {
+      "num": "4.6.1.1",
+      "title": "Common requirements",
+      "page": 17
+    },
+    {
+      "num": "4.6.1.2",
+      "title": "Using proofs->jwt mechanism",
+      "page": 18
+    },
+    {
+      "num": "4.6.1.3",
+      "title": "Using proofs->attestation mechanism",
+      "page": 18
+    },
+    {
+      "num": "4.6.2",
+      "title": "Requirements for processing the Credential Request",
+      "page": 18
+    },
+    {
+      "num": "4.6.2.1",
+      "title": "Requirements for processing Credential Request with proofs->jwt",
+      "page": 18
+    },
+    {
+      "num": "4.6.2.2",
+      "title": "Requirements for processing Credential Request with proofs->attestation",
+      "page": 19
+    },
+    {
+      "num": "4.7",
+      "title": "Requirements for the Notification Request",
+      "page": 19
+    },
+    {
+      "num": "5",
+      "title": "Crypto suites",
+      "page": 19
+    },
+    {
+      "num": "6",
+      "title": "Security considerations",
+      "page": 19
+    },
+    {
+      "num": "Annex A",
+      "title": "Requirements for issuance of X509-AC EAAs",
+      "page": 20,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 20
+    },
+    {
+      "num": "A.2",
+      "title": "Requirements for Issuer Metadata",
+      "page": 20
+    },
+    {
+      "num": "A.3",
+      "title": "Rules for path in Issuer Metadata for X509-AC EAAs",
+      "page": 20
+    },
+    {
+      "num": "B.1",
+      "title": "Introduction",
+      "page": 21
+    },
+    {
+      "num": "B.2",
+      "title": "Requirements for Issuer Metadata",
+      "page": 21
+    },
+    {
+      "num": "Annex C",
+      "title": "Change history",
+      "page": 22,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 24,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 24,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

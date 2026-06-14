@@ -1,0 +1,703 @@
+{
+  "stem": "tr_119540v010101p",
+  "pdf": "downloads/specs/TR/tr_119540v010101p.pdf",
+  "title": "(2025-10)",
+  "reference": "tr_119540v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 8
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 11
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 11
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 14
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 14
+    },
+    {
+      "num": "4",
+      "title": "Smart Contracts related regulation, standardization and initiatives",
+      "page": 15
+    },
+    {
+      "num": "4.1",
+      "title": "Essential Overview",
+      "page": 15
+    },
+    {
+      "num": "4.2",
+      "title": "Regulations",
+      "page": 16
+    },
+    {
+      "num": "4.2.1",
+      "title": "Data Act",
+      "page": 16
+    },
+    {
+      "num": "4.2.1.1",
+      "title": "Essential Overview",
+      "page": 16
+    },
+    {
+      "num": "4.2.1.2",
+      "title": "Terminology",
+      "page": 16
+    },
+    {
+      "num": "4.2.1.3",
+      "title": "Chain of Trust",
+      "page": 16
+    },
+    {
+      "num": "4.2.2",
+      "title": "eIDAS2",
+      "page": 16
+    },
+    {
+      "num": "4.2.2.1",
+      "title": "Essential Overview",
+      "page": 16
+    },
+    {
+      "num": "4.2.2.2",
+      "title": "Terminology",
+      "page": 17
+    },
+    {
+      "num": "4.2.2.3",
+      "title": "Chain of Trust",
+      "page": 17
+    },
+    {
+      "num": "4.2.3",
+      "title": "GDPR",
+      "page": 17
+    },
+    {
+      "num": "4.2.3.1",
+      "title": "Essential Overview",
+      "page": 17
+    },
+    {
+      "num": "4.2.3.2",
+      "title": "Terminology",
+      "page": 18
+    },
+    {
+      "num": "4.2.3.3",
+      "title": "Chain of Trust",
+      "page": 18
+    },
+    {
+      "num": "4.2.4",
+      "title": "UNCITRAL model law on automated contracting",
+      "page": 18
+    },
+    {
+      "num": "4.2.4.1",
+      "title": "Essential Overview",
+      "page": 18
+    },
+    {
+      "num": "4.2.4.2",
+      "title": "Terminology",
+      "page": 18
+    },
+    {
+      "num": "4.2.4.3",
+      "title": "Chain of Trust",
+      "page": 18
+    },
+    {
+      "num": "4.3",
+      "title": "Standardization",
+      "page": 18
+    },
+    {
+      "num": "4.3.1",
+      "title": "ISO/TC 307",
+      "page": 18
+    },
+    {
+      "num": "4.3.1.1",
+      "title": "Essential Overview",
+      "page": 18
+    },
+    {
+      "num": "4.3.1.2",
+      "title": "Terminology",
+      "page": 19
+    },
+    {
+      "num": "4.3.1.3",
+      "title": "Chain of Trust",
+      "page": 19
+    },
+    {
+      "num": "4.3.2",
+      "title": "CEN/CENELEC/JTC 19",
+      "page": 19
+    },
+    {
+      "num": "4.3.2.1",
+      "title": "Essential Overview",
+      "page": 19
+    },
+    {
+      "num": "4.3.2.2",
+      "title": "Terminology",
+      "page": 19
+    },
+    {
+      "num": "4.3.2.3",
+      "title": "Chain of Trust",
+      "page": 19
+    },
+    {
+      "num": "4.3.3",
+      "title": "ETSI ISG PDL",
+      "page": 19
+    },
+    {
+      "num": "4.3.3.1",
+      "title": "Essential Overview",
+      "page": 19
+    },
+    {
+      "num": "4.3.3.2",
+      "title": "Terminology",
+      "page": 20
+    },
+    {
+      "num": "4.3.3.3",
+      "title": "Chain of Trust",
+      "page": 20
+    },
+    {
+      "num": "4.3.4",
+      "title": "ITU-T X-Series Recommendations Study Group 17",
+      "page": 20
+    },
+    {
+      "num": "4.3.4.1",
+      "title": "Essential Overview",
+      "page": 20
+    },
+    {
+      "num": "4.3.4.2",
+      "title": "Terminology",
+      "page": 21
+    },
+    {
+      "num": "4.3.4.3",
+      "title": "Chain of Trust",
+      "page": 21
+    },
+    {
+      "num": "4.3.5",
+      "title": "IEEE SA P2418",
+      "page": 21
+    },
+    {
+      "num": "4.3.5.1",
+      "title": "Essential Overview",
+      "page": 21
+    },
+    {
+      "num": "4.3.5.2",
+      "title": "Terminology",
+      "page": 21
+    },
+    {
+      "num": "4.3.5.3",
+      "title": "Chain of Trust",
+      "page": 21
+    },
+    {
+      "num": "4.4",
+      "title": "Projects, Programs and Initiatives",
+      "page": 21
+    },
+    {
+      "num": "4.4.1",
+      "title": "Digital Europe Program",
+      "page": 21
+    },
+    {
+      "num": "4.4.1.1",
+      "title": "Essential Overview",
+      "page": 21
+    },
+    {
+      "num": "4.4.1.2",
+      "title": "Terminology",
+      "page": 22
+    },
+    {
+      "num": "4.4.1.3",
+      "title": "Chain of Trust",
+      "page": 22
+    },
+    {
+      "num": "4.4.2",
+      "title": "EBSI",
+      "page": 22
+    },
+    {
+      "num": "4.4.2.1",
+      "title": "Essential Overview",
+      "page": 22
+    },
+    {
+      "num": "4.4.2.2",
+      "title": "Terminology",
+      "page": 22
+    },
+    {
+      "num": "4.4.2.3",
+      "title": "Chain of Trust",
+      "page": 23
+    },
+    {
+      "num": "4.4.3",
+      "title": "EUDI Wallet",
+      "page": 23
+    },
+    {
+      "num": "4.4.3.1",
+      "title": "Essential Overview",
+      "page": 23
+    },
+    {
+      "num": "4.4.3.2",
+      "title": "Terminology",
+      "page": 23
+    },
+    {
+      "num": "4.4.3.3",
+      "title": "Chain of Trust",
+      "page": 24
+    },
+    {
+      "num": "4.5",
+      "title": "Others",
+      "page": 24
+    },
+    {
+      "num": "4.5.1",
+      "title": "eIDAS Toolbox- Architecture and Reference Framework (ARF)",
+      "page": 24
+    },
+    {
+      "num": "4.5.1.1",
+      "title": "Essential Overview",
+      "page": 24
+    },
+    {
+      "num": "4.5.1.2",
+      "title": "Terminology",
+      "page": 24
+    },
+    {
+      "num": "4.5.1.3",
+      "title": "Chain of Trust",
+      "page": 24
+    },
+    {
+      "num": "4.5.2",
+      "title": "INATBA",
+      "page": 24
+    },
+    {
+      "num": "4.5.2.1",
+      "title": "Essential Overview",
+      "page": 24
+    },
+    {
+      "num": "4.5.2.2",
+      "title": "Terminology",
+      "page": 24
+    },
+    {
+      "num": "4.5.2.3",
+      "title": "Chain of Trust",
+      "page": 24
+    },
+    {
+      "num": "4.5.3",
+      "title": "ENISA: Digital Identity Standards",
+      "page": 24
+    },
+    {
+      "num": "4.5.3.1",
+      "title": "Essential Overview",
+      "page": 24
+    },
+    {
+      "num": "4.5.3.2",
+      "title": "Terminology",
+      "page": 25
+    },
+    {
+      "num": "4.5.3.3",
+      "title": "Chain of Trust",
+      "page": 25
+    },
+    {
+      "num": "5",
+      "title": "A Chain of Trust in support of Smart Contracts and Electronic Ledgers",
+      "page": 25
+    },
+    {
+      "num": "5.1",
+      "title": "Essential Overview",
+      "page": 25
+    },
+    {
+      "num": "5.2",
+      "title": "SC main entities",
+      "page": 26
+    },
+    {
+      "num": "5.2.1",
+      "title": "Essential Overview",
+      "page": 26
+    },
+    {
+      "num": "5.2.2",
+      "title": "SC Language Specification",
+      "page": 29
+    },
+    {
+      "num": "5.2.3",
+      "title": "SC Compiler",
+      "page": 29
+    },
+    {
+      "num": "5.2.4",
+      "title": "SC Virtual Machine",
+      "page": 29
+    },
+    {
+      "num": "5.2.5",
+      "title": "Computer assisted software tools to assess correctness, safety, and security",
+      "page": 29
+    },
+    {
+      "num": "5.2.6",
+      "title": "SC Legal Text, Certification of Smart Contract, Agreements",
+      "page": 30
+    },
+    {
+      "num": "5.2.6.1",
+      "title": "Essential Overview",
+      "page": 30
+    },
+    {
+      "num": "5.2.6.2",
+      "title": "SC Legal Text",
+      "page": 31
+    },
+    {
+      "num": "5.2.6.3",
+      "title": "Certification of Smart Contract by SC Publisher",
+      "page": 31
+    },
+    {
+      "num": "5.2.6.4",
+      "title": "Verification of legal agreement",
+      "page": 31
+    },
+    {
+      "num": "5.3",
+      "title": "Distributed ledger technology (DLT)",
+      "page": 32
+    },
+    {
+      "num": "5.3.1",
+      "title": "Essential Overview",
+      "page": 32
+    },
+    {
+      "num": "5.3.2",
+      "title": "Permissioned or permissionless",
+      "page": 32
+    },
+    {
+      "num": "5.3.3",
+      "title": "Public or Private",
+      "page": 32
+    },
+    {
+      "num": "5.3.4",
+      "title": "Data structures used to implement a distributed ledger",
+      "page": 32
+    },
+    {
+      "num": "5.3.5",
+      "title": "On-chain and off-chain transaction data solutions",
+      "page": 35
+    },
+    {
+      "num": "5.4",
+      "title": "Digital trust elements in Smart Contracts",
+      "page": 36
+    },
+    {
+      "num": "5.4.1",
+      "title": "Essential Overview",
+      "page": 36
+    },
+    {
+      "num": "5.4.2",
+      "title": "Identification, authentication",
+      "page": 36
+    },
+    {
+      "num": "5.4.3",
+      "title": "Electronic signatures and seals",
+      "page": 36
+    },
+    {
+      "num": "5.4.4",
+      "title": "Electronic identity",
+      "page": 38
+    },
+    {
+      "num": "5.4.4.1",
+      "title": "Essential overview",
+      "page": 38
+    },
+    {
+      "num": "5.4.4.2",
+      "title": "Electronic identity in a mobile network",
+      "page": 39
+    },
+    {
+      "num": "5.4.5",
+      "title": "Distributed ledgers",
+      "page": 39
+    },
+    {
+      "num": "5.5",
+      "title": "Deployment and Execution of Smart Contracts and Smart Legal Contracts",
+      "page": 42
+    },
+    {
+      "num": "5.5.1",
+      "title": "Essential Overview",
+      "page": 42
+    },
+    {
+      "num": "5.5.2",
+      "title": "Centralized systems",
+      "page": 42
+    },
+    {
+      "num": "5.5.3",
+      "title": "Decentralized systems",
+      "page": 42
+    },
+    {
+      "num": "5.5.4",
+      "title": "Distributed systems",
+      "page": 42
+    },
+    {
+      "num": "5.5.5",
+      "title": "Peer-to-peer systems",
+      "page": 42
+    },
+    {
+      "num": "5.5.6",
+      "title": "Cloud systems",
+      "page": 43
+    },
+    {
+      "num": "5.5.7",
+      "title": "Fog systems",
+      "page": 43
+    },
+    {
+      "num": "5.6",
+      "title": "Legal issues in Smart Legal Contracts",
+      "page": 43
+    },
+    {
+      "num": "5.6.1",
+      "title": "Essential Overview",
+      "page": 43
+    },
+    {
+      "num": "5.6.2",
+      "title": "Legal parties",
+      "page": 43
+    },
+    {
+      "num": "5.6.3",
+      "title": "Certified code translation and evidences",
+      "page": 43
+    },
+    {
+      "num": "5.7",
+      "title": "Environmental and sustainability models of Smart Contracts",
+      "page": 44
+    },
+    {
+      "num": "5.8",
+      "title": "Underlying networks to support the deployment and execution of Smart Contracts",
+      "page": 44
+    },
+    {
+      "num": "6.1",
+      "title": "Essential Overview",
+      "page": 44
+    },
+    {
+      "num": "6.2",
+      "title": "Electronic identity issues",
+      "page": 45
+    },
+    {
+      "num": "6.3",
+      "title": "Cybersecurity issues",
+      "page": 45
+    },
+    {
+      "num": "6.4",
+      "title": "Privacy issues",
+      "page": 46
+    },
+    {
+      "num": "6.5",
+      "title": "Governance and Audit issues",
+      "page": 46
+    },
+    {
+      "num": "6.6",
+      "title": "Programming tools issues",
+      "page": 48
+    },
+    {
+      "num": "6.7",
+      "title": "(Smart) legal issues",
+      "page": 48
+    },
+    {
+      "num": "6.8",
+      "title": "Data sharing issues",
+      "page": 48
+    },
+    {
+      "num": "6.9",
+      "title": "Decentralized execution issues",
+      "page": 49
+    },
+    {
+      "num": "6.10",
+      "title": "Interoperability issues",
+      "page": 49
+    },
+    {
+      "num": "6.11",
+      "title": "Networks issues",
+      "page": 49
+    },
+    {
+      "num": "6.12",
+      "title": "Open-source vs. Closed-source issues",
+      "page": 50
+    },
+    {
+      "num": "7",
+      "title": "Conclusions",
+      "page": 50
+    },
+    {
+      "num": "A.1",
+      "title": "Essential Overview",
+      "page": 51
+    },
+    {
+      "num": "A.2",
+      "title": "Figures as an example of the Chain of Trust",
+      "page": 51
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 59,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 59,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

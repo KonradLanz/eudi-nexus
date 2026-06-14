@@ -1,0 +1,571 @@
+{
+  "stem": "ts_11941101v010001p",
+  "pdf": "downloads/specs/TS/ts_11941101v010001p.pdf",
+  "title": "(2015-07)",
+  "reference": "ts_11941101v010001p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions, abbreviations and notation",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.3",
+      "title": "Notation",
+      "page": 11
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 11
+    },
+    {
+      "num": "4.1",
+      "title": "General policy requirements concepts",
+      "page": 11
+    },
+    {
+      "num": "4.2",
+      "title": "Certificate policy and certification practice statement",
+      "page": 11
+    },
+    {
+      "num": "4.2.1",
+      "title": "Overview",
+      "page": 11
+    },
+    {
+      "num": "4.2.2",
+      "title": "Purpose",
+      "page": 11
+    },
+    {
+      "num": "4.2.3",
+      "title": "Level of specificity",
+      "page": 12
+    },
+    {
+      "num": "4.2.4",
+      "title": "Approach",
+      "page": 12
+    },
+    {
+      "num": "4.2.5",
+      "title": "Certificate Policy",
+      "page": 12
+    },
+    {
+      "num": "4.3",
+      "title": "Other Trust Service Providers statements",
+      "page": 13
+    },
+    {
+      "num": "4.4",
+      "title": "Certification services",
+      "page": 13
+    },
+    {
+      "num": "5",
+      "title": "General provisions on Certification Practice Statement and Certificate Policies",
+      "page": 14
+    },
+    {
+      "num": "5.1",
+      "title": "General requirements",
+      "page": 14
+    },
+    {
+      "num": "5.2",
+      "title": "Certification Practice Statement requirements",
+      "page": 15
+    },
+    {
+      "num": "5.3",
+      "title": "Certificate Policy name and identification",
+      "page": 15
+    },
+    {
+      "num": "5.4",
+      "title": "PKI participants",
+      "page": 16
+    },
+    {
+      "num": "5.4.1",
+      "title": "Certification Authority",
+      "page": 16
+    },
+    {
+      "num": "5.4.2",
+      "title": "Subscriber and subject",
+      "page": 16
+    },
+    {
+      "num": "5.4.3",
+      "title": "Others",
+      "page": 17
+    },
+    {
+      "num": "5.5",
+      "title": "Certificate usage",
+      "page": 17
+    },
+    {
+      "num": "6",
+      "title": "Trust Service Providers practice",
+      "page": 17
+    },
+    {
+      "num": "6.1",
+      "title": "Publication and repository responsibilities",
+      "page": 17
+    },
+    {
+      "num": "6.2",
+      "title": "Identification and authentication",
+      "page": 18
+    },
+    {
+      "num": "6.2.1",
+      "title": "Naming",
+      "page": 18
+    },
+    {
+      "num": "6.2.2",
+      "title": "Initial identity validation",
+      "page": 18
+    },
+    {
+      "num": "6.2.3",
+      "title": "Identification and authentication for Re-key requests",
+      "page": 20
+    },
+    {
+      "num": "6.2.4",
+      "title": "Identification and authentication for revocation requests",
+      "page": 20
+    },
+    {
+      "num": "6.3",
+      "title": "Certificate Life-Cycle operational requirements",
+      "page": 21
+    },
+    {
+      "num": "6.3.1",
+      "title": "Certificate application",
+      "page": 21
+    },
+    {
+      "num": "6.3.2",
+      "title": "Certificate application processing",
+      "page": 22
+    },
+    {
+      "num": "6.3.3",
+      "title": "Certificate issuance",
+      "page": 22
+    },
+    {
+      "num": "6.3.4",
+      "title": "Certificate acceptance",
+      "page": 23
+    },
+    {
+      "num": "6.3.5",
+      "title": "Key pair and certificate usage",
+      "page": 24
+    },
+    {
+      "num": "6.3.6",
+      "title": "Certificate renewal",
+      "page": 25
+    },
+    {
+      "num": "6.3.7",
+      "title": "Certificate Re-key",
+      "page": 26
+    },
+    {
+      "num": "6.3.8",
+      "title": "Certificate modification",
+      "page": 26
+    },
+    {
+      "num": "6.3.9",
+      "title": "Certificate revocation and suspension",
+      "page": 26
+    },
+    {
+      "num": "6.3.10",
+      "title": "Certificate status services",
+      "page": 27
+    },
+    {
+      "num": "6.3.11",
+      "title": "End of subscription",
+      "page": 27
+    },
+    {
+      "num": "6.3.12",
+      "title": "Key escrow and recovery",
+      "page": 27
+    },
+    {
+      "num": "6.4",
+      "title": "Facility, management, and operational controls",
+      "page": 27
+    },
+    {
+      "num": "6.4.1",
+      "title": "General",
+      "page": 27
+    },
+    {
+      "num": "6.4.2",
+      "title": "Physical security controls",
+      "page": 28
+    },
+    {
+      "num": "6.4.3",
+      "title": "Procedural controls",
+      "page": 28
+    },
+    {
+      "num": "6.4.4",
+      "title": "Personnel controls",
+      "page": 28
+    },
+    {
+      "num": "6.4.5",
+      "title": "Audit logging procedures",
+      "page": 29
+    },
+    {
+      "num": "6.4.6",
+      "title": "Records archival",
+      "page": 29
+    },
+    {
+      "num": "6.4.7",
+      "title": "Key changeover",
+      "page": 29
+    },
+    {
+      "num": "6.4.8",
+      "title": "Compromise and disaster recovery",
+      "page": 30
+    },
+    {
+      "num": "6.4.9",
+      "title": "Certification Authority or Registration Authority termination",
+      "page": 30
+    },
+    {
+      "num": "6.5",
+      "title": "Technical security controls",
+      "page": 31
+    },
+    {
+      "num": "6.5.1",
+      "title": "Key pair generation and installation",
+      "page": 31
+    },
+    {
+      "num": "6.5.2",
+      "title": "Private key protection and cryptographic module engineering controls",
+      "page": 32
+    },
+    {
+      "num": "6.5.3",
+      "title": "Other aspects of key pair management",
+      "page": 33
+    },
+    {
+      "num": "6.5.4",
+      "title": "Activation data",
+      "page": 34
+    },
+    {
+      "num": "6.5.5",
+      "title": "Computer security controls",
+      "page": 34
+    },
+    {
+      "num": "6.5.6",
+      "title": "Life cycle security controls",
+      "page": 34
+    },
+    {
+      "num": "6.5.7",
+      "title": "Network security controls",
+      "page": 35
+    },
+    {
+      "num": "6.5.8",
+      "title": "Timestamping",
+      "page": 35
+    },
+    {
+      "num": "6.6",
+      "title": "Certificate, CRL, and OCSP profiles",
+      "page": 35
+    },
+    {
+      "num": "6.6.1",
+      "title": "Certificate profile",
+      "page": 35
+    },
+    {
+      "num": "6.6.2",
+      "title": "CRL profile",
+      "page": 35
+    },
+    {
+      "num": "6.6.3",
+      "title": "OCSP profile",
+      "page": 35
+    },
+    {
+      "num": "6.7",
+      "title": "Compliance audit and other assessment",
+      "page": 35
+    },
+    {
+      "num": "6.8",
+      "title": "Other business and legal matters",
+      "page": 35
+    },
+    {
+      "num": "6.8.1",
+      "title": "Fees",
+      "page": 35
+    },
+    {
+      "num": "6.8.2",
+      "title": "Financial responsibility",
+      "page": 36
+    },
+    {
+      "num": "6.8.3",
+      "title": "Confidentiality of business information",
+      "page": 36
+    },
+    {
+      "num": "6.8.4",
+      "title": "Privacy of personal information",
+      "page": 36
+    },
+    {
+      "num": "6.8.5",
+      "title": "Intellectual property rights",
+      "page": 36
+    },
+    {
+      "num": "6.8.6",
+      "title": "Representations and warranties",
+      "page": 36
+    },
+    {
+      "num": "6.8.7",
+      "title": "Disclaimers of warranties",
+      "page": 36
+    },
+    {
+      "num": "6.8.8",
+      "title": "Limitations of liability",
+      "page": 36
+    },
+    {
+      "num": "6.8.9",
+      "title": "Indemnities",
+      "page": 36
+    },
+    {
+      "num": "6.8.10",
+      "title": "Term and termination",
+      "page": 37
+    },
+    {
+      "num": "6.8.11",
+      "title": "Individual notices and communications with participants",
+      "page": 37
+    },
+    {
+      "num": "6.8.12",
+      "title": "Amendments",
+      "page": 37
+    },
+    {
+      "num": "6.8.13",
+      "title": "Dispute resolution procedures",
+      "page": 37
+    },
+    {
+      "num": "6.8.14",
+      "title": "Governing law",
+      "page": 37
+    },
+    {
+      "num": "6.8.15",
+      "title": "Compliance with applicable law",
+      "page": 37
+    },
+    {
+      "num": "6.8.16",
+      "title": "Miscellaneous provisions",
+      "page": 37
+    },
+    {
+      "num": "6.9",
+      "title": "Other provisions",
+      "page": 37
+    },
+    {
+      "num": "6.9.1",
+      "title": "Organizational",
+      "page": 37
+    },
+    {
+      "num": "6.9.2",
+      "title": "Additional testing",
+      "page": 37
+    },
+    {
+      "num": "6.9.3",
+      "title": "Disabilities",
+      "page": 38
+    },
+    {
+      "num": "6.9.4",
+      "title": "Terms and conditions",
+      "page": 38
+    },
+    {
+      "num": "7",
+      "title": "Framework for the definition of other certificate policies",
+      "page": 38
+    },
+    {
+      "num": "7.1",
+      "title": "Certificate policy management",
+      "page": 38
+    },
+    {
+      "num": "7.2",
+      "title": "Additional requirements",
+      "page": 38
+    },
+    {
+      "num": "Annex A",
+      "title": "Model PKI disclosure statement",
+      "page": 39,
+      "annex_type": "informative"
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 39
+    },
+    {
+      "num": "A.2",
+      "title": "The PDS structure",
+      "page": 40
+    },
+    {
+      "num": "A.3",
+      "title": "The PDS format",
+      "page": 40
+    },
+    {
+      "num": "Annex B",
+      "title": "Revisions made compared to TS 102 042",
+      "page": 41,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Conformity assessment check list",
+      "page": 42,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Bibliography",
+      "page": 43,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 44,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 44,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

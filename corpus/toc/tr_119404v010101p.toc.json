@@ -1,0 +1,171 @@
+{
+  "stem": "tr_119404v010101p",
+  "pdf": "downloads/specs/TR/tr_119404v010101p.pdf",
+  "title": "(2023-02)",
+  "reference": "tr_119404v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 8
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction",
+      "page": 8
+    },
+    {
+      "num": "4.2",
+      "title": "General obligations under the NIS2 Directive",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Provisions related to eIDAS and Trust Service Providers: eIDAS2",
+      "page": 10
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 10
+    },
+    {
+      "num": "5.2",
+      "title": "Risk of fragmentation of the internal market",
+      "page": 11
+    },
+    {
+      "num": "5.3",
+      "title": "Risk assessment and risk management",
+      "page": 11
+    },
+    {
+      "num": "5.4",
+      "title": "Cybersecurity risk-management measures",
+      "page": 12
+    },
+    {
+      "num": "5.4.1",
+      "title": "Risk mitigation and cybersecurity measures",
+      "page": 12
+    },
+    {
+      "num": "5.4.2",
+      "title": "Cyber hygiene policies, cybersecurity awareness, and innovative technology",
+      "page": 12
+    },
+    {
+      "num": "5.4.3",
+      "title": "Supply chain",
+      "page": 13
+    },
+    {
+      "num": "5.5",
+      "title": "Supervision",
+      "page": 13
+    },
+    {
+      "num": "6",
+      "title": "TSPs' NIS2 Cybersecurity obligations",
+      "page": 13
+    },
+    {
+      "num": "6.1",
+      "title": "Analysis of NIS2 vs ETSI EN 319 401 controls",
+      "page": 13
+    },
+    {
+      "num": "6.2",
+      "title": "ETSI EN 319 401 and ISO/IEC 27002 control mapping",
+      "page": 16
+    },
+    {
+      "num": "7",
+      "title": "Methodology in Aligning ETSI Standards with NIS2",
+      "page": 18
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 19,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 19,
+  "toc_pages": [
+    3
+  ]
+}

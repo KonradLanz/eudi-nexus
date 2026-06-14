@@ -1,0 +1,923 @@
+{
+  "stem": "ts_11913404v010101p",
+  "pdf": "downloads/specs/TS/ts_11913404v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11913404v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 7,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 8
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 9
+    },
+    {
+      "num": "3",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 9
+    },
+    {
+      "num": "5",
+      "title": "Testing conformance to B-B level of XAdES signatures",
+      "page": 11
+    },
+    {
+      "num": "5.1",
+      "title": "General",
+      "page": 11
+    },
+    {
+      "num": "5.2",
+      "title": "Testing XML Signature elements and containers of XAdES qualifying properties",
+      "page": 12
+    },
+    {
+      "num": "5.2.1",
+      "title": "Testing XML Signature elements",
+      "page": 12
+    },
+    {
+      "num": "5.2.1.1",
+      "title": "Testing ds:Signature element",
+      "page": 12
+    },
+    {
+      "num": "5.2.1.2",
+      "title": "Testing ds: Reference element",
+      "page": 12
+    },
+    {
+      "num": "5.2.1.2.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 12
+    },
+    {
+      "num": "5.2.1.2.2",
+      "title": "Testing ds: Transforms element",
+      "page": 12
+    },
+    {
+      "num": "5.2.1.3",
+      "title": "Testing ds: Canonicalization element",
+      "page": 12
+    },
+    {
+      "num": "5.2.1.4",
+      "title": "Testing ds:SignatureValue element",
+      "page": 13
+    },
+    {
+      "num": "5.2.1.4.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 13
+    },
+    {
+      "num": "5.2.1.5",
+      "title": "Testing ds: KeyInfo element",
+      "page": 13
+    },
+    {
+      "num": "5.2.1.5.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 13
+    },
+    {
+      "num": "5.2.1.5.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 13
+    },
+    {
+      "num": "5.2.2",
+      "title": "Testing containers of XAdES qualifying properties",
+      "page": 14
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "Testing incorporation of XAdES qualifying properties to the signature",
+      "page": 14
+    },
+    {
+      "num": "5.2.2.2",
+      "title": "Testing xades:QualifyingProperties",
+      "page": 14
+    },
+    {
+      "num": "5.2.2.2.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 14
+    },
+    {
+      "num": "5.2.2.2.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 14
+    },
+    {
+      "num": "5.2.2.3",
+      "title": "Testing xades:SignedProperties",
+      "page": 15
+    },
+    {
+      "num": "5.2.2.3.1",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 15
+    },
+    {
+      "num": "5.2.2.4",
+      "title": "Testing xades:SignedSignatureProperties",
+      "page": 15
+    },
+    {
+      "num": "5.2.2.4.1",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 15
+    },
+    {
+      "num": "5.2.2.5",
+      "title": "Testing xades:SignedDataObjectProperties",
+      "page": 15
+    },
+    {
+      "num": "5.2.2.5.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 15
+    },
+    {
+      "num": "5.2.2.5.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 16
+    },
+    {
+      "num": "5.2.2.6",
+      "title": "Testing xades:UnSignedProperties",
+      "page": 16
+    },
+    {
+      "num": "5.2.2.6.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 16
+    },
+    {
+      "num": "5.2.2.6.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 16
+    },
+    {
+      "num": "5.2.2.7",
+      "title": "Testing xades:UnSignedSignatureProperties",
+      "page": 16
+    },
+    {
+      "num": "5.2.2.7.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 16
+    },
+    {
+      "num": "5.2.2.7.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 16
+    },
+    {
+      "num": "5.2.2.8",
+      "title": "Testing xades:UnSignedDataObjectProperties",
+      "page": 17
+    },
+    {
+      "num": "5.2.2.8.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 17
+    },
+    {
+      "num": "5.3",
+      "title": "Testing XAdES qualifying properties",
+      "page": 17
+    },
+    {
+      "num": "5.3.1",
+      "title": "Testing xades:SigningTime element",
+      "page": 17
+    },
+    {
+      "num": "5.3.1.1",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 17
+    },
+    {
+      "num": "5.3.2",
+      "title": "Testing xades:SigningCertificateV2 element",
+      "page": 17
+    },
+    {
+      "num": "5.3.2.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 17
+    },
+    {
+      "num": "5.3.2.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 18
+    },
+    {
+      "num": "5.3.3",
+      "title": "Testing xades:CommitmentTypeIndication element",
+      "page": 18
+    },
+    {
+      "num": "5.3.3.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 18
+    },
+    {
+      "num": "5.3.4",
+      "title": "Testing xades:DataObjectFormat element",
+      "page": 18
+    },
+    {
+      "num": "5.3.4.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 18
+    },
+    {
+      "num": "5.3.4.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 19
+    },
+    {
+      "num": "5.3.5",
+      "title": "Testing xades:SignatureProductionPlaceV2 element",
+      "page": 20
+    },
+    {
+      "num": "5.3.5.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 20
+    },
+    {
+      "num": "5.3.6",
+      "title": "Testing xades:SignerRoleV2 element",
+      "page": 20
+    },
+    {
+      "num": "5.3.6.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 20
+    },
+    {
+      "num": "5.3.7",
+      "title": "Testing xades:CounterSignature element",
+      "page": 21
+    },
+    {
+      "num": "5.3.7.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 21
+    },
+    {
+      "num": "5.3.8",
+      "title": "Testing xades:AllDataObjectsTimeStamp element",
+      "page": 21
+    },
+    {
+      "num": "5.3.8.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 21
+    },
+    {
+      "num": "5.3.9",
+      "title": "Testing xades:IndividualDataObjectsTimeStamp element",
+      "page": 22
+    },
+    {
+      "num": "5.3.9.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 22
+    },
+    {
+      "num": "5.3.10",
+      "title": "Testing xades:SignaturePolicyIdentifier element",
+      "page": 22
+    },
+    {
+      "num": "5.3.10.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 22
+    },
+    {
+      "num": "5.3.10.2",
+      "title": "Testing xades:SPURI signature policy qualifier",
+      "page": 23
+    },
+    {
+      "num": "5.3.10.2.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 23
+    },
+    {
+      "num": "5.3.10.3",
+      "title": "Testing xadesv141:SPDocSpecification signature policy qualifier",
+      "page": 23
+    },
+    {
+      "num": "5.3.10.3.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 23
+    },
+    {
+      "num": "5.3.11",
+      "title": "Testing xadesv141:SignaturePolicyStore",
+      "page": 23
+    },
+    {
+      "num": "5.3.11.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 23
+    },
+    {
+      "num": "5.3.12",
+      "title": "Testing xadesv141:CompleteCertificateRefsV2 element",
+      "page": 24
+    },
+    {
+      "num": "5.3.12.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 24
+    },
+    {
+      "num": "5.3.12.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 24
+    },
+    {
+      "num": "5.3.13",
+      "title": "Testing xadesv141:AttributeCertificateRefsV2 element",
+      "page": 25
+    },
+    {
+      "num": "5.3.13.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 25
+    },
+    {
+      "num": "5.3.13.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 25
+    },
+    {
+      "num": "5.3.14",
+      "title": "Testing xades:CompleteRevocationRefs element",
+      "page": 26
+    },
+    {
+      "num": "5.3.14.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 26
+    },
+    {
+      "num": "5.3.14.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 27
+    },
+    {
+      "num": "5.3.15",
+      "title": "Testing xades:AttributeRevocationRefs element",
+      "page": 27
+    },
+    {
+      "num": "5.3.15.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 27
+    },
+    {
+      "num": "5.3.15.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 28
+    },
+    {
+      "num": "5.3.16",
+      "title": "Testing xadesv141:SigAndRefsTimeStampV2 element",
+      "page": 28
+    },
+    {
+      "num": "5.3.16.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 28
+    },
+    {
+      "num": "5.3.16.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 29
+    },
+    {
+      "num": "5.3.17",
+      "title": "Testing xadesv141:RefsOnlyTimeStampV2 element",
+      "page": 29
+    },
+    {
+      "num": "5.3.17.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 29
+    },
+    {
+      "num": "5.3.17.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 30
+    },
+    {
+      "num": "6",
+      "title": "Testing conformance to B-T level of XAdES signatures",
+      "page": 30
+    },
+    {
+      "num": "6.1",
+      "title": "General requirements",
+      "page": 30
+    },
+    {
+      "num": "6.2",
+      "title": "Testing xades:SignatureTimeStamp element",
+      "page": 30
+    },
+    {
+      "num": "6.2.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 30
+    },
+    {
+      "num": "6.2.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 31
+    },
+    {
+      "num": "7",
+      "title": "Testing conformance to B-LT level of XAdES signatures",
+      "page": 31
+    },
+    {
+      "num": "7.1",
+      "title": "General requirements",
+      "page": 31
+    },
+    {
+      "num": "7.1.1",
+      "title": "Core requirements",
+      "page": 31
+    },
+    {
+      "num": "7.1.2",
+      "title": "Test assertions for testing properties containing references to validation data",
+      "page": 31
+    },
+    {
+      "num": "7.1.3",
+      "title": "Test assertions for testing properties from upper levels",
+      "page": 32
+    },
+    {
+      "num": "7.2",
+      "title": "Testing xades:CertificateValues element",
+      "page": 33
+    },
+    {
+      "num": "7.2.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 33
+    },
+    {
+      "num": "7.2.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 33
+    },
+    {
+      "num": "7.3",
+      "title": "Testing xades:RevocationValues element",
+      "page": 33
+    },
+    {
+      "num": "7.3.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 33
+    },
+    {
+      "num": "7.3.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 34
+    },
+    {
+      "num": "7.4",
+      "title": "Testing xades:AttrAuthoritiesCertValues element",
+      "page": 34
+    },
+    {
+      "num": "7.4.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 34
+    },
+    {
+      "num": "7.4.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 34
+    },
+    {
+      "num": "7.5",
+      "title": "Testing xades:AttributeRevocationValues element",
+      "page": 35
+    },
+    {
+      "num": "7.5.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 35
+    },
+    {
+      "num": "7.5.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 35
+    },
+    {
+      "num": "7.6",
+      "title": "Testing xadesv141:TimeStampValidationData element",
+      "page": 35
+    },
+    {
+      "num": "7.6.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 35
+    },
+    {
+      "num": "8",
+      "title": "Testing conformance to B-LTA level of XAdES signatures",
+      "page": 36
+    },
+    {
+      "num": "8.1",
+      "title": "General requirements",
+      "page": 36
+    },
+    {
+      "num": "8.2",
+      "title": "Testing xadesv141:ArchiveTimeStamp element",
+      "page": 37
+    },
+    {
+      "num": "8.2.1",
+      "title": "Common tests for distributed and not distributed cases",
+      "page": 37
+    },
+    {
+      "num": "8.2.1.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 37
+    },
+    {
+      "num": "8.2.1.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 37
+    },
+    {
+      "num": "8.3",
+      "title": "Testing xadesv141:RenewedDigests element",
+      "page": 37
+    },
+    {
+      "num": "8.3.1",
+      "title": "Test assertions common to XAdES baseline and extended signatures",
+      "page": 37
+    },
+    {
+      "num": "8.3.2",
+      "title": "Test assertions specific to XAdES baseline signatures",
+      "page": 38
+    },
+    {
+      "num": "Annex A",
+      "title": "Test assertions derived from XML Schema",
+      "page": 39,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.0",
+      "title": "Introduction",
+      "page": 39
+    },
+    {
+      "num": "A.1",
+      "title": "Testing auxiliary types contents",
+      "page": 40
+    },
+    {
+      "num": "A.1.1",
+      "title": "Introduction",
+      "page": 40
+    },
+    {
+      "num": "A.1.2",
+      "title": "Testing xades:ObjectIdentifierType instances",
+      "page": 40
+    },
+    {
+      "num": "A.1.3",
+      "title": "Testing xades:EncapsulatedPKIDataType instances",
+      "page": 41
+    },
+    {
+      "num": "A.1.4",
+      "title": "Testing xades:XAdESTimeStampType instances",
+      "page": 42
+    },
+    {
+      "num": "A.1.4.1",
+      "title": "Introduction",
+      "page": 42
+    },
+    {
+      "num": "A.1.4.2",
+      "title": "Testing xades:IncludeType instances",
+      "page": 42
+    },
+    {
+      "num": "A.1.5",
+      "title": "Testing Lists of references to certificates",
+      "page": 43
+    },
+    {
+      "num": "A.1.5.1",
+      "title": "Testing xades:CertIDListV2Type instances",
+      "page": 43
+    },
+    {
+      "num": "A.1.5.2",
+      "title": "Testing xades:CertIDTypeV2 instances",
+      "page": 43
+    },
+    {
+      "num": "A.1.5.3",
+      "title": "Testing xades:DigestAlgAndValueType instances",
+      "page": 44
+    },
+    {
+      "num": "A.1.5.4",
+      "title": "Testing xades:IssuerSerialV2 element",
+      "page": 45
+    },
+    {
+      "num": "A.2",
+      "title": "Testing containers for XAdES signatures",
+      "page": 45
+    },
+    {
+      "num": "A.2.1",
+      "title": "Testing xades:QualifyingProperties",
+      "page": 45
+    },
+    {
+      "num": "A.2.1.1",
+      "title": "Testing xades:QualifyingProperties element",
+      "page": 45
+    },
+    {
+      "num": "A.2.1.2",
+      "title": "Testing xades:SignedProperties",
+      "page": 46
+    },
+    {
+      "num": "A.2.1.2.1",
+      "title": "Testing xades:SignedProperties element",
+      "page": 46
+    },
+    {
+      "num": "A.2.1.2.2",
+      "title": "Testing xades:SignedSignatureProperties",
+      "page": 46
+    },
+    {
+      "num": "A.2.1.2.3",
+      "title": "Testing xades:SignedDataObjectProperties",
+      "page": 46
+    },
+    {
+      "num": "A.2.1.3",
+      "title": "Testing xades:UnsignedProperties",
+      "page": 47
+    },
+    {
+      "num": "A.2.1.3.1",
+      "title": "Testing xades:UnsignedProperties element",
+      "page": 47
+    },
+    {
+      "num": "A.2.1.3.2",
+      "title": "Testing xades:UnsignedSignatureProperties",
+      "page": 47
+    },
+    {
+      "num": "A.2.1.3.3",
+      "title": "Testing xades:UnsignedDataObjectProperties",
+      "page": 47
+    },
+    {
+      "num": "A.3",
+      "title": "Testing XAdES qualifying properties",
+      "page": 48
+    },
+    {
+      "num": "A.3.1",
+      "title": "Introduction",
+      "page": 48
+    },
+    {
+      "num": "A.3.2",
+      "title": "Testing xades:SigningTime",
+      "page": 48
+    },
+    {
+      "num": "A.3.3",
+      "title": "Testing xades:SigningCertificateV2",
+      "page": 48
+    },
+    {
+      "num": "A.3.4",
+      "title": "Testing xades:CommitmentTypeIndication",
+      "page": 48
+    },
+    {
+      "num": "A.3.5",
+      "title": "Testing xades:DataObjectFormat",
+      "page": 50
+    },
+    {
+      "num": "A.3.6",
+      "title": "Testing xades:SignatureProductionPlaceV2 element",
+      "page": 51
+    },
+    {
+      "num": "A.3.7",
+      "title": "Testing xades:SignerRoleV2 element",
+      "page": 51
+    },
+    {
+      "num": "A.3.8",
+      "title": "Testing xades:CounterSignature",
+      "page": 52
+    },
+    {
+      "num": "A.3.9",
+      "title": "Testing xades:AllDataObjectsTimeStamp",
+      "page": 52
+    },
+    {
+      "num": "A.3.10",
+      "title": "Testing xades:IndividualDataObjectsTimeStamp",
+      "page": 53
+    },
+    {
+      "num": "A.3.11",
+      "title": "Testing xades:SignaturePolicyIdentifier",
+      "page": 53
+    },
+    {
+      "num": "A.3.11.1",
+      "title": "Testing xades:SignaturePolicyIdentifier element",
+      "page": 53
+    },
+    {
+      "num": "A.3.11.2",
+      "title": "Testing xades:SPURI qualifier",
+      "page": 54
+    },
+    {
+      "num": "A.3.11.3",
+      "title": "Testing xades:SPUserNotice qualifier",
+      "page": 54
+    },
+    {
+      "num": "A.3.11.4",
+      "title": "Testing xadesv141:SPDocSpecification qualifier",
+      "page": 56
+    },
+    {
+      "num": "A.3.12",
+      "title": "Testing xadesv141:SignaturePolicyStore",
+      "page": 56
+    },
+    {
+      "num": "A.3.13",
+      "title": "Testing xades:SignatureTimeStamp",
+      "page": 57
+    },
+    {
+      "num": "A.3.15",
+      "title": "Testing xades:CompleteRevocationRefsType content",
+      "page": 57
+    },
+    {
+      "num": "A.3.15.1",
+      "title": "Testing root element",
+      "page": 57
+    },
+    {
+      "num": "A.3.15.2",
+      "title": "Testing xades:CRLRefs",
+      "page": 58
+    },
+    {
+      "num": "A.3.15.3",
+      "title": "Testing xades:OCSPRefs",
+      "page": 59
+    },
+    {
+      "num": "A.3.15.4",
+      "title": "Testing xades:OtherRefs",
+      "page": 61
+    },
+    {
+      "num": "A.3.16",
+      "title": "Testing xadesv141:SigAndRefsTimeStampV2",
+      "page": 62
+    },
+    {
+      "num": "A.3.17",
+      "title": "Testing xadesv141:RefsOnlyTimeStampV2",
+      "page": 62
+    },
+    {
+      "num": "A.3.18",
+      "title": "Testing xades:CertificateValuesType content",
+      "page": 62
+    },
+    {
+      "num": "A.3.19",
+      "title": "Testing xades:RevocationValuesType content",
+      "page": 62
+    },
+    {
+      "num": "A.3.20",
+      "title": "Testing xadesv141:TimeStampValidationData",
+      "page": 63
+    },
+    {
+      "num": "A.3.21",
+      "title": "Testing xadesv141:ArchiveTimeStamp",
+      "page": 64
+    },
+    {
+      "num": "A.3.22",
+      "title": "Testing xadesv141:RenewedDigests",
+      "page": 64
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 65,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 65,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6
+  ]
+}

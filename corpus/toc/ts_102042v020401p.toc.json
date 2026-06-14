@@ -1,0 +1,530 @@
+{
+  "stem": "ts_102042v020401p",
+  "pdf": "downloads/specs/TS/ts_102042v020401p.pdf",
+  "title": "(2013-02)",
+  "reference": "ts_102042v020401p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 9
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 9
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 10
+    },
+    {
+      "num": "3",
+      "title": "Definitions, abbreviations and notation",
+      "page": 11
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 11
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 12
+    },
+    {
+      "num": "3.3",
+      "title": "Notation",
+      "page": 13
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 14
+    },
+    {
+      "num": "4.1",
+      "title": "Certification authority",
+      "page": 14
+    },
+    {
+      "num": "4.2",
+      "title": "Certification services",
+      "page": 14
+    },
+    {
+      "num": "4.3",
+      "title": "Certificate policy and certification practice statement",
+      "page": 15
+    },
+    {
+      "num": "4.3.1",
+      "title": "Purpose",
+      "page": 15
+    },
+    {
+      "num": "4.3.2",
+      "title": "Level of specificity",
+      "page": 16
+    },
+    {
+      "num": "4.3.3",
+      "title": "Approach",
+      "page": 16
+    },
+    {
+      "num": "4.3.4",
+      "title": "Other CA statements",
+      "page": 16
+    },
+    {
+      "num": "4.4",
+      "title": "Subscriber and subject",
+      "page": 16
+    },
+    {
+      "num": "5",
+      "title": "Introduction to certificate policies",
+      "page": 17
+    },
+    {
+      "num": "5.1",
+      "title": "Overview",
+      "page": 17
+    },
+    {
+      "num": "5.2",
+      "title": "Identification",
+      "page": 17
+    },
+    {
+      "num": "5.3",
+      "title": "User community and applicability",
+      "page": 18
+    },
+    {
+      "num": "5.3.1",
+      "title": "EV Certificates",
+      "page": 18
+    },
+    {
+      "num": "5.3.2",
+      "title": "Publicly Trusted Certificates-Baseline Requirements",
+      "page": 19
+    },
+    {
+      "num": "5.4",
+      "title": "Conformance",
+      "page": 19
+    },
+    {
+      "num": "5.4.1",
+      "title": "Conformance claim",
+      "page": 19
+    },
+    {
+      "num": "5.4.2",
+      "title": "Conformance requirements",
+      "page": 20
+    },
+    {
+      "num": "6",
+      "title": "Obligations, warranties and liability",
+      "page": 20
+    },
+    {
+      "num": "6.1",
+      "title": "Certification authority obligations and warranties",
+      "page": 20
+    },
+    {
+      "num": "6.2",
+      "title": "Subscriber obligations",
+      "page": 20
+    },
+    {
+      "num": "6.3",
+      "title": "Information for relying parties",
+      "page": 21
+    },
+    {
+      "num": "6.4",
+      "title": "Liability",
+      "page": 21
+    },
+    {
+      "num": "7",
+      "title": "Requirements on CA practice",
+      "page": 21
+    },
+    {
+      "num": "7.1",
+      "title": "Certification practice statement",
+      "page": 22
+    },
+    {
+      "num": "7.2",
+      "title": "Public key infrastructure – Key management life cycle",
+      "page": 23
+    },
+    {
+      "num": "7.2.1",
+      "title": "Certification authority key generation",
+      "page": 23
+    },
+    {
+      "num": "7.2.2",
+      "title": "Certification authority key storage, backup and recovery",
+      "page": 24
+    },
+    {
+      "num": "7.2.3",
+      "title": "Certification authority public key distribution",
+      "page": 25
+    },
+    {
+      "num": "7.2.4",
+      "title": "Key escrow",
+      "page": 25
+    },
+    {
+      "num": "7.2.5",
+      "title": "Certification authority key usage",
+      "page": 25
+    },
+    {
+      "num": "7.2.6",
+      "title": "End of CA key life cycle",
+      "page": 25
+    },
+    {
+      "num": "7.2.7",
+      "title": "Life cycle management of cryptographic hardware used to sign certificates",
+      "page": 26
+    },
+    {
+      "num": "7.2.8",
+      "title": "CA provided subject key management services",
+      "page": 26
+    },
+    {
+      "num": "7.2.9",
+      "title": "Secure user device preparation",
+      "page": 27
+    },
+    {
+      "num": "7.3",
+      "title": "Public key infrastructure – Certificate management life cycle",
+      "page": 27
+    },
+    {
+      "num": "7.3.1",
+      "title": "Subject registration",
+      "page": 27
+    },
+    {
+      "num": "7.3.2",
+      "title": "Certificate renewal, rekey and update",
+      "page": 30
+    },
+    {
+      "num": "7.3.3",
+      "title": "Certificate generation",
+      "page": 31
+    },
+    {
+      "num": "7.3.4",
+      "title": "Dissemination of terms and conditions",
+      "page": 32
+    },
+    {
+      "num": "7.3.5",
+      "title": "Certificate dissemination",
+      "page": 32
+    },
+    {
+      "num": "7.3.6",
+      "title": "Certificate revocation and suspension",
+      "page": 33
+    },
+    {
+      "num": "7.4",
+      "title": "CA management and operation",
+      "page": 35
+    },
+    {
+      "num": "7.4.1",
+      "title": "Security management",
+      "page": 35
+    },
+    {
+      "num": "7.4.2",
+      "title": "Asset classification and management",
+      "page": 36
+    },
+    {
+      "num": "7.4.3",
+      "title": "Personnel security",
+      "page": 36
+    },
+    {
+      "num": "7.4.4",
+      "title": "Physical and environmental security",
+      "page": 37
+    },
+    {
+      "num": "7.4.5",
+      "title": "Operations management",
+      "page": 38
+    },
+    {
+      "num": "7.4.6",
+      "title": "System access management",
+      "page": 39
+    },
+    {
+      "num": "7.4.7",
+      "title": "Trustworthy systems deployment and maintenance",
+      "page": 40
+    },
+    {
+      "num": "7.4.8",
+      "title": "Business continuity management and incident handling",
+      "page": 41
+    },
+    {
+      "num": "7.4.9",
+      "title": "CA termination",
+      "page": 42
+    },
+    {
+      "num": "7.4.10",
+      "title": "Compliance with legal requirements",
+      "page": 42
+    },
+    {
+      "num": "7.4.11",
+      "title": "Recording of information concerning certificates",
+      "page": 43
+    },
+    {
+      "num": "7.5",
+      "title": "Organizational",
+      "page": 44
+    },
+    {
+      "num": "7.6",
+      "title": "Additional requirements",
+      "page": 45
+    },
+    {
+      "num": "7.6.1",
+      "title": "Additional testing",
+      "page": 45
+    },
+    {
+      "num": "7.6.2",
+      "title": "Cross certificates",
+      "page": 45
+    },
+    {
+      "num": "8",
+      "title": "Framework for the definition of other certificate policies",
+      "page": 45
+    },
+    {
+      "num": "8.1",
+      "title": "Certificate policy management",
+      "page": 45
+    },
+    {
+      "num": "8.2",
+      "title": "Additional requirements",
+      "page": 46
+    },
+    {
+      "num": "8.3",
+      "title": "Conformance",
+      "page": 46
+    },
+    {
+      "num": "Annex A",
+      "title": "Significant differences to TS 101 456",
+      "page": 47,
+      "annex_type": "informative"
+    },
+    {
+      "num": "A.1",
+      "title": "Scope",
+      "page": 47
+    },
+    {
+      "num": "A.2",
+      "title": "TS 101 456 specific requirements",
+      "page": 47
+    },
+    {
+      "num": "A.3",
+      "title": "Alternative quality requirements",
+      "page": 47
+    },
+    {
+      "num": "A.4",
+      "title": "Alternative functionality requirements",
+      "page": 48
+    },
+    {
+      "num": "Annex B",
+      "title": "Model PKI disclosure statement",
+      "page": 49,
+      "annex_type": "informative"
+    },
+    {
+      "num": "B.1",
+      "title": "Introduction",
+      "page": 49
+    },
+    {
+      "num": "B.2",
+      "title": "The PDS structure",
+      "page": 50
+    },
+    {
+      "num": "Annex D",
+      "title": "Revisions made since previous versions",
+      "page": 53,
+      "annex_type": "informative"
+    },
+    {
+      "num": "D.1",
+      "title": "Changes from V1.1.1 to V2.1.1",
+      "page": 53
+    },
+    {
+      "num": "D.1.1",
+      "title": "Additional Requirements",
+      "page": 53
+    },
+    {
+      "num": "D.1.2",
+      "title": "Update Requirements",
+      "page": 53
+    },
+    {
+      "num": "D.1.3",
+      "title": "Clarifications",
+      "page": 53
+    },
+    {
+      "num": "D.1.4",
+      "title": "Editorial",
+      "page": 53
+    },
+    {
+      "num": "D.1.5",
+      "title": "Annex E",
+      "page": 53
+    },
+    {
+      "num": "D.2",
+      "title": "Changes from V2.1.1 to V2.1.2",
+      "page": 54
+    },
+    {
+      "num": "D.2.1",
+      "title": "Additional Requirements",
+      "page": 54
+    },
+    {
+      "num": "D.2.2",
+      "title": "Update Requirements",
+      "page": 54
+    },
+    {
+      "num": "D.2.3",
+      "title": "Clarifications",
+      "page": 54
+    },
+    {
+      "num": "D.3",
+      "title": "Changes from V2.1.2 to V2.2.1",
+      "page": 54
+    },
+    {
+      "num": "D.3.1",
+      "title": "Update Requirements",
+      "page": 54
+    },
+    {
+      "num": "D.4",
+      "title": "Changes from V2.2.1 to V2.3.1",
+      "page": 54
+    },
+    {
+      "num": "D.4.1",
+      "title": "Update Requirements",
+      "page": 54
+    },
+    {
+      "num": "D.4.2",
+      "title": "Clarifications",
+      "page": 54
+    },
+    {
+      "num": "D.5",
+      "title": "Changes from V2.3.1 to V2.4.1",
+      "page": 54
+    },
+    {
+      "num": "Annex E",
+      "title": "Auditors qualification",
+      "page": 55,
+      "annex_type": "normative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 56,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 56,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

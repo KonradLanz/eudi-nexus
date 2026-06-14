@@ -1,0 +1,275 @@
+{
+  "stem": "tr_102272v010101p",
+  "pdf": "downloads/specs/TR/tr_102272v010101p.pdf",
+  "title": "(2003-12)",
+  "reference": "tr_102272v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "4",
+      "title": "Signature Policy overview",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "Signature policy specification in informal free text form",
+      "page": 9
+    },
+    {
+      "num": "6",
+      "title": "Signature policy specification in ASN.1",
+      "page": 12
+    },
+    {
+      "num": "6.1",
+      "title": "Overall ASN.1 structure",
+      "page": 13
+    },
+    {
+      "num": "6.2",
+      "title": "Signature validation policy",
+      "page": 13
+    },
+    {
+      "num": "6.3",
+      "title": "Common Rules",
+      "page": 14
+    },
+    {
+      "num": "6.4",
+      "title": "Commitment Rules",
+      "page": 14
+    },
+    {
+      "num": "6.5",
+      "title": "Signer and Verifier Rules",
+      "page": 15
+    },
+    {
+      "num": "6.5.1",
+      "title": "Signer rules",
+      "page": 15
+    },
+    {
+      "num": "6.5.2",
+      "title": "Verifier rules",
+      "page": 16
+    },
+    {
+      "num": "6.6",
+      "title": "Certificate and revocation requirement",
+      "page": 16
+    },
+    {
+      "num": "6.6.1",
+      "title": "Certificate requirements",
+      "page": 16
+    },
+    {
+      "num": "6.6.2",
+      "title": "Revocation requirements",
+      "page": 17
+    },
+    {
+      "num": "6.7",
+      "title": "Signing certificate trust conditions",
+      "page": 18
+    },
+    {
+      "num": "6.8",
+      "title": "Time-Stamp trust conditions",
+      "page": 18
+    },
+    {
+      "num": "6.9",
+      "title": "Attribute trust conditions",
+      "page": 19
+    },
+    {
+      "num": "6.10",
+      "title": "Algorithm constraints",
+      "page": 19
+    },
+    {
+      "num": "6.11",
+      "title": "Signature policy extensions",
+      "page": 20
+    },
+    {
+      "num": "A.1",
+      "title": "Signature policies definitions using X.208 (1988) ASN.1 syntax",
+      "page": 21
+    },
+    {
+      "num": "A.2",
+      "title": "Signature policy definitions using X.680 (2002) ASN.1 syntax",
+      "page": 24
+    },
+    {
+      "num": "B.0",
+      "title": "Introduction",
+      "page": 29
+    },
+    {
+      "num": "B.1",
+      "title": "Identification of signature policy",
+      "page": 30
+    },
+    {
+      "num": "B.2",
+      "title": "General signature policy information",
+      "page": 31
+    },
+    {
+      "num": "B.3",
+      "title": "Recognized commitment types",
+      "page": 31
+    },
+    {
+      "num": "B.4",
+      "title": "Rules for use of certification authorities",
+      "page": 32
+    },
+    {
+      "num": "B.4.1",
+      "title": "Trust points",
+      "page": 32
+    },
+    {
+      "num": "B.4.2",
+      "title": "Certification path",
+      "page": 32
+    },
+    {
+      "num": "B.5",
+      "title": "Rules for the use of time-stamping and time-marking",
+      "page": 33
+    },
+    {
+      "num": "B.5.1",
+      "title": "Trust points and certificate paths",
+      "page": 33
+    },
+    {
+      "num": "B.5.2",
+      "title": "Time-stamping authority names",
+      "page": 33
+    },
+    {
+      "num": "B.5.3",
+      "title": "Timing constraints - cautionary period",
+      "page": 33
+    },
+    {
+      "num": "B.5.4",
+      "title": "Timing constraints - time-stamp delay",
+      "page": 33
+    },
+    {
+      "num": "B.6",
+      "title": "Revocation rules",
+      "page": 34
+    },
+    {
+      "num": "B.7",
+      "title": "Rules for the use of roles",
+      "page": 34
+    },
+    {
+      "num": "B.7.1",
+      "title": "Attribute values",
+      "page": 34
+    },
+    {
+      "num": "B.7.2",
+      "title": "Trust points for certified attributes",
+      "page": 34
+    },
+    {
+      "num": "B.7.3",
+      "title": "Certification path for certified attributes",
+      "page": 34
+    },
+    {
+      "num": "B.8",
+      "title": "Rules for verification data to be followed",
+      "page": 35
+    },
+    {
+      "num": "B.9",
+      "title": "Rules for algorithm constraints and key lengths",
+      "page": 35
+    },
+    {
+      "num": "B.10",
+      "title": "Other signature policy rules",
+      "page": 35
+    },
+    {
+      "num": "B.11",
+      "title": "Signature policy protection",
+      "page": 35
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 39,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 39,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

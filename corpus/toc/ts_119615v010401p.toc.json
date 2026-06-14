@@ -1,0 +1,451 @@
+{
+  "stem": "ts_119615v010401p",
+  "pdf": "downloads/specs/TS/ts_119615v010401p.pdf",
+  "title": "(2026-05)",
+  "reference": "ts_119615v010401p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 8
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 8
+    },
+    {
+      "num": "4.0",
+      "title": "General provisions",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "Authenticating the EC compiled list of trusted lists",
+      "page": 9
+    },
+    {
+      "num": "4.1.1",
+      "title": "Description",
+      "page": 9
+    },
+    {
+      "num": "4.1.2",
+      "title": "Inputs",
+      "page": 11
+    },
+    {
+      "num": "4.1.3",
+      "title": "Outputs",
+      "page": 11
+    },
+    {
+      "num": "4.1.4",
+      "title": "Processing",
+      "page": 11
+    },
+    {
+      "num": "4.2",
+      "title": "Authenticating an EUMS trusted list",
+      "page": 15
+    },
+    {
+      "num": "4.2.1",
+      "title": "Description",
+      "page": 15
+    },
+    {
+      "num": "4.2.2",
+      "title": "Inputs",
+      "page": 15
+    },
+    {
+      "num": "4.2.3",
+      "title": "Outputs",
+      "page": 15
+    },
+    {
+      "num": "4.2.4",
+      "title": "Processing",
+      "page": 15
+    },
+    {
+      "num": "4.3",
+      "title": "Obtaining listed services matching a certificate",
+      "page": 16
+    },
+    {
+      "num": "4.3.1",
+      "title": "Description",
+      "page": 16
+    },
+    {
+      "num": "4.3.2",
+      "title": "Inputs",
+      "page": 16
+    },
+    {
+      "num": "4.3.3",
+      "title": "Outputs",
+      "page": 17
+    },
+    {
+      "num": "4.3.4",
+      "title": "Processing",
+      "page": 17
+    },
+    {
+      "num": "4.4",
+      "title": "EU qualified certificate determination",
+      "page": 19
+    },
+    {
+      "num": "4.4.1",
+      "title": "Description",
+      "page": 19
+    },
+    {
+      "num": "4.4.2",
+      "title": "Inputs",
+      "page": 19
+    },
+    {
+      "num": "4.4.3",
+      "title": "Outputs",
+      "page": 20
+    },
+    {
+      "num": "4.4.4",
+      "title": "Processing",
+      "page": 20
+    },
+    {
+      "num": "4.5",
+      "title": "QSCD determination",
+      "page": 34
+    },
+    {
+      "num": "4.5.1",
+      "title": "Description",
+      "page": 34
+    },
+    {
+      "num": "4.5.2",
+      "title": "Inputs",
+      "page": 34
+    },
+    {
+      "num": "4.5.3",
+      "title": "Outputs",
+      "page": 34
+    },
+    {
+      "num": "4.5.4",
+      "title": "Processing",
+      "page": 34
+    },
+    {
+      "num": "4.6",
+      "title": "EU trust service token issuer qualification determination",
+      "page": 37
+    },
+    {
+      "num": "4.6.1",
+      "title": "Description",
+      "page": 37
+    },
+    {
+      "num": "4.6.2",
+      "title": "Inputs",
+      "page": 37
+    },
+    {
+      "num": "4.6.3",
+      "title": "Outputs",
+      "page": 37
+    },
+    {
+      "num": "4.6.4",
+      "title": "Processing",
+      "page": 38
+    },
+    {
+      "num": "4.7",
+      "title": "EU qualified time stamp determination",
+      "page": 39
+    },
+    {
+      "num": "4.7.1",
+      "title": "Description",
+      "page": 39
+    },
+    {
+      "num": "4.7.2",
+      "title": "Inputs",
+      "page": 39
+    },
+    {
+      "num": "4.7.3",
+      "title": "Outputs",
+      "page": 40
+    },
+    {
+      "num": "4.7.4",
+      "title": "Processing",
+      "page": 40
+    },
+    {
+      "num": "4.8",
+      "title": "EU qualified validation service determination",
+      "page": 41
+    },
+    {
+      "num": "4.8.1",
+      "title": "Description",
+      "page": 41
+    },
+    {
+      "num": "4.8.2",
+      "title": "Inputs",
+      "page": 41
+    },
+    {
+      "num": "4.8.3",
+      "title": "Outputs",
+      "page": 42
+    },
+    {
+      "num": "4.8.4",
+      "title": "Processing",
+      "page": 42
+    },
+    {
+      "num": "4.9",
+      "title": "EU qualified preservation service determination",
+      "page": 43
+    },
+    {
+      "num": "4.9.1",
+      "title": "Description",
+      "page": 43
+    },
+    {
+      "num": "4.9.2",
+      "title": "Inputs",
+      "page": 44
+    },
+    {
+      "num": "4.9.3",
+      "title": "Outputs",
+      "page": 44
+    },
+    {
+      "num": "4.9.4",
+      "title": "Processing",
+      "page": 44
+    },
+    {
+      "num": "4.10",
+      "title": "EU qualified electronic registered delivery service determination",
+      "page": 45
+    },
+    {
+      "num": "4.10.1",
+      "title": "Description",
+      "page": 45
+    },
+    {
+      "num": "4.10.2",
+      "title": "Inputs and parameters",
+      "page": 46
+    },
+    {
+      "num": "4.10.3",
+      "title": "Outputs",
+      "page": 46
+    },
+    {
+      "num": "4.10.4",
+      "title": "Processing",
+      "page": 46
+    },
+    {
+      "num": "4.11",
+      "title": "EU qualified archiving service determination",
+      "page": 47
+    },
+    {
+      "num": "4.11.1",
+      "title": "Description",
+      "page": 47
+    },
+    {
+      "num": "4.11.2",
+      "title": "Inputs",
+      "page": 48
+    },
+    {
+      "num": "4.11.3",
+      "title": "Outputs",
+      "page": 48
+    },
+    {
+      "num": "4.11.4",
+      "title": "Processing",
+      "page": 48
+    },
+    {
+      "num": "4.12",
+      "title": "EU qualified electronic attestation of attribute service determination",
+      "page": 49
+    },
+    {
+      "num": "4.12.1",
+      "title": "Description",
+      "page": 49
+    },
+    {
+      "num": "4.12.2",
+      "title": "Inputs",
+      "page": 49
+    },
+    {
+      "num": "4.12.3",
+      "title": "Outputs",
+      "page": 49
+    },
+    {
+      "num": "4.12.4",
+      "title": "Processing",
+      "page": 49
+    },
+    {
+      "num": "4.13",
+      "title": "EU qualified ledger service determination",
+      "page": 50
+    },
+    {
+      "num": "4.13.1",
+      "title": "Description",
+      "page": 50
+    },
+    {
+      "num": "4.13.2",
+      "title": "Inputs",
+      "page": 50
+    },
+    {
+      "num": "4.13.3",
+      "title": "Outputs",
+      "page": 50
+    },
+    {
+      "num": "4.13.4",
+      "title": "Processing",
+      "page": 51
+    },
+    {
+      "num": "Annex A",
+      "title": "Void",
+      "page": 52,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Output sub-statuses changes",
+      "page": 53,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Bibliography",
+      "page": 54,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Change history",
+      "page": 55,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 56,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 56,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

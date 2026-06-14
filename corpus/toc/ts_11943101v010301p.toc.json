@@ -1,0 +1,491 @@
+{
+  "stem": "ts_11943101v010301p",
+  "pdf": "downloads/specs/TS/ts_11943101v010301p.pdf",
+  "title": "(2024-12)",
+  "reference": "ts_11943101v010301p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 10
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 10
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 10
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 11
+    },
+    {
+      "num": "4.1",
+      "title": "General policy requirements concepts",
+      "page": 11
+    },
+    {
+      "num": "4.2",
+      "title": "Void",
+      "page": 12
+    },
+    {
+      "num": "4.3",
+      "title": "SSAS applicable documentation",
+      "page": 12
+    },
+    {
+      "num": "4.3.1",
+      "title": "SSAS practice statement",
+      "page": 12
+    },
+    {
+      "num": "4.3.2",
+      "title": "SSAS policy",
+      "page": 12
+    },
+    {
+      "num": "4.3.3",
+      "title": "Terms and conditions",
+      "page": 13
+    },
+    {
+      "num": "4.4",
+      "title": "SSAS component services",
+      "page": 13
+    },
+    {
+      "num": "5",
+      "title": "General provisions on practice statement and policies",
+      "page": 15
+    },
+    {
+      "num": "5.1",
+      "title": "Practice statement requirements",
+      "page": 15
+    },
+    {
+      "num": "5.2",
+      "title": "SP name and identification",
+      "page": 16
+    },
+    {
+      "num": "5.3",
+      "title": "Participants",
+      "page": 16
+    },
+    {
+      "num": "5.3.1",
+      "title": "SSASP",
+      "page": 16
+    },
+    {
+      "num": "5.3.2",
+      "title": "Subscriber and signer",
+      "page": 16
+    },
+    {
+      "num": "6",
+      "title": "Trust Service Providers practice",
+      "page": 16
+    },
+    {
+      "num": "6.1",
+      "title": "Publication and repository responsibilities",
+      "page": 16
+    },
+    {
+      "num": "6.2",
+      "title": "Signing key initialization",
+      "page": 17
+    },
+    {
+      "num": "6.2.1",
+      "title": "Signing key generation",
+      "page": 17
+    },
+    {
+      "num": "6.2.2",
+      "title": "eID means or identity linking",
+      "page": 17
+    },
+    {
+      "num": "6.2.3",
+      "title": "Certificate linking",
+      "page": 19
+    },
+    {
+      "num": "6.2.4",
+      "title": "eID means provision",
+      "page": 19
+    },
+    {
+      "num": "6.3",
+      "title": "Signing key life-cycle operational requirements",
+      "page": 19
+    },
+    {
+      "num": "6.3.1",
+      "title": "Signature activation",
+      "page": 19
+    },
+    {
+      "num": "6.3.2",
+      "title": "Signing key deletion",
+      "page": 20
+    },
+    {
+      "num": "6.3.3",
+      "title": "Signing key backup and recovery",
+      "page": 20
+    },
+    {
+      "num": "6.4",
+      "title": "Facility, management, and operational controls",
+      "page": 21
+    },
+    {
+      "num": "6.4.1",
+      "title": "General",
+      "page": 21
+    },
+    {
+      "num": "6.4.2",
+      "title": "Physical security controls",
+      "page": 21
+    },
+    {
+      "num": "6.4.3",
+      "title": "Procedural controls",
+      "page": 21
+    },
+    {
+      "num": "6.4.4",
+      "title": "Personnel controls",
+      "page": 21
+    },
+    {
+      "num": "6.4.5",
+      "title": "Audit logging procedures",
+      "page": 21
+    },
+    {
+      "num": "6.4.6",
+      "title": "Records archival",
+      "page": 21
+    },
+    {
+      "num": "6.4.7",
+      "title": "Key changeover",
+      "page": 21
+    },
+    {
+      "num": "6.4.8",
+      "title": "Compromise and disaster recovery",
+      "page": 21
+    },
+    {
+      "num": "6.4.9",
+      "title": "SSASP service termination",
+      "page": 21
+    },
+    {
+      "num": "6.5",
+      "title": "Technical security controls",
+      "page": 22
+    },
+    {
+      "num": "6.5.1",
+      "title": "Systems and security management",
+      "page": 22
+    },
+    {
+      "num": "6.5.2",
+      "title": "Systems and operations",
+      "page": 22
+    },
+    {
+      "num": "6.5.3",
+      "title": "Computer security controls",
+      "page": 22
+    },
+    {
+      "num": "6.5.4",
+      "title": "Life cycle security controls",
+      "page": 22
+    },
+    {
+      "num": "6.5.5",
+      "title": "Network security controls",
+      "page": 22
+    },
+    {
+      "num": "6.6",
+      "title": "Compliance audit and other assessment",
+      "page": 22
+    },
+    {
+      "num": "6.7",
+      "title": "Other business and legal matters",
+      "page": 22
+    },
+    {
+      "num": "6.7.1",
+      "title": "Fees",
+      "page": 22
+    },
+    {
+      "num": "6.7.2",
+      "title": "Financial responsibility",
+      "page": 22
+    },
+    {
+      "num": "6.7.3",
+      "title": "Confidentiality of business information",
+      "page": 22
+    },
+    {
+      "num": "6.7.4",
+      "title": "Privacy of personal information",
+      "page": 22
+    },
+    {
+      "num": "6.7.5",
+      "title": "Intellectual property rights",
+      "page": 23
+    },
+    {
+      "num": "6.7.6",
+      "title": "Representations and warranties",
+      "page": 23
+    },
+    {
+      "num": "6.7.7",
+      "title": "Disclaimers of warranties",
+      "page": 23
+    },
+    {
+      "num": "6.7.8",
+      "title": "Limitations of liability",
+      "page": 23
+    },
+    {
+      "num": "6.7.9",
+      "title": "Indemnities",
+      "page": 23
+    },
+    {
+      "num": "6.7.10",
+      "title": "Term and termination",
+      "page": 23
+    },
+    {
+      "num": "6.7.11",
+      "title": "Individual notices and communications with participants",
+      "page": 23
+    },
+    {
+      "num": "6.7.12",
+      "title": "Amendments",
+      "page": 23
+    },
+    {
+      "num": "6.7.13",
+      "title": "Dispute resolution procedures",
+      "page": 23
+    },
+    {
+      "num": "6.7.14",
+      "title": "Governing law",
+      "page": 23
+    },
+    {
+      "num": "6.7.15",
+      "title": "Compliance with applicable law",
+      "page": 23
+    },
+    {
+      "num": "6.7.16",
+      "title": "Miscellaneous provisions",
+      "page": 23
+    },
+    {
+      "num": "6.8",
+      "title": "Other provisions",
+      "page": 24
+    },
+    {
+      "num": "6.8.1",
+      "title": "Organizational",
+      "page": 24
+    },
+    {
+      "num": "6.8.2",
+      "title": "Additional testing",
+      "page": 24
+    },
+    {
+      "num": "6.8.3",
+      "title": "Disabilities",
+      "page": 24
+    },
+    {
+      "num": "6.8.4",
+      "title": "Terms and conditions",
+      "page": 24
+    },
+    {
+      "num": "Annex A",
+      "title": "Specific requirements related to Regulation (EU) 2024/1183",
+      "page": 25,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "SSASP as a Qualified TSP",
+      "page": 25
+    },
+    {
+      "num": "A.2",
+      "title": "Policy name and identification",
+      "page": 25
+    },
+    {
+      "num": "A.3",
+      "title": "General requirements",
+      "page": 25
+    },
+    {
+      "num": "A.4",
+      "title": "Signing key generation",
+      "page": 25
+    },
+    {
+      "num": "A.5",
+      "title": "Signature activation",
+      "page": 25
+    },
+    {
+      "num": "A.6",
+      "title": "Signature activation data management",
+      "page": 26
+    },
+    {
+      "num": "A.7",
+      "title": "eID means linking",
+      "page": 26
+    },
+    {
+      "num": "Annex B",
+      "title": "Regulation and EU SSAS policy mapping",
+      "page": 27,
+      "annex_type": "informative"
+    },
+    {
+      "num": "B.1",
+      "title": "Void",
+      "page": 27
+    },
+    {
+      "num": "B.2",
+      "title": "Regulation (EU) 2024/1183",
+      "page": 27
+    },
+    {
+      "num": "Annex C",
+      "title": "Scope of remote signing standards",
+      "page": 29,
+      "annex_type": "informative"
+    },
+    {
+      "num": "C.1",
+      "title": "Scope of remote signing standards",
+      "page": 29
+    },
+    {
+      "num": "Annex D",
+      "title": "Change history",
+      "page": 30,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 31,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 31,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

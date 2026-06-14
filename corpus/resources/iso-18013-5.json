@@ -1,0 +1,13 @@
+{
+  "id": "iso-18013-5",
+  "type": "external_standard",
+  "label": "ISO/IEC 18013-5 (mDL)",
+  "url": "https://www.iso.org/standard/69084.html",
+  "format": "html",
+  "scope": "external",
+  "stf": null,
+  "wki_ids": [],
+  "note": "Referenced by TS 119 476 series for mdoc credential format",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.860476+00:00"
+}

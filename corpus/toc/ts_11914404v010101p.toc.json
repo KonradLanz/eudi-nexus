@@ -1,0 +1,155 @@
+{
+  "stem": "ts_11914404v010101p",
+  "pdf": "downloads/specs/TS/ts_11914404v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11914404v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Testing conformance to PAdES-B-B signatures",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Testing signature dictionary elements",
+      "page": 7
+    },
+    {
+      "num": "5.3",
+      "title": "Testing CMS signature elements",
+      "page": 9
+    },
+    {
+      "num": "6",
+      "title": "Testing conformance to PAdES-B-T signatures",
+      "page": 11
+    },
+    {
+      "num": "6.1",
+      "title": "General requirements",
+      "page": 11
+    },
+    {
+      "num": "6.2",
+      "title": "Testing trusted signing time",
+      "page": 11
+    },
+    {
+      "num": "7",
+      "title": "Testing conformance to PAdES-B-LT signatures",
+      "page": 12
+    },
+    {
+      "num": "7.1",
+      "title": "General requirements",
+      "page": 12
+    },
+    {
+      "num": "7.2",
+      "title": "Testing DSS dictionary",
+      "page": 12
+    },
+    {
+      "num": "8",
+      "title": "Testing conformance to PAdES-B-LTA signatures",
+      "page": 13
+    },
+    {
+      "num": "8.1",
+      "title": "General requirements",
+      "page": 13
+    },
+    {
+      "num": "8.2",
+      "title": "Testing DTS dictionary",
+      "page": 13
+    },
+    {
+      "num": "Annex A",
+      "title": "Bibliography",
+      "page": 14,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 15,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 15,
+  "toc_pages": [
+    3
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "stem": "ts_10277803v010201p",
+  "pdf": "downloads/specs/TS/ts_10277803v010201p.pdf",
+  "title": "(2010-07)",
+  "reference": "ts_10277803v010201p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "PAdES-BES and PAdES-EPES Profiles",
+      "page": 7
+    },
+    {
+      "num": "4.1",
+      "title": "Introduction",
+      "page": 7
+    },
+    {
+      "num": "4.2",
+      "title": "General Requirements",
+      "page": 7
+    },
+    {
+      "num": "4.3",
+      "title": "SignerInfo",
+      "page": 8
+    },
+    {
+      "num": "4.4",
+      "title": "Mandatory Attributes",
+      "page": 8
+    },
+    {
+      "num": "4.4.1",
+      "title": "content-type Attribute",
+      "page": 8
+    },
+    {
+      "num": "4.4.2",
+      "title": "message-digest Attribute",
+      "page": 8
+    },
+    {
+      "num": "4.4.3",
+      "title": "Signing Certificate Reference Attribute",
+      "page": 8
+    },
+    {
+      "num": "4.5",
+      "title": "Attributes Optional in CAdES",
+      "page": 8
+    },
+    {
+      "num": "4.5.1",
+      "title": "signature-policy-identifier Attribute",
+      "page": 8
+    },
+    {
+      "num": "4.5.2",
+      "title": "signature-time-stamp Attribute",
+      "page": 9
+    },
+    {
+      "num": "4.5.3",
+      "title": "signing-time Attribute",
+      "page": 9
+    },
+    {
+      "num": "4.5.4",
+      "title": "counter-signature Attribute",
+      "page": 9
+    },
+    {
+      "num": "4.5.5",
+      "title": "content-reference Attribute",
+      "page": 10
+    },
+    {
+      "num": "4.5.6",
+      "title": "content-identifier Attribute",
+      "page": 10
+    },
+    {
+      "num": "4.5.7",
+      "title": "content-hints Attribute",
+      "page": 10
+    },
+    {
+      "num": "4.5.8",
+      "title": "commitment-type-indication Attribute",
+      "page": 10
+    },
+    {
+      "num": "4.5.9",
+      "title": "signer-location Attribute",
+      "page": 10
+    },
+    {
+      "num": "4.5.10",
+      "title": "signer-attributes Attribute",
+      "page": 10
+    },
+    {
+      "num": "4.5.11",
+      "title": "content-time-stamp Attribute",
+      "page": 10
+    },
+    {
+      "num": "4.6",
+      "title": "Signature Validation",
+      "page": 11
+    },
+    {
+      "num": "4.6.1",
+      "title": "Signing Certificate Reference Validation",
+      "page": 11
+    },
+    {
+      "num": "4.6.2",
+      "title": "Document Digest",
+      "page": 11
+    },
+    {
+      "num": "4.6.3",
+      "title": "Certificate Path Validation",
+      "page": 11
+    },
+    {
+      "num": "4.6.4",
+      "title": "Revocation Checking",
+      "page": 11
+    },
+    {
+      "num": "4.7",
+      "title": "Extensions Dictionary",
+      "page": 12
+    },
+    {
+      "num": "Annex A",
+      "title": "Change history",
+      "page": 13,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 14,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 14,
+  "toc_pages": [
+    3
+  ]
+}

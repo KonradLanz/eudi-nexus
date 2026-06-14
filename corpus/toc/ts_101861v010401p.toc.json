@@ -1,0 +1,194 @@
+{
+  "stem": "ts_101861v010401p",
+  "pdf": "downloads/specs/TS/ts_101861v010401p.pdf",
+  "title": "(2011-07)",
+  "reference": "ts_101861v010401p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Requirements for a TSP client",
+      "page": 6
+    },
+    {
+      "num": "4.1",
+      "title": "Void",
+      "page": 6
+    },
+    {
+      "num": "4.2",
+      "title": "Profile for the format of the request",
+      "page": 6
+    },
+    {
+      "num": "4.2.1",
+      "title": "Parameters to be supported",
+      "page": 6
+    },
+    {
+      "num": "4.2.2",
+      "title": "Hash Algorithms to be used",
+      "page": 6
+    },
+    {
+      "num": "4.3",
+      "title": "Profile for the format of the response",
+      "page": 6
+    },
+    {
+      "num": "4.3.1",
+      "title": "Parameters to be supported",
+      "page": 6
+    },
+    {
+      "num": "4.3.2",
+      "title": "Algorithms to be supported",
+      "page": 7
+    },
+    {
+      "num": "4.3.3",
+      "title": "Key lengths to be supported",
+      "page": 7
+    },
+    {
+      "num": "5",
+      "title": "Requirements for a TSP server",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "Profile for the format of the request",
+      "page": 7
+    },
+    {
+      "num": "5.1.1",
+      "title": "Parameters to be supported",
+      "page": 7
+    },
+    {
+      "num": "5.1.2",
+      "title": "Algorithms to be supported",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "Profile for the format of the response",
+      "page": 7
+    },
+    {
+      "num": "5.2.1",
+      "title": "Parameters to be supported",
+      "page": 7
+    },
+    {
+      "num": "5.2.2",
+      "title": "Structure for the name of the issuing TSP server",
+      "page": 8
+    },
+    {
+      "num": "5.2.3",
+      "title": "Algorithms to be supported",
+      "page": 8
+    },
+    {
+      "num": "5.2.4",
+      "title": "Key lengths be supported",
+      "page": 8
+    },
+    {
+      "num": "5.2.5",
+      "title": "TSA Certificates",
+      "page": 8
+    },
+    {
+      "num": "5.2.6",
+      "title": "TSA Certificate Identifier",
+      "page": 8
+    },
+    {
+      "num": "6",
+      "title": "Profiles for the transport protocols to be supported",
+      "page": 8
+    },
+    {
+      "num": "7",
+      "title": "Object identifiers of the cryptographic algorithms",
+      "page": 8
+    },
+    {
+      "num": "Annex A",
+      "title": "Structure for the policy field",
+      "page": 9,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex B",
+      "title": "Bibliography",
+      "page": 10,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 11,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 11,
+  "toc_pages": [
+    3
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "etsi-docbox-esi",
+  "type": "contributions",
+  "label": "ETSI ESI Document Server (docbox)",
+  "url": "https://docbox.etsi.org/ESI/",
+  "format": "html",
+  "scope": "tc",
+  "stf": null,
+  "wki_ids": [],
+  "note": "Public contribution documents per meeting (requires ETSI login for some folders)",
+  "source_file": "stf705_public_resources.json",
+  "ingested_at": "2026-06-14T22:07:14.859863+00:00"
+}

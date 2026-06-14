@@ -1,0 +1,335 @@
+{
+  "stem": "ts_119542v010101p",
+  "pdf": "downloads/specs/TS/ts_119542v010101p.pdf",
+  "title": "(2025-10)",
+  "reference": "ts_119542v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 6
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols and abbreviations",
+      "page": 7
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 7
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 7
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 7
+    },
+    {
+      "num": "4",
+      "title": "Roles, objects and signatories in Smart Contracts lifecycle",
+      "page": 8
+    },
+    {
+      "num": "5",
+      "title": "AdES signatures profiles",
+      "page": 9
+    },
+    {
+      "num": "5.1",
+      "title": "Introduction",
+      "page": 9
+    },
+    {
+      "num": "5.2",
+      "title": "Tables for defining AdES profiles",
+      "page": 9
+    },
+    {
+      "num": "5.3",
+      "title": "Profiles for standalone (C/J/X)AdES-B-B",
+      "page": 11
+    },
+    {
+      "num": "5.4",
+      "title": "Profiles for standalone (C/J/X)AdES-B-LTA",
+      "page": 12
+    },
+    {
+      "num": "5.5",
+      "title": "Profiles for (C/X)AdES-B-B signatures included in an ASiC-E container",
+      "page": 13
+    },
+    {
+      "num": "5.6",
+      "title": "Profile for XAdES-B-LTA long-term signatures included in an ASiC-E container",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "ASiC containers profiles",
+      "page": 15
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 15
+    },
+    {
+      "num": "6.2",
+      "title": "Profile for ASiC-E containers for short-term signatures",
+      "page": 15
+    },
+    {
+      "num": "6.2.1",
+      "title": "General requirements",
+      "page": 15
+    },
+    {
+      "num": "6.2.2",
+      "title": "Signing with XAdES",
+      "page": 15
+    },
+    {
+      "num": "6.2.2.1",
+      "title": "Requirements for signature file",
+      "page": 15
+    },
+    {
+      "num": "6.2.2.2",
+      "title": "Specific requirements for the XAdES signature",
+      "page": 15
+    },
+    {
+      "num": "6.2.3",
+      "title": "Signing with CAdES",
+      "page": 15
+    },
+    {
+      "num": "6.2.3.1",
+      "title": "Requirements for ASICManifest file",
+      "page": 15
+    },
+    {
+      "num": "6.2.3.2",
+      "title": "Specific requirements for the CAdES signature",
+      "page": 16
+    },
+    {
+      "num": "6.3",
+      "title": "Profile for ASiC-E containers for long-term signatures",
+      "page": 16
+    },
+    {
+      "num": "6.3.1",
+      "title": "General requirements",
+      "page": 16
+    },
+    {
+      "num": "6.3.2",
+      "title": "Signing with XAdES",
+      "page": 16
+    },
+    {
+      "num": "6.3.3",
+      "title": "Signing with CAdES",
+      "page": 16
+    },
+    {
+      "num": "7",
+      "title": "Requirements on identity validation",
+      "page": 17
+    },
+    {
+      "num": "7.1",
+      "title": "Introduction",
+      "page": 17
+    },
+    {
+      "num": "7.2",
+      "title": "Validation of electronic identities based on digital signatures",
+      "page": 17
+    },
+    {
+      "num": "7.2.1",
+      "title": "Requirements on validation of digital signatures",
+      "page": 17
+    },
+    {
+      "num": "7.2.2",
+      "title": "Requirements on generation of signed validation reports",
+      "page": 17
+    },
+    {
+      "num": "7.3",
+      "title": "Validation of electronic identities based on EUDI Wallet",
+      "page": 17
+    },
+    {
+      "num": "8",
+      "title": "Requirements for Production phase",
+      "page": 18
+    },
+    {
+      "num": "8.1",
+      "title": "Introduction",
+      "page": 18
+    },
+    {
+      "num": "8.2",
+      "title": "Identification of SC Languages, SC Compilers and SC Virtual Machines providers",
+      "page": 18
+    },
+    {
+      "num": "8.2.1",
+      "title": "General requirements",
+      "page": 18
+    },
+    {
+      "num": "8.2.2",
+      "title": "Identifying the SC Language Publisher by its signatures",
+      "page": 18
+    },
+    {
+      "num": "8.2.3",
+      "title": "Identifying the SC Compiler Publisher by its signatures",
+      "page": 18
+    },
+    {
+      "num": "8.2.4",
+      "title": "Identifying the SC Virtual Machine Publisher by its signatures",
+      "page": 19
+    },
+    {
+      "num": "8.3",
+      "title": "Identification of SC Publisher",
+      "page": 19
+    },
+    {
+      "num": "8.4",
+      "title": "Identification of SC parties",
+      "page": 19
+    },
+    {
+      "num": "9",
+      "title": "Requirements for Deployment phase",
+      "page": 20
+    },
+    {
+      "num": "9.1",
+      "title": "Validation of the ASiC-E enclosing the SC package by the SC Deployer",
+      "page": 20
+    },
+    {
+      "num": "9.2",
+      "title": "Evidence of SC Deployment signed by the SC Deployer",
+      "page": 20
+    },
+    {
+      "num": "9.2.1",
+      "title": "Signature on deployed Smart Contract",
+      "page": 20
+    },
+    {
+      "num": "9.2.2",
+      "title": "SC Package binding file",
+      "page": 20
+    },
+    {
+      "num": "9.2.3",
+      "title": "Signing with CAdES signature",
+      "page": 21
+    },
+    {
+      "num": "9.2.4",
+      "title": "Signing with JAdES signature",
+      "page": 21
+    },
+    {
+      "num": "9.2.5",
+      "title": "Signing with XAdES signature",
+      "page": 21
+    },
+    {
+      "num": "10",
+      "title": "Requirements for the SC Execution phase",
+      "page": 22
+    },
+    {
+      "num": "10.1",
+      "title": "Introduction",
+      "page": 22
+    },
+    {
+      "num": "10.2",
+      "title": "Requirements for validation of the signed SC Deployment evidence",
+      "page": 22
+    },
+    {
+      "num": "10.3",
+      "title": "Requirements for validation of electronic identities of SC Provider and SC User",
+      "page": 22
+    },
+    {
+      "num": "10.4",
+      "title": "Requirements on the signed execution report by the SC Provider",
+      "page": 23
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 24,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 24,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

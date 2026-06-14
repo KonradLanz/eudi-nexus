@@ -1,0 +1,179 @@
+{
+  "stem": "ts_11912403v010101p",
+  "pdf": "downloads/specs/TS/ts_11912403v010101p.pdf",
+  "title": "(2016-06)",
+  "reference": "ts_11912403v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 4,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 5
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 5
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 5
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 5
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 6
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 6
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 6
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 6
+    },
+    {
+      "num": "5",
+      "title": "Testing extended CAdES signatures interoperability",
+      "page": 7
+    },
+    {
+      "num": "5.1",
+      "title": "CAdES-E-BES test cases",
+      "page": 7
+    },
+    {
+      "num": "5.2",
+      "title": "CAdES-E-EPES test cases",
+      "page": 8
+    },
+    {
+      "num": "5.3",
+      "title": "CAdES-E-T test cases",
+      "page": 9
+    },
+    {
+      "num": "5.4",
+      "title": "CAdES-E-C test cases",
+      "page": 9
+    },
+    {
+      "num": "5.5",
+      "title": "CAdES-E-X test cases",
+      "page": 11
+    },
+    {
+      "num": "5.6",
+      "title": "CAdES-E-XL test cases",
+      "page": 12
+    },
+    {
+      "num": "5.7",
+      "title": "CAdES-E-A test cases",
+      "page": 14
+    },
+    {
+      "num": "6",
+      "title": "Testing extended CAdES signatures augmention interoperability",
+      "page": 18
+    },
+    {
+      "num": "6.1",
+      "title": "Introduction",
+      "page": 18
+    },
+    {
+      "num": "6.2",
+      "title": "Augmentation to CAdES-E-C signatures test cases",
+      "page": 18
+    },
+    {
+      "num": "6.3",
+      "title": "Augmentation to CAdES-E-X signatures test cases",
+      "page": 19
+    },
+    {
+      "num": "6.4",
+      "title": "Augmentation to CAdES-E-XL signatures test cases",
+      "page": 20
+    },
+    {
+      "num": "6.5",
+      "title": "Augmentation to CAdES-E-A signatures test cases",
+      "page": 21
+    },
+    {
+      "num": "7",
+      "title": "Testing negative extended CAdES signatures",
+      "page": 22
+    },
+    {
+      "num": "7.1",
+      "title": "CAdES-E-BES test cases",
+      "page": 22
+    },
+    {
+      "num": "7.2",
+      "title": "CAdES-E-EPES test cases",
+      "page": 23
+    },
+    {
+      "num": "7.3",
+      "title": "CAdES-E-T test cases",
+      "page": 23
+    },
+    {
+      "num": "7.4",
+      "title": "CAdES-E-A test cases",
+      "page": 25
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 27,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology"
+  ],
+  "body_starts_page": 5,
+  "total_pages": 27,
+  "toc_pages": [
+    3
+  ]
+}

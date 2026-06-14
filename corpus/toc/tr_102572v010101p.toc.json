@@ -1,0 +1,821 @@
+{
+  "stem": "tr_102572v010101p",
+  "pdf": "downloads/specs/TR/tr_102572v010101p.pdf",
+  "title": "(2007-07)",
+  "reference": "tr_102572v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "2.1",
+      "title": "France",
+      "page": 9
+    },
+    {
+      "num": "2.2",
+      "title": "Germany",
+      "page": 10
+    },
+    {
+      "num": "2.3",
+      "title": "Italy",
+      "page": 10
+    },
+    {
+      "num": "2.4",
+      "title": "Spain",
+      "page": 11
+    },
+    {
+      "num": "2.5",
+      "title": "United Kingdom",
+      "page": 12
+    },
+    {
+      "num": "2.6",
+      "title": "International Organisations",
+      "page": 13
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 13
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 13
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 14
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 15
+    },
+    {
+      "num": "4.1",
+      "title": "Basic Model",
+      "page": 15
+    },
+    {
+      "num": "4.2",
+      "title": "VAT invoices and other fiscally relevant socuments",
+      "page": 15
+    },
+    {
+      "num": "4.3",
+      "title": "Minimum and maximum identified practices",
+      "page": 16
+    },
+    {
+      "num": "4.4",
+      "title": "Pan European model",
+      "page": 17
+    },
+    {
+      "num": "4.6",
+      "title": "Commonly Acceptable Practices (CAP) for TSPs",
+      "page": 18
+    },
+    {
+      "num": "5",
+      "title": "Practices identified",
+      "page": 18
+    },
+    {
+      "num": "5.1",
+      "title": "Signature and storage requirements",
+      "page": 18
+    },
+    {
+      "num": "5.1.1",
+      "title": "Signature",
+      "page": 18
+    },
+    {
+      "num": "5.1.1.1",
+      "title": "Class of electronic signature",
+      "page": 18
+    },
+    {
+      "num": "5.1.1.2",
+      "title": "Certification",
+      "page": 19
+    },
+    {
+      "num": "5.1.1.3",
+      "title": "Signature creation data",
+      "page": 19
+    },
+    {
+      "num": "5.1.1.4",
+      "title": "Certificate subject's registration",
+      "page": 20
+    },
+    {
+      "num": "5.1.1.5",
+      "title": "Certificate revocation",
+      "page": 20
+    },
+    {
+      "num": "5.1.2",
+      "title": "Maintenance of signature over storage period",
+      "page": 21
+    },
+    {
+      "num": "5.1.3",
+      "title": "Storage",
+      "page": 22
+    },
+    {
+      "num": "5.1.3.1",
+      "title": "Authorized access",
+      "page": 22
+    },
+    {
+      "num": "5.1.3.2",
+      "title": "Authenticity and integrity",
+      "page": 22
+    },
+    {
+      "num": "5.1.3.3",
+      "title": "Readability",
+      "page": 23
+    },
+    {
+      "num": "5.1.3.4",
+      "title": "Storage media type",
+      "page": 23
+    },
+    {
+      "num": "5.1.3.5",
+      "title": "Documents format",
+      "page": 24
+    },
+    {
+      "num": "5.1.3.6",
+      "title": "Requirements on separation and confidentiality",
+      "page": 24
+    },
+    {
+      "num": "5.1.4",
+      "title": "Reporting to and exchanges with authorities",
+      "page": 25
+    },
+    {
+      "num": "5.1.5",
+      "title": "Conversion of paper originals to digital formats",
+      "page": 25
+    },
+    {
+      "num": "5.2",
+      "title": "Information security management",
+      "page": 26
+    },
+    {
+      "num": "5.2.1",
+      "title": "Risk analysis",
+      "page": 26
+    },
+    {
+      "num": "5.2.2",
+      "title": "Security policy",
+      "page": 26
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "Information security policy",
+      "page": 26
+    },
+    {
+      "num": "5.2.3",
+      "title": "Organizing information security",
+      "page": 27
+    },
+    {
+      "num": "5.2.3.1",
+      "title": "Internal organization",
+      "page": 27
+    },
+    {
+      "num": "5.2.3.2",
+      "title": "External parties",
+      "page": 27
+    },
+    {
+      "num": "5.2.4",
+      "title": "Asset management",
+      "page": 27
+    },
+    {
+      "num": "5.2.4.1",
+      "title": "Responsibility for assets",
+      "page": 27
+    },
+    {
+      "num": "5.2.4.2",
+      "title": "Information classification",
+      "page": 28
+    },
+    {
+      "num": "5.2.5",
+      "title": "Human resources security",
+      "page": 28
+    },
+    {
+      "num": "5.2.5.1",
+      "title": "Prior to employment",
+      "page": 28
+    },
+    {
+      "num": "5.2.5.2",
+      "title": "During employment",
+      "page": 29
+    },
+    {
+      "num": "5.2.5.3",
+      "title": "Termination or change of employment",
+      "page": 29
+    },
+    {
+      "num": "5.2.6",
+      "title": "Physical and environmental security",
+      "page": 30
+    },
+    {
+      "num": "5.2.6.1",
+      "title": "Secure areas",
+      "page": 30
+    },
+    {
+      "num": "5.2.6.2",
+      "title": "Equipment",
+      "page": 30
+    },
+    {
+      "num": "5.2.7",
+      "title": "Communications and operations management",
+      "page": 31
+    },
+    {
+      "num": "5.2.7.1",
+      "title": "Operational procedures and responsibilities",
+      "page": 31
+    },
+    {
+      "num": "5.2.7.2",
+      "title": "Third party service delivery management",
+      "page": 31
+    },
+    {
+      "num": "5.2.7.3",
+      "title": "System planning and acceptance",
+      "page": 32
+    },
+    {
+      "num": "5.2.7.4",
+      "title": "Protection against malicious and mobile code",
+      "page": 32
+    },
+    {
+      "num": "5.2.7.5",
+      "title": "Back-up",
+      "page": 32
+    },
+    {
+      "num": "5.2.7.6",
+      "title": "Network security management",
+      "page": 33
+    },
+    {
+      "num": "5.2.7.7",
+      "title": "Media handling",
+      "page": 33
+    },
+    {
+      "num": "5.2.7.8",
+      "title": "Exchange of information",
+      "page": 33
+    },
+    {
+      "num": "5.2.7.9",
+      "title": "Electronic commerce services",
+      "page": 34
+    },
+    {
+      "num": "5.2.7.10",
+      "title": "Monitoring",
+      "page": 34
+    },
+    {
+      "num": "5.2.8",
+      "title": "Access control",
+      "page": 34
+    },
+    {
+      "num": "5.2.8.1",
+      "title": "Business Requirement for Access Control",
+      "page": 34
+    },
+    {
+      "num": "5.2.8.2",
+      "title": "User access management",
+      "page": 34
+    },
+    {
+      "num": "5.2.8.3",
+      "title": "User responsibilities",
+      "page": 35
+    },
+    {
+      "num": "5.2.8.4",
+      "title": "Network access control",
+      "page": 35
+    },
+    {
+      "num": "5.2.8.5",
+      "title": "Operating system access control",
+      "page": 35
+    },
+    {
+      "num": "5.2.8.6",
+      "title": "Application and information access control",
+      "page": 36
+    },
+    {
+      "num": "5.2.8.7",
+      "title": "Mobile computing and teleworking",
+      "page": 36
+    },
+    {
+      "num": "5.2.9",
+      "title": "Information systems acquisition, development and maintenance",
+      "page": 36
+    },
+    {
+      "num": "5.2.9.1",
+      "title": "Security requirements of information systems",
+      "page": 36
+    },
+    {
+      "num": "5.2.9.2",
+      "title": "Correct processing in applications",
+      "page": 37
+    },
+    {
+      "num": "5.2.9.3",
+      "title": "Cryptographic controls",
+      "page": 37
+    },
+    {
+      "num": "5.2.9.4",
+      "title": "Security of system files",
+      "page": 37
+    },
+    {
+      "num": "5.2.9.5",
+      "title": "Security in development and support processes",
+      "page": 37
+    },
+    {
+      "num": "5.2.9.6",
+      "title": "Technical vulnerability management",
+      "page": 38
+    },
+    {
+      "num": "5.2.10",
+      "title": "Information security incident management",
+      "page": 38
+    },
+    {
+      "num": "5.2.10.1",
+      "title": "Reporting information security events and weaknesses",
+      "page": 38
+    },
+    {
+      "num": "5.2.10.2",
+      "title": "Management of information security incidents and improvements",
+      "page": 38
+    },
+    {
+      "num": "5.2.11",
+      "title": "Business continuity management",
+      "page": 39
+    },
+    {
+      "num": "5.2.11.1",
+      "title": "Information security aspects of business continuity management",
+      "page": 39
+    },
+    {
+      "num": "5.2.12",
+      "title": "Compliance",
+      "page": 39
+    },
+    {
+      "num": "5.2.12.1",
+      "title": "Compliance with legal requirements",
+      "page": 39
+    },
+    {
+      "num": "5.2.12.2",
+      "title": "Compliance with security policies and standards and technical compliance",
+      "page": 39
+    },
+    {
+      "num": "5.2.12.3",
+      "title": "Information systems audit considerations",
+      "page": 40
+    },
+    {
+      "num": "A.1",
+      "title": "Signature and storage requirements",
+      "page": 41
+    },
+    {
+      "num": "A.1.1",
+      "title": "Signature",
+      "page": 41
+    },
+    {
+      "num": "A.1.1.1",
+      "title": "Class of electronic signature",
+      "page": 41
+    },
+    {
+      "num": "A.1.1.2",
+      "title": "Certification",
+      "page": 42
+    },
+    {
+      "num": "A.1.1.3",
+      "title": "Signature creation data",
+      "page": 43
+    },
+    {
+      "num": "A.1.1.4",
+      "title": "Certificate subject's registration",
+      "page": 44
+    },
+    {
+      "num": "A.1.1.5",
+      "title": "Certificate revocation",
+      "page": 45
+    },
+    {
+      "num": "A.1.2",
+      "title": "Maintenance of signature over storage period",
+      "page": 46
+    },
+    {
+      "num": "A.1.3",
+      "title": "Storage",
+      "page": 47
+    },
+    {
+      "num": "A.1.3.1",
+      "title": "Authorized access",
+      "page": 47
+    },
+    {
+      "num": "A.1.3.2",
+      "title": "Authenticity and integrity",
+      "page": 48
+    },
+    {
+      "num": "A.1.3.3",
+      "title": "Readability",
+      "page": 49
+    },
+    {
+      "num": "A.1.3.4",
+      "title": "Storage media type",
+      "page": 50
+    },
+    {
+      "num": "A.1.3.5",
+      "title": "Documents format",
+      "page": 51
+    },
+    {
+      "num": "A.1.3.6",
+      "title": "Separation and confidentiality of stored data",
+      "page": 51
+    },
+    {
+      "num": "A.1.4",
+      "title": "Reporting to and exchanging data with authorities",
+      "page": 52
+    },
+    {
+      "num": "A.1.5",
+      "title": "Conversion of paper originals to digital formats",
+      "page": 53
+    },
+    {
+      "num": "A.2",
+      "title": "Information security management",
+      "page": 54
+    },
+    {
+      "num": "A.2.1",
+      "title": "Security policy",
+      "page": 54
+    },
+    {
+      "num": "A.2.1.1",
+      "title": "Information security policy",
+      "page": 54
+    },
+    {
+      "num": "A.2.2",
+      "title": "Organizing information security",
+      "page": 55
+    },
+    {
+      "num": "A.2.2.1",
+      "title": "Internal organization",
+      "page": 55
+    },
+    {
+      "num": "A.2.2.2",
+      "title": "External parties",
+      "page": 56
+    },
+    {
+      "num": "A.2.3",
+      "title": "Asset management",
+      "page": 57
+    },
+    {
+      "num": "A.2.3.1",
+      "title": "Responsibility for assets",
+      "page": 57
+    },
+    {
+      "num": "A.2.3.2",
+      "title": "Information classification",
+      "page": 58
+    },
+    {
+      "num": "A.2.4",
+      "title": "Human resources security",
+      "page": 59
+    },
+    {
+      "num": "A.2.4.1",
+      "title": "Prior to employment",
+      "page": 59
+    },
+    {
+      "num": "A.2.4.2",
+      "title": "During employment",
+      "page": 60
+    },
+    {
+      "num": "A.2.4.3",
+      "title": "Termination or change of employment",
+      "page": 61
+    },
+    {
+      "num": "A.2.5",
+      "title": "Physical and environmental security",
+      "page": 62
+    },
+    {
+      "num": "A.2.5.1",
+      "title": "Secure areas",
+      "page": 62
+    },
+    {
+      "num": "A.2.5.2",
+      "title": "Equipment",
+      "page": 63
+    },
+    {
+      "num": "A.2.6",
+      "title": "Communications and operations management",
+      "page": 64
+    },
+    {
+      "num": "A.2.6.1",
+      "title": "Operational procedures and responsibilities",
+      "page": 64
+    },
+    {
+      "num": "A.2.6.2",
+      "title": "Third party service delivery management",
+      "page": 65
+    },
+    {
+      "num": "A.2.6.3",
+      "title": "System planning and acceptance",
+      "page": 65
+    },
+    {
+      "num": "A.2.6.4",
+      "title": "Protection against malicious and mobile code",
+      "page": 66
+    },
+    {
+      "num": "A.2.6.5",
+      "title": "Back-up",
+      "page": 66
+    },
+    {
+      "num": "A.2.6.6",
+      "title": "Network security management",
+      "page": 67
+    },
+    {
+      "num": "A.2.6.7",
+      "title": "Media handling",
+      "page": 67
+    },
+    {
+      "num": "A.2.6.8",
+      "title": "Exchange of information",
+      "page": 68
+    },
+    {
+      "num": "A.2.6.9",
+      "title": "Electronic commerce services",
+      "page": 68
+    },
+    {
+      "num": "A.2.6.10",
+      "title": "Monitoring",
+      "page": 69
+    },
+    {
+      "num": "A.2.7",
+      "title": "Access control",
+      "page": 69
+    },
+    {
+      "num": "A.2.7.1",
+      "title": "Business requirement for access control",
+      "page": 69
+    },
+    {
+      "num": "A.2.7.2",
+      "title": "User access management",
+      "page": 70
+    },
+    {
+      "num": "A.2.7.3",
+      "title": "User responsibilities",
+      "page": 71
+    },
+    {
+      "num": "A.2.7.4",
+      "title": "Network access control",
+      "page": 71
+    },
+    {
+      "num": "A.2.7.5",
+      "title": "Operating system access control",
+      "page": 72
+    },
+    {
+      "num": "A.2.7.6",
+      "title": "Application and information access control",
+      "page": 72
+    },
+    {
+      "num": "A.2.7.7",
+      "title": "Mobile computing and teleworking",
+      "page": 73
+    },
+    {
+      "num": "A.2.8",
+      "title": "Information systems acquisition, development and maintenance",
+      "page": 73
+    },
+    {
+      "num": "A.2.8.1",
+      "title": "Security requirements of information systems",
+      "page": 73
+    },
+    {
+      "num": "A.2.8.2",
+      "title": "Correct processing in applications",
+      "page": 74
+    },
+    {
+      "num": "A.2.8.3",
+      "title": "Cryptographic controls",
+      "page": 74
+    },
+    {
+      "num": "A.2.8.4",
+      "title": "Security of system files",
+      "page": 75
+    },
+    {
+      "num": "A.2.8.5",
+      "title": "Security in development and support processes",
+      "page": 75
+    },
+    {
+      "num": "A.2.8.6",
+      "title": "Technical vulnerability management",
+      "page": 76
+    },
+    {
+      "num": "A.2.9",
+      "title": "Information security incident management",
+      "page": 76
+    },
+    {
+      "num": "A.2.9.1",
+      "title": "Reporting information security events and weaknesses",
+      "page": 76
+    },
+    {
+      "num": "A.2.9.2",
+      "title": "Management of information security incidents and improvements",
+      "page": 77
+    },
+    {
+      "num": "A.2.10",
+      "title": "Business continuity management",
+      "page": 77
+    },
+    {
+      "num": "A.2.10.1",
+      "title": "Information security aspects of business continuity management",
+      "page": 77
+    },
+    {
+      "num": "A.2.11",
+      "title": "Compliance",
+      "page": 78
+    },
+    {
+      "num": "A.2.11.1",
+      "title": "Compliance with legal requirements",
+      "page": 78
+    },
+    {
+      "num": "A.2.11.2",
+      "title": "Compliance with security policies and standards and technical compliance",
+      "page": 79
+    },
+    {
+      "num": "A.2.11.3",
+      "title": "Information systems audit considerations",
+      "page": 80
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 81,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 81,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

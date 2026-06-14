@@ -1,0 +1,1186 @@
+{
+  "stem": "ts_10153301v010301p",
+  "pdf": "downloads/specs/TS/ts_10153301v010301p.pdf",
+  "title": "(2012-04)",
+  "reference": "ts_10153301v010301p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 8,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 10
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 10
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 10
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 10
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 12
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 12
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 16
+    },
+    {
+      "num": "4",
+      "title": "Overview",
+      "page": 17
+    },
+    {
+      "num": "4.1",
+      "title": "Preservation Service types",
+      "page": 18
+    },
+    {
+      "num": "4.2",
+      "title": "User Community and Applicability",
+      "page": 19
+    },
+    {
+      "num": "4.3",
+      "title": "Conformance requirements",
+      "page": 19
+    },
+    {
+      "num": "5",
+      "title": "Provisions based on TS 102 573",
+      "page": 19
+    },
+    {
+      "num": "5.1",
+      "title": "Compliance with the present document provisions",
+      "page": 19
+    },
+    {
+      "num": "5.2",
+      "title": "DPSP Obligations specified in TS 102 573, clause 6",
+      "page": 20
+    },
+    {
+      "num": "5.2.1",
+      "title": "Arrangements to cover liabilities and financial stability",
+      "page": 20
+    },
+    {
+      "num": "5.2.2",
+      "title": "Conformance by sub-contractors",
+      "page": 20
+    },
+    {
+      "num": "5.2.3",
+      "title": "DPSP service provisions in abidance by the applicable legislation",
+      "page": 21
+    },
+    {
+      "num": "5.2.4",
+      "title": "Contractual aspects",
+      "page": 21
+    },
+    {
+      "num": "5.2.5",
+      "title": "Resolution of complaints and disputes",
+      "page": 22
+    },
+    {
+      "num": "5.2.6",
+      "title": "Organisation independence",
+      "page": 23
+    },
+    {
+      "num": "5.2.7",
+      "title": "DPSP Subscriber Obligations",
+      "page": 23
+    },
+    {
+      "num": "5.2.8",
+      "title": "Information for trading partners",
+      "page": 23
+    },
+    {
+      "num": "5.2.9",
+      "title": "Information for auditor/regulatory/tax authorities",
+      "page": 24
+    },
+    {
+      "num": "6",
+      "title": "Objectives and controls in TS 102 573, annex A",
+      "page": 24
+    },
+    {
+      "num": "6.1",
+      "title": "SS.1. Signature",
+      "page": 24
+    },
+    {
+      "num": "6.1.1",
+      "title": "SS.1.1. Class of Electronic Signature",
+      "page": 24
+    },
+    {
+      "num": "6.1.2",
+      "title": "SS.1.2. Certification",
+      "page": 24
+    },
+    {
+      "num": "6.1.3",
+      "title": "SS.1.3. Signature Creation Data",
+      "page": 25
+    },
+    {
+      "num": "6.1.4",
+      "title": "SS.1.4. Certificate subject's Registration",
+      "page": 25
+    },
+    {
+      "num": "6.1.5",
+      "title": "SS.1.5. Certificate Revocation",
+      "page": 25
+    },
+    {
+      "num": "6.2",
+      "title": "SS.2. Maintenance of Signature over storage period",
+      "page": 25
+    },
+    {
+      "num": "6.3",
+      "title": "SS.3. Storage",
+      "page": 26
+    },
+    {
+      "num": "6.3.1",
+      "title": "SS.3.1. Authorized Access",
+      "page": 26
+    },
+    {
+      "num": "6.3.2",
+      "title": "SS.3.2. Authenticity and Integrity",
+      "page": 26
+    },
+    {
+      "num": "6.3.3",
+      "title": "SS.3.3. Data Object Readability",
+      "page": 27
+    },
+    {
+      "num": "6.3.4",
+      "title": "SS.3.4. Storage media type",
+      "page": 28
+    },
+    {
+      "num": "6.3.5",
+      "title": "SS.3.5. Data Objects Format",
+      "page": 28
+    },
+    {
+      "num": "6.3.6",
+      "title": "SS.3.6. Requirements on Separation and Confidentiality",
+      "page": 29
+    },
+    {
+      "num": "6.4",
+      "title": "SS.4. Reporting to and Exchanges with Authorities",
+      "page": 29
+    },
+    {
+      "num": "6.5",
+      "title": "SS.5. Conversion of Analog Originals to Digital Formats",
+      "page": 30
+    },
+    {
+      "num": "A.1",
+      "title": "Reference to ISO/IEC 27001",
+      "page": 31
+    },
+    {
+      "num": "A.2",
+      "title": "Basic ISO/IEC 27002 provision",
+      "page": 31
+    },
+    {
+      "num": "A.3",
+      "title": "Enhanced ISO/IEC 27002 provisions",
+      "page": 31
+    },
+    {
+      "num": "A.4",
+      "title": "New specific controls",
+      "page": 31
+    },
+    {
+      "num": "A.5",
+      "title": "Security Policy",
+      "page": 31
+    },
+    {
+      "num": "A.5.1",
+      "title": "Information security policy",
+      "page": 31
+    },
+    {
+      "num": "A.5.1.1",
+      "title": "Information security policy document",
+      "page": 31
+    },
+    {
+      "num": "A.5.1.2",
+      "title": "Review of the information security policy",
+      "page": 32
+    },
+    {
+      "num": "A.6",
+      "title": "Organization of information security",
+      "page": 32
+    },
+    {
+      "num": "A.6.1",
+      "title": "Internal organization",
+      "page": 32
+    },
+    {
+      "num": "A.6.1.1",
+      "title": "Management commitment to information security",
+      "page": 32
+    },
+    {
+      "num": "A.6.1.2",
+      "title": "Information security co-ordination",
+      "page": 32
+    },
+    {
+      "num": "A.6.1.3",
+      "title": "Allocation of information security responsibilities",
+      "page": 33
+    },
+    {
+      "num": "A.6.1.4",
+      "title": "Authorization process for information processing facilities",
+      "page": 33
+    },
+    {
+      "num": "A.6.1.5",
+      "title": "Confidentiality agreements",
+      "page": 33
+    },
+    {
+      "num": "A.6.1.6",
+      "title": "Contact with authorities",
+      "page": 34
+    },
+    {
+      "num": "A.6.1.7",
+      "title": "Contact with special interest groups",
+      "page": 34
+    },
+    {
+      "num": "A.6.1.8",
+      "title": "Independent review of information security",
+      "page": 34
+    },
+    {
+      "num": "A.6.2",
+      "title": "External Parties",
+      "page": 34
+    },
+    {
+      "num": "A.6.2.1",
+      "title": "Identification of risks related to external parties",
+      "page": 34
+    },
+    {
+      "num": "A.6.2.2",
+      "title": "Addressing security when dealing with customers",
+      "page": 34
+    },
+    {
+      "num": "A.6.2.3",
+      "title": "Addressing security in third party agreements",
+      "page": 34
+    },
+    {
+      "num": "A.7",
+      "title": "Asset Management",
+      "page": 35
+    },
+    {
+      "num": "A.7.1",
+      "title": "Responsibility for assets",
+      "page": 35
+    },
+    {
+      "num": "A.7.1.1",
+      "title": "Inventory of assets",
+      "page": 35
+    },
+    {
+      "num": "A.7.1.2",
+      "title": "Ownership of assets",
+      "page": 36
+    },
+    {
+      "num": "A.7.1.3",
+      "title": "Acceptable use of assets",
+      "page": 36
+    },
+    {
+      "num": "A.7.2",
+      "title": "Information classification",
+      "page": 36
+    },
+    {
+      "num": "A.7.2.1",
+      "title": "Classification guidelines",
+      "page": 36
+    },
+    {
+      "num": "A.7.2.2",
+      "title": "Information labelling and handling",
+      "page": 37
+    },
+    {
+      "num": "A.8",
+      "title": "Human resources security",
+      "page": 37
+    },
+    {
+      "num": "A.8.1",
+      "title": "Prior to Employment",
+      "page": 37
+    },
+    {
+      "num": "A.8.1.1",
+      "title": "Roles and responsibilities",
+      "page": 37
+    },
+    {
+      "num": "A.8.1.2",
+      "title": "Screening",
+      "page": 38
+    },
+    {
+      "num": "A.8.1.3",
+      "title": "Terms and conditions of employment",
+      "page": 38
+    },
+    {
+      "num": "A.8.2",
+      "title": "During Employment",
+      "page": 38
+    },
+    {
+      "num": "A.8.2.1",
+      "title": "Management responsibilities",
+      "page": 38
+    },
+    {
+      "num": "A.8.2.2",
+      "title": "Information security awareness, education, and training",
+      "page": 38
+    },
+    {
+      "num": "A.8.2.3",
+      "title": "Disciplinary process",
+      "page": 39
+    },
+    {
+      "num": "A.8.3",
+      "title": "Termination or Change of Employment",
+      "page": 39
+    },
+    {
+      "num": "A.8.3.1",
+      "title": "Termination responsibilities",
+      "page": 39
+    },
+    {
+      "num": "A.8.3.2",
+      "title": "Return of assets",
+      "page": 39
+    },
+    {
+      "num": "A.8.3.3",
+      "title": "Removal of access rights",
+      "page": 39
+    },
+    {
+      "num": "A.9",
+      "title": "Physical and environmental security",
+      "page": 39
+    },
+    {
+      "num": "A.9.1",
+      "title": "Secure Areas",
+      "page": 39
+    },
+    {
+      "num": "A.9.1.1",
+      "title": "Physical security perimeter",
+      "page": 39
+    },
+    {
+      "num": "A.9.1.2",
+      "title": "Physical entry controls",
+      "page": 40
+    },
+    {
+      "num": "A.9.1.3",
+      "title": "Securing offices, rooms, and facilities",
+      "page": 40
+    },
+    {
+      "num": "A.9.1.4",
+      "title": "Protecting against external and environmental threats",
+      "page": 40
+    },
+    {
+      "num": "A.9.1.5",
+      "title": "Working in secure areas",
+      "page": 40
+    },
+    {
+      "num": "A.9.1.6",
+      "title": "Public access, delivery, and loading areas",
+      "page": 40
+    },
+    {
+      "num": "A.9.2",
+      "title": "Equipment Security",
+      "page": 41
+    },
+    {
+      "num": "A.9.2.1",
+      "title": "Equipment siting and protection",
+      "page": 41
+    },
+    {
+      "num": "A.9.2.2",
+      "title": "Supporting utilities",
+      "page": 41
+    },
+    {
+      "num": "A.9.2.3",
+      "title": "Cabling security",
+      "page": 41
+    },
+    {
+      "num": "A.9.2.4",
+      "title": "Equipment maintenance",
+      "page": 41
+    },
+    {
+      "num": "A.9.2.5",
+      "title": "Security of equipment off-premises",
+      "page": 41
+    },
+    {
+      "num": "A.9.2.6",
+      "title": "Secure disposal or re-use of equipment",
+      "page": 41
+    },
+    {
+      "num": "A.9.2.7",
+      "title": "Removal of property",
+      "page": 41
+    },
+    {
+      "num": "A.10",
+      "title": "Communications and operations management",
+      "page": 42
+    },
+    {
+      "num": "A.10.1",
+      "title": "Operational procedures and responsibilities",
+      "page": 42
+    },
+    {
+      "num": "A.10.1.1",
+      "title": "Documented operating procedures",
+      "page": 42
+    },
+    {
+      "num": "A.10.1.2",
+      "title": "Change management",
+      "page": 42
+    },
+    {
+      "num": "A.10.1.3",
+      "title": "Segregation of duties",
+      "page": 43
+    },
+    {
+      "num": "A.10.1.4",
+      "title": "Separation of development, test, and operational facilities",
+      "page": 43
+    },
+    {
+      "num": "A.10.2",
+      "title": "Third party service delivery management",
+      "page": 43
+    },
+    {
+      "num": "A.10.2.1",
+      "title": "Service delivery",
+      "page": 43
+    },
+    {
+      "num": "A.10.2.2",
+      "title": "Monitoring and review of third party services",
+      "page": 43
+    },
+    {
+      "num": "A.10.2.3",
+      "title": "Managing changes to third party services",
+      "page": 44
+    },
+    {
+      "num": "A.10.3",
+      "title": "System planning and acceptance",
+      "page": 44
+    },
+    {
+      "num": "A.10.3.1",
+      "title": "Capacity management",
+      "page": 44
+    },
+    {
+      "num": "A.10.3.2",
+      "title": "System acceptance",
+      "page": 44
+    },
+    {
+      "num": "A.10.4",
+      "title": "Protection against malicious and mobile code",
+      "page": 45
+    },
+    {
+      "num": "A.10.4.1",
+      "title": "Controls against malicious code",
+      "page": 45
+    },
+    {
+      "num": "A.10.4.2",
+      "title": "Controls against mobile code",
+      "page": 45
+    },
+    {
+      "num": "A.10.5",
+      "title": "Back-up",
+      "page": 45
+    },
+    {
+      "num": "A.10.5.1",
+      "title": "Information back-up",
+      "page": 45
+    },
+    {
+      "num": "A.10.6",
+      "title": "Network security management",
+      "page": 46
+    },
+    {
+      "num": "A.10.6.1",
+      "title": "Network controls",
+      "page": 46
+    },
+    {
+      "num": "A.10.6.2",
+      "title": "Security of network services",
+      "page": 46
+    },
+    {
+      "num": "A.10.7",
+      "title": "Media handling",
+      "page": 46
+    },
+    {
+      "num": "A.10.7.1",
+      "title": "Management of removable media",
+      "page": 46
+    },
+    {
+      "num": "A.10.7.2",
+      "title": "Disposal of media",
+      "page": 47
+    },
+    {
+      "num": "A.10.7.3",
+      "title": "Information handling procedures",
+      "page": 47
+    },
+    {
+      "num": "A.10.7.4",
+      "title": "Security of system documentation",
+      "page": 47
+    },
+    {
+      "num": "A.10.8",
+      "title": "Exchange of information",
+      "page": 48
+    },
+    {
+      "num": "A.10.8.1",
+      "title": "Information exchange policies and procedures",
+      "page": 48
+    },
+    {
+      "num": "A.10.8.2",
+      "title": "Exchange agreements",
+      "page": 48
+    },
+    {
+      "num": "A.10.8.3",
+      "title": "Physical media in transit",
+      "page": 48
+    },
+    {
+      "num": "A.10.8.4",
+      "title": "Electronic messaging",
+      "page": 48
+    },
+    {
+      "num": "A.10.8.5",
+      "title": "Business information systems",
+      "page": 48
+    },
+    {
+      "num": "A.10.9",
+      "title": "Electronic commerce services",
+      "page": 48
+    },
+    {
+      "num": "A.10.10",
+      "title": "Monitoring",
+      "page": 48
+    },
+    {
+      "num": "A.10.10.1",
+      "title": "Audit logging",
+      "page": 48
+    },
+    {
+      "num": "A.10.10.2",
+      "title": "Monitoring system use",
+      "page": 49
+    },
+    {
+      "num": "A.10.10.3",
+      "title": "Protection of log information",
+      "page": 49
+    },
+    {
+      "num": "A.10.10.4",
+      "title": "Administrator and operator logs",
+      "page": 49
+    },
+    {
+      "num": "A.10.10.5",
+      "title": "Fault logging",
+      "page": 49
+    },
+    {
+      "num": "A.10.10.6",
+      "title": "Clock synchronization",
+      "page": 49
+    },
+    {
+      "num": "A.11",
+      "title": "Access control",
+      "page": 50
+    },
+    {
+      "num": "A.11.1",
+      "title": "Business requirement for access control",
+      "page": 50
+    },
+    {
+      "num": "A.11.1.1",
+      "title": "Access control policy",
+      "page": 50
+    },
+    {
+      "num": "A.11.2",
+      "title": "User access management",
+      "page": 51
+    },
+    {
+      "num": "A.11.2.1",
+      "title": "User registration",
+      "page": 51
+    },
+    {
+      "num": "A.11.2.2",
+      "title": "Privilege management",
+      "page": 51
+    },
+    {
+      "num": "A.11.2.3",
+      "title": "User password management",
+      "page": 51
+    },
+    {
+      "num": "A.11.2.4",
+      "title": "Review of user access rights",
+      "page": 52
+    },
+    {
+      "num": "A.11.3",
+      "title": "User responsibilities",
+      "page": 52
+    },
+    {
+      "num": "A.11.3.1",
+      "title": "Password use",
+      "page": 52
+    },
+    {
+      "num": "A.11.3.2",
+      "title": "Unattended user equipment",
+      "page": 52
+    },
+    {
+      "num": "A.11.3.3",
+      "title": "Clear desk and clear screen policy",
+      "page": 52
+    },
+    {
+      "num": "A.11.4",
+      "title": "Network access control",
+      "page": 53
+    },
+    {
+      "num": "A.11.4.1",
+      "title": "Policy on use of network services",
+      "page": 53
+    },
+    {
+      "num": "A.11.4.2",
+      "title": "User authentication for external connections",
+      "page": 53
+    },
+    {
+      "num": "A.11.4.3",
+      "title": "Equipment identification in networks",
+      "page": 53
+    },
+    {
+      "num": "A.11.4.4",
+      "title": "Remote diagnostic and configuration port protection",
+      "page": 53
+    },
+    {
+      "num": "A.11.4.5",
+      "title": "Segregation in networks",
+      "page": 53
+    },
+    {
+      "num": "A.11.4.6",
+      "title": "Network connection control",
+      "page": 53
+    },
+    {
+      "num": "A.11.4.7",
+      "title": "Network routing control",
+      "page": 53
+    },
+    {
+      "num": "A.11.5",
+      "title": "Operating system access control",
+      "page": 54
+    },
+    {
+      "num": "A.11.5.1",
+      "title": "Secure log-on procedures",
+      "page": 54
+    },
+    {
+      "num": "A.11.5.2",
+      "title": "User identification and authentication",
+      "page": 54
+    },
+    {
+      "num": "A.11.5.3",
+      "title": "Password management system",
+      "page": 54
+    },
+    {
+      "num": "A.11.5.4",
+      "title": "Use of system utilities",
+      "page": 54
+    },
+    {
+      "num": "A.11.5.5",
+      "title": "Session time-out",
+      "page": 54
+    },
+    {
+      "num": "A.11.5.6",
+      "title": "Limitation of connection time",
+      "page": 54
+    },
+    {
+      "num": "A.11.6",
+      "title": "Application and information access control",
+      "page": 54
+    },
+    {
+      "num": "A.11.6.1",
+      "title": "Information access restriction",
+      "page": 54
+    },
+    {
+      "num": "A.11.6.2",
+      "title": "Sensitive system isolation",
+      "page": 55
+    },
+    {
+      "num": "A.11.7",
+      "title": "Mobile computing and teleworking",
+      "page": 55
+    },
+    {
+      "num": "A.11.7.1",
+      "title": "Mobile computing and communications",
+      "page": 55
+    },
+    {
+      "num": "A.11.7.2",
+      "title": "Teleworking",
+      "page": 55
+    },
+    {
+      "num": "A.12",
+      "title": "Information systems acquisition, development and maintenance",
+      "page": 55
+    },
+    {
+      "num": "A.12.1",
+      "title": "Security requirements of information systems",
+      "page": 55
+    },
+    {
+      "num": "A.12.1.1",
+      "title": "Security requirements analysis and specification",
+      "page": 55
+    },
+    {
+      "num": "A.12.2",
+      "title": "Correct processing in applications",
+      "page": 56
+    },
+    {
+      "num": "A.12.2.1",
+      "title": "Input data validation",
+      "page": 56
+    },
+    {
+      "num": "A.12.2.2",
+      "title": "Control of internal processing",
+      "page": 56
+    },
+    {
+      "num": "A.12.2.3",
+      "title": "Message integrity",
+      "page": 56
+    },
+    {
+      "num": "A.12.2.4",
+      "title": "Output data validation",
+      "page": 56
+    },
+    {
+      "num": "A.12.3",
+      "title": "Cryptographic controls",
+      "page": 56
+    },
+    {
+      "num": "A.12.3.1",
+      "title": "Policy on the use of cryptographic controls",
+      "page": 56
+    },
+    {
+      "num": "A.12.3.2",
+      "title": "Key management",
+      "page": 57
+    },
+    {
+      "num": "A.12.4",
+      "title": "Security of system files",
+      "page": 57
+    },
+    {
+      "num": "A.12.4.1",
+      "title": "Control of operational software",
+      "page": 57
+    },
+    {
+      "num": "A.12.4.2",
+      "title": "Protection of system test data",
+      "page": 58
+    },
+    {
+      "num": "A.12.4.3",
+      "title": "Access control to program source code",
+      "page": 58
+    },
+    {
+      "num": "A.12.5",
+      "title": "Security in development and support processes",
+      "page": 58
+    },
+    {
+      "num": "A.12.5.1",
+      "title": "Change control procedures",
+      "page": 58
+    },
+    {
+      "num": "A.12.5.2",
+      "title": "Technical review of applications after operating system changes",
+      "page": 58
+    },
+    {
+      "num": "A.12.5.3",
+      "title": "Restrictions on changes to software packages",
+      "page": 58
+    },
+    {
+      "num": "A.12.5.4",
+      "title": "Information leakage",
+      "page": 58
+    },
+    {
+      "num": "A.12.5.5",
+      "title": "Outsourced software development",
+      "page": 58
+    },
+    {
+      "num": "A.12.6",
+      "title": "Technical Vulnerability Management",
+      "page": 59
+    },
+    {
+      "num": "A.12.6.1",
+      "title": "Control of technical vulnerabilities",
+      "page": 59
+    },
+    {
+      "num": "A.13",
+      "title": "Information security incident management",
+      "page": 59
+    },
+    {
+      "num": "A.13.1",
+      "title": "Reporting Information Security Events and Weaknesses",
+      "page": 59
+    },
+    {
+      "num": "A.13.1.1",
+      "title": "Reporting information security events",
+      "page": 59
+    },
+    {
+      "num": "A.13.1.2",
+      "title": "Reporting security weaknesses",
+      "page": 59
+    },
+    {
+      "num": "A.13.2",
+      "title": "Management of Information Security Incidents and Improvements",
+      "page": 60
+    },
+    {
+      "num": "A.13.2.1",
+      "title": "Responsibilities and procedures",
+      "page": 60
+    },
+    {
+      "num": "A.13.2.2",
+      "title": "Learning from information security incidents",
+      "page": 60
+    },
+    {
+      "num": "A.13.2.3",
+      "title": "Collection of evidence",
+      "page": 61
+    },
+    {
+      "num": "A.14",
+      "title": "Business continuity management",
+      "page": 61
+    },
+    {
+      "num": "A.14.1",
+      "title": "Information security aspects of business continuity management",
+      "page": 61
+    },
+    {
+      "num": "A.14.1.1",
+      "title": "Including information security in the business continuity management process",
+      "page": 61
+    },
+    {
+      "num": "A.14.1.2",
+      "title": "Business continuity and risk assessment",
+      "page": 61
+    },
+    {
+      "num": "A.14.1.3",
+      "title": "Developing and implementing continuity plans including information security",
+      "page": 62
+    },
+    {
+      "num": "A.14.1.4",
+      "title": "Business continuity planning framework",
+      "page": 62
+    },
+    {
+      "num": "A.14.1.5",
+      "title": "Testing, maintaining and re-assessing business continuity plans",
+      "page": 62
+    },
+    {
+      "num": "A.15",
+      "title": "Compliance",
+      "page": 63
+    },
+    {
+      "num": "A.15.1",
+      "title": "Compliance with legal requirements",
+      "page": 63
+    },
+    {
+      "num": "A.15.1.1",
+      "title": "Identification of applicable legislation",
+      "page": 63
+    },
+    {
+      "num": "A.15.1.2",
+      "title": "Intellectual property rights (IPR)",
+      "page": 63
+    },
+    {
+      "num": "A.15.1.3",
+      "title": "Protection of organizational records",
+      "page": 63
+    },
+    {
+      "num": "A.15.1.4",
+      "title": "Data protection and privacy of personal information",
+      "page": 63
+    },
+    {
+      "num": "A.15.1.5",
+      "title": "Prevention of misuse of information processing facilities",
+      "page": 63
+    },
+    {
+      "num": "A.15.1.6",
+      "title": "Regulation of cryptographic controls",
+      "page": 63
+    },
+    {
+      "num": "A.15.2",
+      "title": "Compliance with security policies and standards and technical compliance",
+      "page": 64
+    },
+    {
+      "num": "A.15.2.1",
+      "title": "Compliance with security policies and standards",
+      "page": 64
+    },
+    {
+      "num": "A.15.2.2",
+      "title": "Technical compliance checking",
+      "page": 64
+    },
+    {
+      "num": "A.15.3",
+      "title": "Information System Audit Consideration",
+      "page": 64
+    },
+    {
+      "num": "A.15.3.1",
+      "title": "Information systems audit controls",
+      "page": 64
+    },
+    {
+      "num": "A.15.3.2",
+      "title": "Protection of information systems audit tools",
+      "page": 64
+    },
+    {
+      "num": "Annex B",
+      "title": "Statement of Applicability Framework",
+      "page": 65,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Bibliography",
+      "page": 66,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Change history",
+      "page": 67,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 68,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Introduction"
+  ],
+  "body_starts_page": 10,
+  "total_pages": 68,
+  "toc_pages": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ]
+}

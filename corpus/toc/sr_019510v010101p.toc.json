@@ -1,0 +1,478 @@
+{
+  "stem": "sr_019510v010101p",
+  "pdf": "downloads/specs/Other/sr_019510v010101p.pdf",
+  "title": "SPECIAL REPORT",
+  "reference": "sr_019510v010101p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 6,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 8
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 8
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 8
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 13
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 13
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 15
+    },
+    {
+      "num": "4",
+      "title": "Basic models for long-term data preservation services",
+      "page": 15
+    },
+    {
+      "num": "4.1",
+      "title": "General terms",
+      "page": 15
+    },
+    {
+      "num": "4.2",
+      "title": "Preservation with storage",
+      "page": 17
+    },
+    {
+      "num": "4.3",
+      "title": "Preservation without storage",
+      "page": 18
+    },
+    {
+      "num": "4.4",
+      "title": "Validation",
+      "page": 18
+    },
+    {
+      "num": "4.5",
+      "title": "Elements to be considered in preservation, monitoring",
+      "page": 19
+    },
+    {
+      "num": "4.5.1",
+      "title": "Monitoring the strength of hash functions and cryptographic algorithms",
+      "page": 19
+    },
+    {
+      "num": "4.5.2",
+      "title": "Monitoring the revocation status of certificates",
+      "page": 20
+    },
+    {
+      "num": "4.6",
+      "title": "Consideration of different policies",
+      "page": 20
+    },
+    {
+      "num": "4.6.1",
+      "title": "Signature creation policy",
+      "page": 20
+    },
+    {
+      "num": "4.6.2",
+      "title": "Signature augmentation policy",
+      "page": 21
+    },
+    {
+      "num": "4.6.3",
+      "title": "Signature validation policy",
+      "page": 21
+    },
+    {
+      "num": "4.7",
+      "title": "Basic preservation techniques",
+      "page": 21
+    },
+    {
+      "num": "4.7.1",
+      "title": "Time-stamps",
+      "page": 21
+    },
+    {
+      "num": "4.7.2",
+      "title": "AdES digital signatures",
+      "page": 21
+    },
+    {
+      "num": "4.7.3",
+      "title": "ERS",
+      "page": 22
+    },
+    {
+      "num": "4.7.4",
+      "title": "Other techniques",
+      "page": 22
+    },
+    {
+      "num": "4.7.5",
+      "title": "Advantages and disadvantages of the different methods",
+      "page": 22
+    },
+    {
+      "num": "4.8",
+      "title": "(Long-term) Preservation Policy (LTPP)",
+      "page": 23
+    },
+    {
+      "num": "5",
+      "title": "Examples of different preservation schemes",
+      "page": 24
+    },
+    {
+      "num": "5.1",
+      "title": "Long-term preservation of POC via Evidence Records without storage",
+      "page": 24
+    },
+    {
+      "num": "5.2",
+      "title": "Long-term preservation of POC via Evidence Records with storage",
+      "page": 24
+    },
+    {
+      "num": "5.4.1",
+      "title": "General approach",
+      "page": 25
+    },
+    {
+      "num": "5.4.2",
+      "title": "Special case using time-stamps with a long lifespan",
+      "page": 26
+    },
+    {
+      "num": "5.5",
+      "title": "Long-term AdES preservation with storage based on a validation report",
+      "page": 26
+    },
+    {
+      "num": "6",
+      "title": "Proposal of framework of standards for data preservation",
+      "page": 27
+    },
+    {
+      "num": "6.1",
+      "title": "General",
+      "page": 27
+    },
+    {
+      "num": "6.4",
+      "title": "Protection profiles for devices supporting data preservation service",
+      "page": 28
+    },
+    {
+      "num": "6.5",
+      "title": "Relation to other standards",
+      "page": 29
+    },
+    {
+      "num": "6.6",
+      "title": "Updates of current standards",
+      "page": 29
+    },
+    {
+      "num": "A.1",
+      "title": "Introduction",
+      "page": 30
+    },
+    {
+      "num": "A.2",
+      "title": "Open Archival Information System (OAIS)",
+      "page": 30
+    },
+    {
+      "num": "A.2.0",
+      "title": "General",
+      "page": 30
+    },
+    {
+      "num": "A.2.1",
+      "title": "OAIS Environment",
+      "page": 30
+    },
+    {
+      "num": "A.2.2",
+      "title": "OAIS Information Model",
+      "page": 30
+    },
+    {
+      "num": "A.2.3",
+      "title": "OAIS Function Model",
+      "page": 31
+    },
+    {
+      "num": "B.1",
+      "title": "Introduction",
+      "page": 38
+    },
+    {
+      "num": "B.2",
+      "title": "International and European standards",
+      "page": 38
+    },
+    {
+      "num": "B.2.1",
+      "title": "ISO",
+      "page": 38
+    },
+    {
+      "num": "B.2.1.1",
+      "title": "ISO 14533-1:2014",
+      "page": 38
+    },
+    {
+      "num": "B.2.1.2",
+      "title": "ISO 14533-2:2012",
+      "page": 38
+    },
+    {
+      "num": "B.2.1.3",
+      "title": "ISO 14641-1:2012",
+      "page": 38
+    },
+    {
+      "num": "B.2.1.4",
+      "title": "ISO/IEC 27040:2015",
+      "page": 39
+    },
+    {
+      "num": "B.2.1.5",
+      "title": "Other standards from ISO/IEC 27000 family related to preservation",
+      "page": 39
+    },
+    {
+      "num": "B.2.1.6",
+      "title": "ISO 14721:2012",
+      "page": 40
+    },
+    {
+      "num": "B.2.1.7",
+      "title": "ISO 15489-1:2016",
+      "page": 40
+    },
+    {
+      "num": "B.2.1.8",
+      "title": "ISO/TR 15489-2:2001",
+      "page": 41
+    },
+    {
+      "num": "B.2.1.9",
+      "title": "ISO/TR 15801:2009",
+      "page": 41
+    },
+    {
+      "num": "B.2.1.10",
+      "title": "ISO/TR 17068:2012",
+      "page": 41
+    },
+    {
+      "num": "B.2.1.11",
+      "title": "ISO 19005",
+      "page": 42
+    },
+    {
+      "num": "B.2.1.12",
+      "title": "ISO 23081-1:2006",
+      "page": 42
+    },
+    {
+      "num": "B.2.1.13",
+      "title": "ISO 23081-2:2009",
+      "page": 42
+    },
+    {
+      "num": "B.2.1.14",
+      "title": "Other ISO standards with relevance for preservation",
+      "page": 43
+    },
+    {
+      "num": "B.2.2",
+      "title": "IETF",
+      "page": 43
+    },
+    {
+      "num": "B.2.2.1",
+      "title": "IETF RFC 4810",
+      "page": 43
+    },
+    {
+      "num": "B.2.2.2",
+      "title": "IETF RFC 4998",
+      "page": 43
+    },
+    {
+      "num": "B.2.2.3",
+      "title": "IETF RFC 6283",
+      "page": 43
+    },
+    {
+      "num": "B.2.3",
+      "title": "ETSI",
+      "page": 44
+    },
+    {
+      "num": "B.2.3.1",
+      "title": "ETSI EN 319 122-1",
+      "page": 44
+    },
+    {
+      "num": "B.2.3.2",
+      "title": "ETSI EN 319 122-2",
+      "page": 44
+    },
+    {
+      "num": "B.2.3.3",
+      "title": "ETSI EN 319 132-1",
+      "page": 45
+    },
+    {
+      "num": "B.2.3.4",
+      "title": "ETSI EN 319 132-2",
+      "page": 45
+    },
+    {
+      "num": "B.2.3.5",
+      "title": "ETSI EN 319 142-1",
+      "page": 46
+    },
+    {
+      "num": "B.2.3.6",
+      "title": "ETSI EN 319 142-2",
+      "page": 46
+    },
+    {
+      "num": "B.2.3.7",
+      "title": "ETSI EN 319 162-1",
+      "page": 46
+    },
+    {
+      "num": "B.2.3.8",
+      "title": "ETSI EN 319 162-2",
+      "page": 47
+    },
+    {
+      "num": "B.2.3.9",
+      "title": "ETSI TS 101 533-1 (V1.3.1)",
+      "page": 47
+    },
+    {
+      "num": "B.2.3.10",
+      "title": "ETSI TR 101 533-2 (V1.3.1)",
+      "page": 47
+    },
+    {
+      "num": "B.2.3.11",
+      "title": "ETSI TS 102 573 (V2.1.1)",
+      "page": 48
+    },
+    {
+      "num": "B.3",
+      "title": "EU Member States national standards",
+      "page": 48
+    },
+    {
+      "num": "B.3.1",
+      "title": "France",
+      "page": 48
+    },
+    {
+      "num": "B.3.1.1",
+      "title": "(FR) AFNOR NF Z 42-020: Digital Vault Component",
+      "page": 48
+    },
+    {
+      "num": "B.3.2",
+      "title": "Germany",
+      "page": 49
+    },
+    {
+      "num": "B.3.2.1",
+      "title": "(EN) BSI TR-03125 (v1.2)",
+      "page": 49
+    },
+    {
+      "num": "B.3.2.2",
+      "title": "(EN) BSI-CC-PP-0049-2014",
+      "page": 50
+    },
+    {
+      "num": "C.1",
+      "title": "ASN.1 Evidence Record Syntax",
+      "page": 51
+    },
+    {
+      "num": "C.2",
+      "title": "Extensible Markup Language Evidence Record Syntax (XMLERS)",
+      "page": 52
+    },
+    {
+      "num": "C.3",
+      "title": "Augmentation of Evidence Records",
+      "page": 54
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 57,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 8,
+  "total_pages": 57,
+  "toc_pages": [
+    3,
+    4,
+    5
+  ]
+}

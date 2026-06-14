@@ -1,0 +1,552 @@
+{
+  "stem": "ts_11912201v010001p",
+  "pdf": "downloads/specs/TS/ts_11912201v010001p.pdf",
+  "title": "(2015-07)",
+  "reference": "ts_11912201v010001p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 6
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 6
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 6
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 7
+    },
+    {
+      "num": "3",
+      "title": "Definitions and abbreviations",
+      "page": 8
+    },
+    {
+      "num": "3.1",
+      "title": "Definitions",
+      "page": 8
+    },
+    {
+      "num": "3.2",
+      "title": "Abbreviations",
+      "page": 9
+    },
+    {
+      "num": "4",
+      "title": "General syntax",
+      "page": 9
+    },
+    {
+      "num": "4.1",
+      "title": "General requirements",
+      "page": 9
+    },
+    {
+      "num": "4.2",
+      "title": "The data content type",
+      "page": 9
+    },
+    {
+      "num": "4.3",
+      "title": "The signed-data content type",
+      "page": 9
+    },
+    {
+      "num": "4.4",
+      "title": "The SignedData type",
+      "page": 9
+    },
+    {
+      "num": "4.5",
+      "title": "The EncapsulatedContentInfo type",
+      "page": 10
+    },
+    {
+      "num": "4.6",
+      "title": "The SignerInfo type",
+      "page": 10
+    },
+    {
+      "num": "4.7",
+      "title": "ASN.1 Encoding",
+      "page": 10
+    },
+    {
+      "num": "4.7.1",
+      "title": "DER",
+      "page": 10
+    },
+    {
+      "num": "4.7.2",
+      "title": "BER",
+      "page": 10
+    },
+    {
+      "num": "4.8",
+      "title": "Other standard data structures",
+      "page": 10
+    },
+    {
+      "num": "4.8.1",
+      "title": "Time-stamp token format",
+      "page": 10
+    },
+    {
+      "num": "4.8.2",
+      "title": "Additional types",
+      "page": 10
+    },
+    {
+      "num": "4.9",
+      "title": "Attributes",
+      "page": 11
+    },
+    {
+      "num": "5",
+      "title": "Attribute semantics and syntax",
+      "page": 11
+    },
+    {
+      "num": "5.1",
+      "title": "CMS defined basic signed attributes",
+      "page": 11
+    },
+    {
+      "num": "5.1.1",
+      "title": "The content-type attribute",
+      "page": 11
+    },
+    {
+      "num": "5.1.2",
+      "title": "The message-digest attribute",
+      "page": 11
+    },
+    {
+      "num": "5.2",
+      "title": "Basic attributes for CAdES signatures",
+      "page": 12
+    },
+    {
+      "num": "5.2.1",
+      "title": "The signing-time attribute",
+      "page": 12
+    },
+    {
+      "num": "5.2.2",
+      "title": "Signing certificate reference attributes",
+      "page": 12
+    },
+    {
+      "num": "5.2.2.1",
+      "title": "General requirements",
+      "page": 12
+    },
+    {
+      "num": "5.2.2.2",
+      "title": "ESS signing-certificate attribute",
+      "page": 12
+    },
+    {
+      "num": "5.2.2.3",
+      "title": "ESS signing-certificate-v2 attribute",
+      "page": 13
+    },
+    {
+      "num": "5.2.3",
+      "title": "The commitment-type-indication attribute",
+      "page": 13
+    },
+    {
+      "num": "5.2.4",
+      "title": "Attributes for identifying the signed data type",
+      "page": 14
+    },
+    {
+      "num": "5.2.4.1",
+      "title": "The content-hints attribute",
+      "page": 14
+    },
+    {
+      "num": "5.2.4.2",
+      "title": "The mime-type attribute",
+      "page": 14
+    },
+    {
+      "num": "5.2.5",
+      "title": "The signer-location attribute",
+      "page": 15
+    },
+    {
+      "num": "5.2.6",
+      "title": "Incorporating attributes of the signer",
+      "page": 15
+    },
+    {
+      "num": "5.2.6.1",
+      "title": "The signer-attributes-v2 attribute",
+      "page": 15
+    },
+    {
+      "num": "5.2.6.2",
+      "title": "claimed-SAML-assertion",
+      "page": 17
+    },
+    {
+      "num": "5.2.7",
+      "title": "The countersignature attribute",
+      "page": 17
+    },
+    {
+      "num": "5.2.8",
+      "title": "The content-time-stamp attribute",
+      "page": 18
+    },
+    {
+      "num": "5.2.9",
+      "title": "The signature-policy-identifier attribute and the SigPolicyQualifierInfo type",
+      "page": 18
+    },
+    {
+      "num": "5.2.9.1",
+      "title": "The signature-policy-identifier attribute",
+      "page": 18
+    },
+    {
+      "num": "5.2.9.2",
+      "title": "The SigPolicyQualifierInfo type",
+      "page": 19
+    },
+    {
+      "num": "5.2.10",
+      "title": "The signature-policy-store attribute",
+      "page": 21
+    },
+    {
+      "num": "5.2.11",
+      "title": "The content-reference attribute",
+      "page": 21
+    },
+    {
+      "num": "5.2.12",
+      "title": "The content-identifier attribute",
+      "page": 22
+    },
+    {
+      "num": "5.3",
+      "title": "The signature-time-stamp attribute",
+      "page": 22
+    },
+    {
+      "num": "5.4",
+      "title": "Attributes for validation data values",
+      "page": 23
+    },
+    {
+      "num": "5.4.1",
+      "title": "Introduction",
+      "page": 23
+    },
+    {
+      "num": "5.4.2",
+      "title": "OCSP responses",
+      "page": 23
+    },
+    {
+      "num": "5.4.2.1",
+      "title": "OCSP response types",
+      "page": 23
+    },
+    {
+      "num": "5.4.2.2",
+      "title": "OCSP responses within RevocationInfoChoices",
+      "page": 23
+    },
+    {
+      "num": "5.4.3",
+      "title": "CRLs",
+      "page": 23
+    },
+    {
+      "num": "5.5",
+      "title": "Archive validation data",
+      "page": 23
+    },
+    {
+      "num": "5.5.1",
+      "title": "Introduction",
+      "page": 23
+    },
+    {
+      "num": "5.5.2",
+      "title": "The ats-hash-index-v2 attribute",
+      "page": 23
+    },
+    {
+      "num": "5.5.3",
+      "title": "The archive-time-stamp-v3 attribute",
+      "page": 25
+    },
+    {
+      "num": "6",
+      "title": "CAdES baseline signatures",
+      "page": 27
+    },
+    {
+      "num": "6.1",
+      "title": "Signature levels",
+      "page": 27
+    },
+    {
+      "num": "6.2",
+      "title": "General requirements",
+      "page": 28
+    },
+    {
+      "num": "6.2.1",
+      "title": "Algorithm requirements",
+      "page": 28
+    },
+    {
+      "num": "6.2.2",
+      "title": "Notation for requirements",
+      "page": 28
+    },
+    {
+      "num": "6.3",
+      "title": "Requirements on components and services",
+      "page": 30
+    },
+    {
+      "num": "6.4",
+      "title": "Legacy CAdES baseline signatures",
+      "page": 33
+    },
+    {
+      "num": "Annex A",
+      "title": "Additional Attributes Specification",
+      "page": 34,
+      "annex_type": "normative"
+    },
+    {
+      "num": "A.1",
+      "title": "Attributes for validation data",
+      "page": 34
+    },
+    {
+      "num": "A.1.1",
+      "title": "Certificates validation data",
+      "page": 34
+    },
+    {
+      "num": "A.1.1.1",
+      "title": "The complete-certificate-references attribute",
+      "page": 34
+    },
+    {
+      "num": "A.1.1.2",
+      "title": "The certificate-values attribute",
+      "page": 35
+    },
+    {
+      "num": "A.1.2",
+      "title": "Revocation validation data",
+      "page": 35
+    },
+    {
+      "num": "A.1.2.1",
+      "title": "The complete-revocation-references attribute",
+      "page": 35
+    },
+    {
+      "num": "A.1.2.2",
+      "title": "The revocation-values attribute",
+      "page": 37
+    },
+    {
+      "num": "A.1.3",
+      "title": "The attribute-certificate-references attribute",
+      "page": 38
+    },
+    {
+      "num": "A.1.4",
+      "title": "The attribute-revocation-references attribute",
+      "page": 39
+    },
+    {
+      "num": "A.1.5",
+      "title": "Time-stamps on references to validation data",
+      "page": 40
+    },
+    {
+      "num": "A.1.5.1",
+      "title": "The time-stamped-certs-crls-references attribute",
+      "page": 40
+    },
+    {
+      "num": "A.1.5.2",
+      "title": "The CAdES-C-timestamp attribute",
+      "page": 40
+    },
+    {
+      "num": "A.2",
+      "title": "Deprecated attributes",
+      "page": 41
+    },
+    {
+      "num": "A.2.1",
+      "title": "Usage of deprecated attributes",
+      "page": 41
+    },
+    {
+      "num": "A.2.2",
+      "title": "The other-signing-certificate attribute",
+      "page": 41
+    },
+    {
+      "num": "A.2.3",
+      "title": "The signer-attributes attribute",
+      "page": 41
+    },
+    {
+      "num": "A.2.4",
+      "title": "The archive-time-stamp attribute",
+      "page": 41
+    },
+    {
+      "num": "A.2.5",
+      "title": "The long-term-validation attribute",
+      "page": 41
+    },
+    {
+      "num": "A.2.6",
+      "title": "The ats-hash-index attribute",
+      "page": 42
+    },
+    {
+      "num": "Annex B",
+      "title": "Signature Format Definitions Using X.208 ASN.1 Syntax",
+      "page": 43,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Signature Format Definitions Using X.680 ASN.1 Syntax",
+      "page": 49,
+      "annex_type": "normative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Example Structured Contents and MIME",
+      "page": 56,
+      "annex_type": "informative"
+    },
+    {
+      "num": "D.1",
+      "title": "Use of MIME to Encode Data",
+      "page": 56
+    },
+    {
+      "num": "D.1.1",
+      "title": "MIME Structure",
+      "page": 56
+    },
+    {
+      "num": "D.1.2",
+      "title": "Header Information",
+      "page": 56
+    },
+    {
+      "num": "D.1.3",
+      "title": "Content Encoding",
+      "page": 57
+    },
+    {
+      "num": "D.1.4",
+      "title": "Multi-Part Content",
+      "page": 57
+    },
+    {
+      "num": "D.2",
+      "title": "S/MIME",
+      "page": 58
+    },
+    {
+      "num": "D.2.1",
+      "title": "Using S/MIME",
+      "page": 58
+    },
+    {
+      "num": "D.2.2",
+      "title": "Using application/pkcs7-mime",
+      "page": 58
+    },
+    {
+      "num": "D.2.3",
+      "title": "Using multipart/signed and application/pkcs7-signature",
+      "page": 59
+    },
+    {
+      "num": "D.3",
+      "title": "Use of MIME in the signature",
+      "page": 59
+    },
+    {
+      "num": "Annex E",
+      "title": "Change history",
+      "page": 61,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 62,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 6,
+  "total_pages": 62,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

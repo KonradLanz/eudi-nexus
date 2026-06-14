@@ -1,0 +1,318 @@
+{
+  "stem": "ts_119441v010301p",
+  "pdf": "downloads/specs/TS/ts_119441v010301p.pdf",
+  "title": "(2025-10)",
+  "reference": "ts_119441v010301p",
+  "keywords": [],
+  "date": "",
+  "toc": [
+    {
+      "num": "",
+      "title": "Intellectual Property Rights",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Foreword",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Modal verbs terminology",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "",
+      "title": "Introduction",
+      "page": 5,
+      "boilerplate": true
+    },
+    {
+      "num": "1",
+      "title": "Scope",
+      "page": 7
+    },
+    {
+      "num": "2",
+      "title": "References",
+      "page": 7
+    },
+    {
+      "num": "2.1",
+      "title": "Normative references",
+      "page": 7
+    },
+    {
+      "num": "2.2",
+      "title": "Informative references",
+      "page": 8
+    },
+    {
+      "num": "3",
+      "title": "Definition of terms, symbols, abbreviations and notations",
+      "page": 9
+    },
+    {
+      "num": "3.1",
+      "title": "Terms",
+      "page": 9
+    },
+    {
+      "num": "3.2",
+      "title": "Symbols",
+      "page": 12
+    },
+    {
+      "num": "3.3",
+      "title": "Abbreviations",
+      "page": 12
+    },
+    {
+      "num": "3.4",
+      "title": "Notations",
+      "page": 12
+    },
+    {
+      "num": "4",
+      "title": "General concepts",
+      "page": 13
+    },
+    {
+      "num": "4.1",
+      "title": "General policy requirements concepts",
+      "page": 13
+    },
+    {
+      "num": "4.2",
+      "title": "Signature Validation Service applicable documentation",
+      "page": 13
+    },
+    {
+      "num": "4.2.1",
+      "title": "Signature Validation Service Practice Statements",
+      "page": 13
+    },
+    {
+      "num": "4.2.2",
+      "title": "Signature Validation Service Policy",
+      "page": 13
+    },
+    {
+      "num": "4.2.3",
+      "title": "Terms and conditions",
+      "page": 14
+    },
+    {
+      "num": "4.2.4",
+      "title": "Other documents associated with signature validation",
+      "page": 14
+    },
+    {
+      "num": "4.3",
+      "title": "Signature Validation Service components",
+      "page": 14
+    },
+    {
+      "num": "4.3.1",
+      "title": "Signature Validation Service actors",
+      "page": 14
+    },
+    {
+      "num": "4.3.2",
+      "title": "Architecture",
+      "page": 15
+    },
+    {
+      "num": "4.3.3",
+      "title": "Process",
+      "page": 16
+    },
+    {
+      "num": "5",
+      "title": "Risk assessment",
+      "page": 18
+    },
+    {
+      "num": "6",
+      "title": "Policies and practices",
+      "page": 18
+    },
+    {
+      "num": "6.1",
+      "title": "Signature Validation Service practice statement",
+      "page": 18
+    },
+    {
+      "num": "6.2",
+      "title": "Terms and Conditions",
+      "page": 19
+    },
+    {
+      "num": "6.3",
+      "title": "Information security policy",
+      "page": 20
+    },
+    {
+      "num": "7",
+      "title": "Signature Validation Service management and operation",
+      "page": 21
+    },
+    {
+      "num": "7.1",
+      "title": "Internal organization",
+      "page": 21
+    },
+    {
+      "num": "7.2",
+      "title": "Human resources",
+      "page": 21
+    },
+    {
+      "num": "7.3",
+      "title": "Asset management",
+      "page": 21
+    },
+    {
+      "num": "7.4",
+      "title": "Access control",
+      "page": 21
+    },
+    {
+      "num": "7.5",
+      "title": "Cryptographic controls",
+      "page": 21
+    },
+    {
+      "num": "7.6",
+      "title": "Physical and environmental security",
+      "page": 21
+    },
+    {
+      "num": "7.7",
+      "title": "Operation security",
+      "page": 22
+    },
+    {
+      "num": "7.8",
+      "title": "Network security",
+      "page": 22
+    },
+    {
+      "num": "7.9",
+      "title": "Incident management",
+      "page": 22
+    },
+    {
+      "num": "7.10",
+      "title": "Collection of evidence",
+      "page": 22
+    },
+    {
+      "num": "7.11",
+      "title": "Business continuity management",
+      "page": 23
+    },
+    {
+      "num": "7.12",
+      "title": "Signature Validation Service provisioning termination and termination plans",
+      "page": 23
+    },
+    {
+      "num": "7.13",
+      "title": "Compliance and legal requirements",
+      "page": 23
+    },
+    {
+      "num": "7.14",
+      "title": "Supply chain",
+      "page": 23
+    },
+    {
+      "num": "8",
+      "title": "Signature validation service technical requirements",
+      "page": 24
+    },
+    {
+      "num": "8.1",
+      "title": "Signature validation process",
+      "page": 24
+    },
+    {
+      "num": "8.2",
+      "title": "Signature validation protocol",
+      "page": 25
+    },
+    {
+      "num": "8.3",
+      "title": "Interfaces",
+      "page": 25
+    },
+    {
+      "num": "8.3.1",
+      "title": "Communication channel",
+      "page": 25
+    },
+    {
+      "num": "8.4",
+      "title": "Signature validation report",
+      "page": 25
+    },
+    {
+      "num": "Annex A",
+      "title": "Table of contents for signature validation service practice statements",
+      "page": 28,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex C",
+      "title": "Mapping of requirements to Regulation (EU) No 910/2014",
+      "page": 32,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex D",
+      "title": "Recommendations on user interface",
+      "page": 35,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex E",
+      "title": "Checklist",
+      "page": 36,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex F",
+      "title": "Validation of validation report signature",
+      "page": 37,
+      "annex_type": "informative"
+    },
+    {
+      "num": "Annex G",
+      "title": "Change history",
+      "page": 38,
+      "annex_type": "informative"
+    },
+    {
+      "num": "",
+      "title": "History",
+      "page": 39,
+      "boilerplate": true
+    }
+  ],
+  "boilerplate": [
+    "Intellectual Property Rights",
+    "Foreword",
+    "Modal verbs terminology",
+    "Introduction"
+  ],
+  "body_starts_page": 7,
+  "total_pages": 39,
+  "toc_pages": [
+    3,
+    4
+  ]
+}

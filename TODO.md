@@ -67,6 +67,40 @@
 
 ### Segmentierungsqualität
 
+- [ ] **Doubled-Char-Artefakte aus Diagramm-Labels bereinigen** *(betrifft: tr_102605, ts_102176, ts_119432, ts_119512, ts_119534)*
+
+  **Ursache (eingegrenzt 2026-06-14):**
+  Alte ETSI-PDFs (Jahrgang ~2007) verwenden synthetisch-fette Schrift in Diagramm-Labels, indem Buchstaben als zwei leicht versetzte Glyphen übereinander gedruckt werden (z.B. `R` + `R` → **R**). pdfplumber/pdfminer liest beide Glyphen-Schichten und produziert so `RReellyyiinngg`, `SSeeccuurriittyy` etc. **pdftotext (Poppler)** ignoriert die zweite Überlagerungsschicht korrekt — der Defekt liegt ausschließlich im pdfplumber-Extraction-Layer, nicht im PDF selbst.
+
+  **Bestätigter Test:**
+  ```bash
+  grep -rn 'SSeeccuurriittyy' corpus/  # trifft tr_102605, ts_* — nie in pdftotext-Output
+  pdftotext downloads/specs/TR/tr_102605v010101p.pdf - | grep 'SSecc'  # → kein Treffer
+  ```
+
+  **Fix-Optionen:**
+  1. **Post-Processing-Regex in `pdf-segment.py`** (empfohlen für betroffene alte PDFs):
+     ```python
+     import re
+     def _fix_doubled_chars(text: str) -> str:
+         # Collapsed doubled-char runs: 'RReellyyiinngg' → 'Relying'
+         # Pattern: jeder Buchstabe erscheint doppelt, ggf. mit Leerzeichen zwischen Paaren
+         return re.sub(
+             r'\b(([A-Za-z])\2){3,}\b',
+             lambda m: ''.join(m.group(0)[i] for i in range(0, len(m.group(0)), 2)),
+             text
+         )
+     ```
+  2. **pdftotext als Fallback-Backend** wenn doubled-char-Ratio > Schwellwert:
+     ```python
+     doubled_ratio = len(re.findall(r'([A-Za-z])\1', text)) / max(len(text), 1)
+     if doubled_ratio > 0.05:  # >5% Doppelzeichen → Poppler-Fallback
+         text = subprocess.run(['pdftotext', pdf_path, '-'], capture_output=True, text=True).stdout
+     ```
+  3. **Betroffene PDFs neu-segmentieren** nach Fix-Implementierung.
+
+  **Kein upstream Issue** — PDF ist korrekt (pdftotext liest sauber); Bug liegt in pdfplumber's Umgang mit overprinting/synthetic-bold Glyphen. Da kein öffentlicher direkter Download-Link für tr_102605 existiert (ETSI Portal erfordert Login), wird kein Issue upstream geöffnet.
+
 - [ ] **Tabellenzellen aus NORM-Segmenten filtern** — Tabellenzellen mit RFC-2119-Keywords werden fälschlicherweise als NORM klassifiziert
 - [ ] **Anhang-Erkennung verbessern** — "Annex A (normative)" vs. "Annex B (informative)" zuverlässig unterscheiden; aktuell werden beide als NORM klassifiziert
 - [ ] **Fußnoten-Erkennung** — Kleine Schriftgröße + untere Seitenposition als Fußnoten-Signal nutzen, damit Fußnotentext nicht in NORM-Segmente wandert
