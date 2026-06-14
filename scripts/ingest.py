@@ -35,8 +35,11 @@ Or via npm:
 
 import argparse
 import json
+import os
 import subprocess
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -177,8 +180,15 @@ def collect_docs(inputs: list[str], force_format: str | None) -> list[Path]:
 
 # ─── Ingest dispatch ─────────────────────────────────────────────────────────
 
-def run_ingest(source: Path, fmt: str, corpus_root: Path, titles_dir: Path, verbose: bool):
-    """Dispatch to the appropriate ingest script as a subprocess."""
+_print_lock = threading.Lock()
+
+
+def run_ingest(source: Path, fmt: str, corpus_root: Path, titles_dir: Path, verbose: bool) -> tuple[bool, str]:
+    """Dispatch to the appropriate ingest script as a subprocess.
+
+    Always captures output internally so parallel runs don't interleave.
+    Returns (success, buffered_output).
+    """
     script = Path(__file__).parent / ("pdf-ingest.py" if fmt == "pdf" else "docx-ingest.py")
     cmd = [
         sys.executable, str(script),
@@ -189,10 +199,14 @@ def run_ingest(source: Path, fmt: str, corpus_root: Path, titles_dir: Path, verb
     ]
     if not verbose:
         cmd.append("--quiet")
-    result = subprocess.run(cmd, capture_output=not verbose, text=True)
-    if result.returncode != 0 and not verbose:
-        print(result.stderr, file=sys.stderr)
-    return result.returncode == 0
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    # Collect all output into a single string to print atomically
+    lines = []
+    if result.stdout.strip():
+        lines.append(result.stdout.rstrip())
+    if result.returncode != 0 and result.stderr.strip():
+        lines.append(result.stderr.rstrip())
+    return result.returncode == 0, "\n".join(lines)
 
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
@@ -223,6 +237,11 @@ Examples:
     parser.add_argument("--docx-only", action="store_true",
                         help="Always prefer DOCX; skip docs with no DOCX available")
     parser.add_argument("--quiet", "-q", action="store_true")
+    parser.add_argument(
+        "--workers", "-j", type=int, default=min(4, os.cpu_count() or 1),
+        metavar="N",
+        help="Parallel worker threads (default: min(4, cpu_count))",
+    )
     args = parser.parse_args()
 
     corpus_root = Path(args.corpus)
@@ -242,22 +261,23 @@ Examples:
     if verbose:
         mode = "--force" if args.force else "idempotent (mtime)"
         fmt  = force_format or "smart (DOCX preferred when available)"
-        print(f"[INFO] {len(docs)} documents found | mode: {mode} | format: {fmt}")
+        print(f"[INFO] {len(docs)} documents found | mode: {mode} | format: {fmt} | workers: {args.workers}")
         print()
 
     ok = skipped = errors = docx_used = pdf_used = 0
+
+    # ── Phase 1: resolve + skip synchronously (fast, no I/O) ──────────────
+    pending: list[tuple[Path, str]] = []   # (source, fmt) to actually process
 
     for entry in docs:
         source, fmt = resolve_source(entry, force_format)
 
         if fmt == "skip":
-            # --pdf-only mode, standalone DOCX with no PDF partner
             if verbose:
                 print(f"[SKIP-DOCX-ONLY] {entry.name} (no PDF available, --pdf-only)")
             skipped += 1
             continue
 
-        # Skip if corpus JSON is newer than source (idempotency)
         if not args.force and is_up_to_date(source, corpus_root):
             if verbose:
                 tag = "DOCX" if fmt == "docx" else "PDF "
@@ -265,22 +285,59 @@ Examples:
             skipped += 1
             continue
 
-        if fmt == "docx":
-            docx_used += 1
-            tag = "DOCX"
-        else:
-            pdf_used  += 1
-            tag = "PDF "
+        pending.append((source, fmt))
 
+    if not pending:
         if verbose:
-            print(f"[{tag}] {source.name}")
+            print()
+            print(f"[DONE] nothing to do — {skipped} skipped | 0 errors  (of {len(docs)} total)")
+        return
 
-        success = run_ingest(source, fmt, corpus_root, titles_dir, verbose)
-        if success:
-            ok += 1
-        else:
-            errors += 1
-            print(f"[ERROR] Failed: {source.name}", file=sys.stderr)
+    if verbose and skipped:
+        print()
+
+    # ── Phase 2: parallel ingest ───────────────────────────────────────────
+    def _ingest_job(source: Path, fmt: str) -> tuple[Path, str, bool, str]:
+        """Worker: run ingest, return (source, fmt, success, output)."""
+        success, output = run_ingest(source, fmt, corpus_root, titles_dir, verbose)
+        return source, fmt, success, output
+
+    futures = {}
+    with ThreadPoolExecutor(max_workers=args.workers) as pool:
+        for source, fmt in pending:
+            tag = "DOCX" if fmt == "docx" else "PDF "
+            if verbose:
+                with _print_lock:
+                    print(f"[{tag}→] {source.name}")
+            futures[pool.submit(_ingest_job, source, fmt)] = (source, fmt)
+
+        for future in as_completed(futures):
+            source, fmt, success, output = future.result()
+            tag = "DOCX" if fmt == "docx" else "PDF "
+            if fmt == "docx":
+                docx_used += 1
+            else:
+                pdf_used += 1
+
+            if success:
+                ok += 1
+                status = f"[{tag}✓] {source.name}"
+            else:
+                errors += 1
+                status = f"[{tag}✗] {source.name}"
+
+            with _print_lock:
+                if verbose:
+                    if output:
+                        # Print buffered subprocess output indented under the status line
+                        indented = "\n".join(f"    {l}" for l in output.splitlines())
+                        print(f"{status}\n{indented}")
+                    else:
+                        print(status)
+                elif not success:
+                    if output:
+                        print(output, file=sys.stderr)
+                    print(f"[ERROR] Failed: {source.name}", file=sys.stderr)
 
     if verbose:
         print()
