@@ -184,13 +184,54 @@ def _resolve_norm(raw: str, con: sqlite3.Connection) -> str:
     """
     Normalise a user-supplied norm identifier to the value stored in segments.norm.
     Handles variants like:
-      'EN 319 401'  ->  'EN 319 401'   (already canonical, found directly)
-      '319 401'     ->  'EN 319 401'   (prefix-less)
-      '319401'      ->  'EN 319 401'   (no spaces)
-      'ESI-0019401' ->  resolved via source_file pattern (ETSI internal key)
+      'EN 319 401'        ->  'EN 319 401'   (already canonical)
+      '319 401'           ->  'EN 319 401'   (prefix-less)
+      '319401'            ->  'EN 319 401'   (no spaces)
+      'en319401'          ->  'EN 319 401'   (lowercase, no spaces)
+      'EN319 401'         ->  'EN 319 401'   (partial spacing)
+      'ETSI EN 319 401'   ->  'EN 319 401'   (with SDO prefix)
+      '319-401'           ->  'EN 319 401'   (dashes instead of spaces)
+      'ts 119 612'        ->  'TS 119 612'   (wrong series letter case)
+      'eidas'             ->  matched via alias table
+      'sd-jwt'            ->  matched via alias table
     Falls back to the raw value if no match is found.
     """
-    # 1. Direct LIKE match (most common)
+    # 0. Alias table for common shorthand / misspellings
+    _ALIASES: dict[str, str] = {
+        "eidas":        "eIDAS",
+        "eidas2":       "eIDAS",
+        "arf":          "ARF",
+        "arfreqs":      "ARF",
+        "sdjwt":        "SD-JWT",
+        "sd-jwt":       "SD-JWT",
+        "sd_jwt":       "SD-JWT",
+        "openid4vp":    "OpenID4VP",
+        "openid 4vp":   "OpenID4VP",
+        "iso18013":     "ISO/IEC 18013-5",
+        "iso 18013":    "ISO/IEC 18013-5",
+        "18013":        "ISO/IEC 18013-5",
+        "mdl":          "ISO/IEC 18013-5",
+        "319401":       "EN 319 401",
+        "319411":       "EN 319 411",
+        "319412":       "EN 319 412",
+        "319421":       "EN 319 421",
+        "319431":       "EN 319 431",
+        "119612":       "TS 119 612",
+        "119495":       "TS 119 495",
+        "119182":       "EN 119 182",
+    }
+    normalized_raw = raw.strip().lower().replace(" ", "").replace("-", "").replace("_", "")
+    for alias_key, alias_val in _ALIASES.items():
+        if normalized_raw == alias_key.replace(" ", "").replace("-", "").replace("_", ""):
+            # Try to resolve the alias value against the DB
+            row = con.execute(
+                "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
+                (f"%{alias_val}%",),
+            ).fetchone()
+            if row:
+                return row[0]
+
+    # 1. Direct LIKE match (most common — handles 'EN 319 401', '319 401', partial names)
     row = con.execute(
         "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
         (f"%{raw}%",),
@@ -198,17 +239,36 @@ def _resolve_norm(raw: str, con: sqlite3.Connection) -> str:
     if row:
         return row[0]
 
-    # 2. Compact form: strip spaces and dashes, try numeric core
+    # 2. Case-insensitive LIKE (handles 'en 319 401', 'ts 119 612')
+    row = con.execute(
+        "SELECT DISTINCT norm FROM segments WHERE LOWER(norm) LIKE LOWER(?) LIMIT 1",
+        (f"%{raw}%",),
+    ).fetchone()
+    if row:
+        return row[0]
+
+    # 3. Compact numeric core: strip all non-digits, match against stripped norm
     compact = "".join(c for c in raw if c.isdigit())
-    if compact:
+    if len(compact) >= 4:  # guard against too-short numeric strings
         row = con.execute(
-            "SELECT DISTINCT norm FROM segments WHERE REPLACE(REPLACE(norm,' ',''),'-','') LIKE ? LIMIT 1",
+            "SELECT DISTINCT norm FROM segments WHERE REPLACE(REPLACE(REPLACE(norm,' ',''),'-',''),'/','') LIKE ? LIMIT 1",
             (f"%{compact}%",),
         ).fetchone()
         if row:
             return row[0]
 
-    # 3. No match — return raw so the caller still gets a meaningful filter
+    # 4. Strip common SDO prefixes and retry (e.g. 'ETSI EN 319 401' -> 'EN 319 401')
+    for prefix in ("ETSI ", "CEN ", "ISO/IEC ", "ISO ", "IETF ", "RFC "):
+        if raw.upper().startswith(prefix):
+            trimmed = raw[len(prefix):]
+            row = con.execute(
+                "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
+                (f"%{trimmed}%",),
+            ).fetchone()
+            if row:
+                return row[0]
+
+    # 5. No match — return raw so the caller still gets a meaningful LIKE filter
     return raw
 
 
@@ -496,15 +556,40 @@ def search_norm(
     Search EUDI normative segments using hybrid BM25 + semantic search.
 
     PARAMETERS (pass only these, no others):
-      query   (required) Search text. Example: "TSP audit log requirements"
-      norm    (optional) Partial norm name filter. Example: "319 401"
-      version (optional) Exact version string. Example: "v2.2.1"
+      query   (required) Search text. Be specific — use technical terms from the domain.
+              Good:  "audit log confidentiality integrity UTC synchronisation"
+              Good:  "termination plan private key destruction notification"
+              Weak:  "trust service provider requirements"  (too generic, BM25 suffers)
+              For broad topics use alpha=0.2 to weight semantic search more heavily.
+
+      norm    (optional) Filter to one norm. Use the EXACT 'norm' field from list_norms.
+              Examples: "EN 319 401", "TS 119 612", "ISO/IEC 18013-5", "SD-JWT"
+              Fuzzy variants also work: "319401", "eidas", "mdl", "sd-jwt", "openid4vp"
+              Omit to search across all norms.
+
+      version (optional) Exact version string. Example: "v3.3.1", "v2.2.1"
+              Omit to match all versions.
+
       limit   (optional) Integer 1-20. Default: 10.
-      alpha   (optional) Float 0.0-1.0. BM25 weight. Default: 0.5.
+              Use limit=20 for broad/exploratory queries to improve recall.
+
+      alpha   (optional) Float 0.0-1.0. Controls BM25 vs semantic weight.
+              1.0 = BM25 only (keyword exact match — best for known section numbers/terms)
+              0.5 = balanced hybrid (default — good for most queries)
+              0.2 = semantic-heavy (best for conceptual/broad queries like "TSP obligations")
+              0.0 = cosine only (requires embedding backend)
+
       types   (optional) List of strings: ["NORM"], ["INFORM"], or ["NORM","INFORM"].
+              Default: both NORM and INFORM. Use ["NORM"] to get only SHALL/MUST requirements.
 
     RETURNS dict with keys: query, result_count, mode, embedding_backend, results.
     results is a list of segment dicts — do NOT pass results as input.
+
+    WORKFLOW:
+      1. If unsure which norm to target, call list_norms first.
+      2. Call search_norm with a specific query and the exact norm value.
+      3. If result_count=0: broaden query, lower alpha, or omit norm filter entirely.
+      4. If a result text is truncated, call get_section with the section number for full context.
     """
     t0 = time.monotonic()
     limit = max(1, min(limit, MAX_RESULTS))
@@ -566,11 +651,27 @@ def get_segment(segment_id: str) -> dict[str, Any]:
 @mcp.tool()
 def list_norms() -> dict[str, Any]:
     """
-    List all norms indexed in the database with segment counts.
+    List all norms indexed in the database with segment counts and human-readable metadata.
 
     PARAMETERS: none — call with no arguments at all.
 
     RETURNS dict with keys: total_norms, total_segments, norms (list).
+    Each norm entry contains:
+      norm             Exact value to use as the 'norm' parameter in search_norm / get_section.
+                       Examples: "EN 319 401", "TS 119 612", "ISO/IEC 18013-5", "SD-JWT"
+      version          Latest version string. Examples: "v3.3.1", "v2.2.1"
+      display_name     Human-readable label combining norm + version + title excerpt.
+                       Example: "EN 319 401 v3.3.1 — General Policy Requirements for TSP"
+      title            Document title from section 0, if available.
+      total_segments   Total indexed segments (all types).
+      norm_count       Normative (SHALL/MUST) segments.
+      inform_count     Informative segments.
+      section_count    Section-heading segments.
+      embedded_count   Segments with a semantic embedding (cosine search available).
+
+    USAGE NOTE: Always call list_norms before search_norm if you are unsure which
+    norm to target. Copy the exact 'norm' field value (e.g. "EN 319 401") into the
+    'norm' parameter of search_norm or get_section — do not paraphrase or abbreviate.
     """
     t0 = time.monotonic()
     con = _get_db()
@@ -596,6 +697,17 @@ def list_norms() -> dict[str, Any]:
     ).fetchall()
 
     norms = [dict(r) for r in rows]
+    for n in norms:
+        title_excerpt = (n.get("title") or "").strip()
+        if len(title_excerpt) > 80:
+            title_excerpt = title_excerpt[:77] + "..."
+        version_str = n.get("version") or ""
+        n["display_name"] = (
+            f"{n['norm']} {version_str} — {title_excerpt}"
+            if title_excerpt
+            else f"{n['norm']} {version_str}"
+        ).strip()
+
     log.info("list_norms  total_norms=%d  total_segments=%d  %.0fms",
              len(norms), sum(n["total_segments"] for n in norms),
              (time.monotonic() - t0) * 1000)
@@ -618,14 +730,29 @@ def get_section(
     types: list[str] | None = None,
 ) -> dict[str, Any]:
     """
-    Retrieve all segments in a section of a norm. Section uses prefix match:
-    "5" returns section 5, 5.1, 5.1.1, etc. Omit section to get the full norm.
+    Retrieve all segments in a section of a norm. Use this to get full context after
+    search_norm returns a truncated or partial result.
+
+    Section matching uses prefix: "5" returns 5, 5.1, 5.1.1, 5.2, etc.
+    Omit section entirely to retrieve the full norm.
 
     PARAMETERS (pass only these, no others):
-      norm    (required) Partial norm name. Example: "319 401"
-      section (optional) Section number string. Example: "5" or "5.1". Default: "" (all).
-      version (optional) Exact version string. Example: "v2.2.1"
-      types   (optional) List of strings to filter types: ["NORM"], ["INFORM"], ["SECTION"].
+      norm    (required) Partial norm name — same fuzzy matching as search_norm.
+              Use the exact 'norm' field from list_norms for reliable results.
+              Examples: "EN 319 401", "319 401", "319401", "TS 119 612"
+              Fuzzy shorthand also works: "eidas", "mdl", "sd-jwt", "openid4vp"
+
+      section (optional) Section number string. Examples: "5", "5.1", "7.10", "6".
+              Omit or pass "" to retrieve all segments in the norm.
+
+      version (optional) Exact version string. Example: "v3.3.1"
+              Omit to match any version (picks most recent if multiple exist).
+
+      types   (optional) Filter by segment type.
+              ["NORM"]    — only normative SHALL/MUST requirements
+              ["INFORM"]  — only informative guidance
+              ["SECTION"] — only section headings (useful for TOC overview)
+              Omit for all types.
 
     RETURNS dict with keys: norm, version, section, segment_count, segments.
     Do NOT pass keys like "results" or "data" — they are not valid parameters.
