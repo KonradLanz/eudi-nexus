@@ -84,3 +84,6 @@ logs/
 *.temp
 .cache/
 test-untracked/
+
+# Generated TOC data
+corpus/toc/
