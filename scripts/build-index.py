@@ -42,6 +42,7 @@ import statistics
 import struct
 import sys
 import time
+import re
 import zlib
 from pathlib import Path
 from typing import Iterator
@@ -382,6 +383,29 @@ def create_schema(con: sqlite3.Connection, dims: int) -> None:
             key   TEXT PRIMARY KEY,
             value TEXT
         );
+
+        -- Norm alias table: maps alternative identifiers to the canonical norm
+        -- stored in segments.norm. Used by:
+        --   • _resolve_norm() in mcp-server.py for fuzzy lookup
+        --   • contributions-analyser for joining ESI docbox keys to ETSI names
+        --
+        -- Columns:
+        --   alias      – the alternative key (e.g. 'ESI-0019401v331v322',
+        --                'ESI-0019401', '319 401', 'EN 319 401 v3.3.1')
+        --   norm       – canonical segments.norm value (e.g. 'EN 319 401')
+        --   alias_type – one of:
+        --                  'esi_key'     raw ESI docbox filename stem
+        --                  'esi_prefix'  ESI key without version suffix
+        --                  'etsi_full'   full ETSI identifier incl. version
+        --                  'etsi_short'  ETSI identifier without version
+        --                  'custom'      hand-added alias
+        CREATE TABLE IF NOT EXISTS norm_aliases (
+            alias       TEXT NOT NULL,
+            norm        TEXT NOT NULL,
+            alias_type  TEXT NOT NULL DEFAULT 'custom',
+            PRIMARY KEY (alias, norm)
+        );
+        CREATE INDEX IF NOT EXISTS norm_aliases_norm_idx ON norm_aliases(norm);
     """)
     con.commit()
 
@@ -402,6 +426,125 @@ def drop_all(con: sqlite3.Connection) -> None:
 # ──────────────────────────────────────────────────────────────────────────────
 # Segment loading
 # ──────────────────────────────────────────────────────────────────────────────
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Norm alias helper
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ESI docbox regex — mirrors mcp-server.py so both decode identically.
+# Matches stems like: ESI-0019401v331v322  ESI-0019102-1v151v142
+_ESI_STEM_RE = re.compile(
+    r"^ESI-00(?P<number>\d{5})(?:-(?P<part>\d+))?v",
+    re.IGNORECASE,
+)
+
+
+def _build_norm_aliases(
+    norm: str,
+    version: str,
+    source_file: str,            # stem of the .segments.json file
+    titles_dir: Path | None,
+) -> list[tuple[str, str, str]]:
+    """
+    Return a list of (alias, norm, alias_type) tuples to upsert into norm_aliases.
+
+    Sources (in priority order):
+      1. title JSON sidecar  →  etsiNumber field  (most reliable)
+      2. source_file stem    →  ESI docbox filename stem (e.g. 'ESI-0019401v331v322')
+      3. segment norm itself →  stable short forms ('319 401', '319401')
+
+    Every alias points to the canonical segments.norm value so that both
+    _resolve_norm() and the contributions-analyser can join on either form.
+    """
+    aliases: list[tuple[str, str, str]] = []
+    seen: set[str] = {norm}  # never alias a value to itself
+
+    def add(alias: str, atype: str) -> None:
+        a = alias.strip()
+        if a and a not in seen:
+            aliases.append((a, norm, atype))
+            seen.add(a)
+
+    # ── 1. title JSON sidecar ──────────────────────────────────────────────
+    # Filename convention: the sidecar stem mirrors the source_file stem with
+    # '_' replacing any path separators that build-index strips, e.g.
+    #   segments file:  ESI-0019401v331v322.segments.json
+    #   title sidecar:  _titles/ESI-0019401v331v322.title.json
+    #   (also try with normalised stem: underscores ↔ hyphens)
+    if titles_dir and titles_dir.is_dir():
+        candidates = [
+            titles_dir / f"{source_file}.title.json",
+            titles_dir / f"{source_file.replace('-', '_')}.title.json",
+            titles_dir / f"{source_file.replace('_', '-')}.title.json",
+        ]
+        sidecar_data: dict = {}
+        for candidate in candidates:
+            if candidate.exists():
+                try:
+                    sidecar_data = json.loads(candidate.read_text(encoding="utf-8"))
+                except Exception:
+                    pass
+                break
+
+        etsi_num: str = (sidecar_data.get("etsiNumber") or "").strip()
+        if etsi_num:
+            add(etsi_num, "etsi_short")          # e.g. 'EN 319 401'
+            if version:
+                add(f"{etsi_num} {version}", "etsi_full")  # e.g. 'EN 319 401 v3.3.1'
+
+        wki: str = (sidecar_data.get("wkiId") or "").strip()
+        if wki:
+            add(f"wki:{wki}", "wki_id")           # for contributions-analyser join
+
+    # ── 2. ESI docbox stem ────────────────────────────────────────────────
+    # The source_file stem may itself be the ESI docbox key
+    # (e.g. 'ESI-0019401v331v322').  Preserve it verbatim AND as prefix-only.
+    m = _ESI_STEM_RE.match(source_file)
+    if m:
+        add(source_file, "esi_key")               # full key incl. version digits
+        # Prefix without version: 'ESI-0019401' or 'ESI-0019102-1'
+        num_part = m.group("number")
+        part_sfx = f"-{m.group('part')}" if m.group("part") else ""
+        add(f"ESI-00{num_part}{part_sfx}", "esi_prefix")
+
+    # ── 3. Compact digit forms of the canonical norm ───────────────────────
+    # Allow lookup via '319 401', '319401', 'EN 319401' etc.
+    # Only for norms that look like 'EN/TS/TR SSS NNN[-P]'
+    _ETSI_NORM_RE = re.compile(
+        r"^(?:EN|TS|TR)\s+(?P<series>\d{3})\s+(?P<number>\d{3,4})(?:-(?P<part>\d+))?$",
+        re.IGNORECASE,
+    )
+    m2 = _ETSI_NORM_RE.match(norm)
+    if m2:
+        s, n2, p = m2.group("series"), m2.group("number"), m2.group("part")
+        part_sfx2 = f"-{p}" if p else ""
+        add(f"{s} {n2}{part_sfx2}", "etsi_short")          # '319 401'
+        add(f"{s}{n2}{part_sfx2}", "etsi_short")           # '319401'
+        add(f"ETSI {norm}", "etsi_short")                   # 'ETSI EN 319 401'
+
+    return aliases
+
+
+def upsert_norm_aliases(
+    con: sqlite3.Connection,
+    norm: str,
+    version: str,
+    source_file: str,
+    titles_dir: Path | None,
+) -> int:
+    """
+    Compute and upsert all aliases for one indexed norm.
+    Returns number of rows inserted or updated.
+    """
+    aliases = _build_norm_aliases(norm, version, source_file, titles_dir)
+    if not aliases:
+        return 0
+    con.executemany(
+        "INSERT OR REPLACE INTO norm_aliases(alias, norm, alias_type) VALUES (?, ?, ?)",
+        aliases,
+    )
+    return len(aliases)
+
 
 def iter_segment_files(segments_dir: Path) -> Iterator[Path]:
     if not segments_dir.is_dir():
@@ -541,10 +684,17 @@ def index_segments_file(
     client: EmbeddingClient | None,
     dry_run: bool = False,
     verbose: bool = True,
+    titles_dir: Path | None = None,
 ) -> dict:
     """
     Index a single .segments.json file into the database.
     Returns stats dict: {inserted, embedded, skipped, errors}.
+
+    titles_dir: path to the _titles/ sidecar directory (e.g.
+        downloads/specs/_titles).  When provided, all known aliases for this
+        norm (ESI docbox key, canonical ETSI name, wkiId) are upserted into
+        norm_aliases so that _resolve_norm() and the contributions-analyser
+        can join on any of them without re-decoding filenames at query time.
     """
     norm, version, segments = load_segments_file(path)
     source_file = path.stem
@@ -636,17 +786,26 @@ def index_segments_file(
                 print(f"  [WARN] Embedding batch failed: {exc}", file=sys.stderr)
                 stats["errors"] += len(batch)
 
+    # Upsert norm aliases (idempotent — INSERT OR REPLACE) so that
+    # _resolve_norm() and the contributions-analyser can find this norm via
+    # its ESI docbox key, canonical ETSI name, wkiId, compact digit form etc.
+    # Runs on every (re-)index so sidecars added after first ingest are picked up.
+    alias_count = upsert_norm_aliases(con, norm, version, source_file, titles_dir)
+    stats["aliases"] = alias_count
+
     con.commit()
     mark_indexed(con, source_file, path)
     con.commit()
 
     if verbose:
-        emb_label = f", {stats['embedded']} embedded" if client else ""
+        emb_label   = f", {stats['embedded']} embedded" if client else ""
+        alias_label = f", {alias_count} alias(es)" if alias_count else ""
         print(
             f"  ✓  {source_file}  —  "
             f"{stats['inserted']} inserted"
             f"{emb_label}"
             f", {stats['skipped']} skipped"
+            f"{alias_label}"
         )
 
     return stats
