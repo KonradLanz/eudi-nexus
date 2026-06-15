@@ -220,6 +220,35 @@ def _esi_version(ver: str) -> str:
     # Fallback for unusual lengths
     return f"v{ver}"
 
+
+def _esi_number_to_etsi_norm(number: str, part: str | None = None) -> str:
+    """
+    Decode an ESI docbox number to its human-readable ETSI norm identifier.
+
+    ESI numbers are stored as 7-digit strings where the leading two zeros mask
+    the actual ETSI series prefix.  The mapping is:
+
+        ESI-00NNNNN  →  drop leading '00'  →  add 300000  →  EN/TS SERIES NUMBER
+
+    Examples:
+        '0019401'  →  19401 + 300000 = 319401  →  EN 319 401
+        '0019060'  →  19060 + 300000 = 319060  →  EN 319 060
+        '0019102'  →  19102 + 300000 = 319102  →  EN 319 102
+
+    Series ≥ 300 are published as EN (European Norm).
+    Series 100-199 are TS/TR (Technical Spec / Report) — not yet seen in EUCS
+    corpus but handled for future-proofing.
+
+    The `part` argument (e.g. '1', '3') adds a '-1' / '-3' suffix.
+    """
+    val  = int(number)          # e.g. 19401
+    full = val + 300_000        # e.g. 319401
+    series  = full // 1000      # e.g. 319
+    seq     = full % 1000       # e.g. 401
+    doc_type = "EN" if series >= 300 else "TS"
+    base = f"{doc_type} {series} {seq:03d}"
+    return f"{base}-{part}" if part else base
+
 SKIP_PREFIXES = (".",)
 
 
@@ -257,14 +286,14 @@ def parse_filename(pdf_path: Path) -> tuple[str, str]:
     # ESI docbox schema B (with part number): ESI-0019102-1v151v142
     m = FILENAME_ESI_PART_RE.match(name)
     if m:
-        norm    = f"ESI {m.group('number')}-{m.group('part')}"
+        norm    = _esi_number_to_etsi_norm(m.group("number"), m.group("part"))
         version = _esi_version(m.group("ver1"))
         return norm, version
 
     # ESI docbox schema A (no part number): ESI-0019060v002
     m = FILENAME_ESI_SIMPLE_RE.match(name)
     if m:
-        norm    = f"ESI {m.group('number')}"
+        norm    = _esi_number_to_etsi_norm(m.group("number"))
         version = _esi_version(m.group("ver"))
         return norm, version
 

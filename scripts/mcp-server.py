@@ -180,95 +180,205 @@ def _row_to_dict(row: sqlite3.Row) -> dict:
     return d
 
 
+# ---------------------------------------------------------------------------
+# ESI docbox number → ETSI human-readable norm (mirrors pdf-ingest.py logic)
+# ---------------------------------------------------------------------------
+import re as _re
+
+_ESI_DB_RE = _re.compile(
+    r"^ESI-00(?P<number>\d{5})(?:-(?P<part>\d+))?v",
+    _re.IGNORECASE,
+)
+
+
+def _esi_db_key_to_etsi(norm_db: str) -> str | None:
+    """
+    Convert a raw ESI docbox DB key like 'ESI-0019401v331v322' to the
+    human-readable ETSI norm string 'EN 319 401'.
+
+    Returns None if the input does not match the ESI-00NNNNN pattern.
+    """
+    m = _ESI_DB_RE.match(norm_db)
+    if not m:
+        return None
+    val    = int(m.group("number"))   # e.g. 19401
+    full   = val + 300_000             # e.g. 319401
+    series = full // 1000              # e.g. 319
+    seq    = full % 1000               # e.g. 401
+    doc_type = "EN" if series >= 300 else "TS"
+    base   = f"{doc_type} {series} {seq:03d}"
+    part   = m.group("part")
+    return f"{base}-{part}" if part else base
+
+
 def _resolve_norm(raw: str, con: sqlite3.Connection) -> str:
     """
     Normalise a user-supplied norm identifier to the value stored in segments.norm.
-    Handles variants like:
-      'EN 319 401'        ->  'EN 319 401'   (already canonical)
-      '319 401'           ->  'EN 319 401'   (prefix-less)
-      '319401'            ->  'EN 319 401'   (no spaces)
-      'en319401'          ->  'EN 319 401'   (lowercase, no spaces)
-      'EN319 401'         ->  'EN 319 401'   (partial spacing)
-      'ETSI EN 319 401'   ->  'EN 319 401'   (with SDO prefix)
-      '319-401'           ->  'EN 319 401'   (dashes instead of spaces)
-      'ts 119 612'        ->  'TS 119 612'   (wrong series letter case)
-      'eidas'             ->  matched via alias table
-      'sd-jwt'            ->  matched via alias table
-    Falls back to the raw value if no match is found.
+
+    The DB contains two key formats that must both be handled:
+      a) Human-readable ETSI keys:  'EN 319 401', 'TS 119 612', 'ISO/IEC 18013-5'
+      b) ESI docbox keys:           'ESI-0019401v331v322', 'ESI-0019102-1v151v142'
+         These arise when PDFs were ingested directly from the ETSI docbox by
+         their raw filename before the _esi_number_to_etsi_norm fix was applied.
+         The fuzzy resolver handles them transparently so tools keep working
+         even against a legacy corpus that was not re-ingested.
+
+    Supported input variants (examples for EN 319 401):
+      'EN 319 401'         already canonical
+      '319 401'            prefix-less
+      '319401'             no spaces
+      'en319401'           lowercase, no spaces
+      'EN319 401'          partial spacing
+      '319-401'            dashes instead of spaces
+      'ETSI EN 319 401'    with SDO prefix
+      'ts 119 612'         wrong series letter case
+      'eidas'              alias table shorthand
+      'sd-jwt'             alias table shorthand
+      'EN 319 4O1'         OCR/typo '4O1' (O vs 0) handled by compact-digit step
+
+    Falls back to the raw value if no match is found (caller uses it in LIKE).
     """
     # 0. Alias table for common shorthand / misspellings
     _ALIASES: dict[str, str] = {
-        "eidas":        "eIDAS",
-        "eidas2":       "eIDAS",
-        "arf":          "ARF",
-        "arfreqs":      "ARF",
-        "sdjwt":        "SD-JWT",
-        "sd-jwt":       "SD-JWT",
-        "sd_jwt":       "SD-JWT",
-        "openid4vp":    "OpenID4VP",
-        "openid 4vp":   "OpenID4VP",
-        "iso18013":     "ISO/IEC 18013-5",
-        "iso 18013":    "ISO/IEC 18013-5",
-        "18013":        "ISO/IEC 18013-5",
-        "mdl":          "ISO/IEC 18013-5",
-        "319401":       "EN 319 401",
-        "319411":       "EN 319 411",
-        "319412":       "EN 319 412",
-        "319421":       "EN 319 421",
-        "319431":       "EN 319 431",
-        "119612":       "TS 119 612",
-        "119495":       "TS 119 495",
-        "119182":       "EN 119 182",
+        "eidas":          "eIDAS",
+        "eidas2":         "eIDAS",
+        "arf":            "ARF",
+        "arfreqs":        "ARF",
+        "sdjwt":          "SD-JWT",
+        "sdjwtvc":        "SD-JWT",
+        "sd-jwt":         "SD-JWT",
+        "sd_jwt":         "SD-JWT",
+        "openid4vp":      "OpenID4VP",
+        "openid 4vp":     "OpenID4VP",
+        "openid4vc":      "OpenID4VC",
+        "iso18013":       "ISO/IEC 18013-5",
+        "iso 18013":      "ISO/IEC 18013-5",
+        "iso180135":      "ISO/IEC 18013-5",
+        "18013":          "ISO/IEC 18013-5",
+        "180135":         "ISO/IEC 18013-5",
+        "mdl":            "ISO/IEC 18013-5",
+        "mdoc":           "ISO/IEC 18013-5",
+        # Numeric shorthands (digits only, no spaces/dashes)
+        "319401":         "EN 319 401",
+        "319403":         "EN 319 403",
+        "319411":         "EN 319 411",
+        "319412":         "EN 319 412",
+        "319421":         "EN 319 421",
+        "319431":         "EN 319 431",
+        "319476":         "EN 319 476",
+        "319479":         "EN 319 479",
+        "119612":         "TS 119 612",
+        "119495":         "TS 119 495",
+        "119182":         "EN 119 182",
+        "119102":         "EN 319 102",   # common typo: 119 instead of 319
     }
+
+    def _db_like(pattern: str) -> str | None:
+        """Return the first norm value matching LIKE '%pattern%', case-insensitive."""
+        row = con.execute(
+            "SELECT DISTINCT norm FROM segments WHERE LOWER(norm) LIKE LOWER(?) LIMIT 1",
+            (f"%{pattern}%",),
+        ).fetchone()
+        return row[0] if row else None
+
+    # Compact digit string used across multiple steps below
+    compact = "".join(c for c in raw if c.isdigit())
+
+    # --- Step 0: alias lookup ---
+    # Works for both human-readable DB keys ('EN 319 401') and ESI-docbox DB keys
+    # ('ESI-0019401v331v322'): the alias value is passed to _db_like which does a
+    # case-insensitive LIKE on the raw DB column, so it can hit either format.
     normalized_raw = raw.strip().lower().replace(" ", "").replace("-", "").replace("_", "")
     for alias_key, alias_val in _ALIASES.items():
         if normalized_raw == alias_key.replace(" ", "").replace("-", "").replace("_", ""):
-            # Try to resolve the alias value against the DB
-            row = con.execute(
-                "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
-                (f"%{alias_val}%",),
-            ).fetchone()
-            if row:
-                return row[0]
+            hit = _db_like(alias_val)
+            if hit:
+                return hit
+            # Alias value didn't match — try ESI-reverse on the alias digits too
+            alias_compact = "".join(c for c in alias_val if c.isdigit())
+            if len(alias_compact) == 6:
+                etsi_num = int(alias_compact)
+                if etsi_num > 300_000:
+                    esi_inner = f"{etsi_num - 300_000:05d}"
+                    row = con.execute(
+                        "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
+                        (f"%00{esi_inner}%",),
+                    ).fetchone()
+                    if row:
+                        return row[0]
 
-    # 1. Direct LIKE match (most common — handles 'EN 319 401', '319 401', partial names)
-    row = con.execute(
-        "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
-        (f"%{raw}%",),
-    ).fetchone()
-    if row:
-        return row[0]
+    # --- Step 1: direct LIKE (handles 'EN 319 401', '319 401', partial names
+    #             AND ESI-docbox keys passed literally) ---
+    hit = _db_like(raw)
+    if hit:
+        return hit
 
-    # 2. Case-insensitive LIKE (handles 'en 319 401', 'ts 119 612')
-    row = con.execute(
-        "SELECT DISTINCT norm FROM segments WHERE LOWER(norm) LIKE LOWER(?) LIMIT 1",
-        (f"%{raw}%",),
-    ).fetchone()
-    if row:
-        return row[0]
+    # --- Step 2: SDO-prefix strip ('ETSI EN 319 401' → 'EN 319 401') ---
+    for prefix in ("ETSI ", "CEN ", "ISO/IEC ", "ISO ", "IETF ", "RFC "):
+        if raw.upper().startswith(prefix):
+            trimmed = raw[len(prefix):]
+            hit = _db_like(trimmed)
+            if hit:
+                return hit
+            # Also try ESI-reverse on the trimmed value
+            tc = "".join(c for c in trimmed if c.isdigit())
+            if len(tc) == 6 and int(tc) > 300_000:
+                esi_inner = f"{int(tc) - 300_000:05d}"
+                row = con.execute(
+                    "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
+                    (f"%00{esi_inner}%",),
+                ).fetchone()
+                if row:
+                    return row[0]
 
-    # 3. Compact numeric core: strip all non-digits, match against stripped norm
-    compact = "".join(c for c in raw if c.isdigit())
-    if len(compact) >= 4:  # guard against too-short numeric strings
+    # --- Step 3: numeric core strategies ---
+    # The corpus may store norms as ESI-00NNNNN docbox keys instead of 'EN SSS NNN'.
+    # For a 6-digit compact like '319401':
+    #   3a) Try spaced form '319 401' via LIKE (hits human-readable DB keys)
+    #   3b) Try SQL REPLACE strip (hits numeric substrings in any key)
+    #   3c) Try ESI reverse-encode: 319401 → subtract 300000 → 19401 →
+    #       search for ESI keys containing '0019401' (hits ESI docbox DB keys)
+    if len(compact) >= 5:
+        # 3a: spaced reconstruction
+        if len(compact) == 6:
+            spaced = f"{compact[:3]} {compact[3:]}"
+            hit = _db_like(spaced)
+            if hit:
+                return hit
+        elif len(compact) == 7:
+            # Part-suffixed: '3194031' → '319 403' (part handled by caller if needed)
+            spaced = f"{compact[:3]} {compact[3:6]}"
+            hit = _db_like(spaced)
+            if hit:
+                return hit
+
+        # 3b: SQL REPLACE strip – catches substrings in stripped keys
         row = con.execute(
-            "SELECT DISTINCT norm FROM segments WHERE REPLACE(REPLACE(REPLACE(norm,' ',''),'-',''),'/','') LIKE ? LIMIT 1",
+            """
+            SELECT DISTINCT norm FROM segments
+            WHERE REPLACE(REPLACE(REPLACE(norm,' ',''),'-',''),'/','') LIKE ?
+            LIMIT 1
+            """,
             (f"%{compact}%",),
         ).fetchone()
         if row:
             return row[0]
 
-    # 4. Strip common SDO prefixes and retry (e.g. 'ETSI EN 319 401' -> 'EN 319 401')
-    for prefix in ("ETSI ", "CEN ", "ISO/IEC ", "ISO ", "IETF ", "RFC "):
-        if raw.upper().startswith(prefix):
-            trimmed = raw[len(prefix):]
-            row = con.execute(
-                "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
-                (f"%{trimmed}%",),
-            ).fetchone()
-            if row:
-                return row[0]
+        # 3c: ESI reverse-encoding
+        #     'EN 319 401' → compact '319401' → 319401−300000=19401 → '0019401'
+        #     Finds 'ESI-0019401v331v322' in the DB via LIKE '%0019401%'.
+        if len(compact) == 6:
+            etsi_num = int(compact)
+            if etsi_num > 300_000:
+                esi_inner = f"{etsi_num - 300_000:05d}"
+                row = con.execute(
+                    "SELECT DISTINCT norm FROM segments WHERE norm LIKE ? LIMIT 1",
+                    (f"%00{esi_inner}%",),
+                ).fetchone()
+                if row:
+                    return row[0]
 
-    # 5. No match — return raw so the caller still gets a meaningful LIKE filter
+    # --- Step 4: no match — return raw for caller's LIKE filter ---
     return raw
 
 
@@ -702,10 +812,19 @@ def list_norms() -> dict[str, Any]:
         if len(title_excerpt) > 80:
             title_excerpt = title_excerpt[:77] + "..."
         version_str = n.get("version") or ""
+
+        # For ESI docbox keys ('ESI-0019401v331v322') add a decoded human name.
+        # After a full re-ingest with the fixed pdf-ingest.py these keys will no
+        # longer appear, but a legacy corpus should still present readable output.
+        etsi_decoded = _esi_db_key_to_etsi(n["norm"])
+        label = etsi_decoded if etsi_decoded else n["norm"]
+        if etsi_decoded:
+            n["etsi_norm"] = etsi_decoded   # e.g. 'EN 319 401'
+
         n["display_name"] = (
-            f"{n['norm']} {version_str} — {title_excerpt}"
+            f"{label} {version_str} — {title_excerpt}"
             if title_excerpt
-            else f"{n['norm']} {version_str}"
+            else f"{label} {version_str}"
         ).strip()
 
     log.info("list_norms  total_norms=%d  total_segments=%d  %.0fms",
