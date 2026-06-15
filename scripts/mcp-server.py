@@ -10,6 +10,7 @@ Tools:
   get_segment     —  Retrieve a single segment by ID
   list_norms      —  List all indexed norms with stats
   get_section     —  All segments of a section in a specific norm
+  get_toc         —  Table of contents (section headings) for a norm
 
 Transport: stdio (compatible with LM Studio, Ollama, Claude Desktop, mcp-cli)
 
@@ -628,6 +629,8 @@ mcp = FastMCP(
         "TOOL USAGE:\n"
         "- search_norm: semantic + keyword search. Use for any content query.\n"
         "- list_norms: lists all indexed norms. Call with NO arguments.\n"
+        "- get_toc: table of contents for a norm — section headings with numbers. "
+        "  Use BEFORE get_section to find the right section number.\n"
         "- get_section: retrieves all segments of a section. Use after search "
         "  to get full context of a truncated result.\n"
         "- get_segment: fetch one segment by its exact ID string.\n\n"
@@ -879,8 +882,10 @@ def get_section(
     t0 = time.monotonic()
     con = _get_db()
 
+    resolved = _resolve_norm(norm, con)
+
     clauses: list[str] = ["s.norm LIKE ?"]
-    params: list[Any] = [f"%{norm}%"]
+    params: list[Any] = [f"%{resolved}%"]
 
     if section:
         clauses.append("(s.section = ? OR s.section LIKE ?)")
@@ -906,15 +911,105 @@ def get_section(
         params,
     ).fetchall()
 
-    log.info("get_section  norm=%r  section=%r  segments=%d  %.0fms",
-             norm, section, len(rows), (time.monotonic() - t0) * 1000)
+    log.info("get_section  norm=%r  resolved=%r  section=%r  segments=%d  %.0fms",
+             norm, resolved, section, len(rows), (time.monotonic() - t0) * 1000)
 
     return {
-        "norm":          norm,
+        "norm":          resolved,
         "version":       version,
         "section":       section,
         "segment_count": len(rows),
         "segments":      [_row_to_dict(r) for r in rows],
+    }
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Tool: get_toc
+# ──────────────────────────────────────────────────────────────────────────────
+
+@mcp.tool()
+def get_toc(
+    norm: str,
+    version: str | None = None,
+    depth: int = 3,
+) -> dict[str, Any]:
+    """
+    Return the table of contents (section headings) for a norm.
+
+    Use this to orient yourself in an unfamiliar norm BEFORE calling get_section.
+    It shows the full numbered structure so you can pick the right section number.
+
+    PARAMETERS (pass only these, no others):
+      norm     (required) Norm identifier — same fuzzy matching as search_norm.
+               Use the exact 'norm' field from list_norms for reliable results.
+               Examples: "EN 319 401", "TS 119 612", "ISO/IEC 18013-5"
+               Fuzzy shorthand also works: "319401", "eidas", "mdl", "sd-jwt"
+
+      version  (optional) Exact version string. Example: "v3.3.1"
+               Omit to use the most recent indexed version.
+
+      depth    (optional) Integer 1-5. Maximum section-number depth to include.
+               1 = top-level only ("1", "2", "A"), useful for a quick overview.
+               2 = two levels  ("1", "1.1"),  recommended for navigation.
+               3 = three levels (default) — good balance of detail vs. brevity.
+               5 = full depth — very long for large norms, use sparingly.
+
+    RETURNS dict with keys: norm, version, depth, section_count, toc.
+    toc is a list of {section, title} dicts ordered by document position.
+
+    WORKFLOW:
+      1. Call get_toc to see the structure and find which section covers the topic.
+      2. Call get_section with the identified section number for full content.
+      3. Call search_norm if you want to search across sections without prior knowledge.
+    """
+    t0 = time.monotonic()
+    con = _get_db()
+
+    resolved = _resolve_norm(norm, con)
+
+    clauses: list[str] = ["s.type = 'SECTION'", "s.norm LIKE ?"]
+    params: list[Any] = [f"%{resolved}%"]
+
+    if version:
+        clauses.append("s.version = ?")
+        params.append(version)
+
+    where = " AND ".join(clauses)
+    rows = con.execute(
+        f"""
+        SELECT s.section, s.text, s.version
+        FROM segments s
+        WHERE {where}
+        ORDER BY s.page, s.id
+        """,
+        params,
+    ).fetchall()
+
+    # Filter by depth: count dots in section number.
+    # Section "5.1.2" has depth 3 (2 dots + 1).
+    # Appendix-style sections like "A.1" are handled the same way.
+    def _section_depth(sec: str) -> int:
+        return sec.count(".") + 1 if sec.strip() else 1
+
+    toc = [
+        {"section": row["section"], "title": (row["text"] or "").strip()}
+        for row in rows
+        if _section_depth(row["section"] or "") <= depth
+    ]
+
+    # Determine which version was actually used (first row, if any).
+    actual_version = rows[0]["version"] if rows else version
+
+    log.info("get_toc  norm=%r  version=%r  depth=%d  entries=%d  %.0fms",
+             resolved, actual_version, depth, len(toc),
+             (time.monotonic() - t0) * 1000)
+
+    return {
+        "norm":          resolved,
+        "version":       actual_version,
+        "depth":         depth,
+        "section_count": len(toc),
+        "toc":           toc,
     }
 
 
